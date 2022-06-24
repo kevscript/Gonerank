@@ -49,6 +49,8 @@ export const AccountType = objectType({
     t.field(Account.scope);
     t.field(Account.id_token);
     t.field(Account.session_state);
+    t.field(Account.oauth_token);
+    t.field(Account.oauth_token_secret);
   },
 });
 

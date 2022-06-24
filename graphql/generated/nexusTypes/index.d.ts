@@ -409,6 +409,110 @@ export interface Account {
     resolve: NexusCore.FieldResolver<'Account', 'access_token'>
   }
   /**
+    * Generated Nexus `t.field` configuration based on your Prisma schema's model-field `Account.oauth_token`.
+    *
+    * ### ️⚠️ You have not writen documentation for model Account
+    *
+    * Replace this default advisory JSDoc with your own documentation about model Account
+    * by documenting it in your Prisma schema. For example:
+    * ```prisma
+    * model Account {
+    *   /// Lorem ipsum dolor sit amet.
+    *   oauth_token  String?
+    * }
+    * ```
+    *
+    * Learn more about documentation comments in Prisma schema files [here](https://www.prisma.io/docs/concepts/components/prisma-schema#comments).
+    *
+    * @example
+    *
+    * import { objectType } from 'nexus'
+    * import { Account } from 'nexus-prisma'
+    *
+    * objectType({
+    *   name: Account.$name
+    *   description: Account.$description
+    *   definition(t) {
+    *     t.field(Account.oauth_token)
+    *   }
+    * })
+    */
+  oauth_token: {
+    /**
+     * The name of this field.
+     */
+    name: 'oauth_token'
+  
+    /**
+     * The type of this field.
+     */
+    type: 'String' extends NexusCore.GetGen<'allNamedTypes', string>
+    ? NexusCore.NexusNullDef<'String'>
+    : 'Warning/Error: The type \'String\' is not amoung the union of GetGen<\'allNamedTypes\', string>. This means that either: 1) You need to run nexus typegen reflection. 2) You need to add the type \'String\' to your GraphQL API.'
+  
+    /**
+     * The documentation of this field.
+     */
+    description: undefined
+  
+    /**
+     * The resolver of this field
+     */
+    resolve: NexusCore.FieldResolver<'Account', 'oauth_token'>
+  }
+  /**
+    * Generated Nexus `t.field` configuration based on your Prisma schema's model-field `Account.oauth_token_secret`.
+    *
+    * ### ️⚠️ You have not writen documentation for model Account
+    *
+    * Replace this default advisory JSDoc with your own documentation about model Account
+    * by documenting it in your Prisma schema. For example:
+    * ```prisma
+    * model Account {
+    *   /// Lorem ipsum dolor sit amet.
+    *   oauth_token_secret  String?
+    * }
+    * ```
+    *
+    * Learn more about documentation comments in Prisma schema files [here](https://www.prisma.io/docs/concepts/components/prisma-schema#comments).
+    *
+    * @example
+    *
+    * import { objectType } from 'nexus'
+    * import { Account } from 'nexus-prisma'
+    *
+    * objectType({
+    *   name: Account.$name
+    *   description: Account.$description
+    *   definition(t) {
+    *     t.field(Account.oauth_token_secret)
+    *   }
+    * })
+    */
+  oauth_token_secret: {
+    /**
+     * The name of this field.
+     */
+    name: 'oauth_token_secret'
+  
+    /**
+     * The type of this field.
+     */
+    type: 'String' extends NexusCore.GetGen<'allNamedTypes', string>
+    ? NexusCore.NexusNullDef<'String'>
+    : 'Warning/Error: The type \'String\' is not amoung the union of GetGen<\'allNamedTypes\', string>. This means that either: 1) You need to run nexus typegen reflection. 2) You need to add the type \'String\' to your GraphQL API.'
+  
+    /**
+     * The documentation of this field.
+     */
+    description: undefined
+  
+    /**
+     * The resolver of this field
+     */
+    resolve: NexusCore.FieldResolver<'Account', 'oauth_token_secret'>
+  }
+  /**
     * Generated Nexus `t.field` configuration based on your Prisma schema's model-field `Account.expires_at`.
     *
     * ### ️⚠️ You have not writen documentation for model Account
