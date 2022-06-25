@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import useOutsideClick from "../hooks/useOutsideClick";
 import CalendarIcon from "./Icons/Calendar";
-import ClubIcon from "./Icons/Club";
 import MatchIcon from "./Icons/Match";
 import MoonIcon from "./Icons/Moon";
 import PlayerIcon from "./Icons/Player";
@@ -14,6 +13,8 @@ import SignOutIcon from "./Icons/SignOut";
 import TrophyIcon from "./Icons/Trophy";
 import TwitterIcon from "./Icons/Twitter";
 import UserIcon from "./Icons/User";
+import LoggedInNavigation from "./LoggedInNavigation";
+import LoggedOutNavigation from "./LoggedOutNavigation";
 
 export type NavRoute = {
   label: string;
@@ -38,7 +39,7 @@ const adminRoutes: NavRoute[] = [
 type NavigationType = "user" | "admin";
 
 const Sidebar = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [navigation, setNavigation] = useState<NavigationType>("user");
 
   const [expandMenu, setExpandMenu] = useState(false);
@@ -50,27 +51,33 @@ const Sidebar = () => {
   useOutsideClick({ ref: userMenuRef, action: () => setExpandMenu(false) });
 
   return (
-    <div className="sticky top-0 w-16 h-screen bg-white border-r-[1px] border-gray-100 py-8 flex flex-col items-center">
-      <Link href="/" passHref>
-        <div className=" flex flex-row items-center cursor-pointer">
-          <span className="text-lg font-black">GR</span>
-          <span className="mx-1 hidden">|</span>
-          <span className="hidden">Gonerank</span>
-        </div>
-      </Link>
+    <div className="sticky top-0 w-16 h-screen bg-white border-r-[2px] border-gray-100 pt-8 pb-8 lg:pb-0 flex flex-col items-center lg:w-1/6 lg:max-w-[256px]">
+      {/* Sidebar Header */}
+      <div className="w-full flex flex-col items-center lg:flex-row lg:justify-between lg:px-4">
+        <Link href="/" passHref>
+          <div className="flex flex-row items-center cursor-pointer">
+            <span className="text-lg font-black">GR</span>
+            <div className="hidden w-[1px] h-4 bg-black mx-2 lg:block"></div>
+            <span className="hidden lg:block">Gonerank</span>
+          </div>
+        </Link>
+        <MoonIcon className="w-4 h-4 mt-4 lg:mt-0" />
+      </div>
 
-      <MoonIcon className="w-4 h-4 mt-4" />
+      {/* Sidebar Navigation */}
       <ul className="w-full mt-16 flex-1 flex flex-col items-center">
         {navigation === "user" &&
           userRoutes.map(({ label, path, Icon }) => (
             <Link key={label} href={path} passHref>
-              <li className="mt-8 first:mt-0 flex">
+              <li className="mt-8 first:mt-0 flex items-center cursor-pointer lg:w-full lg:px-4 lg:py-4 lg:mt-0 hover:bg-gray-200">
                 {Icon ? (
-                  <Icon className="w-6 h-6" />
+                  <Icon className="w-6 h-6 lg:w-5 lg:h-5" />
                 ) : (
                   <div className="w-6 h-6 bg-slate-300"></div>
                 )}
-                <span className="hidden font-medium ml-4">{label}</span>
+                <span className="hidden font-medium ml-4 lg:block">
+                  {label}
+                </span>
               </li>
             </Link>
           ))}
@@ -78,21 +85,24 @@ const Sidebar = () => {
         {navigation === "admin" &&
           adminRoutes.map(({ label, path, Icon }) => (
             <Link key={label} href={path} passHref>
-              <li className="mt-8 first:mt-0 flex">
+              <li className="mt-8 first:mt-0 flex items-center cursor-pointer lg:w-full lg:px-4 lg:py-4 lg:mt-0 hover:bg-gray-200">
                 {Icon ? (
-                  <Icon className="w-6 h-6" />
+                  <Icon className="w-6 h-6 lg:w-5 lg:h-5" />
                 ) : (
                   <div className="w-6 h-6 bg-slate-300"></div>
                 )}
-                <span className="hidden font-medium ml-4">{label}</span>
+                <span className="hidden font-medium ml-4 lg:block">
+                  {label}
+                </span>
               </li>
             </Link>
           ))}
       </ul>
 
+      {/* Admin Routes Switch */}
       {session && session.user.role === "ADMIN" && (
         <div
-          className={`w-8 h-4 rounded-full mt-8 transition-colors cursor-pointer ${
+          className={`w-8 h-4 rounded-full mt-8 mb-4 transition-colors cursor-pointer ${
             navigation === "user" ? "bg-blue-600" : "bg-orange-400"
           }`}
           onClick={() =>
@@ -101,41 +111,12 @@ const Sidebar = () => {
         ></div>
       )}
 
-      <div ref={userMenuRef} className="relative mt-4">
-        <div
-          className="relative w-8 h-8 rounded-full overflow-hidden flex justify-center items-center shadow-inner"
-          onClick={() => setExpandMenu((x) => !x)}
-        >
-          {session ? (
-            <Image
-              src={session.user.image!}
-              alt="user avatar"
-              layout="fill"
-              objectFit="contain"
-            />
-          ) : (
-            <div className="w-8 h-8 rounded-full bg-gray-200 flex justify-center items-end shadow-inner">
-              <UserIcon className="w-6 h-6 fill-gray-400" />
-            </div>
-          )}
-        </div>
-        {expandMenu && (
-          <div
-            className="absolute top-0 left-9 h-8 flex px-2 border border-gray-200 bg-white rounded text-sm font-medium justify-center items-center drop-shadow cursor-pointer"
-            onClick={() => loginHandler()}
-          >
-            {session ? (
-              <span className="flex justify-center items-center">
-                Déconnexion <SignOutIcon className="ml-2 w-4 h-4" />
-              </span>
-            ) : (
-              <span className="flex justify-center items-center">
-                Connexion <TwitterIcon className="ml-2 w-3 h-3 fill-sky-600" />
-              </span>
-            )}
-          </div>
-        )}
-      </div>
+      {/* User Navigation */}
+      {status === "loading" ? null : status === "authenticated" ? (
+        <LoggedInNavigation user={session.user} />
+      ) : (
+        <LoggedOutNavigation />
+      )}
     </div>
   );
 };
