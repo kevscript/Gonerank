@@ -1,20 +1,17 @@
-import { signIn, signOut, useSession } from "next-auth/react";
-import Image from "next/image";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRef, useState } from "react";
-import useOutsideClick from "../hooks/useOutsideClick";
+import { useState } from "react";
 import CalendarIcon from "./Icons/Calendar";
 import MatchIcon from "./Icons/Match";
 import MoonIcon from "./Icons/Moon";
 import PlayerIcon from "./Icons/Player";
 import RatingIcon from "./Icons/Rating";
 import ShieldIcon from "./Icons/Shield";
-import SignOutIcon from "./Icons/SignOut";
 import TrophyIcon from "./Icons/Trophy";
-import TwitterIcon from "./Icons/Twitter";
-import UserIcon from "./Icons/User";
 import LoggedInNavigation from "./LoggedInNavigation";
 import LoggedOutNavigation from "./LoggedOutNavigation";
+import Spinner from "./Spinner";
+import Switch from "./Switch";
 
 export type NavRoute = {
   label: string;
@@ -40,15 +37,7 @@ type NavigationType = "user" | "admin";
 
 const Sidebar = () => {
   const { data: session, status } = useSession();
-  const [navigation, setNavigation] = useState<NavigationType>("user");
-
-  const [expandMenu, setExpandMenu] = useState(false);
-  const userMenuRef = useRef(null);
-
-  const loginHandler = () => (session ? signOut() : signIn("twitter"));
-
-  // useOutsideClick is a useEffect
-  useOutsideClick({ ref: userMenuRef, action: () => setExpandMenu(false) });
+  const [navigationType, setNavigationType] = useState<NavigationType>("user");
 
   return (
     <div className="sticky top-0 w-16 h-screen bg-white border-r-[2px] border-gray-100 pt-8 pb-8 lg:pb-0 flex flex-col items-center lg:w-1/6 lg:max-w-[256px]">
@@ -66,7 +55,7 @@ const Sidebar = () => {
 
       {/* Sidebar Navigation */}
       <ul className="w-full mt-16 flex-1 flex flex-col items-center">
-        {navigation === "user" &&
+        {navigationType === "user" &&
           userRoutes.map(({ label, path, Icon }) => (
             <Link key={label} href={path} passHref>
               <li className="mt-8 first:mt-0 flex items-center cursor-pointer lg:w-full lg:px-4 lg:py-4 lg:mt-0 hover:bg-gray-200">
@@ -82,7 +71,7 @@ const Sidebar = () => {
             </Link>
           ))}
 
-        {navigation === "admin" &&
+        {navigationType === "admin" &&
           adminRoutes.map(({ label, path, Icon }) => (
             <Link key={label} href={path} passHref>
               <li className="mt-8 first:mt-0 flex items-center cursor-pointer lg:w-full lg:px-4 lg:py-4 lg:mt-0 hover:bg-gray-200">
@@ -101,18 +90,24 @@ const Sidebar = () => {
 
       {/* Admin Routes Switch */}
       {session && session.user.role === "ADMIN" && (
-        <div
-          className={`w-8 h-4 rounded-full mt-8 mb-4 transition-colors cursor-pointer ${
-            navigation === "user" ? "bg-blue-600" : "bg-orange-400"
-          }`}
-          onClick={() =>
-            setNavigation((n) => (n === "user" ? "admin" : "user"))
-          }
-        ></div>
+        <div className="lg:w-full px-4 my-4 lg:my-2">
+          <Switch
+            isOn={navigationType === "admin" ? true : false}
+            primary="bg-gray-400"
+            secondary="bg-red-500"
+            handleToggle={() =>
+              setNavigationType((x) => (x === "user" ? "admin" : "user"))
+            }
+          />
+        </div>
       )}
 
       {/* User Navigation */}
-      {status === "loading" ? null : status === "authenticated" ? (
+      {status === "loading" ? (
+        <div className="lg:w-full p-4">
+          <Spinner />
+        </div>
+      ) : status === "authenticated" ? (
         <LoggedInNavigation user={session.user} />
       ) : (
         <LoggedOutNavigation />
