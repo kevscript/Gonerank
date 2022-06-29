@@ -99,19 +99,22 @@ const Sidebar = () => {
           ))}
       </ul>
 
-      <MoonIcon className="w-4 h-4 mt-4 lg:mt-0" />
+      <div className="flex flex-col justify-center items-center lg:w-full lg:flex-row-reverse lg:justify-between lg:p-4">
+        {/* Darmode Selector */}
+        <MoonIcon className="w-4 h-4 my-4 lg:mt-0 lg:w-5 lg:h-5 cursor-pointer" />
 
-      {/* Admin Routes Switch */}
-      {session && session.user.role === "ADMIN" && (
-        <div className="lg:w-full px-4 my-4 lg:my-2">
-          <Switcher
-            checked={navigationType === "admin" ? true : false}
-            handleToggle={() =>
-              setNavigationType((x) => (x === "user" ? "admin" : "user"))
-            }
-          />
-        </div>
-      )}
+        {/* Admin Routes Switch */}
+        {session && session.user.role === "ADMIN" && (
+          <div className="px-4 my-4 lg:px-0 lg:my-0">
+            <Switcher
+              checked={navigationType === "admin" ? true : false}
+              handleToggle={() =>
+                setNavigationType((x) => (x === "user" ? "admin" : "user"))
+              }
+            />
+          </div>
+        )}
+      </div>
 
       {/* User Navigation */}
       {status === "loading" ? (
