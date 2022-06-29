@@ -6,8 +6,22 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Raleway", "Inter", ...defaultTheme.fontFamily.sans],
+        sans: ["Inter", ...defaultTheme.fontFamily.sans],
         num: ["Lato"],
+      },
+      colors: {
+        marine: {
+          50: "#f2f2ff",
+          100: "#e8eaff",
+          200: "#d4d7ff",
+          300: "#b1b5ff",
+          400: "#8586ff",
+          500: "#5b54fe",
+          600: "#4834f7",
+          700: "#371ee3",
+          800: "#2d19be",
+          900: "#27169c",
+        },
       },
     },
   },

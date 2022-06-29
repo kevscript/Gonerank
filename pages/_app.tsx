@@ -6,7 +6,7 @@ import Sidebar from "../components/Sidebar";
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <SessionProvider session={session}>
-      <div className="w-screen flex flex-row relative">
+      <div className="relative w-full flex flex-row">
         <Sidebar />
         <div className="flex-1 py-4 px-2">
           <Component {...pageProps} />
