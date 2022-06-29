@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import CalendarIcon from "./Icons/Calendar";
 import MatchIcon from "./Icons/Match";
@@ -16,31 +17,49 @@ import GonerankLogo from "./shared/GonerankLogo";
 import Spinner from "./shared/Spinner";
 import Switcher from "./shared/Switcher";
 
+export type NavigationType = "user" | "admin";
+
 export type NavRoute = {
   label: string;
   path: string;
   Icon?: React.ElementType;
+  type: NavigationType;
 };
 
-const userRoutes: NavRoute[] = [
-  { label: "Evaluation", path: "/", Icon: RatingIcon },
-  { label: "Joueurs", path: "/players", Icon: PlayerIcon },
-  { label: "Matchs", path: "/matches", Icon: MatchIcon },
+const navRoutes: NavRoute[] = [
+  { label: "Evaluation", path: "/", Icon: RatingIcon, type: "user" },
+  { label: "Joueurs", path: "/players", Icon: PlayerIcon, type: "user" },
+  { label: "Matchs", path: "/matches", Icon: MatchIcon, type: "user" },
+  { label: "Matchs", path: "/admin", Icon: MatchIcon, type: "admin" },
+  { label: "Joueurs", path: "/admin/players", Icon: PlayerIcon, type: "admin" },
+  { label: "Clubs", path: "/admin/clubs", Icon: ShieldIcon, type: "admin" },
+  {
+    label: "Saisons",
+    path: "/admin/seasons",
+    Icon: CalendarIcon,
+    type: "admin",
+  },
+  {
+    label: "Competitions",
+    path: "/admin/competitions",
+    Icon: TrophyIcon,
+    type: "admin",
+  },
 ];
-
-const adminRoutes: NavRoute[] = [
-  { label: "Matchs", path: "/admin/", Icon: MatchIcon },
-  { label: "Joueurs", path: "/admin/players", Icon: PlayerIcon },
-  { label: "Clubs", path: "/admin/clubs", Icon: ShieldIcon },
-  { label: "Saisons", path: "/admin/seasons", Icon: CalendarIcon },
-  { label: "Competitions", path: "/admin/competitions", Icon: TrophyIcon },
-];
-
-type NavigationType = "user" | "admin";
 
 const Sidebar = () => {
   const { data: session, status } = useSession();
+  const router = useRouter();
   const [navigationType, setNavigationType] = useState<NavigationType>("user");
+
+  const isPathActive = (path: string) => {
+    const currentPath = router.pathname;
+    if (path === "/" || path === "/admin/") {
+      return currentPath === path ? true : false;
+    } else {
+      return currentPath.startsWith(path) ? true : false;
+    }
+  };
 
   return (
     <div className="sticky top-0 w-16 h-screen bg-white  border-r-[2px] border-gray-100 pt-8 pb-8 lg:pb-0 flex flex-col items-center lg:w-1/5 lg:max-w-[256px]">
@@ -69,14 +88,14 @@ const Sidebar = () => {
 
       {/* Sidebar Navigation */}
       <ul className="w-full mt-8 flex-1 flex flex-col items-center">
-        {navigationType === "user" &&
-          userRoutes.map((navRoute) => (
-            <NavLink key={navRoute.label} {...navRoute} />
-          ))}
-
-        {navigationType === "admin" &&
-          adminRoutes.map((navRoute) => (
-            <NavLink key={navRoute.label} {...navRoute} />
+        {navRoutes
+          .filter((r) => r.type === navigationType)
+          .map((route) => (
+            <NavLink
+              key={route.label}
+              isActive={isPathActive(route.path)}
+              {...route}
+            />
           ))}
       </ul>
 
