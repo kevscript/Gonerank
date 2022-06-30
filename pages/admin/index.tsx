@@ -1,7 +1,7 @@
-import type { NextPage } from "next";
 import Head from "next/head";
+import { NextCustomPage } from "../_app";
 
-const AdminPage: NextPage = () => {
+const AdminPage: NextCustomPage = () => {
   return (
     <div>
       <Head>
@@ -13,5 +13,7 @@ const AdminPage: NextPage = () => {
     </div>
   );
 };
+
+AdminPage.isAdminPage = true;
 
 export default AdminPage;

@@ -6,7 +6,7 @@ import useOutsideClick from "../hooks/useOutsideClick";
 import SignOutIcon from "./Icons/SignOut";
 import UserIcon from "./Icons/User";
 
-type LoggedInNavigationProps = {
+export type LoggedInNavigationProps = {
   user: Session["user"];
 };
 
