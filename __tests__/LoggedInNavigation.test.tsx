@@ -1,28 +1,22 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import LoggedInNavigation, {
   LoggedInNavigationProps,
 } from "@/components/LoggedInNavigation";
+import { signOut } from "next-auth/react";
+
+jest.mock("next-auth/react", () => ({
+  ...jest.requireActual("next-auth/react"),
+  signOut: jest.fn(),
+}));
 
 describe("LoggedInNavigation", () => {
-  it("displays user name", () => {
-    const props: LoggedInNavigationProps = {
-      user: {
-        id: "1",
-        email: "daniel@gmail.com",
-        role: "USER",
-        image: null,
-        name: "Daniel",
-      },
-    };
-
-    render(<LoggedInNavigation {...props} />);
-
-    const name = screen.getByText(/daniel/i);
-    expect(name).toBeInTheDocument();
-  });
-
-  it("displays user image if it has one", () => {
+  it("displays user information", () => {
     const props: LoggedInNavigationProps = {
       user: {
         id: "1",
@@ -34,6 +28,9 @@ describe("LoggedInNavigation", () => {
     };
 
     render(<LoggedInNavigation {...props} />);
+
+    const name = screen.getByText("Daniel");
+    expect(name).toBeInTheDocument();
 
     const image = screen.getByAltText("user avatar");
     expect(image).toBeInTheDocument();
@@ -59,7 +56,7 @@ describe("LoggedInNavigation", () => {
     expect(icon).toBeInTheDocument();
   });
 
-  it("opens menu on click and shows logout text", async () => {
+  it("opens/closes the user menu", async () => {
     const props: LoggedInNavigationProps = {
       user: {
         id: "1",
@@ -72,15 +69,52 @@ describe("LoggedInNavigation", () => {
 
     render(<LoggedInNavigation {...props} />);
 
-    const logoutText = screen.queryByText(/déconnexion/i);
-    expect(logoutText).not.toBeInTheDocument();
+    const menuOpener = screen.getByRole("button", { name: /daniel/i });
+    expect(menuOpener).toBeInTheDocument();
 
-    const name = screen.getByText(/daniel/i);
-    userEvent.click(name);
+    userEvent.click(menuOpener);
+    await waitFor(() => {
+      const userMenu = screen.getByRole("menu");
+      expect(userMenu).toBeInTheDocument();
+    });
+
+    userEvent.click(menuOpener);
+    await waitForElementToBeRemoved(screen.queryByRole("menu"));
+  });
+
+  it("has a signout process", async () => {
+    const props: LoggedInNavigationProps = {
+      user: {
+        id: "1",
+        email: "daniel@gmail.com",
+        role: "USER",
+        image: null,
+        name: "Daniel",
+      },
+    };
+
+    render(<LoggedInNavigation {...props} />);
+
+    const signoutText = screen.queryByText(/déconnexion/i);
+    expect(signoutText).not.toBeInTheDocument();
+
+    const menuOpener = screen.getByRole("button", { name: /daniel/i });
+    userEvent.click(menuOpener);
 
     await waitFor(() => {
-      const logoutText = screen.getByText(/déconnexion/i);
-      expect(logoutText).toBeInTheDocument();
+      const signoutButton = screen.getByRole("menuitem", {
+        name: /déconnexion/i,
+      });
+      expect(signoutButton).toBeInTheDocument();
+    });
+
+    const signoutButton = screen.getByRole("menuitem", {
+      name: /déconnexion/i,
+    });
+    userEvent.click(signoutButton);
+
+    await waitFor(() => {
+      expect(signOut).toHaveBeenCalledTimes(1);
     });
   });
 });

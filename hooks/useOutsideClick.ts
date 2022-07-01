@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from "react";
+import React, { useEffect } from "react";
 
 type useOutsideClickArgs = {
-  ref: React.RefObject<HTMLDivElement>;
+  ref: React.RefObject<HTMLElement>;
   action: () => unknown;
 };
 

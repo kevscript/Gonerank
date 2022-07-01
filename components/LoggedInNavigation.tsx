@@ -18,35 +18,53 @@ const LoggedInNavigation = ({ user }: LoggedInNavigationProps) => {
   useOutsideClick({ ref: containerRef, action: () => setIsOpen(false) });
 
   return (
-    <div
-      ref={containerRef}
-      className="relative cursor-pointer lg:w-full lg:flex lg:border-t border-gray-200 lg:p-4 hover:bg-gray-100"
-      onClick={() => toggleMenu()}
-    >
-      <div className="relative w-8 h-8 rounded-full bg-purple-300 flex justify-center items-end overflow-hidden shadow-inner">
-        {user.image ? (
-          <Image
-            src={user.image}
-            alt="user avatar"
-            layout="fill"
-            objectFit="contain"
-          />
-        ) : (
-          <UserIcon className="w-6 h-6 fill-purple-600" />
-        )}
-      </div>
-      <div className="hidden lg:flex items-center ml-2">
-        <span>{user.name}</span>
-      </div>
+    <div ref={containerRef} className="relative cursor-pointer lg:w-full">
+      <button
+        onClick={() => toggleMenu()}
+        type="button"
+        id="usermenu-button"
+        aria-haspopup="true"
+        aria-controls="usermenu"
+        className="lg:w-full lg:p-4 flex items-center lg:hover:bg-gray-100 lg:border-t lg:border-gray-300"
+      >
+        <div className="relative w-8 h-8 rounded-full bg-marine-300 flex justify-center items-end overflow-hidden shadow-inner border-2 border-marine-600">
+          {user.image ? (
+            <Image
+              src={user.image}
+              alt="user avatar"
+              layout="fill"
+              objectFit="contain"
+            />
+          ) : (
+            <UserIcon className="w-6 h-6 fill-marine-600" />
+          )}
+        </div>
+        <div className="hidden lg:flex flex-col ml-2 items-start flex-1 overflow-hidden">
+          <span className="w-full text-left overflow-hidden text-sm text-ellipsis font-semibold">
+            {user.name}
+          </span>
+          <span className="w-full text-left overflow-hidden text-xs text-ellipsis">
+            {user.email}
+          </span>
+        </div>
+      </button>
 
       {isOpen && (
-        <div
-          className="absolute flex items-center justify-between top-0 lg:-top-10 left-9 lg:left-0 lg:w-full px-4 h-8 lg:h-10 border lg:border-t lg:border-x-0 lg:border-b-0 border-gray-200 rounded bg-white drop-shadow lg:drop-shadow-none lg:rounded-none hover:bg-gray-200"
-          onClick={() => signOut()}
+        <ul
+          className="bg-white absolute bottom-0 lg:bottom-16 left-9 lg:left-0 lg:w-full flex flex-col drop-shadow-sm rounded lg:rounded-none border border-gray-300 lg:border-y lg:border-x-0"
+          id="usermenu"
+          role="menu"
+          aria-labelledby="usermenu-button"
         >
-          <span>Déconnexion</span>
-          <SignOutIcon className="ml-2 w-4 h-4" />
-        </div>
+          <li
+            className="flex items-center justify-between px-4 h-8 lg:h-10 hover:bg-gray-200 border-b border-gray-200 last:border-b-0"
+            role="menuitem"
+            onClick={() => signOut()}
+          >
+            <span>Déconnexion</span>
+            <SignOutIcon className="ml-2 w-4 h-4" />
+          </li>
+        </ul>
       )}
     </div>
   );

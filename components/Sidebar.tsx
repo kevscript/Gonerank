@@ -118,7 +118,7 @@ const Sidebar = () => {
 
       {/* User Navigation */}
       {status === "loading" ? (
-        <div className="lg:w-full p-4">
+        <div className="lg:w-full px-4 lg:py-4">
           <Spinner />
         </div>
       ) : status === "authenticated" ? (
