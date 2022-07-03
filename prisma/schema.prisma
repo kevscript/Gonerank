@@ -59,6 +59,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  ratings       Rating[]
 }
 
 model VerificationToken {
@@ -69,3 +70,85 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model Player {
+  id          String        @id @default(cuid())
+  firstName   String
+  lastName    String
+  country     String        @default("France")
+  countryCode String        @default("FR")
+  birthDate   DateTime      @db.Date
+  active      Boolean       @default(true)
+  image   String        @default("")
+  matches     MatchPlayer[]
+  ratings     Rating[]
+  
+  @@unique([firstName, lastName])
+}
+
+model Club {
+  id String @id @default(cuid()) 
+  name String @unique
+  abbreviation String 
+  primary String
+  secondary String
+  matches Match[]
+}
+
+
+model Season {
+  id        String   @id @default(cuid())
+  startDate DateTime @unique @db.Date
+  matches   Match[]
+}
+
+model Competition {
+  id           String  @id @default(cuid())
+  name         String  @unique
+  abbreviation String  @unique
+  matches      Match[]
+}
+
+model Match {
+  id            String        @id @default(cuid())
+  date          DateTime      @db.Date
+  home          Boolean       @default(true)
+  scored        Int
+  conceeded     Int
+  active        Boolean       @default(false)
+  competitionId String
+  seasonId      String
+  opponentId    String
+  players       MatchPlayer[]
+  ratings       Rating[]
+
+  opponent    Club @relation(fields: [opponentId], references: [id])
+  competition Competition @relation(fields: [competitionId], references: [id])
+  season      Season      @relation(fields: [seasonId], references: [id])
+
+  @@unique([date, opponentId])
+}
+
+model MatchPlayer {
+  id       String @id @default(cuid())
+  playerId String
+  matchId  String
+
+  match  Match  @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, matchId])
+}
+
+model Rating {
+  id       String @id @default(cuid())
+  userId   String
+  matchId  String
+  playerId String
+  rating   Float
+
+  match  Match  @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@unique([playerId, matchId, userId])
+}
