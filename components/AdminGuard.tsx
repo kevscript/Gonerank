@@ -10,17 +10,12 @@ type AdminGuardProps = {
 const AdminGuard = ({ children }: AdminGuardProps) => {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const [isAdmin, setIsAdmin] = useState(false);
+  const isAdmin = session?.user.role === "ADMIN" ? true : false;
 
   useEffect(() => {
     if (status === "loading") return;
-    if (session?.user.role === "ADMIN") {
-      setIsAdmin(true);
-    } else {
-      setIsAdmin(false);
-    }
     if (!isAdmin) router.push("/");
-  }, [isAdmin, status, session, router]);
+  }, [isAdmin, status, router]);
 
   if (isAdmin) return <>{children}</>;
 
