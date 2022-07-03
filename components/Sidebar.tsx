@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import CalendarIcon from "./Icons/Calendar";
+import DashIcon from "./Icons/Dash";
 import MatchIcon from "./Icons/Match";
 import MoonIcon from "./Icons/Moon";
 import PlayerIcon from "./Icons/Player";
@@ -30,8 +31,9 @@ const navRoutes: NavRoute[] = [
   { label: "Evaluation", path: "/", Icon: RatingIcon, type: "user" },
   { label: "Joueurs", path: "/players", Icon: PlayerIcon, type: "user" },
   { label: "Matchs", path: "/matches", Icon: MatchIcon, type: "user" },
-  { label: "Matchs", path: "/admin", Icon: MatchIcon, type: "admin" },
+  { label: "Dashboard", path: "/admin", Icon: DashIcon, type: "admin" },
   { label: "Joueurs", path: "/admin/players", Icon: PlayerIcon, type: "admin" },
+  { label: "Matchs", path: "/admin/matches", Icon: MatchIcon, type: "admin" },
   { label: "Clubs", path: "/admin/clubs", Icon: ShieldIcon, type: "admin" },
   {
     label: "Saisons",
