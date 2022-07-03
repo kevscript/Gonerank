@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CalendarIcon from "./Icons/Calendar";
 import MatchIcon from "./Icons/Match";
 import MoonIcon from "./Icons/Moon";
@@ -54,15 +54,19 @@ const Sidebar = () => {
 
   const isPathActive = (path: string) => {
     const currentPath = router.pathname;
-    if (path === "/" || path === "/admin/") {
+    if (path === "/" || path === "/admin") {
       return currentPath === path ? true : false;
     } else {
       return currentPath.startsWith(path) ? true : false;
     }
   };
 
+  useEffect(() => {
+    session && console.log(session.user);
+  }, [session]);
+
   return (
-    <div className="sticky top-0 w-16 h-screen bg-white  border-r-[2px] border-gray-100 pt-8 pb-8 lg:pb-0 flex flex-col items-center lg:w-1/5 lg:max-w-[256px]">
+    <div className="sticky top-0 w-16 h-screen bg-white border-r-[2px] border-gray-100 pt-8 pb-8 lg:pb-0 flex flex-col items-center lg:w-1/4 lg:max-w-[256px]">
       {/* Sidebar Header */}
       <div className="w-full flex flex-col items-center lg:flex-row lg:justify-between lg:px-4">
         <Link href="/" passHref>
@@ -99,13 +103,13 @@ const Sidebar = () => {
           ))}
       </ul>
 
-      <div className="flex flex-col justify-center items-center lg:w-full lg:flex-row-reverse lg:justify-between lg:p-4">
+      <div className="flex flex-col justify-center items-center lg:w-full lg:flex-row-reverse lg:justify-start lg:p-4">
         {/* Darmode Selector */}
-        <MoonIcon className="w-4 h-4 my-4 lg:mt-0 lg:w-5 lg:h-5 cursor-pointer" />
+        <MoonIcon className="w-4 h-4 my-4 lg:my-0 cursor-pointer" />
 
         {/* Admin Routes Switch */}
         {session && session.user.role === "ADMIN" && (
-          <div className="px-4 my-4 lg:px-0 lg:my-0">
+          <div className="px-4 my-4 lg:px-0 lg:my-0 lg:mr-2">
             <Switcher
               checked={navigationType === "admin" ? true : false}
               handleToggle={() =>
