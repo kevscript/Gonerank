@@ -64,8 +64,17 @@ const Sidebar = () => {
   };
 
   useEffect(() => {
-    session && console.log(session.user);
-  }, [session]);
+    // if user is admin & path is admin
+    // show admin navigation, else user navigation
+    if (
+      session?.user.role === "ADMIN" &&
+      router.pathname.startsWith("/admin")
+    ) {
+      setNavigationType("admin");
+    } else {
+      setNavigationType("user");
+    }
+  }, [session, router]);
 
   return (
     <div className="sticky top-0 w-16 h-screen bg-white border-r-[2px] border-gray-100 pt-8 pb-8 lg:pb-0 flex flex-col items-center lg:w-1/4 lg:max-w-[256px]">
