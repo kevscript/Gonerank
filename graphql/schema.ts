@@ -9,6 +9,10 @@ const PrismaScalars = {
 
 export const schema = makeSchema({
   types: [PrismaScalars.types, ApiTypes],
+  nonNullDefaults: {
+    input: false,
+    output: true,
+  },
   outputs: {
     typegen: join(
       process.cwd(),

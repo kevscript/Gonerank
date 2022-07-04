@@ -1,6 +1,6 @@
 import { extendType, list, nonNull, stringArg } from "nexus";
 import { UserType } from "./User";
-import prisma from "../../../lib/prisma";
+import prisma from "@/lib/prisma";
 import {
   ApolloError,
   ForbiddenError,
@@ -29,7 +29,8 @@ export const UserQuery = extendType({
             throw new UserInputError(`Couldn't find user with id ${args.id}`);
           }
         } catch (err) {
-          throw new ApolloError("Error with user query");
+          const error = err as ApolloError;
+          throw error;
         }
       },
     });
@@ -48,7 +49,8 @@ export const UserQuery = extendType({
             throw new ApolloError("No user could be found");
           }
         } catch (err) {
-          throw new ApolloError("Error with users query");
+          const error = err as ApolloError;
+          throw error;
         }
       },
     });

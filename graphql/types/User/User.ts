@@ -20,6 +20,7 @@ export const UserType = objectType({
     t.field(User.image);
     t.field(User.accounts);
     t.field(User.sessions);
+    t.field(User.ratings);
   },
 });
 
