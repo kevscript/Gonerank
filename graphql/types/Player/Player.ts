@@ -10,6 +10,7 @@ export const PlayerType = objectType({
     t.field(Player.country);
     t.field(Player.countryCode);
     t.field(Player.birthDate);
+    t.field(Player.image);
     t.field(Player.active);
     t.field(Player.matches);
     t.field(Player.ratings);
