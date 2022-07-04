@@ -13,6 +13,7 @@
     "post-install": "husky install"
   },
   "dependencies": {
+    "@apollo/client": "^3.6.9",
     "@graphql-codegen/cli": "^2.6.2",
     "@graphql-codegen/typescript": "^2.5.1",
     "@graphql-codegen/typescript-operations": "^2.4.2",

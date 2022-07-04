@@ -44,6 +44,16 @@ type Competition {
   name: String!
 }
 
+input CreatePlayerInput {
+  active: Boolean
+  birthDate: DateTime!
+  country: String
+  countryCode: String
+  firstName: String!
+  image: String
+  lastName: String!
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
@@ -83,7 +93,10 @@ type MatchPlayer {
 }
 
 type Mutation {
+  createPlayer(data: CreatePlayerInput!): Player!
+  deletePlayer(id: String!): Player!
   deleteUser(id: String!): User!
+  updatePlayer(data: UpdatePlayerInput!, id: String!): Player!
   updateUser(id: String!, input: UpdateUserInput!): User!
 }
 
@@ -94,6 +107,7 @@ type Player {
   countryCode: String!
   firstName: String!
   id: ID!
+  image: String!
   lastName: String!
   matches: [MatchPlayer!]!
   ratings: [Rating!]!
@@ -142,6 +156,16 @@ type Session {
   sessionToken: String!
   user: User!
   userId: String!
+}
+
+input UpdatePlayerInput {
+  active: Boolean
+  birthDate: DateTime
+  country: String
+  countryCode: String
+  firstName: String
+  image: String
+  lastName: String
 }
 
 input UpdateUserInput {

@@ -4,6 +4,8 @@ import { SessionProvider } from "next-auth/react";
 import Sidebar from "@/components/Sidebar";
 import { NextPage } from "next";
 import AdminGuard from "@/components/AdminGuard";
+import { ApolloProvider } from "@apollo/client";
+import apolloClient from "@/lib/apollo";
 
 export type NextCustomPage<P = any, IP = P> = NextPage<P, IP> & {
   isAdminPage?: boolean;
@@ -14,18 +16,20 @@ function MyApp({ pageProps: { session, ...pageProps }, ...props }: AppProps) {
 
   return (
     <SessionProvider session={session}>
-      <div className="relative w-full flex flex-row">
-        <Sidebar />
-        <div className="flex-1 py-4 px-2">
-          {Component.isAdminPage ? (
-            <AdminGuard>
+      <ApolloProvider client={apolloClient}>
+        <div className="relative w-full min-h-screen flex flex-row">
+          <Sidebar />
+          <div className="flex-1 py-4 px-2">
+            {Component.isAdminPage ? (
+              <AdminGuard>
+                <Component {...pageProps} />
+              </AdminGuard>
+            ) : (
               <Component {...pageProps} />
-            </AdminGuard>
-          ) : (
-            <Component {...pageProps} />
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      </ApolloProvider>
     </SessionProvider>
   );
 }
