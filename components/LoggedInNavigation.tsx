@@ -27,7 +27,7 @@ const LoggedInNavigation = ({ user }: LoggedInNavigationProps) => {
         aria-controls="usermenu"
         className="lg:w-full lg:p-4 flex items-center lg:hover:bg-gray-100 lg:border-t lg:border-gray-300"
       >
-        <div className="relative w-8 h-8 rounded-full bg-marine-300 flex justify-center items-end overflow-hidden shadow-inner border-2 border-marine-600">
+        <div className="relative w-8 h-8 rounded-full bg-marine-300 flex justify-center items-end overflow-hidden shadow-inner">
           {user.image ? (
             <Image
               src={user.image}

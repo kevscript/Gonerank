@@ -17,9 +17,9 @@ function MyApp({ pageProps: { session, ...pageProps }, ...props }: AppProps) {
   return (
     <SessionProvider session={session}>
       <ApolloProvider client={apolloClient}>
-        <div className="relative w-full min-h-screen flex flex-row">
+        <div className="flex">
           <Sidebar />
-          <div className="flex-1 py-4 px-2">
+          <div className="min-h-screen w-full pl-16 lg:pl-64">
             {Component.isAdminPage ? (
               <AdminGuard>
                 <Component {...pageProps} />
