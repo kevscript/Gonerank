@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import { ApolloError, UserInputError } from "apollo-server-micro";
-import { extendType, list } from "nexus";
+import { extendType, list, nonNull, stringArg } from "nexus";
 import { MatchType } from "./Match";
 
 export const MatchQuery = extendType({
@@ -8,6 +8,7 @@ export const MatchQuery = extendType({
   definition: (t) => {
     t.field("match", {
       type: MatchType,
+      args: { id: nonNull(stringArg()) },
       resolve: async (_, args) => {
         try {
           const match = await prisma.match.findUnique({

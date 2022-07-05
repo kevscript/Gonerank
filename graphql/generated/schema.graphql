@@ -118,7 +118,7 @@ type Query {
   clubs: [Club!]!
   competition(id: String!): Competition!
   competitions: [Competition!]!
-  match: Match!
+  match(id: String!): Match!
   matches: [Match!]!
   player(id: String!): Player!
   players: [Player!]!
