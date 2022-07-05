@@ -87,7 +87,7 @@ const AdminPlayerCreatePage: NextCustomPage = () => {
                 minLength: { value: 2, message: "2 chars min" },
                 maxLength: { value: 3, message: "3 chars max" },
               }}
-              width="w-48 ml-4"
+              containerStyle="w-48 ml-4"
               value={getValues("countryCode")}
             />
           </div>

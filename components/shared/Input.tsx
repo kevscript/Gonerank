@@ -1,14 +1,15 @@
 import { FieldError, RegisterOptions, UseFormRegister } from "react-hook-form";
 
-type InputProps = {
+export type InputProps = {
   name: string;
   label: string;
   error: FieldError | undefined;
   options?: RegisterOptions;
   register: UseFormRegister<any>;
-  width?: string;
-  value: string;
+  containerStyle?: string;
+  value: string | number;
   isTouched?: boolean;
+  type?: string;
 };
 
 const Input = ({
@@ -17,15 +18,21 @@ const Input = ({
   error,
   register,
   options,
-  width,
+  containerStyle,
   value,
   isTouched,
+  type,
 }: InputProps) => {
   return (
-    <label className={`flex flex-col mt-4 min-w-0 ${width ? width : "w-full"}`}>
+    <label
+      className={`flex flex-col mt-4 min-w-0 ${
+        containerStyle ? containerStyle : "w-full"
+      }`}
+    >
       <span className="ml-2 text-sm">{label}</span>
       <input
         {...register(name, options)}
+        type={type ? type : "text"}
         className={`h-10 rounded bg-white border  px-2 text-base mt-1 ${
           error
             ? "border-red-400 outline-red-500"
