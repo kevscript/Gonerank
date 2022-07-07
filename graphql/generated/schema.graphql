@@ -44,6 +44,29 @@ type Competition {
   name: String!
 }
 
+input CreateClubInput {
+  abbreviation: String!
+  name: String!
+  primary: String!
+  secondary: String!
+}
+
+input CreateCompetitionInput {
+  abbreviation: String!
+  name: String!
+}
+
+input CreateMatchInput {
+  active: Boolean
+  competitionId: String!
+  conceeded: Int!
+  date: DateTime!
+  home: Boolean
+  opponentId: String!
+  scored: Int!
+  seasonId: String!
+}
+
 input CreatePlayerInput {
   active: Boolean
   birthDate: DateTime!
@@ -52,6 +75,15 @@ input CreatePlayerInput {
   firstName: String!
   image: String
   lastName: String!
+}
+
+input CreateSeasonInput {
+  startDate: DateTime!
+}
+
+input CreateUserRatingsInput {
+  playerId: String!
+  rating: Int!
 }
 
 """
@@ -93,10 +125,24 @@ type MatchPlayer {
 }
 
 type Mutation {
+  createClub(data: CreateClubInput!): Club!
+  createCompetition(data: CreateCompetitionInput!): Competition!
+  createMatch(data: CreateMatchInput!): Match!
   createPlayer(data: CreatePlayerInput!): Player!
+  createSeason(data: CreateSeasonInput!): Season!
+  createUserRatings(matchId: String!, ratings: [CreateUserRatingsInput!]!, userId: String!): [Rating!]!
+  deleteClub(id: String!): Club!
+  deleteCompetition(id: String!): Competition!
+  deleteMatch(id: String!): Match!
   deletePlayer(id: String!): Player!
+  deleteSeason(id: String!): Season!
   deleteUser(id: String!): User!
+  updateClub(data: UpdateClubInput!, id: String!): Club!
+  updateCompetition(data: UpdateCompetitionInput!, id: String!): Competition!
+  updateMatch(data: UpdateMatchInput!, id: String!): Match!
+  updateMatchPlayers(matchId: String!, playerIds: [String!]!): [MatchPlayer!]!
   updatePlayer(data: UpdatePlayerInput!, id: String!): Player!
+  updateSeason(data: UpdateSeasonInput!, id: String!): Season!
   updateUser(id: String!, input: UpdateUserInput!): User!
 }
 
@@ -119,9 +165,13 @@ type Query {
   competition(id: String!): Competition!
   competitions: [Competition!]!
   match(id: String!): Match!
+  matchPlayer(matchId: String!, playerId: String!): MatchPlayer!
+  matchPlayers(matchId: String, playerId: String): [MatchPlayer!]!
   matches: [Match!]!
   player(id: String!): Player!
   players: [Player!]!
+  rating(matchId: String!, playerId: String!, userId: String!): Rating!
+  ratings(matchId: String, playerId: String, userId: String): [Rating!]!
   season(id: String!): Season!
   seasons: [Season!]!
   user(id: String!): User!
@@ -158,6 +208,29 @@ type Session {
   userId: String!
 }
 
+input UpdateClubInput {
+  abbreviation: String
+  name: String
+  primary: String
+  secondary: String
+}
+
+input UpdateCompetitionInput {
+  abbreviation: String
+  name: String
+}
+
+input UpdateMatchInput {
+  active: Boolean
+  competitionId: String
+  conceeded: Int
+  date: DateTime
+  home: Boolean
+  opponentId: String
+  scored: Int
+  seasonId: String
+}
+
 input UpdatePlayerInput {
   active: Boolean
   birthDate: DateTime
@@ -166,6 +239,10 @@ input UpdatePlayerInput {
   firstName: String
   image: String
   lastName: String
+}
+
+input UpdateSeasonInput {
+  startDate: DateTime!
 }
 
 input UpdateUserInput {
