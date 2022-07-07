@@ -4,6 +4,8 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Input from "@/components/shared/Input";
+import { useCreatePlayerMutation } from "graphql/generated/queryTypes";
+import { useRouter } from "next/router";
 
 type CreatePlayerFormInput = {
   firstName: string;
@@ -21,12 +23,27 @@ const AdminPlayerCreatePage: NextCustomPage = () => {
     handleSubmit,
     control,
     getValues,
-    getFieldState,
     formState: { errors, isDirty, isValid },
   } = useForm<CreatePlayerFormInput>({ mode: "all" });
-  const onSubmit: SubmitHandler<CreatePlayerFormInput> = (data) => {
-    console.log(data);
+
+  const router = useRouter();
+
+  const handlePlayerUpdate: SubmitHandler<CreatePlayerFormInput> = (data) => {
+    createPlayer({ variables: { data } });
   };
+
+  const [createPlayer] = useCreatePlayerMutation({
+    onCompleted: async () => {
+      try {
+        await fetch(
+          `http://localhost:3000/api/revalidate?url=${encodeURIComponent("/")}`
+        );
+        router.push("/admin/players");
+      } catch (err) {
+        console.log("Error Revalidating from Mutation");
+      }
+    },
+  });
 
   return (
     <>
@@ -38,7 +55,7 @@ const AdminPlayerCreatePage: NextCustomPage = () => {
       </div>
       <div className="p-4">
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(handlePlayerUpdate)}
           className="flex flex-col w-full"
         >
           <Input

@@ -1,17 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getToken } from "next-auth/jwt";
+
+const secret = process.env.NEXTAUTH_SECRET;
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // Check for secret to confirm this is a valid request
-  if (req.query.secret !== process.env.REVALIDATION_TOKEN) {
-    return res.status(401).json({ message: "Invalid token" });
+  const user = await getToken({ req, secret });
+  if (!user || user.role !== "ADMIN") {
+    return res.status(401).json({ message: "Revalidation not authorized" });
   }
-
   try {
-    // this should be the actual path not a rewritten path
-    // e.g. for "/blog/[slug]" this should be "/blog/post-1"
     await res.unstable_revalidate(req.query.url as string);
     return res.json({ revalidated: true });
   } catch (err) {

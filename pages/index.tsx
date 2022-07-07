@@ -1,12 +1,32 @@
-import type { NextPage } from "next";
 import Head from "next/head";
 import TwitterIcon from "../components/Icons/Twitter";
 import ClubIcon from "../components/Icons/Club";
 import LyonIcon from "../components/Icons/Lyon";
 import matchPlayers from "../mocks/matchPlayers";
 import { club } from "../mocks/clubs";
+import { PrismaClient } from "@prisma/client";
+import { NextCustomPage } from "./_app";
 
-const HomePage: NextPage = () => {
+type HomePageProps = {
+  players: any;
+  matches: any;
+  clubs: any;
+  seasons: any;
+  competitions: any;
+};
+
+const HomePage: NextCustomPage = ({
+  players,
+  matches,
+  clubs,
+  seasons,
+  competitions,
+}: HomePageProps) => {
+  console.log("players", players);
+  console.log("matches", matches);
+  console.log("clubs", clubs);
+  console.log("seasons", seasons);
+  console.log("competitions", competitions);
   return (
     <div>
       <Head>
@@ -84,3 +104,33 @@ const HomePage: NextPage = () => {
 };
 
 export default HomePage;
+
+export async function getStaticProps() {
+  console.log("NextJS running getStaticProps of HomePage at path: '/'");
+
+  const prisma = new PrismaClient();
+
+  const getPlayers = await prisma.player.findMany();
+  const getMatches = await prisma.match.findMany();
+  const getClubs = await prisma.club.findMany();
+  const getCompetitions = await prisma.competition.findMany();
+  const getSeasons = await prisma.season.findMany();
+
+  const [players, matches, clubs, competitions, seasons] = await Promise.all([
+    getPlayers,
+    getMatches,
+    getClubs,
+    getCompetitions,
+    getSeasons,
+  ]);
+
+  return {
+    props: {
+      players: JSON.parse(JSON.stringify(players)),
+      matches: JSON.parse(JSON.stringify(matches)),
+      clubs: JSON.parse(JSON.stringify(clubs)),
+      competitions: JSON.parse(JSON.stringify(competitions)),
+      seasons: JSON.parse(JSON.stringify(seasons)),
+    },
+  };
+}
