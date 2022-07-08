@@ -8,6 +8,7 @@ export const CreateMatchInput = inputObjectType({
     t.nonNull.int("scored");
     t.nonNull.int("conceeded");
     t.boolean("active");
+    t.boolean("archived");
     t.nonNull.string("opponentId");
     t.nonNull.string("seasonId");
     t.nonNull.string("competitionId");
@@ -22,6 +23,7 @@ export const UpdateMatchInput = inputObjectType({
     t.int("scored");
     t.int("conceeded");
     t.boolean("active");
+    t.boolean("archived");
     t.string("opponentId");
     t.string("seasonId");
     t.string("competitionId");

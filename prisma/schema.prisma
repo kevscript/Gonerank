@@ -115,6 +115,7 @@ model Match {
   scored        Int
   conceeded     Int
   active        Boolean       @default(false)
+  archived      Boolean       @default(false)
   competitionId String
   seasonId      String
   opponentId    String

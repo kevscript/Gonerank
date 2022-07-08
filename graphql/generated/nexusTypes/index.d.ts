@@ -3497,6 +3497,58 @@ export interface Match {
     resolve: NexusCore.FieldResolver<'Match', 'active'>
   }
   /**
+    * Generated Nexus `t.field` configuration based on your Prisma schema's model-field `Match.archived`.
+    *
+    * ### ️⚠️ You have not writen documentation for model Match
+    *
+    * Replace this default advisory JSDoc with your own documentation about model Match
+    * by documenting it in your Prisma schema. For example:
+    * ```prisma
+    * model Match {
+    *   /// Lorem ipsum dolor sit amet.
+    *   archived  Boolean
+    * }
+    * ```
+    *
+    * Learn more about documentation comments in Prisma schema files [here](https://www.prisma.io/docs/concepts/components/prisma-schema#comments).
+    *
+    * @example
+    *
+    * import { objectType } from 'nexus'
+    * import { Match } from 'nexus-prisma'
+    *
+    * objectType({
+    *   name: Match.$name
+    *   description: Match.$description
+    *   definition(t) {
+    *     t.field(Match.archived)
+    *   }
+    * })
+    */
+  archived: {
+    /**
+     * The name of this field.
+     */
+    name: 'archived'
+  
+    /**
+     * The type of this field.
+     */
+    type: 'Boolean' extends NexusCore.GetGen<'allNamedTypes', string>
+    ? NexusCore.NexusNonNullDef<'Boolean'>
+    : 'Warning/Error: The type \'Boolean\' is not amoung the union of GetGen<\'allNamedTypes\', string>. This means that either: 1) You need to run nexus typegen reflection. 2) You need to add the type \'Boolean\' to your GraphQL API.'
+  
+    /**
+     * The documentation of this field.
+     */
+    description: undefined
+  
+    /**
+     * The resolver of this field
+     */
+    resolve: NexusCore.FieldResolver<'Match', 'archived'>
+  }
+  /**
     * Generated Nexus `t.field` configuration based on your Prisma schema's model-field `Match.competitionId`.
     *
     * ### ️⚠️ You have not writen documentation for model Match

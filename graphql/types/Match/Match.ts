@@ -10,6 +10,7 @@ export const MatchType = objectType({
     t.field(Match.scored);
     t.field(Match.conceeded);
     t.field(Match.active);
+    t.field(Match.archived);
     t.field(Match.competitionId);
     t.field(Match.seasonId);
     t.field(Match.opponentId);

@@ -71,6 +71,7 @@ export const MatchMutation = extendType({
             scored,
             seasonId,
             active,
+            archived,
             home,
           } = args.data || {};
 
@@ -84,6 +85,7 @@ export const MatchMutation = extendType({
               scored: scored ? scored : undefined,
               seasonId: seasonId ? seasonId : undefined,
               active: active ? active : undefined,
+              archived: archived ? archived : undefined,
               home: home ? home : undefined,
             },
           });

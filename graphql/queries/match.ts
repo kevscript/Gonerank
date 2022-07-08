@@ -9,6 +9,7 @@ export const CREATE_MATCH = gql`
       scored
       conceeded
       active
+      archived
       competitionId
       seasonId
       opponentId
@@ -25,6 +26,7 @@ export const UPDATE_MATCH = gql`
       scored
       conceeded
       active
+      archived
       competitionId
       seasonId
       opponentId

@@ -70,6 +70,7 @@ export type CreateCompetitionInput = {
 
 export type CreateMatchInput = {
   active?: InputMaybe<Scalars['Boolean']>;
+  archived?: InputMaybe<Scalars['Boolean']>;
   competitionId: Scalars['String'];
   conceeded: Scalars['Int'];
   date: Scalars['DateTime'];
@@ -101,6 +102,7 @@ export type CreateUserRatingsInput = {
 export type Match = {
   __typename?: 'Match';
   active: Scalars['Boolean'];
+  archived: Scalars['Boolean'];
   competition: Competition;
   competitionId: Scalars['String'];
   conceeded: Scalars['Int'];
@@ -389,6 +391,7 @@ export type UpdateCompetitionInput = {
 
 export type UpdateMatchInput = {
   active?: InputMaybe<Scalars['Boolean']>;
+  archived?: InputMaybe<Scalars['Boolean']>;
   competitionId?: InputMaybe<Scalars['String']>;
   conceeded?: InputMaybe<Scalars['Int']>;
   date?: InputMaybe<Scalars['DateTime']>;
@@ -473,7 +476,7 @@ export type CreateMatchMutationVariables = Exact<{
 }>;
 
 
-export type CreateMatchMutation = { __typename?: 'Mutation', createMatch: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, competitionId: string, seasonId: string, opponentId: string } };
+export type CreateMatchMutation = { __typename?: 'Mutation', createMatch: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string } };
 
 export type UpdateMatchMutationVariables = Exact<{
   id: Scalars['String'];
@@ -481,7 +484,7 @@ export type UpdateMatchMutationVariables = Exact<{
 }>;
 
 
-export type UpdateMatchMutation = { __typename?: 'Mutation', updateMatch: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, competitionId: string, seasonId: string, opponentId: string } };
+export type UpdateMatchMutation = { __typename?: 'Mutation', updateMatch: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string } };
 
 export type GetAllPlayersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -674,6 +677,7 @@ export const CreateMatchDocument = gql`
     scored
     conceeded
     active
+    archived
     competitionId
     seasonId
     opponentId
@@ -715,6 +719,7 @@ export const UpdateMatchDocument = gql`
     scored
     conceeded
     active
+    archived
     competitionId
     seasonId
     opponentId

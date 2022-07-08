@@ -58,6 +58,7 @@ input CreateCompetitionInput {
 
 input CreateMatchInput {
   active: Boolean
+  archived: Boolean
   competitionId: String!
   conceeded: Int!
   date: DateTime!
@@ -101,6 +102,7 @@ scalar Json @specifiedBy(url: "http://www.ecma-international.org/publications/fi
 
 type Match {
   active: Boolean!
+  archived: Boolean!
   competition: Competition!
   competitionId: String!
   conceeded: Int!
@@ -222,6 +224,7 @@ input UpdateCompetitionInput {
 
 input UpdateMatchInput {
   active: Boolean
+  archived: Boolean
   competitionId: String
   conceeded: Int
   date: DateTime
