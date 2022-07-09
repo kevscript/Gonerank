@@ -161,6 +161,16 @@ type Player {
   ratings: [Rating!]!
 }
 
+input PlayersWhereInput {
+  active: Boolean
+  birthDate: DateTime
+  country: String
+  countryCode: String
+  firstName: String
+  image: String
+  lastName: String
+}
+
 type Query {
   club(id: String!): Club!
   clubs: [Club!]!
@@ -171,7 +181,7 @@ type Query {
   matchPlayers(matchId: String, playerId: String): [MatchPlayer!]!
   matches: [Match!]!
   player(id: String!): Player!
-  players: [Player!]!
+  players(where: PlayersWhereInput): [Player!]!
   rating(matchId: String!, playerId: String!, userId: String!): Rating!
   ratings(matchId: String, playerId: String, userId: String): [Rating!]!
   season(id: String!): Season!

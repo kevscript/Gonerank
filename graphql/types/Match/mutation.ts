@@ -35,8 +35,8 @@ export const MatchMutation = extendType({
               opponentId,
               competitionId,
               seasonId,
-              active: active ? active : undefined,
-              home: home ? home : undefined,
+              active: typeof active === "boolean" ? active : undefined,
+              home: typeof home === "boolean" ? home : undefined,
             },
           });
 
@@ -80,13 +80,13 @@ export const MatchMutation = extendType({
             data: {
               date: date ? date : undefined,
               competitionId: competitionId ? competitionId : undefined,
-              conceeded: conceeded ? conceeded : undefined,
+              conceeded: typeof conceeded === "number" ? conceeded : undefined,
               opponentId: opponentId ? opponentId : undefined,
-              scored: scored ? scored : undefined,
+              scored: typeof scored === "number" ? scored : undefined,
               seasonId: seasonId ? seasonId : undefined,
-              active: active ? active : undefined,
-              archived: archived ? archived : undefined,
-              home: home ? home : undefined,
+              active: typeof active === "boolean" ? active : undefined,
+              archived: typeof archived === "boolean" ? archived : undefined,
+              home: typeof home === "boolean" ? home : undefined,
             },
           });
 

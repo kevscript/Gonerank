@@ -268,6 +268,16 @@ export type Player = {
   ratings: Array<Rating>;
 };
 
+export type PlayersWhereInput = {
+  active?: InputMaybe<Scalars['Boolean']>;
+  birthDate?: InputMaybe<Scalars['DateTime']>;
+  country?: InputMaybe<Scalars['String']>;
+  countryCode?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  image?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   club: Club;
@@ -318,6 +328,11 @@ export type QueryMatchPlayersArgs = {
 
 export type QueryPlayerArgs = {
   id: Scalars['String'];
+};
+
+
+export type QueryPlayersArgs = {
+  where?: InputMaybe<PlayersWhereInput>;
 };
 
 
@@ -486,10 +501,12 @@ export type UpdateMatchMutationVariables = Exact<{
 
 export type UpdateMatchMutation = { __typename?: 'Mutation', updateMatch: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string } };
 
-export type GetAllPlayersQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetPlayersQueryVariables = Exact<{
+  where?: InputMaybe<PlayersWhereInput>;
+}>;
 
 
-export type GetAllPlayersQuery = { __typename?: 'Query', players: Array<{ __typename?: 'Player', id: string, firstName: string, lastName: string, birthDate: any, country: string, countryCode: string, image: string, active: boolean }> };
+export type GetPlayersQuery = { __typename?: 'Query', players: Array<{ __typename?: 'Player', id: string, firstName: string, lastName: string, birthDate: any, country: string, countryCode: string, image: string, active: boolean }> };
 
 export type UpdatePlayerMutationVariables = Exact<{
   id: Scalars['String'];
@@ -505,6 +522,13 @@ export type CreatePlayerMutationVariables = Exact<{
 
 
 export type CreatePlayerMutation = { __typename?: 'Mutation', createPlayer: { __typename?: 'Player', id: string, firstName: string, lastName: string, birthDate: any, country: string, countryCode: string, image: string, active: boolean } };
+
+export type DeletePlayerMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeletePlayerMutation = { __typename?: 'Mutation', deletePlayer: { __typename?: 'Player', id: string, firstName: string, lastName: string, birthDate: any, country: string, countryCode: string, image: string, active: boolean } };
 
 export type CreateSeasonMutationVariables = Exact<{
   data: CreateSeasonInput;
@@ -753,9 +777,9 @@ export function useUpdateMatchMutation(baseOptions?: Apollo.MutationHookOptions<
 export type UpdateMatchMutationHookResult = ReturnType<typeof useUpdateMatchMutation>;
 export type UpdateMatchMutationResult = Apollo.MutationResult<UpdateMatchMutation>;
 export type UpdateMatchMutationOptions = Apollo.BaseMutationOptions<UpdateMatchMutation, UpdateMatchMutationVariables>;
-export const GetAllPlayersDocument = gql`
-    query GetAllPlayers {
-  players {
+export const GetPlayersDocument = gql`
+    query GetPlayers($where: PlayersWhereInput) {
+  players(where: $where) {
     id
     firstName
     lastName
@@ -769,31 +793,32 @@ export const GetAllPlayersDocument = gql`
     `;
 
 /**
- * __useGetAllPlayersQuery__
+ * __useGetPlayersQuery__
  *
- * To run a query within a React component, call `useGetAllPlayersQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllPlayersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetPlayersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPlayersQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetAllPlayersQuery({
+ * const { data, loading, error } = useGetPlayersQuery({
  *   variables: {
+ *      where: // value for 'where'
  *   },
  * });
  */
-export function useGetAllPlayersQuery(baseOptions?: Apollo.QueryHookOptions<GetAllPlayersQuery, GetAllPlayersQueryVariables>) {
+export function useGetPlayersQuery(baseOptions?: Apollo.QueryHookOptions<GetPlayersQuery, GetPlayersQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllPlayersQuery, GetAllPlayersQueryVariables>(GetAllPlayersDocument, options);
+        return Apollo.useQuery<GetPlayersQuery, GetPlayersQueryVariables>(GetPlayersDocument, options);
       }
-export function useGetAllPlayersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllPlayersQuery, GetAllPlayersQueryVariables>) {
+export function useGetPlayersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPlayersQuery, GetPlayersQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllPlayersQuery, GetAllPlayersQueryVariables>(GetAllPlayersDocument, options);
+          return Apollo.useLazyQuery<GetPlayersQuery, GetPlayersQueryVariables>(GetPlayersDocument, options);
         }
-export type GetAllPlayersQueryHookResult = ReturnType<typeof useGetAllPlayersQuery>;
-export type GetAllPlayersLazyQueryHookResult = ReturnType<typeof useGetAllPlayersLazyQuery>;
-export type GetAllPlayersQueryResult = Apollo.QueryResult<GetAllPlayersQuery, GetAllPlayersQueryVariables>;
+export type GetPlayersQueryHookResult = ReturnType<typeof useGetPlayersQuery>;
+export type GetPlayersLazyQueryHookResult = ReturnType<typeof useGetPlayersLazyQuery>;
+export type GetPlayersQueryResult = Apollo.QueryResult<GetPlayersQuery, GetPlayersQueryVariables>;
 export const UpdatePlayerDocument = gql`
     mutation UpdatePlayer($id: String!, $data: UpdatePlayerInput!) {
   updatePlayer(id: $id, data: $data) {
@@ -875,6 +900,46 @@ export function useCreatePlayerMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreatePlayerMutationHookResult = ReturnType<typeof useCreatePlayerMutation>;
 export type CreatePlayerMutationResult = Apollo.MutationResult<CreatePlayerMutation>;
 export type CreatePlayerMutationOptions = Apollo.BaseMutationOptions<CreatePlayerMutation, CreatePlayerMutationVariables>;
+export const DeletePlayerDocument = gql`
+    mutation DeletePlayer($id: String!) {
+  deletePlayer(id: $id) {
+    id
+    firstName
+    lastName
+    birthDate
+    country
+    countryCode
+    image
+    active
+  }
+}
+    `;
+export type DeletePlayerMutationFn = Apollo.MutationFunction<DeletePlayerMutation, DeletePlayerMutationVariables>;
+
+/**
+ * __useDeletePlayerMutation__
+ *
+ * To run a mutation, you first call `useDeletePlayerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePlayerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePlayerMutation, { data, loading, error }] = useDeletePlayerMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeletePlayerMutation(baseOptions?: Apollo.MutationHookOptions<DeletePlayerMutation, DeletePlayerMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeletePlayerMutation, DeletePlayerMutationVariables>(DeletePlayerDocument, options);
+      }
+export type DeletePlayerMutationHookResult = ReturnType<typeof useDeletePlayerMutation>;
+export type DeletePlayerMutationResult = Apollo.MutationResult<DeletePlayerMutation>;
+export type DeletePlayerMutationOptions = Apollo.BaseMutationOptions<DeletePlayerMutation, DeletePlayerMutationVariables>;
 export const CreateSeasonDocument = gql`
     mutation CreateSeason($data: CreateSeasonInput!) {
   createSeason(data: $data) {

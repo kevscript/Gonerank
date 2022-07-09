@@ -25,3 +25,16 @@ export const UpdatePlayerInput = inputObjectType({
     t.boolean("active");
   },
 });
+
+export const PlayersWhereInput = inputObjectType({
+  name: "PlayersWhereInput",
+  definition: (t) => {
+    t.string("firstName");
+    t.string("lastName");
+    t.dateTime("birthDate");
+    t.string("image");
+    t.string("country");
+    t.string("countryCode");
+    t.boolean("active");
+  },
+});

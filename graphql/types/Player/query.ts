@@ -1,7 +1,8 @@
 import prisma from "@/lib/prisma";
 import { ApolloError, UserInputError } from "apollo-server-micro";
-import { extendType, list, nonNull, stringArg } from "nexus";
+import { arg, extendType, list, nonNull, stringArg } from "nexus";
 import { PlayerType } from "./Player";
+import { PlayersWhereInput } from "./types";
 
 export const PlayerQuery = extendType({
   type: "Query",
@@ -29,9 +30,35 @@ export const PlayerQuery = extendType({
     });
     t.field("players", {
       type: list(PlayerType),
-      resolve: async () => {
+      args: { where: arg({ type: PlayersWhereInput }) },
+      resolve: async (_, args) => {
+        const {
+          active,
+          birthDate,
+          country,
+          countryCode,
+          firstName,
+          image,
+          lastName,
+        } = args.where || {};
         try {
-          const players = await prisma.player.findMany();
+          let players;
+          if (!args.where) {
+            players = await prisma.player.findMany();
+          } else {
+            players = await prisma.player.findMany({
+              where: {
+                firstName: firstName ? firstName : undefined,
+                lastName: lastName ? lastName : undefined,
+                active: typeof active === "boolean" ? active : undefined,
+                birthDate: birthDate ? birthDate : undefined,
+                country: country ? country : undefined,
+                countryCode: countryCode ? countryCode : undefined,
+                image: image ? image : undefined,
+              },
+            });
+          }
+
           if (players) {
             return players;
           } else {
