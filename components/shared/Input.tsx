@@ -25,7 +25,7 @@ const Input = ({
 }: InputProps) => {
   return (
     <label
-      className={`flex flex-col mt-4 min-w-0 ${
+      className={`flex flex-col min-w-0 ${
         containerStyle ? containerStyle : "w-full"
       }`}
     >
