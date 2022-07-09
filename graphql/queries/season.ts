@@ -1,5 +1,23 @@
 import { gql } from "@apollo/client";
 
+export const GET_SEASON = gql`
+  query GetSeason($id: String!) {
+    season(id: $id) {
+      id
+      startDate
+    }
+  }
+`;
+
+export const GET_SEASONS = gql`
+  query GetSeasons($where: SeasonsWhereInput) {
+    seasons(where: $where) {
+      id
+      startDate
+    }
+  }
+`;
+
 export const CREATE_SEASON = gql`
   mutation CreateSeason($data: CreateSeasonInput!) {
     createSeason(data: $data) {

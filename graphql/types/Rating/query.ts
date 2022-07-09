@@ -2,6 +2,7 @@ import { ApolloError, ForbiddenError } from "apollo-server-micro";
 import { arg, extendType, list, nonNull, stringArg } from "nexus";
 import { RatingType } from "./Rating";
 import prisma from "@/lib/prisma";
+import { RatingsWhereInput } from "./types";
 
 export const RatingQuery = extendType({
   type: "Query",
@@ -43,18 +44,15 @@ export const RatingQuery = extendType({
     t.field("ratings", {
       type: list(RatingType),
       args: {
-        userId: stringArg(),
-        matchId: stringArg(),
-        playerId: stringArg(),
+        where: arg({ type: RatingsWhereInput }),
       },
       resolve: async (_, args, ctx) => {
         try {
-          const { userId, matchId, playerId } = args || {};
-
           let ratings;
-          if (!userId && !matchId && !playerId) {
+          if (!args.where) {
             ratings = await prisma.rating.findMany();
           } else {
+            const { userId, matchId, playerId } = args.where;
             ratings = await prisma.rating.findMany({
               where: {
                 userId: userId ? userId : undefined,

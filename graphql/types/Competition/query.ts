@@ -1,7 +1,8 @@
 import { ApolloError, UserInputError } from "apollo-server-micro";
-import { extendType, list, nonNull, stringArg } from "nexus";
+import { arg, extendType, list, nonNull, stringArg } from "nexus";
 import { CompetitionType } from "./Competition";
 import prisma from "@/lib/prisma";
+import { CompetitionsWhereInput } from "./types";
 
 export const CompetitionQuery = extendType({
   type: "Query",
@@ -29,9 +30,22 @@ export const CompetitionQuery = extendType({
     });
     t.field("competitions", {
       type: list(CompetitionType),
-      resolve: async () => {
+      args: { where: arg({ type: CompetitionsWhereInput }) },
+      resolve: async (_, args) => {
         try {
-          const competitions = await prisma.competition.findMany();
+          let competitions;
+
+          if (!args.where) {
+            competitions = await prisma.competition.findMany();
+          } else {
+            const { abbreviation, name } = args.where;
+            competitions = await prisma.competition.findMany({
+              where: {
+                name: name ? name : undefined,
+                abbreviation: abbreviation ? abbreviation : undefined,
+              },
+            });
+          }
 
           if (competitions) {
             return competitions;

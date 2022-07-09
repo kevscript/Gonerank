@@ -29,3 +29,18 @@ export const UpdateMatchInput = inputObjectType({
     t.string("competitionId");
   },
 });
+
+export const MatchesWhereInput = inputObjectType({
+  name: "MatchesWhereInput",
+  definition: (t) => {
+    t.dateTime("date");
+    t.boolean("home");
+    t.int("scored");
+    t.int("conceeded");
+    t.boolean("active");
+    t.boolean("archived");
+    t.string("opponentId");
+    t.string("seasonId");
+    t.string("competitionId");
+  },
+});

@@ -1,7 +1,8 @@
 import prisma from "@/lib/prisma";
 import { ApolloError, UserInputError } from "apollo-server-micro";
-import { extendType, list, nonNull, stringArg } from "nexus";
+import { arg, extendType, list, nonNull, stringArg } from "nexus";
 import { MatchType } from "./Match";
+import { MatchesWhereInput } from "./types";
 
 export const MatchQuery = extendType({
   type: "Query",
@@ -28,9 +29,40 @@ export const MatchQuery = extendType({
     });
     t.field("matches", {
       type: list(MatchType),
-      resolve: async () => {
+      args: { where: arg({ type: MatchesWhereInput }) },
+      resolve: async (_, args) => {
         try {
-          const matches = await prisma.match.findMany();
+          let matches;
+          if (!args.where) {
+            matches = await prisma.match.findMany();
+          } else {
+            const {
+              date,
+              competitionId,
+              conceeded,
+              opponentId,
+              scored,
+              seasonId,
+              active,
+              archived,
+              home,
+            } = args.where;
+            matches = await prisma.match.findMany({
+              where: {
+                date: date ? date : undefined,
+                competitionId: competitionId ? competitionId : undefined,
+                conceeded:
+                  typeof conceeded === "number" ? conceeded : undefined,
+                opponentId: opponentId ? opponentId : undefined,
+                scored: typeof scored === "number" ? scored : undefined,
+                seasonId: seasonId ? seasonId : undefined,
+                active: typeof active === "boolean" ? active : undefined,
+                archived: typeof archived === "boolean" ? archived : undefined,
+                home: typeof home === "boolean" ? home : undefined,
+              },
+            });
+          }
+
           if (matches) {
             return matches;
           } else {

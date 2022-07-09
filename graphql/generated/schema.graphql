@@ -37,11 +37,23 @@ type Club {
   secondary: String!
 }
 
+input ClubsWhereInput {
+  abbreviation: String
+  name: String
+  primary: String
+  secondary: String
+}
+
 type Competition {
   abbreviation: String!
   id: ID!
   matches: [Match!]!
   name: String!
+}
+
+input CompetitionsWhereInput {
+  abbreviation: String
+  name: String
 }
 
 input CreateClubInput {
@@ -126,6 +138,23 @@ type MatchPlayer {
   playerId: String!
 }
 
+input MatchPlayersWhereInput {
+  matchId: String
+  playerId: String
+}
+
+input MatchesWhereInput {
+  active: Boolean
+  archived: Boolean
+  competitionId: String
+  conceeded: Int
+  date: DateTime
+  home: Boolean
+  opponentId: String
+  scored: Int
+  seasonId: String
+}
+
 type Mutation {
   createClub(data: CreateClubInput!): Club!
   createCompetition(data: CreateCompetitionInput!): Competition!
@@ -173,19 +202,19 @@ input PlayersWhereInput {
 
 type Query {
   club(id: String!): Club!
-  clubs: [Club!]!
+  clubs(where: ClubsWhereInput): [Club!]!
   competition(id: String!): Competition!
-  competitions: [Competition!]!
+  competitions(where: CompetitionsWhereInput): [Competition!]!
   match(id: String!): Match!
   matchPlayer(matchId: String!, playerId: String!): MatchPlayer!
-  matchPlayers(matchId: String, playerId: String): [MatchPlayer!]!
-  matches: [Match!]!
+  matchPlayers(where: MatchPlayersWhereInput): [MatchPlayer!]!
+  matches(where: MatchesWhereInput): [Match!]!
   player(id: String!): Player!
   players(where: PlayersWhereInput): [Player!]!
   rating(matchId: String!, playerId: String!, userId: String!): Rating!
-  ratings(matchId: String, playerId: String, userId: String): [Rating!]!
+  ratings(where: RatingsWhereInput): [Rating!]!
   season(id: String!): Season!
-  seasons: [Season!]!
+  seasons(where: SeasonsWhereInput): [Season!]!
   user(id: String!): User!
   users: [User!]!
 }
@@ -201,6 +230,12 @@ type Rating {
   userId: String!
 }
 
+input RatingsWhereInput {
+  matchId: String
+  playerId: String
+  userId: String
+}
+
 enum Role {
   ADMIN
   USER
@@ -209,6 +244,10 @@ enum Role {
 type Season {
   id: ID!
   matches: [Match!]!
+  startDate: DateTime!
+}
+
+input SeasonsWhereInput {
   startDate: DateTime!
 }
 

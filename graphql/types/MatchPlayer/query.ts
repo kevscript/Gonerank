@@ -1,7 +1,8 @@
-import { extendType, list, nonNull, stringArg } from "nexus";
+import { arg, extendType, list, nonNull, stringArg } from "nexus";
 import { MatchPlayerType } from "./MatchPlayer";
 import prisma from "@/lib/prisma";
 import { UserInputError, ApolloError } from "apollo-server-micro";
+import { MatchPlayersWhereInput } from "./types";
 
 export const MatchPlayerQuery = extendType({
   type: "Query",
@@ -36,15 +37,14 @@ export const MatchPlayerQuery = extendType({
     // get matchPlayers
     t.field("matchPlayers", {
       type: list(MatchPlayerType),
-      args: { matchId: stringArg(), playerId: stringArg() },
+      args: { where: arg({ type: MatchPlayersWhereInput }) },
       resolve: async (_, args, ctx) => {
         try {
-          const { matchId, playerId } = args || {};
-
           let matchPlayers;
-          if (!matchId && !playerId) {
+          if (!args.where) {
             matchPlayers = await prisma.matchPlayer.findMany();
           } else {
+            const { matchId, playerId } = args.where;
             matchPlayers = await prisma.matchPlayer.findMany({
               where: {
                 matchId: matchId ? matchId : undefined,

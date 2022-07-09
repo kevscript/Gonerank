@@ -19,3 +19,13 @@ export const UpdateClubInput = inputObjectType({
     t.string("secondary");
   },
 });
+
+export const ClubsWhereInput = inputObjectType({
+  name: "ClubsWhereInput",
+  definition: (t) => {
+    t.string("name");
+    t.string("abbreviation");
+    t.string("primary");
+    t.string("secondary");
+  },
+});

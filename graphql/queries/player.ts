@@ -1,19 +1,19 @@
 import { gql } from "@apollo/client";
 
-// export const GET_ALL_PLAYERS = gql`
-//   query GetAllPlayers {
-//     players {
-//       id
-//       firstName
-//       lastName
-//       birthDate
-//       country
-//       countryCode
-//       image
-//       active
-//     }
-//   }
-// `;
+export const GET_PLAYER = gql`
+  query GetPlayer($id: String!) {
+    player(id: $id) {
+      id
+      firstName
+      lastName
+      birthDate
+      country
+      countryCode
+      image
+      active
+    }
+  }
+`;
 
 export const GET_PLAYERS = gql`
   query GetPlayers($where: PlayersWhereInput) {

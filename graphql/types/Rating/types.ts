@@ -7,3 +7,12 @@ export const CreateUserRatingsInput = inputObjectType({
     t.nonNull.int("rating");
   },
 });
+
+export const RatingsWhereInput = inputObjectType({
+  name: "RatingsWhereInput",
+  definition: (t) => {
+    t.string("userId");
+    t.string("matchId");
+    t.string("playerId");
+  },
+});

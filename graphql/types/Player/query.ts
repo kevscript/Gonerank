@@ -32,20 +32,20 @@ export const PlayerQuery = extendType({
       type: list(PlayerType),
       args: { where: arg({ type: PlayersWhereInput }) },
       resolve: async (_, args) => {
-        const {
-          active,
-          birthDate,
-          country,
-          countryCode,
-          firstName,
-          image,
-          lastName,
-        } = args.where || {};
         try {
           let players;
           if (!args.where) {
             players = await prisma.player.findMany();
           } else {
+            const {
+              active,
+              birthDate,
+              country,
+              countryCode,
+              firstName,
+              image,
+              lastName,
+            } = args.where;
             players = await prisma.player.findMany({
               where: {
                 firstName: firstName ? firstName : undefined,

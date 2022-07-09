@@ -13,3 +13,10 @@ export const UpdateSeasonInput = inputObjectType({
     t.nonNull.dateTime("startDate");
   },
 });
+
+export const SeasonsWhereInput = inputObjectType({
+  name: "SeasonsWhereInput",
+  definition: (t) => {
+    t.nonNull.dateTime("startDate");
+  },
+});

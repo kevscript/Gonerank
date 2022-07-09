@@ -1,7 +1,8 @@
-import { extendType, list, nonNull, stringArg } from "nexus";
+import { arg, extendType, list, nonNull, stringArg } from "nexus";
 import { SeasonType } from "./Season";
 import prisma from "@/lib/prisma";
 import { ApolloError, UserInputError } from "apollo-server-micro";
+import { SeasonsWhereInput } from "./types";
 
 export const SeasonQuery = extendType({
   type: "Query",
@@ -26,9 +27,20 @@ export const SeasonQuery = extendType({
     });
     t.field("seasons", {
       type: list(SeasonType),
-      resolve: async () => {
+      args: { where: arg({ type: SeasonsWhereInput }) },
+      resolve: async (_, args) => {
         try {
-          const seasons = await prisma.season.findMany();
+          let seasons;
+          if (!args.where) {
+            seasons = await prisma.season.findMany();
+          } else {
+            seasons = await prisma.season.findMany({
+              where: {
+                startDate: args.where.startDate,
+              },
+            });
+          }
+
           if (seasons) {
             return seasons;
           } else {

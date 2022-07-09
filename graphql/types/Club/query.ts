@@ -2,6 +2,7 @@ import { ApolloError, UserInputError } from "apollo-server-micro";
 import { arg, extendType, list, nonNull, stringArg } from "nexus";
 import { ClubType } from "./Club";
 import prisma from "@/lib/prisma";
+import { ClubsWhereInput } from "./types";
 
 export const ClubQuery = extendType({
   type: "Query",
@@ -25,9 +26,24 @@ export const ClubQuery = extendType({
     });
     t.field("clubs", {
       type: list(ClubType),
-      resolve: async () => {
+      args: { where: arg({ type: ClubsWhereInput }) },
+      resolve: async (_, args) => {
         try {
-          const clubs = await prisma.club.findMany();
+          let clubs;
+          if (!args.where) {
+            clubs = await prisma.club.findMany();
+          } else {
+            const { name, abbreviation, primary, secondary } = args.where;
+            clubs = await prisma.club.findMany({
+              where: {
+                name: name ? name : undefined,
+                abbreviation: abbreviation ? abbreviation : undefined,
+                primary: primary ? primary : undefined,
+                secondary: secondary ? secondary : undefined,
+              },
+            });
+          }
+
           if (clubs) {
             return clubs;
           } else {

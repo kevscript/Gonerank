@@ -15,3 +15,11 @@ export const UpdateCompetitionInput = inputObjectType({
     t.string("abbreviation");
   },
 });
+
+export const CompetitionsWhereInput = inputObjectType({
+  name: "CompetitionsWhereInput",
+  definition: (t) => {
+    t.string("name");
+    t.string("abbreviation");
+  },
+});
