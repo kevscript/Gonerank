@@ -1625,6 +1625,18 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
+"@tanstack/react-table@^8.1.4":
+  version "8.1.4"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-table/-/react-table-8.1.4.tgz#84fb62852afbad0fa8a5643207b529530a1c5813"
+  integrity sha512-WpPrZVbwrom2+8wZaM94OkVPfhMyzYvxyxPk2xfyFexjGorKl5erI/EnMme1EXTltsND5Jhsq/wnU6medaOQ9w==
+  dependencies:
+    "@tanstack/table-core" "8.1.4"
+
+"@tanstack/table-core@8.1.4":
+  version "8.1.4"
+  resolved "https://registry.yarnpkg.com/@tanstack/table-core/-/table-core-8.1.4.tgz#799b2bc4ced5d8c4ee099ece513270c1b73f16a7"
+  integrity sha512-iSlAT2BpkBFayJBgVxqQNXOgnF2S1r8b3aS1QlRGIusc4iZP0lRr0ie0CJ7Jhp0BZ62UH10RBIoBYHVYkg8Ejw==
+
 "@testing-library/dom@^8.5.0":
   version "8.14.0"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-8.14.0.tgz#c9830a21006d87b9ef6e1aae306cf49b0283e28e"
@@ -6257,6 +6269,11 @@ react-popper@^2.2.5:
   dependencies:
     react-fast-compare "^3.0.1"
     warning "^4.0.2"
+
+react-use-draggable-scroll@^0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/react-use-draggable-scroll/-/react-use-draggable-scroll-0.4.4.tgz#1ed1bb6734f524ad5b9806a7138c005e0ea70f77"
+  integrity sha512-lAXPv1y7cPunsZDW12aHenRV0TBg19JACHKI8npJykkPckn2OeVz89AETT0XCLMQw1JfIel59TAXJiZ5DLSrVQ==
 
 react@18.2.0:
   version "18.2.0"
