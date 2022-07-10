@@ -67,3 +67,20 @@ export const UPDATE_MATCH = gql`
     }
   }
 `;
+
+export const DELETE_MATCH = gql`
+  mutation DeleteMatch($id: String!) {
+    deleteMatch(id: $id) {
+      id
+      date
+      home
+      scored
+      conceeded
+      active
+      archived
+      competitionId
+      seasonId
+      opponentId
+    }
+  }
+`;

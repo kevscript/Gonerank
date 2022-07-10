@@ -541,6 +541,13 @@ export type UpdateClubMutationVariables = Exact<{
 
 export type UpdateClubMutation = { __typename?: 'Mutation', updateClub: { __typename?: 'Club', id: string, name: string, abbreviation: string, primary: string, secondary: string } };
 
+export type DeleteClubMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteClubMutation = { __typename?: 'Mutation', deleteClub: { __typename?: 'Club', id: string, name: string, abbreviation: string, primary: string, secondary: string } };
+
 export type GetCompetitionQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -605,6 +612,13 @@ export type UpdateMatchMutationVariables = Exact<{
 
 
 export type UpdateMatchMutation = { __typename?: 'Mutation', updateMatch: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string } };
+
+export type DeleteMatchMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteMatchMutation = { __typename?: 'Mutation', deleteMatch: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string } };
 
 export type GetPlayerQueryVariables = Exact<{
   id: Scalars['String'];
@@ -832,6 +846,43 @@ export function useUpdateClubMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateClubMutationHookResult = ReturnType<typeof useUpdateClubMutation>;
 export type UpdateClubMutationResult = Apollo.MutationResult<UpdateClubMutation>;
 export type UpdateClubMutationOptions = Apollo.BaseMutationOptions<UpdateClubMutation, UpdateClubMutationVariables>;
+export const DeleteClubDocument = gql`
+    mutation DeleteClub($id: String!) {
+  deleteClub(id: $id) {
+    id
+    name
+    abbreviation
+    primary
+    secondary
+  }
+}
+    `;
+export type DeleteClubMutationFn = Apollo.MutationFunction<DeleteClubMutation, DeleteClubMutationVariables>;
+
+/**
+ * __useDeleteClubMutation__
+ *
+ * To run a mutation, you first call `useDeleteClubMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteClubMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteClubMutation, { data, loading, error }] = useDeleteClubMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteClubMutation(baseOptions?: Apollo.MutationHookOptions<DeleteClubMutation, DeleteClubMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteClubMutation, DeleteClubMutationVariables>(DeleteClubDocument, options);
+      }
+export type DeleteClubMutationHookResult = ReturnType<typeof useDeleteClubMutation>;
+export type DeleteClubMutationResult = Apollo.MutationResult<DeleteClubMutation>;
+export type DeleteClubMutationOptions = Apollo.BaseMutationOptions<DeleteClubMutation, DeleteClubMutationVariables>;
 export const GetCompetitionDocument = gql`
     query GetCompetition($id: String!) {
   competition(id: $id) {
@@ -1185,6 +1236,48 @@ export function useUpdateMatchMutation(baseOptions?: Apollo.MutationHookOptions<
 export type UpdateMatchMutationHookResult = ReturnType<typeof useUpdateMatchMutation>;
 export type UpdateMatchMutationResult = Apollo.MutationResult<UpdateMatchMutation>;
 export type UpdateMatchMutationOptions = Apollo.BaseMutationOptions<UpdateMatchMutation, UpdateMatchMutationVariables>;
+export const DeleteMatchDocument = gql`
+    mutation DeleteMatch($id: String!) {
+  deleteMatch(id: $id) {
+    id
+    date
+    home
+    scored
+    conceeded
+    active
+    archived
+    competitionId
+    seasonId
+    opponentId
+  }
+}
+    `;
+export type DeleteMatchMutationFn = Apollo.MutationFunction<DeleteMatchMutation, DeleteMatchMutationVariables>;
+
+/**
+ * __useDeleteMatchMutation__
+ *
+ * To run a mutation, you first call `useDeleteMatchMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteMatchMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteMatchMutation, { data, loading, error }] = useDeleteMatchMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteMatchMutation(baseOptions?: Apollo.MutationHookOptions<DeleteMatchMutation, DeleteMatchMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteMatchMutation, DeleteMatchMutationVariables>(DeleteMatchDocument, options);
+      }
+export type DeleteMatchMutationHookResult = ReturnType<typeof useDeleteMatchMutation>;
+export type DeleteMatchMutationResult = Apollo.MutationResult<DeleteMatchMutation>;
+export type DeleteMatchMutationOptions = Apollo.BaseMutationOptions<DeleteMatchMutation, DeleteMatchMutationVariables>;
 export const GetPlayerDocument = gql`
     query GetPlayer($id: String!) {
   player(id: $id) {

@@ -47,3 +47,15 @@ export const UPDATE_CLUB = gql`
     }
   }
 `;
+
+export const DELETE_CLUB = gql`
+  mutation DeleteClub($id: String!) {
+    deleteClub(id: $id) {
+      id
+      name
+      abbreviation
+      primary
+      secondary
+    }
+  }
+`;
