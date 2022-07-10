@@ -48,7 +48,10 @@ const SelectInput = <T,>({
       </select>
       <div className="min-h-[20px] w-full">
         {error && (
-          <span className="block text-sm ml-2 text-red-500">
+          <span
+            className="block text-sm ml-2 text-red-500"
+            data-testid={`error-${name}`}
+          >
             {error.message}
           </span>
         )}
