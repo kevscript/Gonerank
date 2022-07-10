@@ -2,14 +2,12 @@ import UserIcon from "@/components/Icons/User";
 import { NextCustomPage } from "@/pages/_app";
 import { useCreatePlayerMutation } from "graphql/generated/queryTypes";
 import { useRouter } from "next/router";
-import CreatePlayerForm, {
-  CreatePlayerFormInput,
-} from "@/components/forms/CreatePlayerForm";
+import PlayerForm, { PlayerFormInput } from "@/components/forms/PlayerForm";
 
 const AdminPlayerCreatePage: NextCustomPage = () => {
   const router = useRouter();
 
-  const handlePlayerCreate = (data: CreatePlayerFormInput) => {
+  const handlePlayerCreate = (data: PlayerFormInput) => {
     createPlayer({ variables: { data } });
   };
 
@@ -28,7 +26,7 @@ const AdminPlayerCreatePage: NextCustomPage = () => {
         <h3>Nouveau Joueur</h3>
       </div>
       <div className="p-4">
-        <CreatePlayerForm onSubmit={handlePlayerCreate} />
+        <PlayerForm onSubmit={handlePlayerCreate} />
       </div>
     </>
   );

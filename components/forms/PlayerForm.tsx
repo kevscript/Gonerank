@@ -1,32 +1,36 @@
 import Link from "next/link";
+import { useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import DateInput from "../shared/DateInput";
 import Input from "../shared/Input";
 
-export type CreatePlayerFormProps = {
-  onSubmit: (x: CreatePlayerFormInput) => unknown;
+export type PlayerFormProps = {
+  onSubmit: (x: PlayerFormInput) => unknown;
+  defaultValues?: PlayerFormInput;
 };
 
-export type CreatePlayerFormInput = {
+export type PlayerFormInput = {
   firstName: string;
   lastName: string;
   birthDate: Date;
   country: string;
   countryCode: string;
   image: string;
-  active: boolean;
 };
 
-const CreatePlayerForm = ({ onSubmit }: CreatePlayerFormProps) => {
+const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
   const {
     register,
     handleSubmit,
     control,
     getValues,
     formState: { errors, isDirty, isValid },
-  } = useForm<CreatePlayerFormInput>({ mode: "all" });
+  } = useForm<PlayerFormInput>({
+    mode: "all",
+    defaultValues: useMemo(() => defaultValues, [defaultValues]),
+  });
 
-  const submitHandler: SubmitHandler<CreatePlayerFormInput> = (data) => {
+  const submitHandler: SubmitHandler<PlayerFormInput> = (data) => {
     onSubmit(data);
   };
 
@@ -98,6 +102,7 @@ const CreatePlayerForm = ({ onSubmit }: CreatePlayerFormProps) => {
         label="Image url"
         value={getValues("image")}
         error={errors.image}
+        options={{ required: false }}
       />
 
       <div className="w-full flex gap-x-4">
@@ -116,4 +121,4 @@ const CreatePlayerForm = ({ onSubmit }: CreatePlayerFormProps) => {
   );
 };
 
-export default CreatePlayerForm;
+export default PlayerForm;

@@ -1,9 +1,9 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import CreatePlayerForm from "@/components/forms/CreatePlayerForm";
+import PlayerForm, { PlayerFormInput } from "@/components/forms/PlayerForm";
 
-describe("CreatePlayerForm", () => {
+describe("PlayerForm", () => {
   it("renders correct fields", () => {
-    render(<CreatePlayerForm onSubmit={jest.fn()} />);
+    render(<PlayerForm onSubmit={jest.fn()} />);
 
     expect(screen.getByRole("textbox", { name: /first/i })).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: /last/i })).toBeInTheDocument();
@@ -17,13 +17,13 @@ describe("CreatePlayerForm", () => {
   });
 
   it("renders correct buttons state", () => {
-    render(<CreatePlayerForm onSubmit={jest.fn()} />);
+    render(<PlayerForm onSubmit={jest.fn()} />);
     expect(screen.getByText(/cancel/i)).not.toBeDisabled();
     expect(screen.getByText(/create/i)).toBeDisabled();
   });
 
   it("renders errors", async () => {
-    render(<CreatePlayerForm onSubmit={jest.fn()} />);
+    render(<PlayerForm onSubmit={jest.fn()} />);
 
     const firstName = screen.getByRole("textbox", { name: /first/i });
     fireEvent.change(firstName, { target: { value: "A" } });
@@ -51,7 +51,7 @@ describe("CreatePlayerForm", () => {
 
   it("calls onSubmit with correct data", async () => {
     const mockSubmit = jest.fn();
-    render(<CreatePlayerForm onSubmit={mockSubmit} />);
+    render(<PlayerForm onSubmit={mockSubmit} />);
 
     const firstName = screen.getByRole("textbox", { name: /first/i });
     fireEvent.change(firstName, { target: { value: "Harry" } });
@@ -90,6 +90,63 @@ describe("CreatePlayerForm", () => {
           image: "https://image.com",
         })
       );
+    });
+  });
+
+  it("renders with default values in props", () => {
+    const mockSubmit = jest.fn();
+    const defaultValues: PlayerFormInput = {
+      firstName: "John",
+      lastName: "Doe",
+      country: "Brazil",
+      countryCode: "BR",
+      birthDate: new Date("2011-10-05T00:00:00.000Z"),
+      image: "https://test.com",
+    };
+    render(<PlayerForm onSubmit={mockSubmit} defaultValues={defaultValues} />);
+
+    const firstName = screen.getByRole("textbox", { name: /first/i });
+    expect(firstName).toHaveDisplayValue("John");
+
+    const lastName = screen.getByRole("textbox", { name: /last/i });
+    expect(lastName).toHaveDisplayValue("Doe");
+
+    const country = screen.getByRole("textbox", { name: /country/i });
+    expect(country).toHaveDisplayValue("Brazil");
+
+    const code = screen.getByRole("textbox", { name: /code/i });
+    expect(code).toHaveDisplayValue("BR");
+
+    const birthDate = screen.getByRole("textbox", { name: /birth/i });
+    expect(birthDate).toHaveDisplayValue("05/10/2011");
+
+    const image = screen.getByRole("textbox", { name: /image/i });
+    expect(image).toHaveDisplayValue("https://test.com");
+  });
+
+  it("has a submit button with correct behaviour when default values", async () => {
+    const mockSubmit = jest.fn();
+    const defaultValues: PlayerFormInput = {
+      firstName: "John",
+      lastName: "Doe",
+      country: "Brazil",
+      countryCode: "BR",
+      birthDate: new Date("2011-10-05T00:00:00.000Z"),
+      image: "https://test.com",
+    };
+    render(<PlayerForm onSubmit={mockSubmit} defaultValues={defaultValues} />);
+
+    await waitFor(() => {
+      // button initially disabled because no change made with default values
+      expect(screen.getByText(/create/i)).toBeDisabled();
+    });
+
+    const image = screen.getByRole("textbox", { name: /image/i });
+    fireEvent.change(image, { target: { value: "https://image.com" } });
+
+    await waitFor(() => {
+      // now enabled after first valid change made
+      expect(screen.getByText(/create/i)).not.toBeDisabled();
     });
   });
 });
