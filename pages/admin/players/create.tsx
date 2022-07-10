@@ -7,7 +7,7 @@ import Input from "@/components/shared/Input";
 import { useCreatePlayerMutation } from "graphql/generated/queryTypes";
 import { useRouter } from "next/router";
 
-type CreatePlayerFormInput = {
+export type CreatePlayerFormInput = {
   firstName: string;
   lastName: string;
   birthDate: Date;
@@ -28,34 +28,26 @@ const AdminPlayerCreatePage: NextCustomPage = () => {
 
   const router = useRouter();
 
-  const handlePlayerUpdate: SubmitHandler<CreatePlayerFormInput> = (data) => {
+  const handlePlayerCreate: SubmitHandler<CreatePlayerFormInput> = (data) => {
     createPlayer({ variables: { data } });
   };
 
   const [createPlayer] = useCreatePlayerMutation({
-    onCompleted: async () => {
-      try {
-        await fetch(
-          `http://localhost:3000/api/revalidate?url=${encodeURIComponent("/")}`
-        );
-        router.push("/admin/players");
-      } catch (err) {
-        console.log("Error Revalidating from Mutation");
-      }
-    },
+    onCompleted: () => router.push("/admin/players"),
+    refetchQueries: ["GetPlayers"],
   });
 
   return (
     <>
       <div className="flex items-end bg-gray-100 h-16 p-4">
         <div className="w-6 h-6 rounded-full overflow-hidden flex justify-center items-end bg-gray-200 mr-2">
-          <UserIcon className="w-5 h-5 fill-gray-600" />
+          <UserIcon className="w-5 h-5 fill-marine-600" />
         </div>
         <h3>Nouveau Joueur</h3>
       </div>
       <div className="p-4">
         <form
-          onSubmit={handleSubmit(handlePlayerUpdate)}
+          onSubmit={handleSubmit(handlePlayerCreate)}
           className="flex flex-col w-full"
         >
           <Input
