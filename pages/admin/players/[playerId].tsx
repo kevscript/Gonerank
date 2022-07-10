@@ -8,10 +8,9 @@ import {
 } from "graphql/generated/queryTypes";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { SubmitHandler, useForm } from "react-hook-form";
 import DateInput from "@/components/shared/DateInput";
+import Link from "next/link";
 
 export type EditPlayerFormInput = {
   firstName: string;
@@ -143,38 +142,6 @@ const AdminPlayerEditPage: NextCustomPage = () => {
               value={getValues("birthDate")}
             />
 
-            {/* <Controller
-              control={control}
-              name="birthDate"
-              rules={{ required: "champ requis" }}
-              render={({ field }) => (
-                <label className="flex flex-col mt-4 w-32">
-                  <span className="ml-2 text-sm">Birth Date *</span>
-                  <DatePicker
-                    onChange={(date) => field.onChange(date)}
-                    selected={field.value}
-                    dateFormat="dd/MM/yyyy"
-                    className={`h-10 px-2 bg-white border text-base rounded mt-1 w-full font-num ${
-                      errors.birthDate
-                        ? "border-red-400 outline-red-600"
-                        : getValues("birthDate")
-                        ? "border-marine-400 outline-marine-600 bg-marine-50"
-                        : "border-gray-200 outline-marine-600"
-                    }`}
-                    popperPlacement="bottom-start"
-                    showPopperArrow={false}
-                  />
-                  <div className="min-h-[20px] w-full">
-                    {errors.birthDate && (
-                      <span className="block text-sm ml-2 text-red-500">
-                        {errors.birthDate.message}
-                      </span>
-                    )}
-                  </div>
-                </label>
-              )}
-            /> */}
-
             <Input
               name="image"
               label="Image Url"
@@ -184,13 +151,18 @@ const AdminPlayerEditPage: NextCustomPage = () => {
             />
 
             <div className="flex gap-4 mt-8">
-              <button className="px-2 py-1 bg-gray-200 rounded">Annuler</button>
+              <Link href="/admin/players" passHref>
+                <button type="button" className="px-2 py-1 bg-gray-200 rounded">
+                  Annuler
+                </button>
+              </Link>
+
               <button
                 type="submit"
                 className="px-2 py-1 bg-gray-200 rounded"
                 disabled={!isDirty || !isValid}
               >
-                Créer
+                Editer
               </button>
             </div>
           </form>

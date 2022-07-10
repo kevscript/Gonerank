@@ -7,9 +7,7 @@ import {
 } from "graphql/generated/queryTypes";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { SubmitHandler, useForm } from "react-hook-form";
 import DateInput from "@/components/shared/DateInput";
 
 export type EditSeasonFormInput = {
