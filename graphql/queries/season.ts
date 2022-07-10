@@ -35,3 +35,12 @@ export const UPDATE_SEASON = gql`
     }
   }
 `;
+
+export const DELETE_SEASON = gql`
+  mutation DeleteSeason($id: String!) {
+    deleteSeason(id: $id) {
+      id
+      startDate
+    }
+  }
+`;

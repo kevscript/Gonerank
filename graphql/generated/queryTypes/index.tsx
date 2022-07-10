@@ -570,6 +570,13 @@ export type UpdateCompetitionMutationVariables = Exact<{
 
 export type UpdateCompetitionMutation = { __typename?: 'Mutation', updateCompetition: { __typename?: 'Competition', id: string, name: string, abbreviation: string } };
 
+export type DeleteCompetitionMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteCompetitionMutation = { __typename?: 'Mutation', deleteCompetition: { __typename?: 'Competition', id: string, name: string, abbreviation: string } };
+
 export type GetMatchQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -663,6 +670,13 @@ export type UpdateSeasonMutationVariables = Exact<{
 
 
 export type UpdateSeasonMutation = { __typename?: 'Mutation', updateSeason: { __typename?: 'Season', id: string, startDate: any } };
+
+export type DeleteSeasonMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteSeasonMutation = { __typename?: 'Mutation', deleteSeason: { __typename?: 'Season', id: string, startDate: any } };
 
 
 export const GetClubDocument = gql`
@@ -963,6 +977,41 @@ export function useUpdateCompetitionMutation(baseOptions?: Apollo.MutationHookOp
 export type UpdateCompetitionMutationHookResult = ReturnType<typeof useUpdateCompetitionMutation>;
 export type UpdateCompetitionMutationResult = Apollo.MutationResult<UpdateCompetitionMutation>;
 export type UpdateCompetitionMutationOptions = Apollo.BaseMutationOptions<UpdateCompetitionMutation, UpdateCompetitionMutationVariables>;
+export const DeleteCompetitionDocument = gql`
+    mutation DeleteCompetition($id: String!) {
+  deleteCompetition(id: $id) {
+    id
+    name
+    abbreviation
+  }
+}
+    `;
+export type DeleteCompetitionMutationFn = Apollo.MutationFunction<DeleteCompetitionMutation, DeleteCompetitionMutationVariables>;
+
+/**
+ * __useDeleteCompetitionMutation__
+ *
+ * To run a mutation, you first call `useDeleteCompetitionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCompetitionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCompetitionMutation, { data, loading, error }] = useDeleteCompetitionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCompetitionMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCompetitionMutation, DeleteCompetitionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCompetitionMutation, DeleteCompetitionMutationVariables>(DeleteCompetitionDocument, options);
+      }
+export type DeleteCompetitionMutationHookResult = ReturnType<typeof useDeleteCompetitionMutation>;
+export type DeleteCompetitionMutationResult = Apollo.MutationResult<DeleteCompetitionMutation>;
+export type DeleteCompetitionMutationOptions = Apollo.BaseMutationOptions<DeleteCompetitionMutation, DeleteCompetitionMutationVariables>;
 export const GetMatchDocument = gql`
     query GetMatch($id: String!) {
   match(id: $id) {
@@ -1482,3 +1531,37 @@ export function useUpdateSeasonMutation(baseOptions?: Apollo.MutationHookOptions
 export type UpdateSeasonMutationHookResult = ReturnType<typeof useUpdateSeasonMutation>;
 export type UpdateSeasonMutationResult = Apollo.MutationResult<UpdateSeasonMutation>;
 export type UpdateSeasonMutationOptions = Apollo.BaseMutationOptions<UpdateSeasonMutation, UpdateSeasonMutationVariables>;
+export const DeleteSeasonDocument = gql`
+    mutation DeleteSeason($id: String!) {
+  deleteSeason(id: $id) {
+    id
+    startDate
+  }
+}
+    `;
+export type DeleteSeasonMutationFn = Apollo.MutationFunction<DeleteSeasonMutation, DeleteSeasonMutationVariables>;
+
+/**
+ * __useDeleteSeasonMutation__
+ *
+ * To run a mutation, you first call `useDeleteSeasonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSeasonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteSeasonMutation, { data, loading, error }] = useDeleteSeasonMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteSeasonMutation(baseOptions?: Apollo.MutationHookOptions<DeleteSeasonMutation, DeleteSeasonMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteSeasonMutation, DeleteSeasonMutationVariables>(DeleteSeasonDocument, options);
+      }
+export type DeleteSeasonMutationHookResult = ReturnType<typeof useDeleteSeasonMutation>;
+export type DeleteSeasonMutationResult = Apollo.MutationResult<DeleteSeasonMutation>;
+export type DeleteSeasonMutationOptions = Apollo.BaseMutationOptions<DeleteSeasonMutation, DeleteSeasonMutationVariables>;

@@ -39,3 +39,13 @@ export const UPDATE_COMPETITION = gql`
     }
   }
 `;
+
+export const DELETE_COMPETITION = gql`
+  mutation DeleteCompetition($id: String!) {
+    deleteCompetition(id: $id) {
+      id
+      name
+      abbreviation
+    }
+  }
+`;
