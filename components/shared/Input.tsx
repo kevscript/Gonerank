@@ -7,8 +7,7 @@ export type InputProps = {
   options?: RegisterOptions;
   register: UseFormRegister<any>;
   containerStyle?: string;
-  value: string | number;
-  isTouched?: boolean;
+  value: string | number | Date | boolean;
   type?: string;
 };
 
@@ -20,7 +19,6 @@ const Input = ({
   options,
   containerStyle,
   value,
-  isTouched,
   type,
 }: InputProps) => {
   return (
