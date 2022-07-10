@@ -2,6 +2,7 @@ import TrophyIcon from "@/components/Icons/Trophy";
 import Input from "@/components/shared/Input";
 import { NextCustomPage } from "@/pages/_app";
 import { useCreateCompetitionMutation } from "graphql/generated/queryTypes";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -73,7 +74,12 @@ const AdminCreateCompetitionPage: NextCustomPage = () => {
           </div>
 
           <div className="flex gap-x-4 mt-4">
-            <button className="px-2 py-1 bg-gray-200 rounded">Annuler</button>
+            <Link href="/admin/competitions" passHref>
+              <button type="button" className="px-2 py-1 bg-gray-200 rounded">
+                Annuler
+              </button>
+            </Link>
+
             <button
               type="submit"
               className="px-2 py-1 bg-gray-200 rounded"

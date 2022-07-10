@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useRouter } from "next/router";
 import { useCreateSeasonMutation } from "graphql/generated/queryTypes";
+import Link from "next/link";
 
 type CreateSeasonFormInput = {
   startDate: Date;
@@ -74,7 +75,12 @@ const AdminSeasonCreatePage: NextCustomPage = () => {
             )}
           />
           <div className="flex gap-4 mt-8">
-            <button className="px-2 py-1 bg-gray-200 rounded">Annuler</button>
+            <Link href="/admin/seasons" passHref>
+              <button type="button" className="px-2 py-1 bg-gray-200 rounded">
+                Annuler
+              </button>
+            </Link>
+
             <button
               type="submit"
               className="px-2 py-1 bg-gray-200 rounded"

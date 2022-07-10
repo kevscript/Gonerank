@@ -6,6 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Input from "@/components/shared/Input";
 import { useCreatePlayerMutation } from "graphql/generated/queryTypes";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export type CreatePlayerFormInput = {
   firstName: string;
@@ -142,7 +143,12 @@ const AdminPlayerCreatePage: NextCustomPage = () => {
           />
 
           <div className="flex gap-4 mt-8">
-            <button className="px-2 py-1 bg-gray-200 rounded">Annuler</button>
+            <Link href="/admin/players" passHref>
+              <button type="button" className="px-2 py-1 bg-gray-200 rounded">
+                Annuler
+              </button>
+            </Link>
+
             <button
               type="submit"
               className="px-2 py-1 bg-gray-200 rounded"
