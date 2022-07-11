@@ -33,9 +33,15 @@ const AdminSeasonsPage: NextCustomPage = () => {
 
   const seasonColumns: ColumnDef<Season>[] = [
     {
-      header: "id",
-      accessorKey: "id",
-      cell: ({ row }) => row.id,
+      header: "season",
+      id: "season",
+      cell: ({ row }) => {
+        const { id, startDate } = row.original || {};
+        const year = startDate && new Date(startDate).getFullYear();
+        return year
+          ? `${String(year).substring(2)}/${String(year + 1).substring(2)}`
+          : "X";
+      },
     },
     {
       header: "startDate",

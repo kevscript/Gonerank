@@ -7,12 +7,7 @@ import {
 } from "graphql/generated/queryTypes";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import DateInput from "@/components/shared/DateInput";
-
-export type EditSeasonFormInput = {
-  startDate: Date;
-};
+import SeasonForm, { SeasonFormInput } from "@/components/forms/SeasonForm";
 
 const AdminSeasonEditPage: NextCustomPage = () => {
   const { data, loading, error } = useGetSeasonsQuery();
@@ -20,17 +15,7 @@ const AdminSeasonEditPage: NextCustomPage = () => {
   const router = useRouter();
   const { seasonId } = router.query;
 
-  const {
-    handleSubmit,
-    control,
-    getValues,
-    reset,
-    formState: { errors, isDirty, isValid },
-  } = useForm<EditSeasonFormInput>({
-    mode: "all",
-  });
-
-  const handleUpdateSeason: SubmitHandler<EditSeasonFormInput> = (data) => {
+  const handleUpdateSeason = (data: SeasonFormInput) => {
     season && updateSeason({ variables: { id: season.id, data: data } });
   };
 
@@ -42,10 +27,6 @@ const AdminSeasonEditPage: NextCustomPage = () => {
     const currSeason = data?.seasons.find((s) => s.id === seasonId);
     currSeason && setSeason(currSeason);
   }, [data, seasonId]);
-
-  useEffect(() => {
-    season && reset({ startDate: new Date(season.startDate) });
-  }, [season, reset]);
 
   return (
     <div>
@@ -59,30 +40,12 @@ const AdminSeasonEditPage: NextCustomPage = () => {
       {error && <div>{error.message}</div>}
       {season && (
         <div className="p-4">
-          <form
-            onSubmit={handleSubmit(handleUpdateSeason)}
-            className="flex flex-col w-full"
-          >
-            <DateInput<EditSeasonFormInput>
-              label="Start Date *"
-              control={control}
-              name="startDate"
-              rules={{ required: "champ requis" }}
-              error={errors.startDate}
-              value={getValues("startDate")}
-            />
-
-            <div className="flex gap-4 mt-8">
-              <button className="px-2 py-1 bg-gray-200 rounded">Annuler</button>
-              <button
-                type="submit"
-                className="px-2 py-1 bg-gray-200 rounded"
-                disabled={!isDirty || !isValid}
-              >
-                Editer
-              </button>
-            </div>
-          </form>
+          <SeasonForm
+            onSubmit={handleUpdateSeason}
+            defaultValues={{
+              startDate: new Date(season.startDate),
+            }}
+          />
         </div>
       )}
     </div>
@@ -90,5 +53,4 @@ const AdminSeasonEditPage: NextCustomPage = () => {
 };
 
 AdminSeasonEditPage.isAdminPage = true;
-
 export default AdminSeasonEditPage;
