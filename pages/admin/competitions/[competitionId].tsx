@@ -1,5 +1,7 @@
+import CompetitionForm, {
+  CompetitionFormInput,
+} from "@/components/forms/CompetitionForm";
 import TrophyIcon from "@/components/Icons/Trophy";
-import Input from "@/components/shared/Input";
 import { NextCustomPage } from "@/pages/_app";
 import { Competition } from "@prisma/client";
 import {
@@ -8,7 +10,6 @@ import {
 } from "graphql/generated/queryTypes";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
 
 export type EditCompetitionFormInput = {
   name: string;
@@ -21,20 +22,7 @@ const AdminCompetitionEditPage: NextCustomPage = () => {
   const router = useRouter();
   const { competitionId } = router.query;
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    getValues,
-    reset,
-    formState: { errors, isDirty, isValid },
-  } = useForm<EditCompetitionFormInput>({
-    mode: "all",
-  });
-
-  const handleUpdateCompetition: SubmitHandler<EditCompetitionFormInput> = (
-    data
-  ) => {
+  const handleUpdateCompetition = (data: CompetitionFormInput) => {
     competition &&
       updateCompetition({ variables: { id: competition.id, data: data } });
   };
@@ -50,11 +38,6 @@ const AdminCompetitionEditPage: NextCustomPage = () => {
     currCompetition && setCompetition(currCompetition);
   }, [data, competitionId]);
 
-  useEffect(() => {
-    competition &&
-      reset({ name: competition.name, abbreviation: competition.abbreviation });
-  }, [competition, reset]);
-
   return (
     <div>
       <div className="flex items-end bg-gray-100 h-16 p-4">
@@ -67,42 +50,13 @@ const AdminCompetitionEditPage: NextCustomPage = () => {
       {error && <div>{error.message}</div>}
       {competition && (
         <div className="p-4">
-          <form
-            onSubmit={handleSubmit(handleUpdateCompetition)}
-            className="flex flex-col w-full"
-          >
-            <div className="flex w-full gap-x-4">
-              <Input
-                label="Name *"
-                name="name"
-                register={register}
-                value={getValues("name")}
-                options={{ minLength: { value: 2, message: "2 chars min" } }}
-                error={errors.name}
-              />
-
-              <Input
-                label="Abbr *"
-                name="abbreviation"
-                register={register}
-                value={getValues("abbreviation")}
-                options={{ maxLength: { value: 4, message: "4 chars max" } }}
-                error={errors.abbreviation}
-                containerStyle="w-32"
-              />
-            </div>
-
-            <div className="flex gap-4 mt-8">
-              <button className="px-2 py-1 bg-gray-200 rounded">Annuler</button>
-              <button
-                type="submit"
-                className="px-2 py-1 bg-gray-200 rounded"
-                disabled={!isDirty || !isValid}
-              >
-                Editer
-              </button>
-            </div>
-          </form>
+          <CompetitionForm
+            onSubmit={handleUpdateCompetition}
+            defaultValues={{
+              name: competition.name,
+              abbreviation: competition.abbreviation,
+            }}
+          />
         </div>
       )}
     </div>
