@@ -49,7 +49,7 @@ describe("CompetitionForm", () => {
     });
   });
 
-  it("renders width default values in props", () => {
+  it("renders with default values in props", () => {
     const defaultValues: CompetitionFormInput = {
       name: "Champions League",
       abbreviation: "C1",
