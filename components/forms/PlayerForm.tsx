@@ -24,9 +24,9 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
     handleSubmit,
     control,
     getValues,
-    formState: { errors, isDirty, isValid },
+    formState: { errors },
   } = useForm<PlayerFormInput>({
-    mode: "all",
+    mode: "onSubmit",
     defaultValues: useMemo(() => defaultValues, [defaultValues]),
   });
 
@@ -109,13 +109,7 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
         <Link href="/admin/players" passHref>
           <button type="button">Cancel</button>
         </Link>
-        <button
-          type="submit"
-          disabled={!isDirty || !isValid}
-          className="disabled:bg-red-600"
-        >
-          Create
-        </button>
+        <button type="submit">Create</button>
       </div>
     </form>
   );

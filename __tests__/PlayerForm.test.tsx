@@ -13,13 +13,8 @@ describe("PlayerForm", () => {
     expect(screen.getByRole("textbox", { name: /code/i })).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: /birth/i })).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: /image/i })).toBeInTheDocument();
-    expect(screen.getByText(/create/i)).toBeDisabled();
-  });
-
-  it("renders correct buttons state", () => {
-    render(<PlayerForm onSubmit={jest.fn()} />);
-    expect(screen.getByText(/cancel/i)).not.toBeDisabled();
-    expect(screen.getByText(/create/i)).toBeDisabled();
+    expect(screen.getByText(/create/i)).toBeInTheDocument();
+    expect(screen.getByText(/cancel/i)).toBeInTheDocument();
   });
 
   it("renders errors", async () => {
@@ -36,6 +31,9 @@ describe("PlayerForm", () => {
 
     const code = screen.getByRole("textbox", { name: /code/i });
     fireEvent.change(code, { target: { value: "A" } });
+
+    const submitButton = screen.getByText(/create/i);
+    fireEvent.click(submitButton);
 
     await waitFor(() => {
       const firstNameError = screen.getByTestId("error-firstName");
@@ -70,10 +68,6 @@ describe("PlayerForm", () => {
 
     const image = screen.getByRole("textbox", { name: /image/i });
     fireEvent.change(image, { target: { value: "https://image.com" } });
-
-    await waitFor(() => {
-      expect(screen.getByText(/create/i)).not.toBeDisabled();
-    });
 
     const submitButton = screen.getByText(/create/i);
     fireEvent.click(submitButton);
@@ -122,31 +116,5 @@ describe("PlayerForm", () => {
 
     const image = screen.getByRole("textbox", { name: /image/i });
     expect(image).toHaveDisplayValue("https://test.com");
-  });
-
-  it("has a submit button with correct behaviour when default values", async () => {
-    const mockSubmit = jest.fn();
-    const defaultValues: PlayerFormInput = {
-      firstName: "John",
-      lastName: "Doe",
-      country: "Brazil",
-      countryCode: "BR",
-      birthDate: new Date("2011-10-05T00:00:00.000Z"),
-      image: "https://test.com",
-    };
-    render(<PlayerForm onSubmit={mockSubmit} defaultValues={defaultValues} />);
-
-    await waitFor(() => {
-      // button initially disabled because no change made with default values
-      expect(screen.getByText(/create/i)).toBeDisabled();
-    });
-
-    const image = screen.getByRole("textbox", { name: /image/i });
-    fireEvent.change(image, { target: { value: "https://image.com" } });
-
-    await waitFor(() => {
-      // now enabled after first valid change made
-      expect(screen.getByText(/create/i)).not.toBeDisabled();
-    });
   });
 });

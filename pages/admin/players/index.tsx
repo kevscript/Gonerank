@@ -89,6 +89,17 @@ const AdminPlayersPage: NextCustomPage = () => {
       },
     },
     {
+      header: "edit",
+      id: "edit",
+      cell: ({ row }) => {
+        return (
+          <Link href={`/admin/players/${row.original!.id}`} passHref>
+            <div className="w-full h-full bg-green-500">Edit</div>
+          </Link>
+        );
+      },
+    },
+    {
       header: "delete",
       id: "delete",
       cell: ({ row }) => {
@@ -97,19 +108,8 @@ const AdminPlayersPage: NextCustomPage = () => {
             className="w-full h-full bg-red-500"
             onClick={() => handlePlayerDelete(row.original!.id)}
           >
-            X
+            Delete
           </div>
-        );
-      },
-    },
-    {
-      header: "edit",
-      id: "edit",
-      cell: ({ row }) => {
-        return (
-          <Link href={`/admin/players/${row.original!.id}`} passHref>
-            <div className="w-full h-full bg-green-500">E</div>
-          </Link>
         );
       },
     },
