@@ -6,6 +6,7 @@ import {
   FieldErrorsImpl,
   Merge,
   Path,
+  RegisterOptions,
 } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -14,7 +15,7 @@ export type DateInputProps<FieldValues> = {
   control: Control<FieldValues, object>;
   error: Merge<FieldError, FieldErrorsImpl<DeepRequired<Date>>> | undefined;
   value: string | Date | number;
-  rules?: any;
+  rules?: RegisterOptions;
   name: Path<FieldValues>;
   containerStyle?: string;
   label: string;

@@ -34,7 +34,7 @@ const Input = ({
         className={`h-10 rounded bg-white border  px-2 text-base mt-1 ${
           error
             ? "border-red-400 outline-red-500"
-            : value
+            : value || value === 0
             ? "border-marine-400 outline-marine-600 bg-marine-50"
             : "border-gray-200 outline-marine-600"
         }`}
