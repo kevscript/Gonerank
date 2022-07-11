@@ -16,6 +16,7 @@ const AdminCreateCompetitionPage: NextCustomPage = () => {
   const [createCompetition] = useCreateCompetitionMutation({
     onCompleted: () => router.push("/admin/competitions"),
     refetchQueries: ["GetCompetitions"],
+    awaitRefetchQueries: true,
   });
 
   return (

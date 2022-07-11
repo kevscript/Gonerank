@@ -14,6 +14,7 @@ const AdminSeasonCreatePage: NextCustomPage = () => {
   const [createSeason] = useCreateSeasonMutation({
     onCompleted: () => router.push("/admin/seasons"),
     refetchQueries: ["GetSeasons"],
+    awaitRefetchQueries: true,
   });
 
   return (
