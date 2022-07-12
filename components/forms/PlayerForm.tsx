@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import Button from "../shared/Button";
 import DateInput from "../shared/DateInput";
 import Input from "../shared/Input";
 
@@ -39,24 +40,24 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
       <Input
         register={register}
         name="firstName"
-        label="First name"
+        label="First Name"
         value={getValues("firstName")}
         error={errors.firstName}
         options={{
-          required: "required",
-          minLength: { value: 2, message: "2 char. min" },
+          required: "First name is required",
+          minLength: { value: 2, message: "2 characters minimum" },
         }}
       />
 
       <Input
         register={register}
         name="lastName"
-        label="Last name"
+        label="Last Name"
         value={getValues("lastName")}
         error={errors.lastName}
         options={{
-          required: "required",
-          minLength: { value: 2, message: "2 char. min" },
+          required: "Last name is required",
+          minLength: { value: 2, message: "2 characters minimum" },
         }}
       />
 
@@ -68,8 +69,8 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
           value={getValues("country")}
           error={errors.country}
           options={{
-            required: "required",
-            minLength: { value: 2, message: "2 char. min" },
+            required: "Country is required",
+            minLength: { value: 2, message: "2 characters minimum" },
           }}
         />
         <Input
@@ -80,9 +81,9 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
           error={errors.countryCode}
           containerStyle="w-32"
           options={{
-            required: "required",
-            minLength: { value: 2, message: "2 char. min" },
-            maxLength: { value: 3, message: "3 char. max" },
+            required: "Required",
+            minLength: { value: 2, message: "2/3 chars." },
+            maxLength: { value: 3, message: "2/3 chars." },
           }}
         />
       </div>
@@ -93,7 +94,7 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
         label="Birth date"
         value={getValues("birthDate")}
         error={errors.birthDate}
-        rules={{ required: "required" }}
+        rules={{ required: "Required" }}
       />
 
       <Input
@@ -105,11 +106,13 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
         options={{ required: false }}
       />
 
-      <div className="w-full flex gap-x-4">
+      <div className="w-full flex gap-x-4 mt-8">
         <Link href="/admin/players" passHref>
-          <button type="button">Cancel</button>
+          <div>
+            <Button label="Cancel" />
+          </div>
         </Link>
-        <button type="submit">Create</button>
+        <Button type="submit" label="Create" />
       </div>
     </form>
   );

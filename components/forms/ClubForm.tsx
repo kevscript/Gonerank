@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import Button from "../shared/Button";
 import Input from "../shared/Input";
 
 export type ClubFormProps = {
@@ -39,8 +40,8 @@ const ClubForm = ({ onSubmit, defaultValues }: ClubFormProps) => {
           register={register}
           error={errors.name}
           options={{
-            required: "required",
-            minLength: { value: 2, message: "2 chars min" },
+            required: "Required",
+            minLength: { value: 2, message: "Min 2 chars." },
           }}
           value={getValues("name")}
         />
@@ -50,9 +51,9 @@ const ClubForm = ({ onSubmit, defaultValues }: ClubFormProps) => {
           register={register}
           error={errors.abbreviation}
           options={{
-            required: "required",
-            minLength: { value: 2, message: "2 chars min" },
-            maxLength: { value: 8, message: "5 chars max" },
+            required: "Required",
+            minLength: { value: 2, message: "[2-5] chars." },
+            maxLength: { value: 8, message: "[2-5] chars." },
           }}
           value={getValues("abbreviation")}
           containerStyle="w-32"
@@ -65,9 +66,9 @@ const ClubForm = ({ onSubmit, defaultValues }: ClubFormProps) => {
           register={register}
           error={errors.primary}
           options={{
-            required: "required",
-            minLength: { value: 4, message: "4 chars min" },
-            maxLength: { value: 9, message: "9 chars max" },
+            required: "Required",
+            minLength: { value: 4, message: "[4-9] chars." },
+            maxLength: { value: 9, message: "[4-9] chars." },
           }}
           value={getValues("primary")}
         />
@@ -77,20 +78,21 @@ const ClubForm = ({ onSubmit, defaultValues }: ClubFormProps) => {
           register={register}
           error={errors.secondary}
           options={{
-            required: "required",
-            minLength: { value: 4, message: "4 chars min" },
-            maxLength: { value: 9, message: "9 chars max" },
+            required: "Required",
+            minLength: { value: 4, message: "[4-9] chars." },
+            maxLength: { value: 9, message: "[4-9] chars." },
           }}
           value={getValues("secondary")}
         />
       </div>
 
-      <div className="flex gap-x-4">
+      <div className="w-full flex gap-x-4 mt-8">
         <Link href="/admin/clubs" passHref>
-          <button type="button">Cancel</button>
+          <div>
+            <Button label="Cancel" />
+          </div>
         </Link>
-
-        <button type="submit">Create</button>
+        <Button type="submit" label="Create" />
       </div>
     </form>
   );

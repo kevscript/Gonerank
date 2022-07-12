@@ -6,6 +6,7 @@ import {
 import Link from "next/link";
 import { useEffect, useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import Button from "../shared/Button";
 import DateInput from "../shared/DateInput";
 import Input from "../shared/Input";
 import SelectInput from "../shared/SelectInput";
@@ -68,7 +69,7 @@ const MatchForm = ({
           error={errors.date}
           name="date"
           value={getValues("date")}
-          rules={{ required: "required" }}
+          rules={{ required: "Date is required" }}
         />
 
         <SelectInput<MatchFormInput>
@@ -95,7 +96,7 @@ const MatchForm = ({
         label="Competition"
         name="competitionId"
         error={errors.competitionId}
-        options={{ required: "required" }}
+        options={{ required: "Season is required" }}
         register={register}
         value={getValues("competitionId")}
       >
@@ -112,7 +113,7 @@ const MatchForm = ({
         label="Opponent"
         name="opponentId"
         error={errors.opponentId}
-        options={{ required: "required" }}
+        options={{ required: "Opponent is required" }}
         register={register}
         value={getValues("opponentId")}
       >
@@ -131,6 +132,7 @@ const MatchForm = ({
           name="home"
           error={errors.home}
           register={register}
+          options={{ required: "Location is required" }}
           value={getValues("home")}
           containerStyle="flex-1"
         >
@@ -145,9 +147,9 @@ const MatchForm = ({
           register={register}
           error={errors.scored}
           options={{
-            required: "required",
+            required: "Required",
             valueAsNumber: true,
-            min: { value: 0, message: "min. 0" },
+            min: { value: 0, message: "min: 0" },
           }}
           value={getValues("scored")}
           containerStyle="w-20"
@@ -160,21 +162,22 @@ const MatchForm = ({
           register={register}
           error={errors.conceeded}
           options={{
-            required: "required",
+            required: "Required",
             valueAsNumber: true,
-            min: { value: 0, message: "min. 0" },
+            min: { value: 0, message: "min: 0" },
           }}
           value={getValues("conceeded")}
           containerStyle="w-20"
         />
       </div>
 
-      <div className="flex gap-x-4 mt-8">
+      <div className="w-full flex gap-x-4 mt-8">
         <Link href="/admin/matches" passHref>
-          <button type="button">Cancel</button>
+          <div>
+            <Button label="Cancel" />
+          </div>
         </Link>
-
-        <button type="submit">Create</button>
+        <Button type="submit" label="Create" />
       </div>
     </form>
   );

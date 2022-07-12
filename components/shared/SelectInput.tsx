@@ -29,16 +29,16 @@ const SelectInput = <T,>({
 }: SelectInputProps<T>) => {
   return (
     <label
-      className={`flex flex-col min-w-0 ${
+      className={`flex flex-col min-w-0 mt-4 ${
         containerStyle ? containerStyle : "w-full flex-1"
       }`}
     >
       <span className="ml-2 text-sm">{label}</span>
       <select
         {...register(name, options)}
-        className={`h-10 px-2 bg-white border text-base rounded mt-1 ${
+        className={`h-10 px-2 cursor-pointer bg-white border text-base rounded mt-1 ${
           error
-            ? "border-red-400 outline-red-600"
+            ? "border-red-400 outline-red-600 bg-red-50"
             : value
             ? "border-marine-400 outline-marine-600 bg-marine-50"
             : "border-gray-200 outline-marine-600"
@@ -46,16 +46,16 @@ const SelectInput = <T,>({
       >
         {children}
       </select>
-      <div className="min-h-[20px] w-full">
-        {error && (
+      {error && (
+        <div className="w-full">
           <span
             className="block text-sm ml-2 text-red-500"
             data-testid={`error-${name}`}
           >
             {error.message}
           </span>
-        )}
-      </div>
+        </div>
+      )}
     </label>
   );
 };

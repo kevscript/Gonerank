@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import Button from "../shared/Button";
 import Input from "../shared/Input";
 
 export type CompetitionFormProps = {
@@ -59,12 +60,13 @@ const CompetitionForm = ({ onSubmit, defaultValues }: CompetitionFormProps) => {
         />
       </div>
 
-      <div className="flex gap-x-4 mt-4">
+      <div className="w-full flex gap-x-4 mt-8">
         <Link href="/admin/competitions" passHref>
-          <button type="button">Cancel</button>
+          <div>
+            <Button label="Cancel" />
+          </div>
         </Link>
-
-        <button type="submit">Create</button>
+        <Button type="submit" label="Create" />
       </div>
     </form>
   );

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import Button from "../shared/Button";
 import DateInput from "../shared/DateInput";
 
 export type SeasonFormProps = {
@@ -35,14 +36,16 @@ const SeasonForm = ({ onSubmit, defaultValues }: SeasonFormProps) => {
         label="Start date"
         value={getValues("startDate")}
         error={errors.startDate}
-        rules={{ required: "required" }}
+        rules={{ required: "Required" }}
       />
 
-      <div className="flex gap-4 mt-8">
+      <div className="w-full flex gap-x-4 mt-8">
         <Link href="/admin/seasons" passHref>
-          <button type="button">Cancel</button>
+          <div>
+            <Button label="Cancel" />
+          </div>
         </Link>
-        <button type="submit">Create</button>
+        <Button type="submit" label="Create" />
       </div>
     </form>
   );
