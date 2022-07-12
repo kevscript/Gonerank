@@ -11,6 +11,7 @@ import RatingIcon from "./Icons/Rating";
 import SearchIcon from "./Icons/Search";
 import ShieldIcon from "./Icons/Shield";
 import TrophyIcon from "./Icons/Trophy";
+import UserIcon from "./Icons/User";
 import LoggedInNavigation from "./LoggedInNavigation";
 import LoggedOutNavigation from "./LoggedOutNavigation";
 import NavLink from "./NavLink";
@@ -47,6 +48,7 @@ const navRoutes: NavRoute[] = [
     Icon: TrophyIcon,
     type: "admin",
   },
+  { label: "Users", path: "/admin/users", Icon: UserIcon, type: "admin" },
 ];
 
 const Sidebar = () => {
