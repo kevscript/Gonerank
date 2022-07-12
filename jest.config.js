@@ -11,8 +11,9 @@ const customJestConfig = {
   moduleNameMapper: {
     // Handle module aliases (this will be automatically configured for you soon)
     "^@/components/(.*)$": "<rootDir>/components/$1",
-
     "^@/pages/(.*)$": "<rootDir>/pages/$1",
+    "^@/utils/(.*)$": "<rootDir>/utils/$1",
+    "^@/lib/(.*)$": "<rootDir>/lib/$1",
   },
   testEnvironment: "jest-environment-jsdom",
 };

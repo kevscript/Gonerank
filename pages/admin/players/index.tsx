@@ -1,3 +1,4 @@
+import UserIcon from "@/components/Icons/User";
 import AdminTable from "@/components/shared/AdminTable";
 import Draggable from "@/components/shared/Draggable";
 import { NextCustomPage } from "@/pages/_app";
@@ -10,6 +11,7 @@ import {
   useUpdatePlayerMutation,
 } from "graphql/generated/queryTypes";
 import { GET_PLAYERS } from "graphql/queries/player";
+import Image from "next/image";
 import Link from "next/link";
 
 const AdminPlayersPage: NextCustomPage = () => {
@@ -43,9 +45,23 @@ const AdminPlayersPage: NextCustomPage = () => {
       cell: ({ row }) => {
         const { firstName, lastName, image } = row.original || {};
         return (
-          <span className="whitespace-nowrap">
-            {firstName![0] + ". " + lastName}
-          </span>
+          <div className="flex flex-nowrap">
+            <div className="relative w-6 h-6 flex justify-center items-center rounded-full overflow-hidden">
+              {image ? (
+                <Image
+                  src={image}
+                  layout="fill"
+                  objectFit="cover"
+                  alt="player"
+                />
+              ) : (
+                <UserIcon />
+              )}
+            </div>
+            <span className="whitespace-nowrap ml-2">
+              {firstName![0] + ". " + lastName}
+            </span>
+          </div>
         );
       },
     },

@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { uploadAvatar } from "@/utils/uploadAvatar";
 import Button from "../shared/Button";
 import DateInput from "../shared/DateInput";
 import Input from "../shared/Input";
@@ -20,11 +21,26 @@ export type PlayerFormInput = {
 };
 
 const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
+  const [uploading, setUploading] = useState(false);
+
+  const handleUpload = async (e: any) => {
+    try {
+      setUploading(true);
+      const avatarUrl = await uploadAvatar(e);
+      avatarUrl && setValue("image", avatarUrl);
+    } catch (err: any) {
+      console.log(err.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const {
     register,
     handleSubmit,
     control,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm<PlayerFormInput>({
     mode: "onSubmit",
@@ -105,6 +121,21 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
         error={errors.image}
         options={{ required: false }}
       />
+
+      {uploading ? (
+        "Uploading..."
+      ) : (
+        <label>
+          <span>Upload</span>
+          <input
+            type="file"
+            id="single"
+            accept="image/*"
+            onChange={handleUpload}
+            disabled={uploading}
+          />
+        </label>
+      )}
 
       <div className="w-full flex gap-x-4 mt-8">
         <Link href="/admin/players" passHref>
