@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../shared/Button";
+import ColorInput from "../shared/ColorInput";
 import Input from "../shared/Input";
 
 export type ClubFormProps = {
@@ -21,18 +22,30 @@ const ClubForm = ({ onSubmit, defaultValues }: ClubFormProps) => {
     register,
     handleSubmit,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm<ClubFormInput>({
     mode: "onSubmit",
-    defaultValues: useMemo(() => defaultValues, [defaultValues]),
+    defaultValues: useMemo(
+      () => defaultValues || { primary: "#fff", secondary: "#fff" },
+      [defaultValues]
+    ),
   });
 
   const submitHandler: SubmitHandler<ClubFormInput> = (data) => {
     onSubmit(data);
   };
 
+  const checkKeyDown = (e: React.KeyboardEvent) => {
+    if (e.code === "Enter") e.preventDefault();
+  };
+
   return (
-    <form className="w-full" onSubmit={handleSubmit(submitHandler)}>
+    <form
+      className="w-full"
+      onSubmit={handleSubmit(submitHandler)}
+      onKeyDown={(e) => checkKeyDown(e)}
+    >
       <div className="flex gap-x-4">
         <Input
           name="name"
@@ -59,7 +72,7 @@ const ClubForm = ({ onSubmit, defaultValues }: ClubFormProps) => {
           containerStyle="w-32"
         />
       </div>
-      <div className="flex gap-x-4">
+      {/* <div className="flex gap-x-4">
         <Input
           name="primary"
           label="Primary"
@@ -83,6 +96,37 @@ const ClubForm = ({ onSubmit, defaultValues }: ClubFormProps) => {
             maxLength: { value: 9, message: "[4-9] chars." },
           }}
           value={getValues("secondary")}
+        />
+      </div> */}
+
+      <div className="flex gap-x-4">
+        <ColorInput
+          name="primary"
+          label="Primary"
+          register={register}
+          error={errors.primary}
+          options={{
+            required: "Required",
+            minLength: { value: 4, message: "[4-9] chars." },
+            maxLength: { value: 7, message: "[4-9] chars." },
+          }}
+          setValue={setValue}
+          initialValue={getValues("primary")}
+        />
+
+        <ColorInput
+          name="secondary"
+          label="Secondary"
+          register={register}
+          error={errors.secondary}
+          options={{
+            required: "Required",
+            minLength: { value: 4, message: "[4-9] chars." },
+            maxLength: { value: 7, message: "[4-9] chars." },
+          }}
+          setValue={setValue}
+          right={true}
+          initialValue={getValues("secondary")}
         />
       </div>
 

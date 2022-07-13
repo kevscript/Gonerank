@@ -27,8 +27,9 @@ describe("ClubForm", () => {
     await waitFor(() => {
       expect(screen.getByTestId("error-name")).toBeInTheDocument();
       expect(screen.getByTestId("error-abbreviation")).toBeInTheDocument();
-      expect(screen.getByTestId("error-primary")).toBeInTheDocument();
-      expect(screen.getByTestId("error-secondary")).toBeInTheDocument();
+      // primary and secondary are set initialy
+      expect(screen.queryByTestId("error-primary")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("error-secondary")).not.toBeInTheDocument();
     });
   });
 
