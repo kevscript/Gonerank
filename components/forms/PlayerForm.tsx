@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { uploadAvatar } from "@/utils/uploadAvatar";
 import Button from "../shared/Button";
 import DateInput from "../shared/DateInput";
 import Input from "../shared/Input";
+import PhotoIcon from "../Icons/Photo";
+import useUpload from "@/hooks/useUpload";
 
 export type PlayerFormProps = {
   onSubmit: (x: PlayerFormInput) => unknown;
@@ -21,19 +22,7 @@ export type PlayerFormInput = {
 };
 
 const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
-  const [uploading, setUploading] = useState(false);
-
-  const handleUpload = async (e: any) => {
-    try {
-      setUploading(true);
-      const avatarUrl = await uploadAvatar(e);
-      avatarUrl && setValue("image", avatarUrl);
-    } catch (err: any) {
-      console.log(err.message);
-    } finally {
-      setUploading(false);
-    }
-  };
+  const { url, error, loading, handleUpload } = useUpload();
 
   const {
     register,
@@ -50,6 +39,10 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
   const submitHandler: SubmitHandler<PlayerFormInput> = (data) => {
     onSubmit(data);
   };
+
+  useEffect(() => {
+    url && setValue("image", url);
+  }, [url, setValue]);
 
   return (
     <form className="w-full" onSubmit={handleSubmit(submitHandler)}>
@@ -113,29 +106,34 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
         rules={{ required: "Required" }}
       />
 
-      <Input
-        register={register}
-        name="image"
-        label="Image url"
-        value={getValues("image")}
-        error={errors.image}
-        options={{ required: false }}
-      />
+      <div className="w-full flex gap-x-2 items-end">
+        <Input
+          register={register}
+          name="image"
+          label="Image url"
+          value={getValues("image")}
+          error={errors.image}
+          options={{ required: false }}
+        />
 
-      {uploading ? (
-        "Uploading..."
-      ) : (
-        <label>
-          <span>Upload</span>
-          <input
-            type="file"
-            id="single"
-            accept="image/*"
-            onChange={handleUpload}
-            disabled={uploading}
-          />
-        </label>
-      )}
+        {loading ? (
+          "Uploading..."
+        ) : (
+          <label className="cursor-pointer  bg-gray-600 border border-gray-200 rounded h-10 p-2 w-24 flex justify-center items-center">
+            <PhotoIcon className="w-4 h-4 fill-white" />
+            <span className="ml-2 text-sm text-white font-normal">Upload</span>
+
+            <input
+              type="file"
+              id="single"
+              accept="image/*"
+              onChange={handleUpload}
+              disabled={loading}
+              className="hidden"
+            />
+          </label>
+        )}
+      </div>
 
       <div className="w-full flex gap-x-4 mt-8">
         <Link href="/admin/players" passHref>
