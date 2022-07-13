@@ -11,7 +11,7 @@ import {
 export type ColorInputProps = {
   name: string;
   label: string;
-  error: FieldError | undefined;
+  error?: FieldError | undefined;
   options?: RegisterOptions;
   register: UseFormRegister<any>;
   containerStyle?: string;
@@ -33,7 +33,7 @@ const ColorInput = ({
   right,
   initialValue,
 }: ColorInputProps) => {
-  const [color, setColor] = useState<string>("#fff");
+  const [color, setColor] = useState(initialValue ? initialValue : "#000");
   const [isOpen, setIsOpen] = useState(false);
 
   const pickerRef = useRef(null);
@@ -43,10 +43,6 @@ const ColorInput = ({
     setColor(clr.hex);
   };
   const handleOpen = () => !isOpen && setIsOpen(true);
-
-  useEffect(() => {
-    initialValue && setColor(initialValue);
-  }, [initialValue]);
 
   useOutsideClick({ ref: pickerRef, action: () => setIsOpen(false) });
 
@@ -76,6 +72,7 @@ const ColorInput = ({
             error ? "bg-red-50" : ""
           }`}
           {...register(name, options)}
+          defaultValue={color}
         />
       </div>
 
@@ -91,13 +88,17 @@ const ColorInput = ({
       )}
 
       {isOpen && (
-        <ChromePicker
+        <div
+          data-testid="picker"
           className={`absolute top-16 z-50 ${right && "right-0"}`}
-          color={color}
-          onChangeComplete={handleColor}
-          disableAlpha
-          width={pickerWidth ? pickerWidth : 225}
-        />
+        >
+          <ChromePicker
+            color={color}
+            onChangeComplete={handleColor}
+            disableAlpha
+            width={pickerWidth ? pickerWidth : 225}
+          />
+        </div>
       )}
     </label>
   );
