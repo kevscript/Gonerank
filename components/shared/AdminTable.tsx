@@ -31,15 +31,15 @@ const AdminTable = ({ columns, data, frozenId }: AdminTableProps) => {
     <table className="w-full">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
+          <tr key={headerGroup.id} className="">
+            {headerGroup.headers.map((header, i) => (
               <th
                 key={header.id}
                 colSpan={header.colSpan}
-                className={`border p-2 min-w-[50px] text-left ${
+                className={`h-10 bg-gray-50 text-left border-r border-r-gray-100 last-border-r-0 ${
                   frozenId &&
                   header.id.endsWith(frozenId) &&
-                  "bg-yellow-400 sticky left-0"
+                  "sticky left-0 z-10 after:absolute after:top-0 after:right-0 after:-z-10 after:w-[1px] after:bg-gray-100 after:h-full"
                 }`}
               >
                 {header.isPlaceholder ? null : (
@@ -55,10 +55,10 @@ const AdminTable = ({ columns, data, frozenId }: AdminTableProps) => {
                       header.column.columnDef.header,
                       header.getContext()
                     )}
-                    {{
+                    {/* {{
                       asc: " 🔼",
                       desc: " 🔽",
-                    }[header.column.getIsSorted() as string] ?? null}
+                    }[header.column.getIsSorted() as string] ?? null} */}
                   </div>
                 )}
               </th>
@@ -68,14 +68,14 @@ const AdminTable = ({ columns, data, frozenId }: AdminTableProps) => {
       </thead>
       <tbody>
         {table.getRowModel().rows.map((row) => (
-          <tr key={row.id} className="bg-blue-200 relative">
+          <tr key={row.id} className="relative border-b border-gray-100">
             {row.getVisibleCells().map((cell) => (
               <td
                 key={cell.id}
-                className={`border p-2 min-w-[50px] ${
+                className={`relative h-12 border-r last:border-r-0 border-gray-100 bg-white ${
                   frozenId &&
                   cell.id.endsWith(frozenId) &&
-                  "bg-yellow-400 sticky left-0"
+                  "sticky left-0 z-10 after:absolute after:top-0 after:right-0 after:-z-10 after:w-[1px] after:bg-gray-100 after:h-full"
                 }`}
               >
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
