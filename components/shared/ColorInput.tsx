@@ -1,5 +1,5 @@
 import useOutsideClick from "@/hooks/useOutsideClick";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { ChromePicker, ColorChangeHandler } from "react-color";
 import {
   FieldError,
@@ -56,7 +56,7 @@ const ColorInput = ({
     >
       <span className="ml-2 text-sm">{label}</span>
       <div
-        className={`w-full flex flex-nowrap items-center overflow-hidden mt-1 h-10 border border-gray-200 rounded ${
+        className={`w-full flex flex-nowrap items-center overflow-hidden mt-1 h-10 border rounded ${
           error
             ? "border-red-400 outline-red-500 bg-red-50"
             : "border-gray-200 outline-marine-600"
@@ -68,7 +68,7 @@ const ColorInput = ({
         ></div>
         <input
           type="text"
-          className={`w-full pl-2 outline-none border-none ${
+          className={`w-full h-full pl-2 outline-none border-none ${
             error ? "bg-red-50" : ""
           }`}
           {...register(name, options)}
@@ -94,9 +94,13 @@ const ColorInput = ({
         >
           <ChromePicker
             color={color}
-            onChangeComplete={handleColor}
+            onChange={handleColor}
             disableAlpha
-            width={pickerWidth ? pickerWidth : 225}
+            styles={{
+              default: {
+                picker: { width: pickerWidth ? pickerWidth : 225 },
+              },
+            }}
           />
         </div>
       )}
