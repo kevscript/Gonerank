@@ -595,21 +595,21 @@ export type GetMatchQueryVariables = Exact<{
 }>;
 
 
-export type GetMatchQuery = { __typename?: 'Query', match: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string } };
+export type GetMatchQuery = { __typename?: 'Query', match: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string, players: Array<{ __typename?: 'MatchPlayer', id: string, playerId: string }> } };
 
 export type GetMatchesQueryVariables = Exact<{
   where?: InputMaybe<MatchesWhereInput>;
 }>;
 
 
-export type GetMatchesQuery = { __typename?: 'Query', matches: Array<{ __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string }> };
+export type GetMatchesQuery = { __typename?: 'Query', matches: Array<{ __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string, players: Array<{ __typename?: 'MatchPlayer', id: string, playerId: string }> }> };
 
 export type CreateMatchMutationVariables = Exact<{
   data: CreateMatchInput;
 }>;
 
 
-export type CreateMatchMutation = { __typename?: 'Mutation', createMatch: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string } };
+export type CreateMatchMutation = { __typename?: 'Mutation', createMatch: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string, players: Array<{ __typename?: 'MatchPlayer', id: string, playerId: string }> } };
 
 export type UpdateMatchMutationVariables = Exact<{
   id: Scalars['String'];
@@ -1094,6 +1094,10 @@ export const GetMatchDocument = gql`
     competitionId
     seasonId
     opponentId
+    players {
+      id
+      playerId
+    }
   }
 }
     `;
@@ -1138,6 +1142,10 @@ export const GetMatchesDocument = gql`
     competitionId
     seasonId
     opponentId
+    players {
+      id
+      playerId
+    }
   }
 }
     `;
@@ -1182,6 +1190,10 @@ export const CreateMatchDocument = gql`
     competitionId
     seasonId
     opponentId
+    players {
+      id
+      playerId
+    }
   }
 }
     `;

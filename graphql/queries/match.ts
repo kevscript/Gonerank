@@ -13,6 +13,10 @@ export const GET_MATCH = gql`
       competitionId
       seasonId
       opponentId
+      players {
+        id
+        playerId
+      }
     }
   }
 `;
@@ -30,6 +34,10 @@ export const GET_MATCHES = gql`
       competitionId
       seasonId
       opponentId
+      players {
+        id
+        playerId
+      }
     }
   }
 `;
@@ -47,6 +55,10 @@ export const CREATE_MATCH = gql`
       competitionId
       seasonId
       opponentId
+      players {
+        id
+        playerId
+      }
     }
   }
 `;
