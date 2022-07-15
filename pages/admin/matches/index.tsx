@@ -4,6 +4,7 @@ import EditIcon from "@/components/Icons/Edit";
 import HomeIcon from "@/components/Icons/HomeIcon";
 import LocationIcon from "@/components/Icons/Location";
 import PlaneIcon from "@/components/Icons/PlaneIcon";
+import PlayerIcon from "@/components/Icons/Player";
 import TrophyIcon from "@/components/Icons/Trophy";
 import AdminTable from "@/components/shared/AdminTable";
 import Draggable from "@/components/shared/Draggable";
@@ -21,13 +22,18 @@ import {
   useGetMatchesQuery,
   useGetSeasonsQuery,
   useToggleMatchStatusMutation,
-  useUpdateMatchMutation,
 } from "graphql/generated/queryTypes";
 import { GET_MATCHES } from "graphql/queries/match";
 import Link from "next/link";
 
 const AdminMatchesPage: NextCustomPage = () => {
-  const { data: matchesData, loading, error } = useGetMatchesQuery();
+  const {
+    data: matchesData,
+    loading,
+    error,
+  } = useGetMatchesQuery({
+    onCompleted: (d) => console.log(d),
+  });
 
   const { data: seasonsData } = useGetSeasonsQuery();
   const { data: competitionsData } = useGetCompetitionsQuery();
@@ -229,6 +235,27 @@ const AdminMatchesPage: NextCustomPage = () => {
               </p>
             </StatusWidget>
           </TableCell>
+        );
+      },
+    },
+    {
+      header: () => {
+        return (
+          <TableCell className="justify-center">
+            <PlayerIcon className="w-3 h-3 fill-black" />
+          </TableCell>
+        );
+      },
+      id: "squad",
+      cell: ({ row }) => {
+        return (
+          <Link href={`/admin/matches/${row.original!.id}/squad`} passHref>
+            <div className="w-full h-full">
+              <TableCell className="bg-yellow-50 cursor-pointer justify-center group hover:bg-yellow-100">
+                <PlayerIcon className="w-4 h-4 fill-black" />
+              </TableCell>
+            </div>
+          </Link>
         );
       },
     },
