@@ -3,6 +3,7 @@ export type ButtonProps = {
   type?: "submit" | "button";
   className?: StringConstructor;
   onClick?: () => unknown;
+  disabled?: boolean;
 };
 
 const Button = ({
@@ -10,14 +11,16 @@ const Button = ({
   className,
   onClick,
   type = "button",
+  disabled,
 }: ButtonProps) => {
   return (
     <button
       type={type}
       className={`min-w-[80px] px-4 py-1.5 border border-gray-400 rounded ${
         className || ""
-      }`}
+      } ${disabled && "bg-red-100"}`}
       onClick={onClick}
+      disabled={disabled}
     >
       {label}
     </button>
