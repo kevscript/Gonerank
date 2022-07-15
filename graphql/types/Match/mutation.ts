@@ -128,5 +128,40 @@ export const MatchMutation = extendType({
         }
       },
     });
+
+    // toggle match status
+    t.field("toggleMatchStatus", {
+      type: MatchType,
+      args: { id: nonNull(stringArg()) },
+      resolve: async (_, args, ctx) => {
+        // if (ctx.auth?.role !== "ADMIN") {
+        //   throw new ForbiddenError(`Forbidden Action`);
+        // }
+        try {
+          // deactivate any match thats currently activated
+          await prisma.match.updateMany({
+            where: { active: true, NOT: { id: args.id } },
+            data: { active: false },
+          });
+
+          // first fetch match to retrieve current activation status
+          const currentMatch = await prisma.match.findUnique({
+            where: { id: args.id },
+          });
+          if (currentMatch) {
+            // update that match with the appropriate status
+            const setMatchStatus = await prisma.match.update({
+              where: { id: args.id },
+              data: { active: currentMatch.active ? false : true },
+            });
+            return setMatchStatus;
+          } else {
+            throw new UserInputError(`Can't find match with id ${args.id}`);
+          }
+        } catch (err) {
+          throw err as ApolloError;
+        }
+      },
+    });
   },
 });

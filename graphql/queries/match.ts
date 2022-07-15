@@ -68,6 +68,23 @@ export const UPDATE_MATCH = gql`
   }
 `;
 
+export const TOGGLE_MATCH_STATUS = gql`
+  mutation ToggleMatchStatus($id: String!) {
+    toggleMatchStatus(id: $id) {
+      id
+      date
+      home
+      scored
+      conceeded
+      active
+      archived
+      competitionId
+      seasonId
+      opponentId
+    }
+  }
+`;
+
 export const DELETE_MATCH = gql`
   mutation DeleteMatch($id: String!) {
     deleteMatch(id: $id) {

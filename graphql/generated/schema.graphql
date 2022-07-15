@@ -168,6 +168,7 @@ type Mutation {
   deletePlayer(id: String!): Player!
   deleteSeason(id: String!): Season!
   deleteUser(id: String!): User!
+  toggleMatchStatus(id: String!): Match!
   updateClub(data: UpdateClubInput!, id: String!): Club!
   updateCompetition(data: UpdateCompetitionInput!, id: String!): Competition!
   updateMatch(data: UpdateMatchInput!, id: String!): Match!
