@@ -7,6 +7,7 @@ import AdminTable from "@/components/shared/AdminTable";
 import Draggable from "@/components/shared/Draggable";
 import TableCell from "@/components/shared/TableCell";
 import DeleteWidget from "@/components/widgets/DeleteWidget";
+import StatusWidget from "@/components/widgets/StatusWidget";
 import { NextCustomPage } from "@/pages/_app";
 import { Player } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
@@ -144,28 +145,28 @@ const AdminPlayersPage: NextCustomPage = () => {
       accessorKey: "active",
       cell: ({ row, getValue }) => {
         const active: boolean = getValue();
-        const { id } = row.original!;
+        const { id, firstName, lastName } = row.original!;
         return (
-          <TableCell
-            className={`cursor-pointer justify-center group ${
-              active
-                ? "bg-violet-100 hover:bg-violet-400"
-                : "bg-gray-200 hover:bg-gray-300"
-            }`}
-            onClick={() =>
-              updatePlayer({
-                variables: {
-                  id: id,
-                  data: { active: active ? false : true },
-                },
-              })
-            }
-          >
-            {active ? (
-              <EyeIcon className="w-5 h-5 fill-gray-500 group-hover:fill-white" />
-            ) : (
-              <EyeClosedIcon className="w-5 h-5 fill-gray-500 group-hover:fill-gray-600" />
-            )}
+          <TableCell className="px-0">
+            <StatusWidget
+              active={active}
+              onStatusChange={() =>
+                updatePlayer({
+                  variables: {
+                    id: id,
+                    data: { active: active ? false : true },
+                  },
+                })
+              }
+            >
+              <p className="text-sm">
+                Are you sure you want to{" "}
+                <span className="font-bold">
+                  {active ? "deactivate" : "activate"}
+                </span>{" "}
+                {firstName + " " + lastName}?
+              </p>
+            </StatusWidget>
           </TableCell>
         );
       },
