@@ -72,7 +72,7 @@ const AdminTable = ({ columns, data, frozenId }: AdminTableProps) => {
             {row.getVisibleCells().map((cell) => (
               <td
                 key={cell.id}
-                className={`relative h-12 border-r last:border-r-0 border-gray-100 bg-white ${
+                className={`relative h-12 border-r last:border-r-0 border-gray-100 bg-white text-sm ${
                   frozenId &&
                   cell.id.endsWith(frozenId) &&
                   "sticky left-0 z-10 after:absolute after:top-0 after:right-0 after:-z-10 after:w-[1px] after:bg-gray-100 after:h-full"
