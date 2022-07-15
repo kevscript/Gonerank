@@ -8,7 +8,7 @@ const AdminPlayerCreatePage: NextCustomPage = () => {
   const router = useRouter();
 
   const handlePlayerCreate = (data: PlayerFormInput) => {
-    createPlayer({ variables: { data } });
+    createPlayer({ variables: { data: data } });
   };
 
   const [createPlayer] = useCreatePlayerMutation({

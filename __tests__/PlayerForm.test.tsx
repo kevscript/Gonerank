@@ -12,7 +12,9 @@ describe("PlayerForm", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: /code/i })).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: /birth/i })).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: /image/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: /image/i })
+    ).toBeInTheDocument();
     expect(screen.getByText(/create/i)).toBeInTheDocument();
     expect(screen.getByText(/cancel/i)).toBeInTheDocument();
   });
@@ -66,9 +68,6 @@ describe("PlayerForm", () => {
     const birthDate = screen.getByRole("textbox", { name: /birth/i });
     fireEvent.change(birthDate, { target: { value: "20/05/1998" } });
 
-    const image = screen.getByRole("textbox", { name: /image/i });
-    fireEvent.change(image, { target: { value: "https://image.com" } });
-
     const submitButton = screen.getByText(/create/i);
     fireEvent.click(submitButton);
 
@@ -81,7 +80,6 @@ describe("PlayerForm", () => {
           country: "United Kingdom",
           countryCode: "UK",
           birthDate: new Date(1998, 4, 20),
-          image: "https://image.com",
         })
       );
     });
@@ -95,7 +93,7 @@ describe("PlayerForm", () => {
       country: "Brazil",
       countryCode: "BR",
       birthDate: new Date("2011-10-05T00:00:00.000Z"),
-      image: "https://test.com",
+      image: "",
     };
     render(<PlayerForm onSubmit={mockSubmit} defaultValues={defaultValues} />);
 
@@ -113,8 +111,5 @@ describe("PlayerForm", () => {
 
     const birthDate = screen.getByRole("textbox", { name: /birth/i });
     expect(birthDate).toHaveDisplayValue("05/10/2011");
-
-    const image = screen.getByRole("textbox", { name: /image/i });
-    expect(image).toHaveDisplayValue("https://test.com");
   });
 });

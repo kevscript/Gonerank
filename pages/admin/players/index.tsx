@@ -6,6 +6,7 @@ import UserIcon from "@/components/Icons/User";
 import AdminTable from "@/components/shared/AdminTable";
 import Draggable from "@/components/shared/Draggable";
 import TableCell from "@/components/shared/TableCell";
+import DeleteWidget from "@/components/widgets/DeleteWidget";
 import { NextCustomPage } from "@/pages/_app";
 import { Player } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
@@ -63,7 +64,7 @@ const AdminPlayersPage: NextCustomPage = () => {
             <div className="relative w-8 h-8 flex justify-center items-center rounded-full overflow-hidden bg-gray-200">
               {image ? (
                 <Image
-                  src={image}
+                  src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${image}`}
                   layout="fill"
                   objectFit="cover"
                   alt="player"
@@ -200,12 +201,18 @@ const AdminPlayersPage: NextCustomPage = () => {
       },
       id: "delete",
       cell: ({ row }) => {
+        const { firstName, id, lastName } = row.original || {};
         return (
-          <TableCell
-            className="bg-red-100 cursor-pointer justify-center group hover:bg-red-400"
-            onClick={() => handlePlayerDelete(row.original!.id)}
-          >
-            <TrashIcon className="w-4 h-4 fill-black group-hover:fill-white" />
+          <TableCell className="px-0">
+            <DeleteWidget onDelete={() => handlePlayerDelete(id!)}>
+              <p className="text-sm">
+                Are you sure you want to definitely{" "}
+                <span className="font-bold">
+                  remove {firstName + " " + lastName}
+                </span>{" "}
+                from the database? This decision is irreversible.
+              </p>
+            </DeleteWidget>
           </TableCell>
         );
       },

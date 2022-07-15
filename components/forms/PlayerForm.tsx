@@ -6,6 +6,8 @@ import DateInput from "../shared/DateInput";
 import Input from "../shared/Input";
 import PhotoIcon from "../Icons/Photo";
 import useUpload from "@/hooks/useUpload";
+import useStorage from "@/hooks/useStorage";
+import SelectInput from "../shared/SelectInput";
 
 export type PlayerFormProps = {
   onSubmit: (x: PlayerFormInput) => unknown;
@@ -22,7 +24,20 @@ export type PlayerFormInput = {
 };
 
 const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
-  const { url, error, loading, handleUpload } = useUpload();
+  // const {
+  //   url,
+  //   loading: uploadLoading,
+  //   error: uploadError,
+  //   handleUpload,
+  // } = useUpload();
+
+  const {
+    data: files,
+    loading,
+    error,
+    latestFile,
+    handleUpload,
+  } = useStorage("avatars");
 
   const {
     register,
@@ -41,8 +56,8 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
   };
 
   useEffect(() => {
-    url && setValue("image", url);
-  }, [url, setValue]);
+    latestFile && setValue("image", latestFile);
+  }, [latestFile, setValue]);
 
   return (
     <form className="w-full" onSubmit={handleSubmit(submitHandler)}>
@@ -107,14 +122,20 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
       />
 
       <div className="w-full flex gap-x-2 items-end">
-        <Input
+        <SelectInput
           register={register}
           name="image"
           label="Image url"
           value={getValues("image")}
           error={errors.image}
           options={{ required: false }}
-        />
+        >
+          {files?.map((file) => (
+            <option key={file.name} value={file.name}>
+              {file.name}
+            </option>
+          ))}
+        </SelectInput>
 
         {loading ? (
           "Uploading..."
