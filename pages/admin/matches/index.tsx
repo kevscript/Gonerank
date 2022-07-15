@@ -1,5 +1,15 @@
+import BallIcon from "@/components/Icons/Ball";
+import CalendarIcon from "@/components/Icons/Calendar";
+import EditIcon from "@/components/Icons/Edit";
+import HomeIcon from "@/components/Icons/HomeIcon";
+import LocationIcon from "@/components/Icons/Location";
+import PlaneIcon from "@/components/Icons/PlaneIcon";
+import TrophyIcon from "@/components/Icons/Trophy";
 import AdminTable from "@/components/shared/AdminTable";
 import Draggable from "@/components/shared/Draggable";
+import TableCell from "@/components/shared/TableCell";
+import DeleteWidget from "@/components/widgets/DeleteWidget";
+import StatusWidget from "@/components/widgets/StatusWidget";
 import { NextCustomPage } from "@/pages/_app";
 import { Match } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
@@ -10,6 +20,7 @@ import {
   useGetCompetitionsQuery,
   useGetMatchesQuery,
   useGetSeasonsQuery,
+  useToggleMatchStatusMutation,
   useUpdateMatchMutation,
 } from "graphql/generated/queryTypes";
 import { GET_MATCHES } from "graphql/queries/match";
@@ -36,7 +47,27 @@ const AdminMatchesPage: NextCustomPage = () => {
     },
   });
 
-  const [updateMatch] = useUpdateMatchMutation();
+  const [toggleMatchStatus] = useToggleMatchStatusMutation({
+    update: (cache, { data }) => {
+      const { matches } = cache.readQuery({ query: GET_MATCHES }) || {};
+      cache.modify({
+        fields: {
+          matches: () => {
+            cache.writeQuery({
+              query: GET_MATCHES,
+              data: {
+                matches: matches.map((m: Match) => {
+                  return m.id === data?.toggleMatchStatus.id
+                    ? { ...m, active: m.active ? false : true }
+                    : { ...m, active: false };
+                }),
+              },
+            });
+          },
+        },
+      });
+    },
+  });
 
   const handleMatchDelete = (id: string) => {
     deleteMatch({ variables: { id: id } });
@@ -44,26 +75,47 @@ const AdminMatchesPage: NextCustomPage = () => {
 
   const matchColumns: ColumnDef<Match>[] = [
     {
-      header: "date",
+      header: () => (
+        <TableCell className="text-sm">
+          <span>date</span>
+        </TableCell>
+      ),
       id: "date",
       accessorKey: "date",
       cell: (info) => {
-        const date: Date = new Date(info.getValue());
-        return date.toLocaleDateString();
+        const date = new Date(info.getValue());
+        return (
+          <TableCell>
+            <span>{date ? date.toLocaleDateString() : ""}</span>
+          </TableCell>
+        );
       },
     },
     {
-      header: "season",
+      header: () => (
+        <TableCell className="justify-center">
+          <CalendarIcon className="w-3 h-3" />
+        </TableCell>
+      ),
       id: "season",
       accessorKey: "seasonId",
       cell: (info) => {
         const seasonId = info.getValue();
         const season = seasonsData?.seasons.find((s) => s.id === seasonId);
-        return `${new Date(season?.startDate).getFullYear()}`;
+        const year = new Date(season?.startDate).getFullYear();
+        return (
+          <TableCell className="justify-center">
+            <span>{year || ""}</span>
+          </TableCell>
+        );
       },
     },
     {
-      header: "comp",
+      header: () => (
+        <TableCell className="justify-center">
+          <TrophyIcon className="w-3 h-3" />
+        </TableCell>
+      ),
       id: "competition",
       accessorKey: "competitionId",
       cell: (info) => {
@@ -71,62 +123,160 @@ const AdminMatchesPage: NextCustomPage = () => {
         const competition = competitionsData?.competitions.find(
           (c) => c.id === competitionId
         );
-        return competition?.abbreviation;
+        return (
+          <TableCell className="justify-center">
+            <span>{competition?.abbreviation}</span>
+          </TableCell>
+        );
       },
     },
     {
-      header: "location",
+      header: () => (
+        <TableCell className="justify-center">
+          <LocationIcon className="w-3 h-3" />
+        </TableCell>
+      ),
       id: "location",
       accessorKey: "home",
       cell: (info) => {
         const home = info.getValue();
-        return home ? "Home" : "Away";
+        return (
+          <TableCell className="justify-center">
+            {home ? (
+              <HomeIcon className="w-4 h-4" />
+            ) : (
+              <PlaneIcon className="w-4 h-4" />
+            )}
+          </TableCell>
+        );
       },
     },
     {
-      header: "opponent",
+      header: () => (
+        <TableCell>
+          <span className="text-sm">opponent</span>
+        </TableCell>
+      ),
       id: "opponent",
       accessorKey: "opponentId",
       cell: (info) => {
         const opponentId = info.getValue();
         const opponent = clubsData?.clubs.find((c) => c.id === opponentId);
-        return opponent?.abbreviation;
+        return (
+          <TableCell className="whitespace-nowrap">
+            <span>{opponent?.name}</span>
+          </TableCell>
+        );
       },
     },
     {
-      header: "scored",
+      header: () => (
+        <TableCell className="justify-center">
+          <BallIcon className="w-3 h-3 fill-marine-600" />
+        </TableCell>
+      ),
       id: "scored",
       accessorKey: "scored",
-      cell: (info) => info.getValue(),
+      cell: (info) => (
+        <TableCell className="justify-center">
+          <span>{info.getValue()}</span>
+        </TableCell>
+      ),
     },
     {
-      header: "conceeded",
+      header: () => (
+        <TableCell className="justify-center">
+          <BallIcon className="w-3 h-3 fill-red-600" />
+        </TableCell>
+      ),
       id: "conceeded",
       accessorKey: "conceeded",
-      cell: (info) => info.getValue(),
+      cell: (info) => (
+        <TableCell className="justify-center">
+          <span>{info.getValue()}</span>
+        </TableCell>
+      ),
     },
     {
-      header: "edit",
+      header: () => {
+        return (
+          <TableCell className="justify-center">
+            <span className="text-sm">status</span>
+          </TableCell>
+        );
+      },
+      accessorKey: "active",
+      cell: ({ row, getValue }) => {
+        const active: boolean = getValue();
+        const { id, opponentId, date } = row.original || {};
+        const opponent = clubsData?.clubs.find((c) => c.id === opponentId);
+        return (
+          <TableCell className="px-0">
+            <StatusWidget
+              active={active}
+              onStatusChange={() =>
+                toggleMatchStatus({ variables: { id: id! } })
+              }
+            >
+              <p className="text-sm">
+                Are you sure you want to{" "}
+                <span className="font-bold">
+                  {active ? "deactivate" : "activate"}
+                </span>{" "}
+                the match against{" "}
+                <span className="font-bold">{opponent?.name}</span> on the{" "}
+                {date ? new Date(date).toLocaleDateString() : ""}?
+              </p>
+            </StatusWidget>
+          </TableCell>
+        );
+      },
+    },
+    {
+      header: () => {
+        return (
+          <TableCell className="justify-center">
+            <span className="text-sm">edit</span>
+          </TableCell>
+        );
+      },
       id: "edit",
       cell: ({ row }) => {
         return (
           <Link href={`/admin/matches/${row.original!.id}`} passHref>
-            <div className="w-full h-full bg-green-500">Edit</div>
+            <div className="w-full h-full">
+              <TableCell className="bg-marine-100 cursor-pointer justify-center group hover:bg-marine-400">
+                <EditIcon className="w-4 h-4 fill-black group-hover:fill-white" />
+              </TableCell>
+            </div>
           </Link>
         );
       },
     },
     {
-      header: "delete",
+      header: () => {
+        return (
+          <TableCell className="justify-center">
+            <span className="text-sm">delete</span>
+          </TableCell>
+        );
+      },
       id: "delete",
       cell: ({ row }) => {
+        const { id, opponentId, date } = row.original || {};
+        const opponent = clubsData?.clubs.find((c) => c.id === opponentId);
         return (
-          <div
-            className="w-full h-full bg-red-500"
-            onClick={() => handleMatchDelete(row.original!.id)}
-          >
-            Delete
-          </div>
+          <TableCell className="px-0">
+            <DeleteWidget onDelete={() => handleMatchDelete(id!)}>
+              <p className="text-sm">
+                Are you sure you want to definitely{" "}
+                <span className="font-bold">remove</span> the match against{" "}
+                <span className="font-bold">{opponent?.name}</span> on the{" "}
+                {date ? new Date(date).toLocaleDateString() : ""} from the
+                database? This decision is irreversible.
+              </p>
+            </DeleteWidget>
+          </TableCell>
         );
       },
     },
