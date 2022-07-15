@@ -5,6 +5,7 @@ declare global {
   // eslint-disable-next-line no-var
   var prisma: PrismaClient | undefined;
 }
+
 export const prisma: PrismaClient<Prisma.PrismaClientOptions, "query"> =
   global.prisma ||
   new PrismaClient({

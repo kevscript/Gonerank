@@ -1,3 +1,4 @@
+import prisma from "@/lib/prisma";
 import { ApolloServer } from "apollo-server-micro";
 import Cors from "micro-cors";
 import { getToken } from "next-auth/jwt";
@@ -12,7 +13,7 @@ const apolloServer = new ApolloServer({
   schema: schema,
   context: async ({ req }): Promise<Context> => {
     const auth = await getToken({ req, secret });
-    return { auth: auth };
+    return { auth: auth, prisma: prisma };
   },
 });
 
