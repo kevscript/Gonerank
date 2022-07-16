@@ -5,7 +5,6 @@ import Button from "../shared/Button";
 import DateInput from "../shared/DateInput";
 import Input from "../shared/Input";
 import PhotoIcon from "../Icons/Photo";
-import useUpload from "@/hooks/useUpload";
 import useStorage from "@/hooks/useStorage";
 import SelectInput from "../shared/SelectInput";
 
@@ -54,6 +53,13 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
   const submitHandler: SubmitHandler<PlayerFormInput> = (data) => {
     onSubmit(data);
   };
+
+  useEffect(() => {
+    if (files && defaultValues) {
+      const currFile = files.find((f) => f.name === defaultValues.image);
+      currFile && setValue("image", currFile.name);
+    }
+  }, [files, defaultValues, setValue]);
 
   useEffect(() => {
     latestFile && setValue("image", latestFile);
