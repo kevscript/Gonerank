@@ -82,8 +82,8 @@ const AdminMatchesPage: NextCustomPage = () => {
   const matchColumns: ColumnDef<Match>[] = [
     {
       header: () => (
-        <TableCell className="text-sm">
-          <span>date</span>
+        <TableCell className="justify-center">
+          <span className="text-sm">date</span>
         </TableCell>
       ),
       id: "date",
@@ -91,11 +91,20 @@ const AdminMatchesPage: NextCustomPage = () => {
       cell: (info) => {
         const date = new Date(info.getValue());
         return (
-          <TableCell>
-            <span>{date ? date.toLocaleDateString() : ""}</span>
+          <TableCell className="justify-center">
+            <span>
+              {date
+                ? date.toLocaleDateString("fr-FR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "2-digit",
+                  })
+                : ""}
+            </span>
           </TableCell>
         );
       },
+      size: 100,
     },
     {
       header: () => (
@@ -115,6 +124,7 @@ const AdminMatchesPage: NextCustomPage = () => {
           </TableCell>
         );
       },
+      size: 100,
     },
     {
       header: () => (
@@ -135,6 +145,7 @@ const AdminMatchesPage: NextCustomPage = () => {
           </TableCell>
         );
       },
+      size: 100,
     },
     {
       header: () => (
@@ -156,6 +167,37 @@ const AdminMatchesPage: NextCustomPage = () => {
           </TableCell>
         );
       },
+      size: 80,
+    },
+    {
+      header: () => (
+        <TableCell className="justify-center">
+          <BallIcon className="w-3 h-3 fill-marine-600" />
+        </TableCell>
+      ),
+      id: "scored",
+      accessorKey: "scored",
+      cell: (info) => (
+        <TableCell className="justify-center">
+          <span>{info.getValue()}</span>
+        </TableCell>
+      ),
+      size: 80,
+    },
+    {
+      header: () => (
+        <TableCell className="justify-center">
+          <BallIcon className="w-3 h-3 fill-red-600" />
+        </TableCell>
+      ),
+      id: "conceeded",
+      accessorKey: "conceeded",
+      cell: (info) => (
+        <TableCell className="justify-center">
+          <span>{info.getValue()}</span>
+        </TableCell>
+      ),
+      size: 80,
     },
     {
       header: () => (
@@ -174,34 +216,32 @@ const AdminMatchesPage: NextCustomPage = () => {
           </TableCell>
         );
       },
+      size: 250,
     },
     {
-      header: () => (
-        <TableCell className="justify-center">
-          <BallIcon className="w-3 h-3 fill-marine-600" />
-        </TableCell>
-      ),
-      id: "scored",
-      accessorKey: "scored",
-      cell: (info) => (
-        <TableCell className="justify-center">
-          <span>{info.getValue()}</span>
-        </TableCell>
-      ),
-    },
-    {
-      header: () => (
-        <TableCell className="justify-center">
-          <BallIcon className="w-3 h-3 fill-red-600" />
-        </TableCell>
-      ),
-      id: "conceeded",
-      accessorKey: "conceeded",
-      cell: (info) => (
-        <TableCell className="justify-center">
-          <span>{info.getValue()}</span>
-        </TableCell>
-      ),
+      header: () => {
+        return (
+          <TableCell className="justify-center">
+            <span className="text-sm">squad</span>
+          </TableCell>
+        );
+      },
+      id: "squad",
+      cell: ({ row }) => {
+        return (
+          <Link href={`/admin/matches/${row.original!.id}/squad`} passHref>
+            <div className="w-full h-full">
+              <TableCell
+                className="bg-yellow-50 cursor-pointer justify-center group hover:bg-yellow-300"
+                padding="px-0"
+              >
+                <PlayerIcon className="w-4 h-4 fill-black" />
+              </TableCell>
+            </div>
+          </Link>
+        );
+      },
+      size: 100,
     },
     {
       header: () => {
@@ -217,7 +257,7 @@ const AdminMatchesPage: NextCustomPage = () => {
         const { id, opponentId, date } = row.original || {};
         const opponent = clubsData?.clubs.find((c) => c.id === opponentId);
         return (
-          <TableCell className="px-0">
+          <TableCell padding="px-0">
             <StatusWidget
               active={active}
               onStatusChange={() =>
@@ -237,27 +277,7 @@ const AdminMatchesPage: NextCustomPage = () => {
           </TableCell>
         );
       },
-    },
-    {
-      header: () => {
-        return (
-          <TableCell className="justify-center">
-            <PlayerIcon className="w-3 h-3 fill-black" />
-          </TableCell>
-        );
-      },
-      id: "squad",
-      cell: ({ row }) => {
-        return (
-          <Link href={`/admin/matches/${row.original!.id}/squad`} passHref>
-            <div className="w-full h-full">
-              <TableCell className="bg-yellow-50 cursor-pointer justify-center group hover:bg-yellow-100">
-                <PlayerIcon className="w-4 h-4 fill-black" />
-              </TableCell>
-            </div>
-          </Link>
-        );
-      },
+      size: 100,
     },
     {
       header: () => {
@@ -272,13 +292,17 @@ const AdminMatchesPage: NextCustomPage = () => {
         return (
           <Link href={`/admin/matches/${row.original!.id}`} passHref>
             <div className="w-full h-full">
-              <TableCell className="bg-marine-100 cursor-pointer justify-center group hover:bg-marine-400">
+              <TableCell
+                className="bg-marine-100 cursor-pointer justify-center group hover:bg-marine-400"
+                padding="px-0"
+              >
                 <EditIcon className="w-4 h-4 fill-black group-hover:fill-white" />
               </TableCell>
             </div>
           </Link>
         );
       },
+      size: 100,
     },
     {
       header: () => {
@@ -293,7 +317,7 @@ const AdminMatchesPage: NextCustomPage = () => {
         const { id, opponentId, date } = row.original || {};
         const opponent = clubsData?.clubs.find((c) => c.id === opponentId);
         return (
-          <TableCell className="px-0">
+          <TableCell padding="px-0">
             <DeleteWidget onDelete={() => handleMatchDelete(id!)}>
               <p className="text-sm">
                 Are you sure you want to definitely{" "}
@@ -306,6 +330,7 @@ const AdminMatchesPage: NextCustomPage = () => {
           </TableCell>
         );
       },
+      size: 100,
     },
   ];
 
@@ -316,17 +341,19 @@ const AdminMatchesPage: NextCustomPage = () => {
           <a className="px-2 py-1 bg-gray-200 rounded">Ajouter</a>
         </Link>
       </div>
-      {loading && <div>Loading...</div>}
-      {error && <div className="text-red-600">{error.message}</div>}
-      {matchesData?.matches && (
-        <Draggable>
-          <AdminTable
-            columns={matchColumns}
-            data={matchesData.matches}
-            frozenId="date"
-          />
-        </Draggable>
-      )}
+      <div className="py-4">
+        {loading && <div>Loading...</div>}
+        {error && <div className="text-red-600">{error.message}</div>}
+        {matchesData?.matches && (
+          <Draggable>
+            <AdminTable
+              columns={matchColumns}
+              data={matchesData.matches}
+              frozenId="date"
+            />
+          </Draggable>
+        )}
+      </div>
     </div>
   );
 };

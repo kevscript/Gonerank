@@ -61,7 +61,7 @@ const AdminPlayersPage: NextCustomPage = () => {
       cell: ({ row }) => {
         const { firstName, lastName, image } = row.original || {};
         return (
-          <TableCell className="flex flex-nowrap">
+          <TableCell className="flex flex-nowrap px-2">
             <div className="relative w-8 h-8 flex justify-center items-center rounded-full overflow-hidden bg-gray-200">
               {image ? (
                 <Image
@@ -80,11 +80,12 @@ const AdminPlayersPage: NextCustomPage = () => {
           </TableCell>
         );
       },
+      size: 200,
     },
     {
       header: () => {
         return (
-          <TableCell>
+          <TableCell className="justify-center">
             <span className="text-sm">birthDate</span>
           </TableCell>
         );
@@ -93,11 +94,18 @@ const AdminPlayersPage: NextCustomPage = () => {
       cell: (info) => {
         const birthDate: Date = new Date(info.getValue());
         return (
-          <TableCell>
-            <span>{birthDate.toLocaleDateString()}</span>
+          <TableCell className="justify-center">
+            <span>
+              {birthDate.toLocaleDateString("fr-FR", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "2-digit",
+              })}
+            </span>
           </TableCell>
         );
       },
+      size: 100,
     },
     {
       header: () => {
@@ -115,6 +123,7 @@ const AdminPlayersPage: NextCustomPage = () => {
           </TableCell>
         );
       },
+      size: 150,
     },
     {
       header: () => {
@@ -132,7 +141,7 @@ const AdminPlayersPage: NextCustomPage = () => {
           </TableCell>
         );
       },
-      maxSize: 80,
+      size: 100,
     },
     {
       header: () => {
@@ -147,7 +156,7 @@ const AdminPlayersPage: NextCustomPage = () => {
         const active: boolean = getValue();
         const { id, firstName, lastName } = row.original!;
         return (
-          <TableCell className="px-0">
+          <TableCell padding="px-0">
             <StatusWidget
               active={active}
               onStatusChange={() =>
@@ -170,6 +179,7 @@ const AdminPlayersPage: NextCustomPage = () => {
           </TableCell>
         );
       },
+      size: 100,
     },
     {
       header: () => {
@@ -184,18 +194,22 @@ const AdminPlayersPage: NextCustomPage = () => {
         return (
           <Link href={`/admin/players/${row.original!.id}`} passHref>
             <div className="w-full h-full">
-              <TableCell className="bg-marine-100 cursor-pointer justify-center group hover:bg-marine-400">
+              <TableCell
+                className="bg-marine-100 cursor-pointer justify-center group hover:bg-marine-400"
+                padding="px-0"
+              >
                 <EditIcon className="w-4 h-4 fill-black group-hover:fill-white" />
               </TableCell>
             </div>
           </Link>
         );
       },
+      size: 100,
     },
     {
       header: () => {
         return (
-          <TableCell className="justify-center">
+          <TableCell className="justify-center px-2">
             <span className="text-sm">delete</span>
           </TableCell>
         );
@@ -204,7 +218,7 @@ const AdminPlayersPage: NextCustomPage = () => {
       cell: ({ row }) => {
         const { firstName, id, lastName } = row.original || {};
         return (
-          <TableCell className="px-0">
+          <TableCell padding="px-0">
             <DeleteWidget onDelete={() => handlePlayerDelete(id!)}>
               <p className="text-sm">
                 Are you sure you want to definitely{" "}
@@ -217,6 +231,7 @@ const AdminPlayersPage: NextCustomPage = () => {
           </TableCell>
         );
       },
+      size: 100,
     },
   ];
 

@@ -1,5 +1,8 @@
+import EditIcon from "@/components/Icons/Edit";
 import AdminTable from "@/components/shared/AdminTable";
 import Draggable from "@/components/shared/Draggable";
+import TableCell from "@/components/shared/TableCell";
+import DeleteWidget from "@/components/widgets/DeleteWidget";
 import { NextCustomPage } from "@/pages/_app";
 import { Competition } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
@@ -36,42 +39,80 @@ const AdminCompetitionsPage: NextCustomPage = () => {
 
   const competitionColumns: ColumnDef<Competition>[] = [
     {
-      header: "abbr",
+      header: () => (
+        <TableCell>
+          <span className="text-sm">abbr</span>
+        </TableCell>
+      ),
       id: "abbr",
       accessorKey: "abbreviation",
-      cell: (info) => info.getValue(),
+      cell: (info) => (
+        <TableCell>
+          <span className="text-sm">{info.getValue()}</span>
+        </TableCell>
+      ),
+      size: 100,
     },
     {
-      header: "name",
+      header: () => (
+        <TableCell>
+          <span className="text-sm">name</span>
+        </TableCell>
+      ),
       accessorKey: "name",
       cell: (info) => (
-        <span className="whitespace-nowrap">{info.getValue()}</span>
+        <TableCell>
+          <span className="text-sm whitespace-nowrap">{info.getValue()}</span>
+        </TableCell>
       ),
+      size: 200,
     },
     {
-      header: "edit",
+      header: () => (
+        <TableCell className="justify-center">
+          <span className="text-sm">edit</span>
+        </TableCell>
+      ),
       id: "edit",
       cell: ({ row }) => {
         return (
           <Link href={`/admin/competitions/${row.original!.id}`} passHref>
-            <div className="w-full h-full bg-green-500">Edit</div>
+            <div className="w-full h-full">
+              <TableCell
+                className="bg-marine-100 cursor-pointer justify-center group hover:bg-marine-400"
+                padding="px-0"
+              >
+                <EditIcon className="w-4 h-4 fill-black group-hover:fill-white" />
+              </TableCell>
+            </div>
           </Link>
         );
       },
+      size: 100,
     },
     {
-      header: "delete",
+      header: () => (
+        <TableCell className="justify-center">
+          <span className="text-sm">delete</span>
+        </TableCell>
+      ),
       id: "delete",
       cell: ({ row }) => {
+        const { id, name } = row.original || {};
         return (
-          <div
-            className="w-full h-full bg-red-500"
-            onClick={() => handleCompetitionDelete(row.original!.id)}
-          >
-            X
-          </div>
+          <TableCell padding="px-0">
+            <DeleteWidget onDelete={() => handleCompetitionDelete(id!)}>
+              <p className="text-sm">
+                Are you sure you want to definitely{" "}
+                <span className="font-bold">remove</span> the{" "}
+                <span className="font-bold">{name}</span> from the database?
+                This decision is irreversible.
+              </p>
+            </DeleteWidget>
+          </TableCell>
         );
       },
+      size: 100,
     },
   ];
 
@@ -82,18 +123,20 @@ const AdminCompetitionsPage: NextCustomPage = () => {
           <a className="px-2 py-1 bg-gray-200 rounded">Ajouter</a>
         </Link>
       </div>
-      {loading && <div>Loading...</div>}
-      {error && <div className="text-red-600">{error.message}</div>}
+      <div className="py-4">
+        {loading && <div>Loading...</div>}
+        {error && <div className="text-red-600">{error.message}</div>}
 
-      {competitionsData?.competitions && (
-        <Draggable>
-          <AdminTable
-            columns={competitionColumns}
-            data={competitionsData.competitions}
-            frozenId="abbr"
-          />
-        </Draggable>
-      )}
+        {competitionsData?.competitions && (
+          <Draggable>
+            <AdminTable
+              columns={competitionColumns}
+              data={competitionsData.competitions}
+              frozenId="abbr"
+            />
+          </Draggable>
+        )}
+      </div>
     </div>
   );
 };
