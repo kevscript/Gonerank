@@ -8,7 +8,7 @@ const Draggable = ({ children }: { children: ReactNode }) => {
 
   return (
     <div
-      className={`w-full overflow-x-auto hide-scrollbar border-2 border-gray-100`}
+      className={`max-w-max overflow-x-auto hide-scrollbar border-2 border-gray-100`}
       ref={dragRef}
       {...events}
     >

@@ -28,7 +28,7 @@ const AdminTable = ({ columns, data, frozenId }: AdminTableProps) => {
   });
 
   return (
-    <table className="w-full">
+    <table className="">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id} className="">
@@ -41,6 +41,7 @@ const AdminTable = ({ columns, data, frozenId }: AdminTableProps) => {
                   header.id.endsWith(frozenId) &&
                   "sticky left-0 z-10 after:absolute after:top-0 after:right-0 after:-z-10 after:w-[1px] after:bg-gray-100 after:h-full"
                 }`}
+                style={{ width: header.getSize() }}
               >
                 {header.isPlaceholder ? null : (
                   <div
@@ -77,6 +78,7 @@ const AdminTable = ({ columns, data, frozenId }: AdminTableProps) => {
                   cell.id.endsWith(frozenId) &&
                   "sticky left-0 z-10 after:absolute after:top-0 after:right-0 after:-z-10 after:w-[1px] after:bg-gray-100 after:h-full"
                 }`}
+                style={{ width: cell.column.getSize() }}
               >
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </td>
