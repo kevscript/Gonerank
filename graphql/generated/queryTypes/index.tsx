@@ -633,6 +633,14 @@ export type DeleteMatchMutationVariables = Exact<{
 
 export type DeleteMatchMutation = { __typename?: 'Mutation', deleteMatch: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string } };
 
+export type UpdateMatchPlayersMutationVariables = Exact<{
+  matchId: Scalars['String'];
+  playerIds: Array<Scalars['String']> | Scalars['String'];
+}>;
+
+
+export type UpdateMatchPlayersMutation = { __typename?: 'Mutation', updateMatchPlayers: Array<{ __typename?: 'MatchPlayer', id: string, matchId: string, playerId: string }> };
+
 export type GetPlayerQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -1350,6 +1358,42 @@ export function useDeleteMatchMutation(baseOptions?: Apollo.MutationHookOptions<
 export type DeleteMatchMutationHookResult = ReturnType<typeof useDeleteMatchMutation>;
 export type DeleteMatchMutationResult = Apollo.MutationResult<DeleteMatchMutation>;
 export type DeleteMatchMutationOptions = Apollo.BaseMutationOptions<DeleteMatchMutation, DeleteMatchMutationVariables>;
+export const UpdateMatchPlayersDocument = gql`
+    mutation UpdateMatchPlayers($matchId: String!, $playerIds: [String!]!) {
+  updateMatchPlayers(matchId: $matchId, playerIds: $playerIds) {
+    id
+    matchId
+    playerId
+  }
+}
+    `;
+export type UpdateMatchPlayersMutationFn = Apollo.MutationFunction<UpdateMatchPlayersMutation, UpdateMatchPlayersMutationVariables>;
+
+/**
+ * __useUpdateMatchPlayersMutation__
+ *
+ * To run a mutation, you first call `useUpdateMatchPlayersMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMatchPlayersMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMatchPlayersMutation, { data, loading, error }] = useUpdateMatchPlayersMutation({
+ *   variables: {
+ *      matchId: // value for 'matchId'
+ *      playerIds: // value for 'playerIds'
+ *   },
+ * });
+ */
+export function useUpdateMatchPlayersMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMatchPlayersMutation, UpdateMatchPlayersMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateMatchPlayersMutation, UpdateMatchPlayersMutationVariables>(UpdateMatchPlayersDocument, options);
+      }
+export type UpdateMatchPlayersMutationHookResult = ReturnType<typeof useUpdateMatchPlayersMutation>;
+export type UpdateMatchPlayersMutationResult = Apollo.MutationResult<UpdateMatchPlayersMutation>;
+export type UpdateMatchPlayersMutationOptions = Apollo.BaseMutationOptions<UpdateMatchPlayersMutation, UpdateMatchPlayersMutationVariables>;
 export const GetPlayerDocument = gql`
     query GetPlayer($id: String!) {
   player(id: $id) {

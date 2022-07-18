@@ -113,3 +113,13 @@ export const DELETE_MATCH = gql`
     }
   }
 `;
+
+export const UPDATE_MATCH_PLAYERS = gql`
+  mutation UpdateMatchPlayers($matchId: String!, $playerIds: [String!]!) {
+    updateMatchPlayers(matchId: $matchId, playerIds: $playerIds) {
+      id
+      matchId
+      playerId
+    }
+  }
+`;

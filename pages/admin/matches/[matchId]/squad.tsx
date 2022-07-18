@@ -6,20 +6,18 @@ import { NextCustomPage } from "@/pages/_app";
 import {
   GetClubsQuery,
   GetCompetitionsQuery,
-  GetMatchesQuery,
   GetPlayersQuery,
   useGetClubsQuery,
   useGetCompetitionsQuery,
-  useGetMatchesQuery,
+  useGetMatchLazyQuery,
   useGetPlayersQuery,
+  useUpdateMatchPlayersMutation,
 } from "graphql/generated/queryTypes";
+import { GET_MATCH } from "graphql/queries/match";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 const AdminMatchPlayersSquad: NextCustomPage = () => {
-  const [match, setMatch] = useState<GetMatchesQuery["matches"][0] | null>(
-    null
-  );
   const [opponent, setOpponent] = useState<GetClubsQuery["clubs"][0] | null>(
     null
   );
@@ -37,15 +35,42 @@ const AdminMatchPlayersSquad: NextCustomPage = () => {
   const router = useRouter();
   const { matchId } = router.query;
 
-  const {
-    data: matchesData,
-    loading: matchesLoading,
-    error: matchesError,
-  } = useGetMatchesQuery();
-
+  const [
+    getMatch,
+    { data: matchData, loading: matchLoading, error: matchError },
+  ] = useGetMatchLazyQuery();
   const { data: playersData } = useGetPlayersQuery();
   const { data: clubsData } = useGetClubsQuery();
   const { data: competitionsData } = useGetCompetitionsQuery();
+
+  const [updateMatchPlayers] = useUpdateMatchPlayersMutation({
+    refetchQueries: [
+      { query: GET_MATCH, variables: { id: matchId as string } },
+    ],
+  });
+
+  useEffect(() => {
+    matchId && getMatch({ variables: { id: matchId as string } });
+  }, [matchId, getMatch]);
+
+  useEffect(() => {
+    if (matchData && clubsData && competitionsData && playersData) {
+      const currOpponent = clubsData.clubs.find(
+        (c) => c.id === matchData.match.opponentId
+      );
+      currOpponent && setOpponent(currOpponent);
+      const currCompetition = competitionsData.competitions.find(
+        (c) => c.id === matchData.match.competitionId
+      );
+      currCompetition && setCompetition(currCompetition);
+      const currSquad = matchData.match.players.map((mp) => {
+        const player = playersData.players.find((p) => p.id === mp.playerId)!;
+        return player;
+      });
+      currSquad && setSquad(currSquad);
+      currSquad && setInitialSquad(currSquad);
+    }
+  }, [matchData, clubsData, competitionsData, playersData]);
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (playersData && squad) {
@@ -70,38 +95,18 @@ const AdminMatchPlayersSquad: NextCustomPage = () => {
   };
 
   const handleConfirm = () => {
-    console.log("boop");
-    setModalIsOpen(false);
+    if (squad) {
+      const playerIds = squad?.map((p) => p.id);
+      updateMatchPlayers({
+        variables: { matchId: matchId as string, playerIds: playerIds },
+      });
+      setModalIsOpen(false);
+      router.push("/admin/matches");
+    }
   };
 
-  useEffect(() => {
-    if (matchesData) {
-      const currentMatch = matchesData.matches.find((m) => m.id === matchId);
-      currentMatch && setMatch(currentMatch);
-    }
-  }, [matchesData, matchId]);
-
-  useEffect(() => {
-    if (match && clubsData && competitionsData && playersData) {
-      const currOpponent = clubsData.clubs.find(
-        (c) => c.id === match.opponentId
-      );
-      currOpponent && setOpponent(currOpponent);
-      const currCompetition = competitionsData.competitions.find(
-        (c) => c.id === match.competitionId
-      );
-      currCompetition && setCompetition(currCompetition);
-      const currSquad = match.players.map((mp) => {
-        const player = playersData.players.find((p) => p.id === mp.playerId)!;
-        return player;
-      });
-      currSquad && setSquad(currSquad);
-      currSquad && setInitialSquad(currSquad);
-    }
-  }, [match, clubsData, competitionsData, playersData]);
-
-  if (matchesLoading) return <div>Loading...</div>;
-  if (matchesError) return <span>{matchesError.message}</span>;
+  if (matchLoading) return <div>Loading...</div>;
+  if (matchError) return <span>{matchError.message}</span>;
 
   return (
     <>
@@ -111,7 +116,9 @@ const AdminMatchPlayersSquad: NextCustomPage = () => {
         </div>
         {opponent && <span>{opponent.abbreviation}</span>}
         {competition && <span>{competition.abbreviation}</span>}
-        {match && <span>{new Date(match.date).toLocaleDateString()}</span>}
+        {matchData && (
+          <span>{new Date(matchData.match.date).toLocaleDateString()}</span>
+        )}
       </div>
       <div className="p-4">
         <ul className="flex flex-col flex-nowrap gap-y-1">
@@ -169,17 +176,30 @@ const AdminMatchPlayersSquad: NextCustomPage = () => {
                     );
                     if (alreadyExisted) {
                       return (
-                        <li key={p.id} className="w-48 bg-white p-1">
-                          {p.firstName[0] + ". " + p.lastName}
+                        <li
+                          key={p.id}
+                          className="w-48 bg-gray-50 border border-gray-200 p-1 flex flex-nowrap"
+                        >
+                          <div className="w-4 h-full flex justify-center items-center">
+                            =
+                          </div>
+                          <span className="flex-1 ml-2">
+                            {p.firstName[0] + ". " + p.lastName}
+                          </span>
                         </li>
                       );
                     } else {
                       return (
                         <li
                           key={p.id}
-                          className="w-48 bg-marine-50 p-1 border border-marine-300 text-marine-900"
+                          className="w-48 bg-marine-50 p-1 border border-marine-300 text-marine-900 flex flex-nowrap"
                         >
-                          + {p.firstName[0] + ". " + p.lastName}
+                          <div className="w-4 h-full flex justify-center items-center">
+                            +
+                          </div>
+                          <span className="flex-1 ml-2">
+                            {p.firstName[0] + ". " + p.lastName}
+                          </span>
                         </li>
                       );
                     }
@@ -191,9 +211,14 @@ const AdminMatchPlayersSquad: NextCustomPage = () => {
                     .map((p) => (
                       <li
                         key={p.id}
-                        className="w-48 bg-red-50 p-1 border-red-300 text-red-900"
+                        className="w-48 bg-red-100 p-1 border border-red-300 text-red-900 flex flex-nowrap"
                       >
-                        - {p.firstName[0] + ". " + p.lastName}
+                        <div className="w-4 h-full flex justify-center items-center">
+                          -
+                        </div>
+                        <span className="flex-1 ml-2">
+                          {p.firstName[0] + ". " + p.lastName}
+                        </span>
                       </li>
                     ))}
               </ul>
