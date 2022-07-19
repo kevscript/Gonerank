@@ -128,6 +128,7 @@ export type Match = {
   scored: Scalars['Int'];
   season: Season;
   seasonId: Scalars['String'];
+  stats: Array<MatchStats>;
 };
 
 export type MatchPlayer = {
@@ -142,6 +143,17 @@ export type MatchPlayer = {
 export type MatchPlayersWhereInput = {
   matchId?: InputMaybe<Scalars['String']>;
   playerId?: InputMaybe<Scalars['String']>;
+};
+
+export type MatchStats = {
+  __typename?: 'MatchStats';
+  avgSum: Scalars['Float'];
+  firstName: Scalars['String'];
+  image: Scalars['String'];
+  lastName: Scalars['String'];
+  numOfAvg: Scalars['Float'];
+  playerId: Scalars['String'];
+  tendency: Scalars['Float'];
 };
 
 export type MatchesWhereInput = {
@@ -319,6 +331,7 @@ export type Query = {
   clubs: Array<Club>;
   competition: Competition;
   competitions: Array<Competition>;
+  displayMatch: Match;
   match: Match;
   matchPlayer: MatchPlayer;
   matchPlayers: Array<MatchPlayer>;
@@ -641,6 +654,11 @@ export type UpdateMatchPlayersMutationVariables = Exact<{
 
 export type UpdateMatchPlayersMutation = { __typename?: 'Mutation', updateMatchPlayers: Array<{ __typename?: 'MatchPlayer', id: string, matchId: string, playerId: string }> };
 
+export type GetDisplayMatchQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetDisplayMatchQuery = { __typename?: 'Query', displayMatch: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competition: { __typename?: 'Competition', id: string, name: string, abbreviation: string }, season: { __typename?: 'Season', id: string, startDate: any }, opponent: { __typename?: 'Club', name: string, abbreviation: string, primary: string, secondary: string }, stats: Array<{ __typename?: 'MatchStats', playerId: string, firstName: string, lastName: string, image: string, avgSum: number, numOfAvg: number, tendency: number }> } };
+
 export type GetPlayerQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -676,6 +694,22 @@ export type DeletePlayerMutationVariables = Exact<{
 
 
 export type DeletePlayerMutation = { __typename?: 'Mutation', deletePlayer: { __typename?: 'Player', id: string, firstName: string, lastName: string, birthDate: any, country: string, countryCode: string, image: string, active: boolean } };
+
+export type GetRatingsQueryVariables = Exact<{
+  where?: InputMaybe<RatingsWhereInput>;
+}>;
+
+
+export type GetRatingsQuery = { __typename?: 'Query', ratings: Array<{ __typename?: 'Rating', id: string, matchId: string, playerId: string, rating: number }> };
+
+export type CreateUserRatingsMutationVariables = Exact<{
+  userId: Scalars['String'];
+  matchId: Scalars['String'];
+  ratings: Array<CreateUserRatingsInput> | CreateUserRatingsInput;
+}>;
+
+
+export type CreateUserRatingsMutation = { __typename?: 'Mutation', createUserRatings: Array<{ __typename?: 'Rating', id: string, rating: number, userId: string, matchId: string }> };
 
 export type GetSeasonQueryVariables = Exact<{
   id: Scalars['String'];
@@ -1394,6 +1428,70 @@ export function useUpdateMatchPlayersMutation(baseOptions?: Apollo.MutationHookO
 export type UpdateMatchPlayersMutationHookResult = ReturnType<typeof useUpdateMatchPlayersMutation>;
 export type UpdateMatchPlayersMutationResult = Apollo.MutationResult<UpdateMatchPlayersMutation>;
 export type UpdateMatchPlayersMutationOptions = Apollo.BaseMutationOptions<UpdateMatchPlayersMutation, UpdateMatchPlayersMutationVariables>;
+export const GetDisplayMatchDocument = gql`
+    query GetDisplayMatch {
+  displayMatch {
+    id
+    date
+    home
+    scored
+    conceeded
+    active
+    archived
+    competition {
+      id
+      name
+      abbreviation
+    }
+    season {
+      id
+      startDate
+    }
+    opponent {
+      name
+      abbreviation
+      primary
+      secondary
+    }
+    stats {
+      playerId
+      firstName
+      lastName
+      image
+      avgSum
+      numOfAvg
+      tendency
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetDisplayMatchQuery__
+ *
+ * To run a query within a React component, call `useGetDisplayMatchQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetDisplayMatchQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetDisplayMatchQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetDisplayMatchQuery(baseOptions?: Apollo.QueryHookOptions<GetDisplayMatchQuery, GetDisplayMatchQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetDisplayMatchQuery, GetDisplayMatchQueryVariables>(GetDisplayMatchDocument, options);
+      }
+export function useGetDisplayMatchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDisplayMatchQuery, GetDisplayMatchQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetDisplayMatchQuery, GetDisplayMatchQueryVariables>(GetDisplayMatchDocument, options);
+        }
+export type GetDisplayMatchQueryHookResult = ReturnType<typeof useGetDisplayMatchQuery>;
+export type GetDisplayMatchLazyQueryHookResult = ReturnType<typeof useGetDisplayMatchLazyQuery>;
+export type GetDisplayMatchQueryResult = Apollo.QueryResult<GetDisplayMatchQuery, GetDisplayMatchQueryVariables>;
 export const GetPlayerDocument = gql`
     query GetPlayer($id: String!) {
   player(id: $id) {
@@ -1599,6 +1697,82 @@ export function useDeletePlayerMutation(baseOptions?: Apollo.MutationHookOptions
 export type DeletePlayerMutationHookResult = ReturnType<typeof useDeletePlayerMutation>;
 export type DeletePlayerMutationResult = Apollo.MutationResult<DeletePlayerMutation>;
 export type DeletePlayerMutationOptions = Apollo.BaseMutationOptions<DeletePlayerMutation, DeletePlayerMutationVariables>;
+export const GetRatingsDocument = gql`
+    query GetRatings($where: RatingsWhereInput) {
+  ratings(where: $where) {
+    id
+    matchId
+    playerId
+    rating
+  }
+}
+    `;
+
+/**
+ * __useGetRatingsQuery__
+ *
+ * To run a query within a React component, call `useGetRatingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRatingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRatingsQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useGetRatingsQuery(baseOptions?: Apollo.QueryHookOptions<GetRatingsQuery, GetRatingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRatingsQuery, GetRatingsQueryVariables>(GetRatingsDocument, options);
+      }
+export function useGetRatingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRatingsQuery, GetRatingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRatingsQuery, GetRatingsQueryVariables>(GetRatingsDocument, options);
+        }
+export type GetRatingsQueryHookResult = ReturnType<typeof useGetRatingsQuery>;
+export type GetRatingsLazyQueryHookResult = ReturnType<typeof useGetRatingsLazyQuery>;
+export type GetRatingsQueryResult = Apollo.QueryResult<GetRatingsQuery, GetRatingsQueryVariables>;
+export const CreateUserRatingsDocument = gql`
+    mutation CreateUserRatings($userId: String!, $matchId: String!, $ratings: [CreateUserRatingsInput!]!) {
+  createUserRatings(userId: $userId, matchId: $matchId, ratings: $ratings) {
+    id
+    rating
+    userId
+    matchId
+  }
+}
+    `;
+export type CreateUserRatingsMutationFn = Apollo.MutationFunction<CreateUserRatingsMutation, CreateUserRatingsMutationVariables>;
+
+/**
+ * __useCreateUserRatingsMutation__
+ *
+ * To run a mutation, you first call `useCreateUserRatingsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserRatingsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserRatingsMutation, { data, loading, error }] = useCreateUserRatingsMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      matchId: // value for 'matchId'
+ *      ratings: // value for 'ratings'
+ *   },
+ * });
+ */
+export function useCreateUserRatingsMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserRatingsMutation, CreateUserRatingsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUserRatingsMutation, CreateUserRatingsMutationVariables>(CreateUserRatingsDocument, options);
+      }
+export type CreateUserRatingsMutationHookResult = ReturnType<typeof useCreateUserRatingsMutation>;
+export type CreateUserRatingsMutationResult = Apollo.MutationResult<CreateUserRatingsMutation>;
+export type CreateUserRatingsMutationOptions = Apollo.BaseMutationOptions<CreateUserRatingsMutation, CreateUserRatingsMutationVariables>;
 export const GetSeasonDocument = gql`
     query GetSeason($id: String!) {
   season(id: $id) {

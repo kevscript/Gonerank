@@ -27,6 +27,7 @@ export const MatchQuery = extendType({
         }
       },
     });
+
     t.field("matches", {
       type: list(MatchType),
       args: { where: arg({ type: MatchesWhereInput }) },
@@ -67,6 +68,39 @@ export const MatchQuery = extendType({
             return matches;
           } else {
             throw new ApolloError(`No matches could be found`);
+          }
+        } catch (err) {
+          throw err as ApolloError;
+        }
+      },
+    });
+
+    t.field("displayMatch", {
+      type: MatchType,
+      resolve: async () => {
+        try {
+          const activeMatch = await prisma.match.findFirst({
+            where: { active: true },
+          });
+
+          if (activeMatch) {
+            return activeMatch;
+          }
+
+          const latestMatches = await prisma.match.findMany({
+            where: { archived: true },
+            orderBy: { date: "desc" },
+            take: 1,
+          });
+
+          const latestMatch = latestMatches[0];
+
+          if (latestMatch) {
+            return latestMatch;
+          } else {
+            throw new ApolloError(
+              "Can't get displayMatch, there is no matches in the database"
+            );
           }
         } catch (err) {
           throw err as ApolloError;

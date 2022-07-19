@@ -123,3 +123,45 @@ export const UPDATE_MATCH_PLAYERS = gql`
     }
   }
 `;
+
+export const GET_DISPLAY_MATCH = gql`
+  query GetDisplayMatch {
+    displayMatch {
+      id
+      date
+      home
+      scored
+      conceeded
+      active
+      archived
+
+      competition {
+        id
+        name
+        abbreviation
+      }
+
+      season {
+        id
+        startDate
+      }
+
+      opponent {
+        name
+        abbreviation
+        primary
+        secondary
+      }
+
+      stats {
+        playerId
+        firstName
+        lastName
+        image
+        avgSum
+        numOfAvg
+        tendency
+      }
+    }
+  }
+`;

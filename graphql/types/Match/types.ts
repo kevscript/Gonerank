@@ -1,4 +1,4 @@
-import { inputObjectType } from "nexus";
+import { inputObjectType, objectType } from "nexus";
 
 export const CreateMatchInput = inputObjectType({
   name: "CreateMatchInput",
@@ -42,5 +42,18 @@ export const MatchesWhereInput = inputObjectType({
     t.string("opponentId");
     t.string("seasonId");
     t.string("competitionId");
+  },
+});
+
+export const MatchStats = objectType({
+  name: "MatchStats",
+  definition: (t) => {
+    t.string("playerId");
+    t.string("lastName");
+    t.string("firstName");
+    t.string("image");
+    t.float("avgSum");
+    t.float("numOfAvg");
+    t.float("tendency");
   },
 });

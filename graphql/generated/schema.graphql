@@ -128,6 +128,7 @@ type Match {
   scored: Int!
   season: Season!
   seasonId: String!
+  stats: [MatchStats!]!
 }
 
 type MatchPlayer {
@@ -141,6 +142,16 @@ type MatchPlayer {
 input MatchPlayersWhereInput {
   matchId: String
   playerId: String
+}
+
+type MatchStats {
+  avgSum: Float!
+  firstName: String!
+  image: String!
+  lastName: String!
+  numOfAvg: Float!
+  playerId: String!
+  tendency: Float!
 }
 
 input MatchesWhereInput {
@@ -206,6 +217,7 @@ type Query {
   clubs(where: ClubsWhereInput): [Club!]!
   competition(id: String!): Competition!
   competitions(where: CompetitionsWhereInput): [Competition!]!
+  displayMatch: Match!
   match(id: String!): Match!
   matchPlayer(matchId: String!, playerId: String!): MatchPlayer!
   matchPlayers(where: MatchPlayersWhereInput): [MatchPlayer!]!
