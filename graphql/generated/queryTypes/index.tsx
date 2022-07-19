@@ -108,7 +108,7 @@ export type CreateSeasonInput = {
 
 export type CreateUserRatingsInput = {
   playerId: Scalars['String'];
-  rating: Scalars['Int'];
+  rating: Scalars['Float'];
 };
 
 export type Match = {

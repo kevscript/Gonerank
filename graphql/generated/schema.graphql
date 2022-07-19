@@ -96,7 +96,7 @@ input CreateSeasonInput {
 
 input CreateUserRatingsInput {
   playerId: String!
-  rating: Int!
+  rating: Float!
 }
 
 """
