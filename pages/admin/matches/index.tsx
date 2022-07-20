@@ -9,6 +9,7 @@ import TrophyIcon from "@/components/Icons/Trophy";
 import AdminTable from "@/components/shared/AdminTable";
 import Draggable from "@/components/shared/Draggable";
 import TableCell from "@/components/shared/TableCell";
+import ArchiveWidget from "@/components/widgets/ArchiveWidget";
 import DeleteWidget from "@/components/widgets/DeleteWidget";
 import StatusWidget from "@/components/widgets/StatusWidget";
 import { NextCustomPage } from "@/pages/_app";
@@ -21,6 +22,7 @@ import {
   useGetCompetitionsQuery,
   useGetMatchesQuery,
   useGetSeasonsQuery,
+  useToggleMatchArchiveMutation,
   useToggleMatchStatusMutation,
 } from "graphql/generated/queryTypes";
 import { GET_MATCHES } from "graphql/queries/match";
@@ -73,10 +75,42 @@ const AdminMatchesPage: NextCustomPage = () => {
         },
       });
     },
+    refetchQueries: ["GetDisplayMatch"],
+    awaitRefetchQueries: true,
+  });
+
+  const [toggleMatchArchive] = useToggleMatchArchiveMutation({
+    refetchQueries: ["GetDisplayMatch"],
+    awaitRefetchQueries: true,
   });
 
   const handleMatchDelete = (id: string) => {
     deleteMatch({ variables: { id: id } });
+  };
+
+  const handleMatchActivation = (id: string) => {
+    if (matchesData) {
+      const currMatch = matchesData.matches.find((m) => m.id === id);
+
+      if (currMatch && currMatch.archived) {
+        console.error("Can't toggle activation on an archived match");
+        return;
+      }
+
+      toggleMatchStatus({ variables: { id: id } });
+    }
+  };
+
+  const handleMatchArchive = (id: string) => {
+    if (matchesData) {
+      const currMatch = matchesData.matches.find((m) => m.id === id);
+      if (currMatch && currMatch.active) {
+        console.error("Can't toggle archivation on an active match");
+        return;
+      }
+
+      toggleMatchArchive({ variables: { id: id } });
+    }
   };
 
   const matchColumns: ColumnDef<Match>[] = [
@@ -232,7 +266,7 @@ const AdminMatchesPage: NextCustomPage = () => {
           <Link href={`/admin/matches/${row.original!.id}/squad`} passHref>
             <div className="w-full h-full">
               <TableCell
-                className="bg-yellow-50 cursor-pointer justify-center group hover:bg-yellow-300"
+                className="bg-pink-50 cursor-pointer justify-center group hover:bg-pink-300"
                 padding="px-0"
               >
                 <PlayerIcon className="w-4 h-4 fill-black" />
@@ -247,22 +281,29 @@ const AdminMatchesPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell className="justify-center">
-            <span className="text-sm">status</span>
+            <span className="text-sm">active</span>
           </TableCell>
         );
       },
       accessorKey: "active",
       cell: ({ row, getValue }) => {
         const active: boolean = getValue();
-        const { id, opponentId, date } = row.original || {};
+        const { id, opponentId, date, archived } = row.original || {};
         const opponent = clubsData?.clubs.find((c) => c.id === opponentId);
-        return (
+        return archived ? (
+          <TableCell padding="px-0">
+            <div
+              className="w-full h-full bg-gray-100 flex justify-center items-center cursor-pointer"
+              onClick={() => alert("Can't activate an archived match")}
+            >
+              <span className="text-xs font-bold text-gray-300">ARCHIVED</span>
+            </div>
+          </TableCell>
+        ) : (
           <TableCell padding="px-0">
             <StatusWidget
               active={active}
-              onStatusChange={() =>
-                toggleMatchStatus({ variables: { id: id! } })
-              }
+              onStatusChange={() => handleMatchActivation(id!)}
             >
               <p className="text-sm">
                 Are you sure you want to{" "}
@@ -274,6 +315,49 @@ const AdminMatchesPage: NextCustomPage = () => {
                 {date ? new Date(date).toLocaleDateString() : ""}?
               </p>
             </StatusWidget>
+          </TableCell>
+        );
+      },
+      size: 100,
+    },
+    {
+      header: () => {
+        return (
+          <TableCell className="justify-center">
+            <span className="text-sm">archived</span>
+          </TableCell>
+        );
+      },
+      accessorKey: "archived",
+      cell: ({ row, getValue }) => {
+        const archived: boolean = getValue();
+        const { id, opponentId, date, active } = row.original || {};
+        const opponent = clubsData?.clubs.find((c) => c.id === opponentId);
+        return active ? (
+          <TableCell padding="px-0">
+            <div
+              className="w-full h-full bg-gray-100 flex justify-center items-center cursor-pointer"
+              onClick={() => alert("Can't archive an active match")}
+            >
+              <span className="text-xs font-bold text-gray-300">ACTIVE</span>
+            </div>
+          </TableCell>
+        ) : (
+          <TableCell padding="px-0">
+            <ArchiveWidget
+              archived={archived}
+              onStatusChange={() => handleMatchArchive(id!)}
+            >
+              <p className="text-sm">
+                Are you sure you want to{" "}
+                <span className="font-bold">
+                  {archived ? "restore" : "archive"}
+                </span>{" "}
+                the match against{" "}
+                <span className="font-bold">{opponent?.name}</span> on the{" "}
+                {date ? new Date(date).toLocaleDateString() : ""}?
+              </p>
+            </ArchiveWidget>
           </TableCell>
         );
       },
