@@ -182,6 +182,7 @@ export type Mutation = {
   deletePlayer: Player;
   deleteSeason: Season;
   deleteUser: User;
+  toggleMatchArchive: Match;
   toggleMatchStatus: Match;
   updateClub: Club;
   updateCompetition: Competition;
@@ -251,6 +252,11 @@ export type MutationDeleteSeasonArgs = {
 
 
 export type MutationDeleteUserArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationToggleMatchArchiveArgs = {
   id: Scalars['String'];
 };
 
@@ -638,6 +644,13 @@ export type ToggleMatchStatusMutationVariables = Exact<{
 
 
 export type ToggleMatchStatusMutation = { __typename?: 'Mutation', toggleMatchStatus: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string } };
+
+export type ToggleMatchArchiveMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type ToggleMatchArchiveMutation = { __typename?: 'Mutation', toggleMatchArchive: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string } };
 
 export type DeleteMatchMutationVariables = Exact<{
   id: Scalars['String'];
@@ -1350,6 +1363,48 @@ export function useToggleMatchStatusMutation(baseOptions?: Apollo.MutationHookOp
 export type ToggleMatchStatusMutationHookResult = ReturnType<typeof useToggleMatchStatusMutation>;
 export type ToggleMatchStatusMutationResult = Apollo.MutationResult<ToggleMatchStatusMutation>;
 export type ToggleMatchStatusMutationOptions = Apollo.BaseMutationOptions<ToggleMatchStatusMutation, ToggleMatchStatusMutationVariables>;
+export const ToggleMatchArchiveDocument = gql`
+    mutation ToggleMatchArchive($id: String!) {
+  toggleMatchArchive(id: $id) {
+    id
+    date
+    home
+    scored
+    conceeded
+    active
+    archived
+    competitionId
+    seasonId
+    opponentId
+  }
+}
+    `;
+export type ToggleMatchArchiveMutationFn = Apollo.MutationFunction<ToggleMatchArchiveMutation, ToggleMatchArchiveMutationVariables>;
+
+/**
+ * __useToggleMatchArchiveMutation__
+ *
+ * To run a mutation, you first call `useToggleMatchArchiveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToggleMatchArchiveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toggleMatchArchiveMutation, { data, loading, error }] = useToggleMatchArchiveMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useToggleMatchArchiveMutation(baseOptions?: Apollo.MutationHookOptions<ToggleMatchArchiveMutation, ToggleMatchArchiveMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ToggleMatchArchiveMutation, ToggleMatchArchiveMutationVariables>(ToggleMatchArchiveDocument, options);
+      }
+export type ToggleMatchArchiveMutationHookResult = ReturnType<typeof useToggleMatchArchiveMutation>;
+export type ToggleMatchArchiveMutationResult = Apollo.MutationResult<ToggleMatchArchiveMutation>;
+export type ToggleMatchArchiveMutationOptions = Apollo.BaseMutationOptions<ToggleMatchArchiveMutation, ToggleMatchArchiveMutationVariables>;
 export const DeleteMatchDocument = gql`
     mutation DeleteMatch($id: String!) {
   deleteMatch(id: $id) {

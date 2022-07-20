@@ -1,4 +1,8 @@
-import { ApolloError, UserInputError } from "apollo-server-micro";
+import {
+  ApolloError,
+  ForbiddenError,
+  UserInputError,
+} from "apollo-server-micro";
 import { arg, extendType, nonNull, stringArg } from "nexus";
 import { MatchType } from "./Match";
 import { CreateMatchInput, UpdateMatchInput } from "./types";
@@ -129,26 +133,68 @@ export const MatchMutation = extendType({
       },
     });
 
+    t.field("toggleMatchArchive", {
+      type: MatchType,
+      args: { id: nonNull(stringArg()) },
+      resolve: async (_, args, ctx) => {
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
+
+        try {
+          const currentMatch = await prisma.match.findUnique({
+            where: { id: args.id },
+          });
+
+          if (currentMatch) {
+            if (currentMatch.active) {
+              throw new UserInputError(
+                `Can't toggle archive on an active match.`
+              );
+            }
+
+            const updatedMatch = await prisma.match.update({
+              where: { id: args.id },
+              data: { archived: currentMatch.archived ? false : true },
+            });
+
+            return updatedMatch;
+          } else {
+            throw new UserInputError(`Can't find match with id ${args.id}`);
+          }
+        } catch (err) {
+          throw err as ApolloError;
+        }
+      },
+    });
+
     // toggle match status
     t.field("toggleMatchStatus", {
       type: MatchType,
       args: { id: nonNull(stringArg()) },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
-          // deactivate any match thats currently activated
-          await prisma.match.updateMany({
-            where: { active: true, NOT: { id: args.id } },
-            data: { active: false },
-          });
-
           // first fetch match to retrieve current activation status
           const currentMatch = await prisma.match.findUnique({
             where: { id: args.id },
           });
+
           if (currentMatch) {
+            if (currentMatch.archived) {
+              throw new UserInputError(
+                `Can't toggle activation on an archived match.`
+              );
+            }
+
+            // deactivate any match thats currently activated
+            await prisma.match.updateMany({
+              where: { active: true, NOT: { id: args.id } },
+              data: { active: false },
+            });
+
             // update that match with the appropriate status
             const setMatchStatus = await prisma.match.update({
               where: { id: args.id },

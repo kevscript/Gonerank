@@ -99,7 +99,7 @@ export const MatchQuery = extendType({
             return latestMatch;
           } else {
             throw new ApolloError(
-              "Can't get displayMatch, there is no matches in the database"
+              "Pas de match à afficher pour l'instant, revenez plus tard!"
             );
           }
         } catch (err) {
