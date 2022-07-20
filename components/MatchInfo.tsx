@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export type MatchInfoProps = {
   match: GetDisplayMatchQuery["displayMatch"];
-  userRatings: GetRatingsQuery["ratings"];
+  userRatings?: GetRatingsQuery["ratings"];
 };
 
 const MatchInfo = ({ match, userRatings }: MatchInfoProps) => {
@@ -34,14 +34,28 @@ const MatchInfo = ({ match, userRatings }: MatchInfoProps) => {
               </span>
             </div>
 
-            <div className="flex h-full items-center w-10 justify-center bg-marine-50 ">
-              <span className="text-marine-600 font-num font-bold">
-                {
-                  userRatings.find((r) => r.playerId === player.playerId)
-                    ?.rating
-                }
+            <div
+              className={`flex h-full items-center w-12 justify-center font-num text-sm text-marine-600 ${
+                userRatings ? "bg-gray-50" : "bg-marine-50 font-bold"
+              }`}
+            >
+              <span>
+                {player.avgSum
+                  ? (player.avgSum / player.numOfAvg).toFixed(2)
+                  : "-"}
               </span>
             </div>
+
+            {userRatings && (
+              <div className="flex h-full items-center w-10 justify-center text-sm bg-marine-50">
+                <span className="text-marine-600 font-num font-bold">
+                  {
+                    userRatings.find((r) => r.playerId === player.playerId)
+                      ?.rating
+                  }
+                </span>
+              </div>
+            )}
           </li>
         ))}
       </ul>
