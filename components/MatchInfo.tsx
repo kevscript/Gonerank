@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export type MatchInfoProps = {
   match: GetDisplayMatchQuery["displayMatch"];
-  userRatings?: GetRatingsQuery["ratings"];
+  userRatings?: GetRatingsQuery["ratings"] | null;
 };
 
 const MatchInfo = ({ match, userRatings }: MatchInfoProps) => {
@@ -35,8 +35,10 @@ const MatchInfo = ({ match, userRatings }: MatchInfoProps) => {
             </div>
 
             <div
-              className={`flex h-full items-center w-12 justify-center font-num text-sm text-marine-600 ${
-                userRatings ? "bg-gray-50" : "bg-marine-50 font-bold"
+              className={`flex h-full items-center w-12 justify-center font-num text-sm font-bold ${
+                userRatings
+                  ? "bg-gray-50 text-black"
+                  : "bg-marine-50 text-marine-600"
               }`}
             >
               <span>
