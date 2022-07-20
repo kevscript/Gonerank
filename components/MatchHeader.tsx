@@ -10,7 +10,7 @@ const MatchHeader = ({ match }: MatchHeaderProps) => {
   return (
     <div
       className={`w-full bg-white border border-gray-100 rounded flex justify-between py-4 px-8 ${
-        match.home && "flex-row-reverse"
+        !match.home && "flex-row-reverse"
       }`}
     >
       <div className="flex flex-col items-center">
