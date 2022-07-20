@@ -1,11 +1,10 @@
 import { ReactNode, useState } from "react";
 import EyeIcon from "../Icons/Eye";
 import EyeClosedIcon from "../Icons/EyeClosedIcon";
-import TrashIcon from "../Icons/Trash";
 import Button from "../shared/Button";
 import Modal from "../shared/Modal";
 
-export type StatusWIdgetProps = {
+export type StatusWidgetProps = {
   children: ReactNode;
   active: boolean;
   onStatusChange: () => void;
@@ -15,7 +14,7 @@ const StatusWidget = ({
   children,
   active,
   onStatusChange,
-}: StatusWIdgetProps) => {
+}: StatusWidgetProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleStatusUpdate = () => {
