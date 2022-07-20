@@ -74,8 +74,12 @@ const HomePage: NextCustomPage = () => {
 
   if (matchError) {
     return (
-      <div>
-        <span>{matchError.message}</span>
+      <div className="p-4">
+        <div className="w-full bg-gray-100 p-4 rounded flex justify-center items-center">
+          <p className="text-sm text-center font-normal text-gray-600">
+            {matchError.message}
+          </p>
+        </div>
       </div>
     );
   }
@@ -105,7 +109,21 @@ const HomePage: NextCustomPage = () => {
           </>
         )}
 
-        {status === "authenticated" && (
+        {status === "authenticated" && matchData?.displayMatch.archived && (
+          <>
+            <div className="w-full bg-red-50 mt-4 h-10 rounded flex justify-center items-center">
+              <span className="uppercase text-xs font-bold text-red-500">
+                Les votes sont fermés.
+              </span>
+            </div>
+            <MatchInfo
+              match={matchData.displayMatch}
+              userRatings={userMatchRatingsData?.ratings || null}
+            />
+          </>
+        )}
+
+        {status === "authenticated" && !matchData?.displayMatch.archived && (
           <>
             {userMatchRatingsData && userMatchRatingsData.ratings.length > 0 && (
               <>
@@ -120,7 +138,6 @@ const HomePage: NextCustomPage = () => {
                 />
               </>
             )}
-
             {userMatchRatingsData && userMatchRatingsData.ratings.length === 0 && (
               <>
                 <div className="w-full bg-marine-50 mt-4 h-10 rounded flex justify-center items-center">
@@ -128,6 +145,7 @@ const HomePage: NextCustomPage = () => {
                     Les votes sont ouverts.
                   </span>
                 </div>
+
                 <MatchVoter
                   match={matchData!.displayMatch}
                   onSubmit={handleVote}
