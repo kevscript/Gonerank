@@ -10,16 +10,24 @@ import {
   useGetRatingsLazyQuery,
 } from "graphql/generated/queryTypes";
 import Spinner from "@/components/shared/Spinner";
-import { useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
 import MatchVoter, { MatchFormInput } from "@/components/MatchVoter";
-import { GET_RATINGS } from "graphql/queries/rating";
 import MatchInfo from "@/components/MatchInfo";
+import MatchHeader from "@/components/MatchHeader";
 
 const HomePage: NextCustomPage = () => {
   const { data: session, status } = useSession();
-  const [getRatings, { data: ratingsData }] = useGetRatingsLazyQuery();
-  const { data: matchData, loading } = useGetDisplayMatchQuery();
+
+  const [getUserMatchRatings, { data: userMatchRatingsData }] =
+    useGetRatingsLazyQuery();
+
+  const {
+    data: matchData,
+    loading: matchLoading,
+    error: matchError,
+  } = useGetDisplayMatchQuery();
+
   const [createUserRatings] = useCreateUserRatingsMutation({
     refetchQueries: ["GetRatings"],
     awaitRefetchQueries: true,
@@ -46,7 +54,7 @@ const HomePage: NextCustomPage = () => {
   useEffect(() => {
     status === "authenticated" &&
       matchData &&
-      getRatings({
+      getUserMatchRatings({
         variables: {
           where: {
             userId: session.user.id,
@@ -54,9 +62,23 @@ const HomePage: NextCustomPage = () => {
           },
         },
       });
-  }, [matchData, status, session, getRatings]);
+  }, [matchData, status, session, getUserMatchRatings]);
 
-  if (loading) return <Spinner />;
+  if (matchLoading) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
+
+  if (matchError) {
+    return (
+      <div>
+        <span>{matchError.message}</span>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4">
@@ -66,87 +88,49 @@ const HomePage: NextCustomPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <div
-          className={`w-full bg-white border border-gray-100 rounded flex justify-between py-4 px-8 ${
-            !matchData?.displayMatch.home && "flex-row-reverse"
-          }`}
-        >
-          <div className="flex flex-col items-center">
-            <LyonIcon className="w-12 h-12" />
-            <span className="mt-1 font-bold">OL</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="text-xs">
-              {matchData?.displayMatch.competition.name}
-            </span>
-            <div
-              className={`flex items-center text-xl font-num font-black ${
-                !matchData?.displayMatch.home && "flex-row-reverse"
-              }`}
-            >
-              <span>{matchData?.displayMatch.scored}</span>
-              <span>:</span>
-              <span>{matchData?.displayMatch.conceeded}</span>
-            </div>
-            <span className="text-xs font-num">
-              {new Date(matchData?.displayMatch.date).toLocaleDateString(
-                "fr-FR",
-                {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "2-digit",
-                }
-              )}
-            </span>
-          </div>
-          <div className="flex flex-col items-center">
-            <ClubIcon
-              className="w-12 h-12"
-              primary={matchData?.displayMatch.opponent.primary || "#333"}
-              secondary={matchData?.displayMatch.opponent.secondary || "#444"}
-            />
-            <span
-              className="mt-1 font-bold"
-              title={matchData?.displayMatch.opponent.name}
-            >
-              {matchData?.displayMatch.opponent.abbreviation}
-            </span>
-          </div>
-        </div>
+        <MatchHeader match={matchData!.displayMatch} />
 
-        {status !== "authenticated" && (
-          <button className="w-full bg-gray-200 mt-4 h-10 rounded flex justify-center items-center">
-            <span className="uppercase text-xs font-bold">
-              Connectez-vous pour voter
-            </span>
-            <TwitterIcon className="w-4 h-4 ml-3" />
-          </button>
+        {status === "unauthenticated" && (
+          <>
+            <button
+              className="w-full bg-marine-50 mt-4 h-10 rounded flex justify-center items-center"
+              onClick={() => signIn("twitter")}
+            >
+              <span className="uppercase text-xs font-bold text-marine-600">
+                Connectez-vous pour noter
+              </span>
+              <TwitterIcon className="w-4 h-4 ml-3 fill-marine-600" />
+            </button>
+            <MatchInfo match={matchData!.displayMatch} />
+          </>
         )}
 
-        {matchData && ratingsData?.ratings && (
+        {status === "authenticated" && (
           <>
-            {ratingsData?.ratings.length === 0 ? (
+            {userMatchRatingsData && userMatchRatingsData.ratings.length > 0 && (
               <>
-                <div className="w-full bg-marine-50 mt-4 h-10 rounded flex justify-center items-center">
-                  <span className="uppercase text-xs font-bold text-marine-800">
-                    Les votes sont ouverts.
-                  </span>
-                </div>
-                <MatchVoter
-                  match={matchData.displayMatch}
-                  onSubmit={handleVote}
-                />
-              </>
-            ) : (
-              <>
-                <div className="w-full bg-marine-50 mt-4 h-10 rounded flex justify-center items-center">
-                  <span className="uppercase text-xs font-bold text-marine-800">
+                <div className="w-full bg-gray-100 mt-4 h-10 rounded flex justify-center items-center">
+                  <span className="uppercase text-xs font-bold text-gray-400">
                     Vos notes ont été soumises.
                   </span>
                 </div>
                 <MatchInfo
-                  match={matchData.displayMatch}
-                  userRatings={ratingsData.ratings}
+                  match={matchData!.displayMatch}
+                  userRatings={userMatchRatingsData.ratings}
+                />
+              </>
+            )}
+
+            {userMatchRatingsData && userMatchRatingsData.ratings.length === 0 && (
+              <>
+                <div className="w-full bg-marine-50 mt-4 h-10 rounded flex justify-center items-center">
+                  <span className="uppercase text-xs font-bold text-marine-600">
+                    Les votes sont ouverts.
+                  </span>
+                </div>
+                <MatchVoter
+                  match={matchData!.displayMatch}
+                  onSubmit={handleVote}
                 />
               </>
             )}
