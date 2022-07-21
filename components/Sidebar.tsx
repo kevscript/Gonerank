@@ -32,7 +32,6 @@ const navRoutes: NavRoute[] = [
   { label: "Evaluation", path: "/", Icon: RatingIcon, type: "user" },
   { label: "Joueurs", path: "/players", Icon: PlayerIcon, type: "user" },
   { label: "Matchs", path: "/matches", Icon: MatchIcon, type: "user" },
-  { label: "Dashboard", path: "/admin", Icon: DashIcon, type: "admin" },
   { label: "Joueurs", path: "/admin/players", Icon: PlayerIcon, type: "admin" },
   { label: "Matchs", path: "/admin/matches", Icon: MatchIcon, type: "admin" },
   { label: "Clubs", path: "/admin/clubs", Icon: ShieldIcon, type: "admin" },
