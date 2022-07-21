@@ -47,7 +47,6 @@ const AdminMatchEditPage: NextCustomPage = () => {
   useEffect(() => {
     const currMatch = data?.matches.find((m) => m.id === matchId);
     currMatch && setMatch(currMatch);
-    console.log(currMatch);
   }, [data, matchId]);
 
   return (

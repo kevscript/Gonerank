@@ -6,18 +6,22 @@ import { NextCustomPage } from "@/pages/_app";
 import {
   GetClubsQuery,
   GetCompetitionsQuery,
-  GetPlayersQuery,
+  GetSeasonPlayersQuery,
   useGetClubsQuery,
   useGetCompetitionsQuery,
   useGetMatchLazyQuery,
   useGetPlayersQuery,
+  useGetSeasonPlayersLazyQuery,
   useUpdateMatchPlayersMutation,
 } from "graphql/generated/queryTypes";
 import { GET_MATCH } from "graphql/queries/match";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-const AdminMatchPlayersSquad: NextCustomPage = () => {
+export type SquadPlayerType =
+  GetSeasonPlayersQuery["seasonPlayers"][0]["player"];
+
+const AdminMatchSquadPage: NextCustomPage = () => {
   const [opponent, setOpponent] = useState<GetClubsQuery["clubs"][0] | null>(
     null
   );
@@ -25,10 +29,10 @@ const AdminMatchPlayersSquad: NextCustomPage = () => {
     GetCompetitionsQuery["competitions"][0] | null
   >(null);
 
-  const [initialSquad, setInitialSquad] = useState<
-    GetPlayersQuery["players"] | null
-  >(null);
-  const [squad, setSquad] = useState<GetPlayersQuery["players"] | null>(null);
+  const [initialSquad, setInitialSquad] = useState<SquadPlayerType[] | null>(
+    null
+  );
+  const [squad, setSquad] = useState<SquadPlayerType[] | null>(null);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -41,12 +45,15 @@ const AdminMatchPlayersSquad: NextCustomPage = () => {
   ] = useGetMatchLazyQuery();
   const { data: playersData } = useGetPlayersQuery();
   const { data: clubsData } = useGetClubsQuery();
+  const [getSeasonPlayers, { data: seasonPlayersData }] =
+    useGetSeasonPlayersLazyQuery();
   const { data: competitionsData } = useGetCompetitionsQuery();
 
   const [updateMatchPlayers] = useUpdateMatchPlayersMutation({
     refetchQueries: [
       { query: GET_MATCH, variables: { id: matchId as string } },
     ],
+    awaitRefetchQueries: true,
   });
 
   useEffect(() => {
@@ -54,7 +61,15 @@ const AdminMatchPlayersSquad: NextCustomPage = () => {
   }, [matchId, getMatch]);
 
   useEffect(() => {
-    if (matchData && clubsData && competitionsData && playersData) {
+    if (matchData) {
+      getSeasonPlayers({
+        variables: { where: { seasonId: matchData.match.seasonId } },
+      });
+    }
+  }, [matchData, getSeasonPlayers]);
+
+  useEffect(() => {
+    if (matchData && clubsData && competitionsData && seasonPlayersData) {
       const currOpponent = clubsData.clubs.find(
         (c) => c.id === matchData.match.opponentId
       );
@@ -63,14 +78,18 @@ const AdminMatchPlayersSquad: NextCustomPage = () => {
         (c) => c.id === matchData.match.competitionId
       );
       currCompetition && setCompetition(currCompetition);
+
       const currSquad = matchData.match.players.map((mp) => {
-        const player = playersData.players.find((p) => p.id === mp.playerId)!;
-        return player;
+        const seasonPlayer = seasonPlayersData.seasonPlayers.find(
+          (sp) => sp.player.id === mp.playerId
+        )!;
+        return seasonPlayer.player;
       });
+
       currSquad && setSquad(currSquad);
       currSquad && setInitialSquad(currSquad);
     }
-  }, [matchData, clubsData, competitionsData, playersData]);
+  }, [matchData, clubsData, competitionsData, seasonPlayersData]);
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (playersData && squad) {
@@ -121,7 +140,23 @@ const AdminMatchPlayersSquad: NextCustomPage = () => {
         )}
       </div>
       <div className="p-4">
-        <ul className="flex flex-col flex-nowrap gap-y-1">
+        <div className="mt-4">
+          <label>
+            <select onChange={handleSelect} className="w-full h-10 px-2">
+              <option value="empty">-- select a player --</option>
+              {squad &&
+                seasonPlayersData &&
+                seasonPlayersData.seasonPlayers
+                  .filter((sp) => !squad.some((p) => p.id === sp.player.id))
+                  .map((sp) => (
+                    <option key={sp.player.id} value={sp.player.id}>
+                      {sp.player.firstName + " " + sp.player.lastName}
+                    </option>
+                  ))}
+            </select>
+          </label>
+        </div>
+        <ul className="flex flex-col flex-nowrap gap-y-1 mt-4">
           {squad &&
             squad.map((p) => (
               <li
@@ -138,22 +173,7 @@ const AdminMatchPlayersSquad: NextCustomPage = () => {
               </li>
             ))}
         </ul>
-        <div className="mt-4">
-          <label>
-            <select onChange={handleSelect} className="w-full h-10 px-2">
-              <option value="empty">-- select a player --</option>
-              {squad &&
-                playersData &&
-                playersData.players
-                  .filter((player) => !squad.some((p) => p.id === player.id))
-                  .map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.firstName + " " + p.lastName}
-                    </option>
-                  ))}
-            </select>
-          </label>
-        </div>
+
         <div className="w-full flex justify-end gap-x-2 mt-4">
           <Button
             label="Cancel"
@@ -234,5 +254,5 @@ const AdminMatchPlayersSquad: NextCustomPage = () => {
   );
 };
 
-AdminMatchPlayersSquad.isAdminPage = true;
-export default AdminMatchPlayersSquad;
+AdminMatchSquadPage.isAdminPage = true;
+export default AdminMatchSquadPage;

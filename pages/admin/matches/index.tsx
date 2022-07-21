@@ -29,13 +29,7 @@ import { GET_MATCHES } from "graphql/queries/match";
 import Link from "next/link";
 
 const AdminMatchesPage: NextCustomPage = () => {
-  const {
-    data: matchesData,
-    loading,
-    error,
-  } = useGetMatchesQuery({
-    onCompleted: (d) => console.log(d),
-  });
+  const { data: matchesData, loading, error } = useGetMatchesQuery();
 
   const { data: seasonsData } = useGetSeasonsQuery();
   const { data: competitionsData } = useGetCompetitionsQuery();
