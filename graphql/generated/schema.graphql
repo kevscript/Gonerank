@@ -187,6 +187,7 @@ type Mutation {
   updateMatchPlayers(matchId: String!, playerIds: [String!]!): [MatchPlayer!]!
   updatePlayer(data: UpdatePlayerInput!, id: String!): Player!
   updateSeason(data: UpdateSeasonInput!, id: String!): Season!
+  updateSeasonPlayers(playerIds: [String!]!, seasonId: String!): [SeasonPlayer!]!
   updateUser(id: String!, input: UpdateUserInput!): User!
 }
 
@@ -201,6 +202,7 @@ type Player {
   lastName: String!
   matches: [MatchPlayer!]!
   ratings: [Rating!]!
+  seasons: [SeasonPlayer!]!
 }
 
 input PlayersWhereInput {
@@ -228,6 +230,8 @@ type Query {
   rating(matchId: String!, playerId: String!, userId: String!): Rating!
   ratings(where: RatingsWhereInput): [Rating!]!
   season(id: String!): Season!
+  seasonPlayer(playerId: String!, seasonId: String!): SeasonPlayer!
+  seasonPlayers(where: SeasonPlayersWhereInput): [SeasonPlayer!]!
   seasons(where: SeasonsWhereInput): [Season!]!
   user(id: String!): User!
   users: [User!]!
@@ -258,7 +262,21 @@ enum Role {
 type Season {
   id: ID!
   matches: [Match!]!
+  players: [SeasonPlayer!]!
   startDate: DateTime!
+}
+
+type SeasonPlayer {
+  id: ID!
+  player: Player!
+  playerId: String!
+  season: Season!
+  seasonId: String!
+}
+
+input SeasonPlayersWhereInput {
+  playerId: String
+  seasonId: String
 }
 
 input SeasonsWhereInput {

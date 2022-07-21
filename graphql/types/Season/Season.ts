@@ -7,5 +7,6 @@ export const SeasonType = objectType({
     t.field(Season.id);
     t.field(Season.startDate);
     t.field(Season.matches);
+    t.field(Season.players);
   },
 });

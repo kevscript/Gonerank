@@ -78,8 +78,9 @@ model Player {
   countryCode String        @default("FR")
   birthDate   DateTime      @db.Date
   active      Boolean       @default(true)
-  image   String        @default("")
+  image       String        @default("")
   matches     MatchPlayer[]
+  seasons     SeasonPlayer[]
   ratings     Rating[]
   
   @@unique([firstName, lastName])
@@ -99,6 +100,7 @@ model Season {
   id        String   @id @default(cuid())
   startDate DateTime @unique @db.Date
   matches   Match[]
+  players   SeasonPlayer[]
 }
 
 model Competition {
@@ -138,6 +140,17 @@ model MatchPlayer {
   player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
 
   @@unique([playerId, matchId])
+}
+
+model SeasonPlayer {
+  id        String @id @default(cuid())
+  playerId  String
+  seasonId  String
+
+  player    Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  season    Season @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, seasonId])
 }
 
 model Rating {

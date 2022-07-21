@@ -13,6 +13,7 @@ export const PlayerType = objectType({
     t.field(Player.image);
     t.field(Player.active);
     t.field(Player.matches);
+    t.field(Player.seasons);
     t.field(Player.ratings);
   },
 });

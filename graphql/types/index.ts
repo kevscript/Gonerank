@@ -6,3 +6,4 @@ export * from "./Competition";
 export * from "./Season";
 export * from "./Rating";
 export * from "./MatchPlayer";
+export * from "./SeasonPlayer";
