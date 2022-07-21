@@ -16,6 +16,22 @@ export default NextAuth({
     strategy: "jwt",
   },
   callbacks: {
+    async signIn({ user, account, profile }) {
+      if (user) {
+        if (user.image !== profile.profile_image_url_https) {
+          const updatedUser = await prisma.user.update({
+            where: { id: user.id },
+            data: {
+              image: profile.profile_image_url_https as string,
+              email: profile.email,
+            },
+          });
+          user.image = updatedUser.image;
+        }
+      }
+
+      return true;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role;
