@@ -144,7 +144,10 @@ const AdminSeasonsPage: NextCustomPage = () => {
         const date = new Date(startDate!).getFullYear();
         return (
           <TableCell padding="px-0">
-            <DeleteWidget onDelete={() => handleSeasonDelete(id!)}>
+            <DeleteWidget
+              onDelete={() => handleSeasonDelete(id!)}
+              validation={`${date}/${date + 1}`}
+            >
               <p className="text-sm">
                 Are you sure you want to definitely{" "}
                 <span className="font-bold">remove</span> the{" "}

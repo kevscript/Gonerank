@@ -1,5 +1,4 @@
 import EditIcon from "@/components/Icons/Edit";
-import TrashIcon from "@/components/Icons/Trash";
 import AdminTable from "@/components/shared/AdminTable";
 import Draggable from "@/components/shared/Draggable";
 import TableCell from "@/components/shared/TableCell";
@@ -142,6 +141,7 @@ const AdminClubsPage: NextCustomPage = () => {
           <TableCell className="justify-center" padding="px-0">
             <DeleteWidget
               onDelete={() => deleteClub({ variables: { id: id! } })}
+              validation={name}
             >
               <p className="text-sm">
                 Are you sure you want to definitely{" "}

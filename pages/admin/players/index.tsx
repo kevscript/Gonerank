@@ -20,6 +20,7 @@ import {
 import { GET_PLAYERS } from "graphql/queries/player";
 import Image from "next/image";
 import Link from "next/link";
+import React, { useState } from "react";
 
 const AdminPlayersPage: NextCustomPage = () => {
   const { data: playersData, loading, error } = useGetPlayersQuery();
@@ -40,7 +41,7 @@ const AdminPlayersPage: NextCustomPage = () => {
 
   const [updatePlayer] = useUpdatePlayerMutation();
 
-  const handlePlayerDelete = (id: string) => {
+  const handlePlayerDelete = async (id: string) => {
     deletePlayer({ variables: { id: id } });
   };
 
@@ -219,7 +220,10 @@ const AdminPlayersPage: NextCustomPage = () => {
         const { firstName, id, lastName } = row.original || {};
         return (
           <TableCell padding="px-0">
-            <DeleteWidget onDelete={() => handlePlayerDelete(id!)}>
+            <DeleteWidget
+              onDelete={() => handlePlayerDelete(id!)}
+              validation={firstName + " " + lastName}
+            >
               <p className="text-sm">
                 Are you sure you want to definitely{" "}
                 <span className="font-bold">

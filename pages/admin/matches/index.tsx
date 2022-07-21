@@ -396,7 +396,10 @@ const AdminMatchesPage: NextCustomPage = () => {
         const opponent = clubsData?.clubs.find((c) => c.id === opponentId);
         return (
           <TableCell padding="px-0">
-            <DeleteWidget onDelete={() => handleMatchDelete(id!)}>
+            <DeleteWidget
+              onDelete={() => handleMatchDelete(id!)}
+              validation={opponent?.name}
+            >
               <p className="text-sm">
                 Are you sure you want to definitely{" "}
                 <span className="font-bold">remove</span> the match against{" "}

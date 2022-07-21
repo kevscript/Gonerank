@@ -101,7 +101,10 @@ const AdminCompetitionsPage: NextCustomPage = () => {
         const { id, name } = row.original || {};
         return (
           <TableCell padding="px-0">
-            <DeleteWidget onDelete={() => handleCompetitionDelete(id!)}>
+            <DeleteWidget
+              onDelete={() => handleCompetitionDelete(id!)}
+              validation={name}
+            >
               <p className="text-sm">
                 Are you sure you want to definitely{" "}
                 <span className="font-bold">remove</span> the{" "}
