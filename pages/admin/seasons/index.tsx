@@ -1,5 +1,6 @@
 import CalendarIcon from "@/components/Icons/Calendar";
 import EditIcon from "@/components/Icons/Edit";
+import PlayerIcon from "@/components/Icons/Player";
 import AdminTable from "@/components/shared/AdminTable";
 import Draggable from "@/components/shared/Draggable";
 import TableCell from "@/components/shared/TableCell";
@@ -82,6 +83,31 @@ const AdminSeasonsPage: NextCustomPage = () => {
         );
       },
       size: 150,
+    },
+    {
+      header: () => {
+        return (
+          <TableCell className="justify-center">
+            <span className="text-sm">squad</span>
+          </TableCell>
+        );
+      },
+      id: "squad",
+      cell: ({ row }) => {
+        return (
+          <Link href={`/admin/seasons/${row.original!.id}/squad`} passHref>
+            <div className="w-full h-full">
+              <TableCell
+                className="bg-pink-50 cursor-pointer justify-center group hover:bg-pink-300"
+                padding="px-0"
+              >
+                <PlayerIcon className="w-4 h-4 fill-black" />
+              </TableCell>
+            </div>
+          </Link>
+        );
+      },
+      size: 100,
     },
     {
       header: () => (
