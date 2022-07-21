@@ -27,7 +27,7 @@ const HomePage: NextCustomPage = () => {
   } = useGetDisplayMatchQuery();
 
   const [createUserRatings] = useCreateUserRatingsMutation({
-    refetchQueries: ["GetRatings"],
+    refetchQueries: ["GetRatings", "GetDisplayMatch"],
     awaitRefetchQueries: true,
   });
 
