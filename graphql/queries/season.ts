@@ -5,6 +5,10 @@ export const GET_SEASON = gql`
     season(id: $id) {
       id
       startDate
+      players {
+        id
+        playerId
+      }
     }
   }
 `;
@@ -41,6 +45,29 @@ export const DELETE_SEASON = gql`
     deleteSeason(id: $id) {
       id
       startDate
+    }
+  }
+`;
+
+export const UPDATE_SEASON_PLAYERS = gql`
+  mutation UpdateSeasonPlayers($seasonId: String!, $playerIds: [String!]!) {
+    updateSeasonPlayers(seasonId: $seasonId, playerIds: $playerIds) {
+      id
+      seasonId
+      playerId
+    }
+  }
+`;
+
+export const GET_SEASON_PLAYERS = gql`
+  query GetSeasonPlayers($where: SeasonPlayersWhereInput) {
+    seasonPlayers(where: $where) {
+      id
+      player {
+        id
+        firstName
+        lastName
+      }
     }
   }
 `;
