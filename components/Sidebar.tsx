@@ -78,7 +78,7 @@ const Sidebar = () => {
   }, [session, router]);
 
   return (
-    <div className="fixed top-0 left-0 bottom-0 w-16 bg-white border-r-[2px] border-gray-100 pt-8 pb-8 lg:pb-0 flex flex-col items-center lg:w-64">
+    <div className="fixed top-0 left-0 bottom-0 w-16 bg-white border-r-[2px] border-gray-100 pt-8 pb-8 lg:pb-0 flex flex-col items-center lg:w-64 z-10">
       {/* Sidebar Header */}
       <div className="w-full flex flex-col items-center lg:flex-row lg:justify-between lg:px-4">
         <Link href="/" passHref>
