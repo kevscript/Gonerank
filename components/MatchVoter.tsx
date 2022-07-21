@@ -16,7 +16,7 @@ export type MatchFormInput = {
 const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const { register, handleSubmit, setValue, getValues } =
+  const { register, handleSubmit, setValue, getValues, reset } =
     useForm<MatchFormInput>({
       mode: "onSubmit",
       defaultValues: useMemo(() => {
@@ -104,6 +104,7 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
           <button
             className="py-2 px-4 bg-gray-200 min-w-[80px] rounded-sm"
             type="button"
+            onClick={() => reset()}
           >
             Réinitialiser
           </button>

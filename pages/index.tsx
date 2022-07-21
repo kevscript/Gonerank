@@ -1,7 +1,5 @@
 import Head from "next/head";
 import TwitterIcon from "../components/Icons/Twitter";
-import ClubIcon from "../components/Icons/Club";
-import LyonIcon from "../components/Icons/Lyon";
 import { NextCustomPage } from "./_app";
 import {
   CreateUserRatingsInput,
@@ -10,7 +8,7 @@ import {
   useGetRatingsLazyQuery,
 } from "graphql/generated/queryTypes";
 import Spinner from "@/components/shared/Spinner";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { signIn, useSession } from "next-auth/react";
 import MatchVoter, { MatchFormInput } from "@/components/MatchVoter";
 import MatchInfo from "@/components/MatchInfo";
