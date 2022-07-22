@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import { ApolloError, UserInputError } from "apollo-server-micro";
-import { arg, extendType, list, nonNull, stringArg } from "nexus";
+import { arg, extendType, list, nonNull, nullable, stringArg } from "nexus";
 import { MatchType } from "./Match";
 import { MatchesWhereInput } from "./types";
 
@@ -29,7 +29,7 @@ export const MatchQuery = extendType({
     });
 
     t.field("matches", {
-      type: list(MatchType),
+      type: nullable(list(MatchType)),
       args: { where: arg({ type: MatchesWhereInput }) },
       resolve: async (_, args) => {
         try {
@@ -67,7 +67,7 @@ export const MatchQuery = extendType({
           if (matches) {
             return matches;
           } else {
-            throw new ApolloError(`No matches could be found`);
+            return null;
           }
         } catch (err) {
           throw err as ApolloError;
@@ -76,7 +76,7 @@ export const MatchQuery = extendType({
     });
 
     t.field("displayMatch", {
-      type: MatchType,
+      type: nullable(MatchType),
       resolve: async () => {
         try {
           const activeMatch = await prisma.match.findFirst({
@@ -98,9 +98,7 @@ export const MatchQuery = extendType({
           if (latestMatch) {
             return latestMatch;
           } else {
-            throw new ApolloError(
-              "Pas de match à afficher pour l'instant, revenez plus tard!"
-            );
+            return null;
           }
         } catch (err) {
           throw err as ApolloError;
