@@ -1,5 +1,5 @@
 import { ApolloError, UserInputError } from "apollo-server-micro";
-import { arg, extendType, list, nonNull, stringArg } from "nexus";
+import { arg, extendType, list, nonNull, nullable, stringArg } from "nexus";
 import { CompetitionType } from "./Competition";
 import prisma from "@/lib/prisma";
 import { CompetitionsWhereInput } from "./types";
@@ -29,7 +29,7 @@ export const CompetitionQuery = extendType({
       },
     });
     t.field("competitions", {
-      type: list(CompetitionType),
+      type: nullable(list(CompetitionType)),
       args: { where: arg({ type: CompetitionsWhereInput }) },
       resolve: async (_, args) => {
         try {
@@ -50,7 +50,7 @@ export const CompetitionQuery = extendType({
           if (competitions) {
             return competitions;
           } else {
-            throw new ApolloError(`No competitions could be found`);
+            return null;
           }
         } catch (err) {
           throw err as ApolloError;
