@@ -1,6 +1,6 @@
 import { ApolloError } from "apollo-server-micro";
 import { Season } from "graphql/generated/nexusTypes";
-import { list, nullable, objectType } from "nexus";
+import { arg, list, nullable, objectType, stringArg } from "nexus";
 import prisma from "@/lib/prisma";
 import { SeasonPlayerStats } from "./types";
 

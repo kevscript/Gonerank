@@ -29,7 +29,7 @@ export const MatchQuery = extendType({
     });
 
     t.field("matches", {
-      type: nullable(list(MatchType)),
+      type: list(MatchType),
       args: { where: arg({ type: MatchesWhereInput }) },
       resolve: async (_, args) => {
         try {
@@ -67,7 +67,7 @@ export const MatchQuery = extendType({
           if (matches) {
             return matches;
           } else {
-            return null;
+            return [];
           }
         } catch (err) {
           throw err as ApolloError;

@@ -1,4 +1,5 @@
 import { inputObjectType } from "nexus";
+import { SeasonPlayersWhereInput, SeasonPlayerType } from "../SeasonPlayer";
 
 export const CreatePlayerInput = inputObjectType({
   name: "CreatePlayerInput",
@@ -36,5 +37,6 @@ export const PlayersWhereInput = inputObjectType({
     t.string("country");
     t.string("countryCode");
     t.boolean("active");
+    t.field({ name: "season", type: SeasonPlayersWhereInput });
   },
 });

@@ -25,3 +25,14 @@ export const CREATE_USER_RATINGS = gql`
     }
   }
 `;
+
+export const GET_SEASON_RATINGS = gql`
+  query GetSeasonRatings($seasonId: String!) {
+    ratings(where: { seasonId: $seasonId }) {
+      id
+      playerId
+      matchId
+      rating
+    }
+  }
+`;

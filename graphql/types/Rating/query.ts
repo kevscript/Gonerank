@@ -52,12 +52,13 @@ export const RatingQuery = extendType({
           if (!args.where) {
             ratings = await prisma.rating.findMany();
           } else {
-            const { userId, matchId, playerId } = args.where;
+            const { userId, matchId, playerId, seasonId } = args.where;
             ratings = await prisma.rating.findMany({
               where: {
                 userId: userId ? userId : undefined,
                 matchId: matchId ? matchId : undefined,
                 playerId: playerId ? playerId : undefined,
+                match: { seasonId: seasonId ? seasonId : undefined },
               },
             });
           }

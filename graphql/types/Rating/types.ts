@@ -14,5 +14,6 @@ export const RatingsWhereInput = inputObjectType({
     t.string("userId");
     t.string("matchId");
     t.string("playerId");
+    t.string("seasonId");
   },
 });

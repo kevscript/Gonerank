@@ -45,6 +45,7 @@ export const PlayerQuery = extendType({
               firstName,
               image,
               lastName,
+              season,
             } = args.where;
             players = await prisma.player.findMany({
               where: {
@@ -55,6 +56,11 @@ export const PlayerQuery = extendType({
                 country: country ? country : undefined,
                 countryCode: countryCode ? countryCode : undefined,
                 image: image ? image : undefined,
+                seasons: {
+                  some: {
+                    seasonId: season?.seasonId ? season.seasonId : undefined,
+                  },
+                },
               },
             });
           }

@@ -25,7 +25,7 @@ export const ClubQuery = extendType({
       },
     });
     t.field("clubs", {
-      type: nullable(list(ClubType)),
+      type: list(ClubType),
       args: { where: arg({ type: ClubsWhereInput }) },
       resolve: async (_, args) => {
         try {
@@ -47,7 +47,7 @@ export const ClubQuery = extendType({
           if (clubs) {
             return clubs;
           } else {
-            return null;
+            return [];
           }
         } catch (err) {
           const error = err as ApolloError;

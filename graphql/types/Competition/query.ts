@@ -29,7 +29,7 @@ export const CompetitionQuery = extendType({
       },
     });
     t.field("competitions", {
-      type: nullable(list(CompetitionType)),
+      type: list(CompetitionType),
       args: { where: arg({ type: CompetitionsWhereInput }) },
       resolve: async (_, args) => {
         try {
@@ -50,7 +50,7 @@ export const CompetitionQuery = extendType({
           if (competitions) {
             return competitions;
           } else {
-            return null;
+            return [];
           }
         } catch (err) {
           throw err as ApolloError;

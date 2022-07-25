@@ -213,18 +213,19 @@ input PlayersWhereInput {
   firstName: String
   image: String
   lastName: String
+  season: SeasonPlayersWhereInput
 }
 
 type Query {
   club(id: String!): Club!
-  clubs(where: ClubsWhereInput): [Club!]
+  clubs(where: ClubsWhereInput): [Club!]!
   competition(id: String!): Competition!
-  competitions(where: CompetitionsWhereInput): [Competition!]
+  competitions(where: CompetitionsWhereInput): [Competition!]!
   displayMatch: Match
   match(id: String!): Match!
   matchPlayer(matchId: String!, playerId: String!): MatchPlayer!
   matchPlayers(where: MatchPlayersWhereInput): [MatchPlayer!]!
-  matches(where: MatchesWhereInput): [Match!]
+  matches(where: MatchesWhereInput): [Match!]!
   player(id: String!): Player!
   players(where: PlayersWhereInput): [Player!]!
   rating(matchId: String!, playerId: String!, userId: String!): Rating!
@@ -251,6 +252,7 @@ type Rating {
 input RatingsWhereInput {
   matchId: String
   playerId: String
+  seasonId: String
   userId: String
 }
 
