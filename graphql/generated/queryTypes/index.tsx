@@ -342,14 +342,14 @@ export type PlayersWhereInput = {
 export type Query = {
   __typename?: 'Query';
   club: Club;
-  clubs: Array<Club>;
+  clubs?: Maybe<Array<Club>>;
   competition: Competition;
-  competitions: Array<Competition>;
-  displayMatch: Match;
+  competitions?: Maybe<Array<Competition>>;
+  displayMatch?: Maybe<Match>;
   match: Match;
   matchPlayer: MatchPlayer;
   matchPlayers: Array<MatchPlayer>;
-  matches: Array<Match>;
+  matches?: Maybe<Array<Match>>;
   player: Player;
   players: Array<Player>;
   rating: Rating;
@@ -478,6 +478,7 @@ export type Season = {
   __typename?: 'Season';
   id: Scalars['ID'];
   matches: Array<Match>;
+  playerStats?: Maybe<Array<SeasonPlayerStats>>;
   players: Array<SeasonPlayer>;
   startDate: Scalars['DateTime'];
 };
@@ -489,6 +490,25 @@ export type SeasonPlayer = {
   playerId: Scalars['String'];
   season: Season;
   seasonId: Scalars['String'];
+};
+
+export type SeasonPlayerMatchStats = {
+  __typename?: 'SeasonPlayerMatchStats';
+  averageQuantity: Scalars['Int'];
+  averageSum: Scalars['Float'];
+  botm: Scalars['Boolean'];
+  matchId: Scalars['String'];
+  motm: Scalars['Boolean'];
+  tendency: Scalars['Float'];
+};
+
+export type SeasonPlayerStats = {
+  __typename?: 'SeasonPlayerStats';
+  firstName: Scalars['String'];
+  image: Scalars['String'];
+  lastName: Scalars['String'];
+  matches: Array<SeasonPlayerMatchStats>;
+  playerId: Scalars['String'];
 };
 
 export type SeasonPlayersWhereInput = {
@@ -585,7 +605,7 @@ export type GetClubsQueryVariables = Exact<{
 }>;
 
 
-export type GetClubsQuery = { __typename?: 'Query', clubs: Array<{ __typename?: 'Club', id: string, name: string, abbreviation: string, primary: string, secondary: string }> };
+export type GetClubsQuery = { __typename?: 'Query', clubs?: Array<{ __typename?: 'Club', id: string, name: string, abbreviation: string, primary: string, secondary: string }> | null };
 
 export type CreateClubMutationVariables = Exact<{
   data: CreateClubInput;
@@ -621,7 +641,7 @@ export type GetCompetitionsQueryVariables = Exact<{
 }>;
 
 
-export type GetCompetitionsQuery = { __typename?: 'Query', competitions: Array<{ __typename?: 'Competition', id: string, name: string, abbreviation: string }> };
+export type GetCompetitionsQuery = { __typename?: 'Query', competitions?: Array<{ __typename?: 'Competition', id: string, name: string, abbreviation: string }> | null };
 
 export type CreateCompetitionMutationVariables = Exact<{
   data: CreateCompetitionInput;
@@ -657,7 +677,7 @@ export type GetMatchesQueryVariables = Exact<{
 }>;
 
 
-export type GetMatchesQuery = { __typename?: 'Query', matches: Array<{ __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string, players: Array<{ __typename?: 'MatchPlayer', id: string, playerId: string }> }> };
+export type GetMatchesQuery = { __typename?: 'Query', matches?: Array<{ __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string, players: Array<{ __typename?: 'MatchPlayer', id: string, playerId: string }> }> | null };
 
 export type CreateMatchMutationVariables = Exact<{
   data: CreateMatchInput;
@@ -706,7 +726,7 @@ export type UpdateMatchPlayersMutation = { __typename?: 'Mutation', updateMatchP
 export type GetDisplayMatchQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetDisplayMatchQuery = { __typename?: 'Query', displayMatch: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competition: { __typename?: 'Competition', id: string, name: string, abbreviation: string }, season: { __typename?: 'Season', id: string, startDate: any }, opponent: { __typename?: 'Club', name: string, abbreviation: string, primary: string, secondary: string }, stats: Array<{ __typename?: 'MatchStats', playerId: string, firstName: string, lastName: string, image: string, avgSum: number, numOfAvg: number, tendency: number }> } };
+export type GetDisplayMatchQuery = { __typename?: 'Query', displayMatch?: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competition: { __typename?: 'Competition', id: string, name: string, abbreviation: string }, season: { __typename?: 'Season', id: string, startDate: any }, opponent: { __typename?: 'Club', name: string, abbreviation: string, primary: string, secondary: string }, stats: Array<{ __typename?: 'MatchStats', playerId: string, firstName: string, lastName: string, image: string, avgSum: number, numOfAvg: number, tendency: number }> } | null };
 
 export type GetPlayerQueryVariables = Exact<{
   id: Scalars['String'];
@@ -810,6 +830,13 @@ export type GetSeasonPlayersQueryVariables = Exact<{
 
 
 export type GetSeasonPlayersQuery = { __typename?: 'Query', seasonPlayers: Array<{ __typename?: 'SeasonPlayer', id: string, player: { __typename?: 'Player', id: string, firstName: string, lastName: string } }> };
+
+export type GetSeasonPlayerStatsQueryVariables = Exact<{
+  seasonId: Scalars['String'];
+}>;
+
+
+export type GetSeasonPlayerStatsQuery = { __typename?: 'Query', season: { __typename?: 'Season', id: string, startDate: any, playerStats?: Array<{ __typename?: 'SeasonPlayerStats', playerId: string, firstName: string, lastName: string, image: string, matches: Array<{ __typename?: 'SeasonPlayerMatchStats', matchId: string, averageSum: number, averageQuantity: number, tendency: number, motm: boolean, botm: boolean }> }> | null } };
 
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2134,6 +2161,56 @@ export function useGetSeasonPlayersLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetSeasonPlayersQueryHookResult = ReturnType<typeof useGetSeasonPlayersQuery>;
 export type GetSeasonPlayersLazyQueryHookResult = ReturnType<typeof useGetSeasonPlayersLazyQuery>;
 export type GetSeasonPlayersQueryResult = Apollo.QueryResult<GetSeasonPlayersQuery, GetSeasonPlayersQueryVariables>;
+export const GetSeasonPlayerStatsDocument = gql`
+    query GetSeasonPlayerStats($seasonId: String!) {
+  season(id: $seasonId) {
+    id
+    startDate
+    playerStats {
+      playerId
+      firstName
+      lastName
+      image
+      matches {
+        matchId
+        averageSum
+        averageQuantity
+        tendency
+        motm
+        botm
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetSeasonPlayerStatsQuery__
+ *
+ * To run a query within a React component, call `useGetSeasonPlayerStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSeasonPlayerStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSeasonPlayerStatsQuery({
+ *   variables: {
+ *      seasonId: // value for 'seasonId'
+ *   },
+ * });
+ */
+export function useGetSeasonPlayerStatsQuery(baseOptions: Apollo.QueryHookOptions<GetSeasonPlayerStatsQuery, GetSeasonPlayerStatsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSeasonPlayerStatsQuery, GetSeasonPlayerStatsQueryVariables>(GetSeasonPlayerStatsDocument, options);
+      }
+export function useGetSeasonPlayerStatsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSeasonPlayerStatsQuery, GetSeasonPlayerStatsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSeasonPlayerStatsQuery, GetSeasonPlayerStatsQueryVariables>(GetSeasonPlayerStatsDocument, options);
+        }
+export type GetSeasonPlayerStatsQueryHookResult = ReturnType<typeof useGetSeasonPlayerStatsQuery>;
+export type GetSeasonPlayerStatsLazyQueryHookResult = ReturnType<typeof useGetSeasonPlayerStatsLazyQuery>;
+export type GetSeasonPlayerStatsQueryResult = Apollo.QueryResult<GetSeasonPlayerStatsQuery, GetSeasonPlayerStatsQueryVariables>;
 export const GetUsersDocument = gql`
     query GetUsers {
   users {

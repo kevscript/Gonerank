@@ -217,9 +217,9 @@ input PlayersWhereInput {
 
 type Query {
   club(id: String!): Club!
-  clubs(where: ClubsWhereInput): [Club!]!
+  clubs(where: ClubsWhereInput): [Club!]
   competition(id: String!): Competition!
-  competitions(where: CompetitionsWhereInput): [Competition!]!
+  competitions(where: CompetitionsWhereInput): [Competition!]
   displayMatch: Match
   match(id: String!): Match!
   matchPlayer(matchId: String!, playerId: String!): MatchPlayer!
@@ -262,6 +262,7 @@ enum Role {
 type Season {
   id: ID!
   matches: [Match!]!
+  playerStats: [SeasonPlayerStats!]
   players: [SeasonPlayer!]!
   startDate: DateTime!
 }
@@ -272,6 +273,23 @@ type SeasonPlayer {
   playerId: String!
   season: Season!
   seasonId: String!
+}
+
+type SeasonPlayerMatchStats {
+  averageQuantity: Int!
+  averageSum: Float!
+  botm: Boolean!
+  matchId: String!
+  motm: Boolean!
+  tendency: Float!
+}
+
+type SeasonPlayerStats {
+  firstName: String!
+  image: String!
+  lastName: String!
+  matches: [SeasonPlayerMatchStats!]!
+  playerId: String!
 }
 
 input SeasonPlayersWhereInput {
