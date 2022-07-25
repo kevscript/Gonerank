@@ -1,7 +1,4 @@
 import EditIcon from "@/components/Icons/Edit";
-import EyeIcon from "@/components/Icons/Eye";
-import EyeClosedIcon from "@/components/Icons/EyeClosedIcon";
-import TrashIcon from "@/components/Icons/Trash";
 import UserIcon from "@/components/Icons/User";
 import AdminTable from "@/components/shared/AdminTable";
 import Draggable from "@/components/shared/Draggable";
@@ -20,7 +17,7 @@ import {
 import { GET_PLAYERS } from "graphql/queries/player";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 
 const AdminPlayersPage: NextCustomPage = () => {
   const { data: playersData, loading, error } = useGetPlayersQuery();
