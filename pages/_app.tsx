@@ -15,8 +15,8 @@ function MyApp({ pageProps: { session, ...pageProps }, ...props }: AppProps) {
   const { Component }: { Component: NextCustomPage } = props;
 
   return (
-    <SessionProvider session={session}>
-      <ApolloProvider client={apolloClient}>
+    <ApolloProvider client={apolloClient}>
+      <SessionProvider session={session}>
         <div className="flex">
           <Sidebar />
           <div className="min-h-screen w-full pl-16 lg:pl-64">
@@ -29,8 +29,8 @@ function MyApp({ pageProps: { session, ...pageProps }, ...props }: AppProps) {
             )}
           </div>
         </div>
-      </ApolloProvider>
-    </SessionProvider>
+      </SessionProvider>
+    </ApolloProvider>
   );
 }
 
