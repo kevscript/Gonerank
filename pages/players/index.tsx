@@ -1,28 +1,41 @@
-import UserIcon from "@/components/Icons/User";
-import TableCell from "@/components/shared/TableCell";
-import { ColumnDef } from "@tanstack/react-table";
-import Image from "next/image";
 import {
   useGetSeasonRatingsLazyQuery,
   useGetSeasonsQuery,
+  useGetSeasonUserRatingsLazyQuery,
   useGlobalSeasonDataLazyQuery,
 } from "graphql/generated/queryTypes";
 import { useEffect, useState } from "react";
 import {
-  formatSeasonPlayersStats,
+  formatPlayersSeasonStats,
   FormattedPlayerSeasonStats,
-} from "@/utils/formatSeasonStats";
-import PublicTable from "@/components/shared/PublicTable";
+} from "@/utils/formatPlayersSeasonStats";
 import Draggable from "@/components/shared/Draggable";
+import { useSession } from "next-auth/react";
+import PlayersTable from "@/components/tables/PlayersTable";
 
 const PlayersPage = () => {
+  const { data: session, status } = useSession();
+
+  const [currentSeasonId, setCurrentSeasonId] = useState<string | null>(null);
   const { data: seasonsData } = useGetSeasonsQuery();
   const [getGlobalSeasonData, { data: globalSeasonData }] =
     useGlobalSeasonDataLazyQuery();
+
   const [getSeasonRatings, { data: seasonRatings }] =
     useGetSeasonRatingsLazyQuery();
+  const [getSeasonUserRatings, { data: seasonUserRatings }] =
+    useGetSeasonUserRatingsLazyQuery();
 
   const [stats, setStats] = useState<FormattedPlayerSeasonStats[] | null>(null);
+  const [userStats, setUserStats] = useState<
+    FormattedPlayerSeasonStats[] | null
+  >(null);
+
+  const [mode, setMode] = useState<"user" | "all">("all");
+
+  const toggleMode = () => {
+    mode === "all" ? setMode("user") : setMode("all");
+  };
 
   useEffect(() => {
     if (seasonsData?.seasons) {
@@ -30,140 +43,64 @@ const PlayersPage = () => {
         new Date(a.startDate) < new Date(b.startDate) ? 1 : -1
       )[0];
       if (latestSeason) {
+        setCurrentSeasonId(latestSeason.id);
         getGlobalSeasonData({ variables: { seasonId: latestSeason.id } });
         getSeasonRatings({ variables: { seasonId: latestSeason.id } });
       }
     }
-  }, [seasonsData?.seasons, getSeasonRatings, getGlobalSeasonData]);
+  }, [seasonsData, getGlobalSeasonData, getSeasonRatings]);
 
   useEffect(() => {
-    if (
-      globalSeasonData?.matches &&
-      globalSeasonData.matches.length > 0 &&
-      seasonRatings
-    ) {
-      const formattedStats = formatSeasonPlayersStats({
-        matches: globalSeasonData.matches,
-        players: globalSeasonData.players,
-        clubs: globalSeasonData.clubs,
-        competitions: globalSeasonData.competitions,
+    if (seasonsData?.seasons && status === "authenticated" && session) {
+      const latestSeason = seasonsData.seasons.sort((a, b) =>
+        new Date(a.startDate) < new Date(b.startDate) ? 1 : -1
+      )[0];
+      if (latestSeason) {
+        getSeasonUserRatings({
+          variables: { seasonId: latestSeason.id, userId: session.user.id! },
+        });
+      }
+    }
+  }, [seasonsData, getSeasonUserRatings, status, session]);
+
+  useEffect(() => {
+    if (globalSeasonData && seasonRatings) {
+      const formattedStats = formatPlayersSeasonStats({
+        players: globalSeasonData.players || [],
+        matches: globalSeasonData.matches || [],
+        competitions: globalSeasonData.competitions || [],
+        clubs: globalSeasonData.clubs || [],
         ratings: seasonRatings.ratings,
       });
       formattedStats && setStats(formattedStats);
     }
   }, [globalSeasonData, seasonRatings]);
 
-  const columns: ColumnDef<FormattedPlayerSeasonStats>[] = [
-    {
-      header: () => {
-        return (
-          <TableCell>
-            <div className="ml-2 relative w-4 h-4 flex justify-center items-center rounded-full overflow-hidden bg-gray-200">
-              <UserIcon />
-            </div>
-            <span className="ml-4 text-sm">Player</span>
-          </TableCell>
-        );
-      },
-      id: "player",
-      accessorFn: (player) => player.lastName,
-      cell: ({ row }) => {
-        const { firstName, lastName, image } = row.original || {};
-        return (
-          <TableCell className="flex flex-nowrap px-2">
-            <div className="relative w-8 h-8 flex justify-center items-center rounded-full overflow-hidden bg-gray-200">
-              {image ? (
-                <Image
-                  src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${image}`}
-                  layout="fill"
-                  objectFit="cover"
-                  alt="player"
-                />
-              ) : (
-                <UserIcon />
-              )}
-            </div>
-            <span className="whitespace-nowrap ml-2">
-              {firstName![0] + ". " + lastName}
-            </span>
-          </TableCell>
-        );
-      },
-      size: 200,
-    },
-    {
-      header: () => (
-        <TableCell>
-          <span>motm</span>
-        </TableCell>
-      ),
-      accessorKey: "globalMotm",
-      cell: (info) => (
-        <TableCell>
-          <span>{info.getValue()}</span>
-        </TableCell>
-      ),
-    },
-    {
-      header: () => (
-        <TableCell>
-          <span>botm</span>
-        </TableCell>
-      ),
-      accessorKey: "globalBotm",
-      cell: (info) => (
-        <TableCell>
-          <span>{info.getValue()}</span>
-        </TableCell>
-      ),
-    },
-    {
-      header: () => (
-        <TableCell>
-          <span>homeAvg</span>
-        </TableCell>
-      ),
-      accessorKey: "homeAverage",
-      cell: (info) => (
-        <TableCell>
-          <span>{info.getValue()}</span>
-        </TableCell>
-      ),
-    },
-    {
-      header: () => (
-        <TableCell>
-          <span>awayAvg</span>
-        </TableCell>
-      ),
-      accessorKey: "awayAverage",
-      cell: (info) => (
-        <TableCell>
-          <span>{info.getValue()}</span>
-        </TableCell>
-      ),
-    },
-    {
-      header: () => (
-        <TableCell>
-          <span>globalAvg</span>
-        </TableCell>
-      ),
-      accessorKey: "globalAverage",
-      cell: (info) => (
-        <TableCell>
-          <span>{info.getValue()}</span>
-        </TableCell>
-      ),
-    },
-  ];
+  useEffect(() => {
+    if (globalSeasonData && seasonUserRatings) {
+      const formattedStats = formatPlayersSeasonStats({
+        players: globalSeasonData.players || [],
+        matches: globalSeasonData.matches || [],
+        competitions: globalSeasonData.competitions || [],
+        clubs: globalSeasonData.clubs || [],
+        ratings: seasonUserRatings.ratings,
+      });
+      formattedStats && setUserStats(formattedStats);
+    }
+  }, [globalSeasonData, seasonUserRatings]);
 
   return (
     <div className="p-4">
       <h1>Players</h1>
+
+      {status === "authenticated" && userStats && (
+        <button onClick={() => toggleMode()}>Now : {mode}</button>
+      )}
       {stats && (
         <Draggable>
-          <PublicTable columns={columns} data={stats} frozenId="player" />
+          <PlayersTable
+            data={userStats && mode === "user" ? userStats : stats}
+          />
         </Draggable>
       )}
     </div>
