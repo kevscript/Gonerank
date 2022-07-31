@@ -339,6 +339,7 @@ export type PlayersWhereInput = {
   firstName?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
+  match?: InputMaybe<MatchPlayersWhereInput>;
   season?: InputMaybe<SeasonPlayersWhereInput>;
 };
 
@@ -743,6 +744,20 @@ export type GetDisplayMatchQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetDisplayMatchQuery = { __typename?: 'Query', displayMatch?: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competition: { __typename?: 'Competition', id: string, name: string, abbreviation: string }, season: { __typename?: 'Season', id: string, startDate: any }, opponent: { __typename?: 'Club', name: string, abbreviation: string, primary: string, secondary: string }, stats: Array<{ __typename?: 'MatchStats', playerId: string, firstName: string, lastName: string, image: string, avgSum: number, numOfAvg: number, tendency: number }> } | null };
+
+export type MatchRatingsQueryVariables = Exact<{
+  matchId: Scalars['String'];
+}>;
+
+
+export type MatchRatingsQuery = { __typename?: 'Query', ratings: Array<{ __typename?: 'Rating', id: string, playerId: string, userId: string, rating: number }> };
+
+export type MatchDataQueryVariables = Exact<{
+  matchId: Scalars['String'];
+}>;
+
+
+export type MatchDataQuery = { __typename?: 'Query', match: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string, competition: { __typename?: 'Competition', id: string, name: string, abbreviation: string }, season: { __typename?: 'Season', id: string, startDate: any }, opponent: { __typename?: 'Club', id: string, name: string, abbreviation: string, primary: string, secondary: string } }, players: Array<{ __typename?: 'Player', id: string, lastName: string, country: string, firstName: string, countryCode: string, birthDate: any, image: string, active: boolean }> };
 
 export type GetPlayerQueryVariables = Exact<{
   id: Scalars['String'];
@@ -1807,6 +1822,114 @@ export function useGetDisplayMatchLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetDisplayMatchQueryHookResult = ReturnType<typeof useGetDisplayMatchQuery>;
 export type GetDisplayMatchLazyQueryHookResult = ReturnType<typeof useGetDisplayMatchLazyQuery>;
 export type GetDisplayMatchQueryResult = Apollo.QueryResult<GetDisplayMatchQuery, GetDisplayMatchQueryVariables>;
+export const MatchRatingsDocument = gql`
+    query MatchRatings($matchId: String!) {
+  ratings(where: {matchId: $matchId}) {
+    id
+    playerId
+    userId
+    rating
+  }
+}
+    `;
+
+/**
+ * __useMatchRatingsQuery__
+ *
+ * To run a query within a React component, call `useMatchRatingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMatchRatingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMatchRatingsQuery({
+ *   variables: {
+ *      matchId: // value for 'matchId'
+ *   },
+ * });
+ */
+export function useMatchRatingsQuery(baseOptions: Apollo.QueryHookOptions<MatchRatingsQuery, MatchRatingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MatchRatingsQuery, MatchRatingsQueryVariables>(MatchRatingsDocument, options);
+      }
+export function useMatchRatingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MatchRatingsQuery, MatchRatingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MatchRatingsQuery, MatchRatingsQueryVariables>(MatchRatingsDocument, options);
+        }
+export type MatchRatingsQueryHookResult = ReturnType<typeof useMatchRatingsQuery>;
+export type MatchRatingsLazyQueryHookResult = ReturnType<typeof useMatchRatingsLazyQuery>;
+export type MatchRatingsQueryResult = Apollo.QueryResult<MatchRatingsQuery, MatchRatingsQueryVariables>;
+export const MatchDataDocument = gql`
+    query MatchData($matchId: String!) {
+  match(id: $matchId) {
+    id
+    date
+    home
+    scored
+    conceeded
+    active
+    archived
+    competitionId
+    competition {
+      id
+      name
+      abbreviation
+    }
+    seasonId
+    season {
+      id
+      startDate
+    }
+    opponentId
+    opponent {
+      id
+      name
+      abbreviation
+      primary
+      secondary
+    }
+  }
+  players(where: {match: {matchId: $matchId}}) {
+    id
+    lastName
+    country
+    firstName
+    countryCode
+    birthDate
+    image
+    active
+  }
+}
+    `;
+
+/**
+ * __useMatchDataQuery__
+ *
+ * To run a query within a React component, call `useMatchDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMatchDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMatchDataQuery({
+ *   variables: {
+ *      matchId: // value for 'matchId'
+ *   },
+ * });
+ */
+export function useMatchDataQuery(baseOptions: Apollo.QueryHookOptions<MatchDataQuery, MatchDataQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MatchDataQuery, MatchDataQueryVariables>(MatchDataDocument, options);
+      }
+export function useMatchDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MatchDataQuery, MatchDataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MatchDataQuery, MatchDataQueryVariables>(MatchDataDocument, options);
+        }
+export type MatchDataQueryHookResult = ReturnType<typeof useMatchDataQuery>;
+export type MatchDataLazyQueryHookResult = ReturnType<typeof useMatchDataLazyQuery>;
+export type MatchDataQueryResult = Apollo.QueryResult<MatchDataQuery, MatchDataQueryVariables>;
 export const GetPlayerDocument = gql`
     query GetPlayer($id: String!) {
   player(id: $id) {

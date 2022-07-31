@@ -215,6 +215,7 @@ input PlayersWhereInput {
   firstName: String
   image: String
   lastName: String
+  match: MatchPlayersWhereInput
   season: SeasonPlayersWhereInput
 }
 

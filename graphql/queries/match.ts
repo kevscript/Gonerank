@@ -182,3 +182,58 @@ export const GET_DISPLAY_MATCH = gql`
     }
   }
 `;
+
+export const MATCH_RATINGS = gql`
+  query MatchRatings($matchId: String!) {
+    ratings(where: { matchId: $matchId }) {
+      id
+      playerId
+      userId
+      rating
+    }
+  }
+`;
+
+export const MATCH_DATA = gql`
+  query MatchData($matchId: String!) {
+    match(id: $matchId) {
+      id
+      date
+      home
+      scored
+      conceeded
+      active
+      archived
+      competitionId
+      competition {
+        id
+        name
+        abbreviation
+      }
+      seasonId
+      season {
+        id
+        startDate
+      }
+      opponentId
+      opponent {
+        id
+        name
+        abbreviation
+        primary
+        secondary
+      }
+    }
+
+    players(where: { match: { matchId: $matchId } }) {
+      id
+      lastName
+      country
+      firstName
+      countryCode
+      birthDate
+      image
+      active
+    }
+  }
+`;
