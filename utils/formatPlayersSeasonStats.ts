@@ -58,7 +58,6 @@ export const formatPlayersSeasonStats = ({
   competitions,
   ratings,
 }: FormatSeasonStatsParams) => {
-  console.log(ratings);
   /* Turning all lists into objects by Id for better referencing */
   let playersById: { [key: string]: GlobalSeasonDataQuery["players"][0] } = {};
   players.forEach((player) => (playersById[player.id] = player));
