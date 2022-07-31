@@ -51,13 +51,14 @@ export type FormatSeasonStatsParams = {
   ratings: GetSeasonRatingsQuery["ratings"];
 };
 
-export const formatSeasonPlayersStats = ({
+export const formatPlayersSeasonStats = ({
   matches,
   players,
   clubs,
   competitions,
   ratings,
 }: FormatSeasonStatsParams) => {
+  console.log(ratings);
   /* Turning all lists into objects by Id for better referencing */
   let playersById: { [key: string]: GlobalSeasonDataQuery["players"][0] } = {};
   players.forEach((player) => (playersById[player.id] = player));
@@ -79,6 +80,21 @@ export const formatSeasonPlayersStats = ({
    * ** */
 
   let playersMatchStats: PlayerMatchStats = {};
+
+  // init playersMatchStats object with all players
+  players.forEach((pl) => {
+    if (!playersMatchStats[pl.id]) {
+      playersMatchStats[pl.id] = {
+        ...playersById[pl.id],
+        matches: {},
+        globalAverage: 0,
+        awayAverage: 0,
+        homeAverage: 0,
+        globalBotm: 0,
+        globalMotm: 0,
+      };
+    }
+  });
 
   // compute averages
   ratings.forEach((r) => {
@@ -204,6 +220,5 @@ export const formatSeasonPlayersStats = ({
   });
 
   const formattedStats = Object.values(playersMatchStats);
-  console.log(formattedStats);
   return formattedStats;
 };
