@@ -42,6 +42,7 @@ export const MatchesWhereInput = inputObjectType({
     t.string("opponentId");
     t.string("seasonId");
     t.string("competitionId");
+    t.string("playerId");
   },
 });
 

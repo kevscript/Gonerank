@@ -142,6 +142,7 @@ type MatchPlayer {
 input MatchPlayersWhereInput {
   matchId: String
   playerId: String
+  seasonId: String
 }
 
 type MatchStats {
@@ -162,6 +163,7 @@ input MatchesWhereInput {
   date: DateTime
   home: Boolean
   opponentId: String
+  playerId: String
   scored: Int
   seasonId: String
 }

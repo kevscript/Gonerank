@@ -143,6 +143,7 @@ export type MatchPlayer = {
 export type MatchPlayersWhereInput = {
   matchId?: InputMaybe<Scalars['String']>;
   playerId?: InputMaybe<Scalars['String']>;
+  seasonId?: InputMaybe<Scalars['String']>;
 };
 
 export type MatchStats = {
@@ -164,6 +165,7 @@ export type MatchesWhereInput = {
   date?: InputMaybe<Scalars['DateTime']>;
   home?: InputMaybe<Scalars['Boolean']>;
   opponentId?: InputMaybe<Scalars['String']>;
+  playerId?: InputMaybe<Scalars['String']>;
   scored?: InputMaybe<Scalars['Int']>;
   seasonId?: InputMaybe<Scalars['String']>;
 };
@@ -667,6 +669,11 @@ export type DeleteCompetitionMutationVariables = Exact<{
 
 export type DeleteCompetitionMutation = { __typename?: 'Mutation', deleteCompetition: { __typename?: 'Competition', id: string, name: string, abbreviation: string } };
 
+export type GlobalDataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GlobalDataQuery = { __typename?: 'Query', seasons: Array<{ __typename?: 'Season', id: string, startDate: any }>, players: Array<{ __typename?: 'Player', id: string, lastName: string, country: string, firstName: string, countryCode: string, birthDate: any, image: string, active: boolean }>, matches: Array<{ __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string }>, competitions: Array<{ __typename?: 'Competition', id: string, name: string, abbreviation: string }>, clubs: Array<{ __typename?: 'Club', id: string, name: string, abbreviation: string, primary: string, secondary: string }> };
+
 export type GlobalSeasonDataQueryVariables = Exact<{
   seasonId: Scalars['String'];
 }>;
@@ -773,6 +780,22 @@ export type DeletePlayerMutationVariables = Exact<{
 
 export type DeletePlayerMutation = { __typename?: 'Mutation', deletePlayer: { __typename?: 'Player', id: string, firstName: string, lastName: string, birthDate: any, country: string, countryCode: string, image: string, active: boolean } };
 
+export type PlayerSeasonRatingsQueryVariables = Exact<{
+  playerId: Scalars['String'];
+  seasonId: Scalars['String'];
+}>;
+
+
+export type PlayerSeasonRatingsQuery = { __typename?: 'Query', ratings: Array<{ __typename?: 'Rating', id: string, matchId: string, userId: string, rating: number }> };
+
+export type PlayerSeasonDataQueryVariables = Exact<{
+  playerId: Scalars['String'];
+  seasonId: Scalars['String'];
+}>;
+
+
+export type PlayerSeasonDataQuery = { __typename?: 'Query', player: { __typename?: 'Player', id: string, lastName: string, country: string, firstName: string, countryCode: string, birthDate: any, image: string, active: boolean, seasons: Array<{ __typename?: 'SeasonPlayer', seasonId: string }> }, matches: Array<{ __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string }>, competitions: Array<{ __typename?: 'Competition', id: string, abbreviation: string, name: string }>, clubs: Array<{ __typename?: 'Club', id: string, name: string, abbreviation: string, primary: string, secondary: string }> };
+
 export type GetRatingsQueryVariables = Exact<{
   where?: InputMaybe<RatingsWhereInput>;
 }>;
@@ -796,6 +819,14 @@ export type GetSeasonRatingsQueryVariables = Exact<{
 
 export type GetSeasonRatingsQuery = { __typename?: 'Query', ratings: Array<{ __typename?: 'Rating', id: string, playerId: string, matchId: string, rating: number }> };
 
+export type GetSeasonUserRatingsQueryVariables = Exact<{
+  seasonId: Scalars['String'];
+  userId: Scalars['String'];
+}>;
+
+
+export type GetSeasonUserRatingsQuery = { __typename?: 'Query', ratings: Array<{ __typename?: 'Rating', id: string, playerId: string, matchId: string, rating: number }> };
+
 export type GetSeasonQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -808,7 +839,7 @@ export type GetSeasonsQueryVariables = Exact<{
 }>;
 
 
-export type GetSeasonsQuery = { __typename?: 'Query', seasons: Array<{ __typename?: 'Season', id: string, startDate: any }> };
+export type GetSeasonsQuery = { __typename?: 'Query', seasons: Array<{ __typename?: 'Season', id: string, startDate: any, players: Array<{ __typename?: 'SeasonPlayer', id: string, playerId: string }> }> };
 
 export type CreateSeasonMutationVariables = Exact<{
   data: CreateSeasonInput;
@@ -1230,6 +1261,75 @@ export function useDeleteCompetitionMutation(baseOptions?: Apollo.MutationHookOp
 export type DeleteCompetitionMutationHookResult = ReturnType<typeof useDeleteCompetitionMutation>;
 export type DeleteCompetitionMutationResult = Apollo.MutationResult<DeleteCompetitionMutation>;
 export type DeleteCompetitionMutationOptions = Apollo.BaseMutationOptions<DeleteCompetitionMutation, DeleteCompetitionMutationVariables>;
+export const GlobalDataDocument = gql`
+    query GlobalData {
+  seasons {
+    id
+    startDate
+  }
+  players {
+    id
+    lastName
+    country
+    firstName
+    countryCode
+    birthDate
+    image
+    active
+  }
+  matches {
+    id
+    date
+    home
+    scored
+    conceeded
+    active
+    archived
+    competitionId
+    seasonId
+    opponentId
+  }
+  competitions {
+    id
+    name
+    abbreviation
+  }
+  clubs {
+    id
+    name
+    abbreviation
+    primary
+    secondary
+  }
+}
+    `;
+
+/**
+ * __useGlobalDataQuery__
+ *
+ * To run a query within a React component, call `useGlobalDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGlobalDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGlobalDataQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGlobalDataQuery(baseOptions?: Apollo.QueryHookOptions<GlobalDataQuery, GlobalDataQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GlobalDataQuery, GlobalDataQueryVariables>(GlobalDataDocument, options);
+      }
+export function useGlobalDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GlobalDataQuery, GlobalDataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GlobalDataQuery, GlobalDataQueryVariables>(GlobalDataDocument, options);
+        }
+export type GlobalDataQueryHookResult = ReturnType<typeof useGlobalDataQuery>;
+export type GlobalDataLazyQueryHookResult = ReturnType<typeof useGlobalDataLazyQuery>;
+export type GlobalDataQueryResult = Apollo.QueryResult<GlobalDataQuery, GlobalDataQueryVariables>;
 export const GlobalSeasonDataDocument = gql`
     query GlobalSeasonData($seasonId: String!) {
   players(where: {season: {seasonId: $seasonId}}) {
@@ -1912,6 +2012,115 @@ export function useDeletePlayerMutation(baseOptions?: Apollo.MutationHookOptions
 export type DeletePlayerMutationHookResult = ReturnType<typeof useDeletePlayerMutation>;
 export type DeletePlayerMutationResult = Apollo.MutationResult<DeletePlayerMutation>;
 export type DeletePlayerMutationOptions = Apollo.BaseMutationOptions<DeletePlayerMutation, DeletePlayerMutationVariables>;
+export const PlayerSeasonRatingsDocument = gql`
+    query PlayerSeasonRatings($playerId: String!, $seasonId: String!) {
+  ratings(where: {playerId: $playerId, seasonId: $seasonId}) {
+    id
+    matchId
+    userId
+    rating
+  }
+}
+    `;
+
+/**
+ * __usePlayerSeasonRatingsQuery__
+ *
+ * To run a query within a React component, call `usePlayerSeasonRatingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePlayerSeasonRatingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePlayerSeasonRatingsQuery({
+ *   variables: {
+ *      playerId: // value for 'playerId'
+ *      seasonId: // value for 'seasonId'
+ *   },
+ * });
+ */
+export function usePlayerSeasonRatingsQuery(baseOptions: Apollo.QueryHookOptions<PlayerSeasonRatingsQuery, PlayerSeasonRatingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PlayerSeasonRatingsQuery, PlayerSeasonRatingsQueryVariables>(PlayerSeasonRatingsDocument, options);
+      }
+export function usePlayerSeasonRatingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PlayerSeasonRatingsQuery, PlayerSeasonRatingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PlayerSeasonRatingsQuery, PlayerSeasonRatingsQueryVariables>(PlayerSeasonRatingsDocument, options);
+        }
+export type PlayerSeasonRatingsQueryHookResult = ReturnType<typeof usePlayerSeasonRatingsQuery>;
+export type PlayerSeasonRatingsLazyQueryHookResult = ReturnType<typeof usePlayerSeasonRatingsLazyQuery>;
+export type PlayerSeasonRatingsQueryResult = Apollo.QueryResult<PlayerSeasonRatingsQuery, PlayerSeasonRatingsQueryVariables>;
+export const PlayerSeasonDataDocument = gql`
+    query PlayerSeasonData($playerId: String!, $seasonId: String!) {
+  player(id: $playerId) {
+    id
+    lastName
+    country
+    firstName
+    countryCode
+    birthDate
+    image
+    active
+    seasons {
+      seasonId
+    }
+  }
+  matches(where: {seasonId: $seasonId, archived: true, playerId: $playerId}) {
+    id
+    date
+    home
+    scored
+    conceeded
+    active
+    archived
+    competitionId
+    seasonId
+    opponentId
+  }
+  competitions {
+    id
+    abbreviation
+    name
+  }
+  clubs {
+    id
+    name
+    abbreviation
+    primary
+    secondary
+  }
+}
+    `;
+
+/**
+ * __usePlayerSeasonDataQuery__
+ *
+ * To run a query within a React component, call `usePlayerSeasonDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePlayerSeasonDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePlayerSeasonDataQuery({
+ *   variables: {
+ *      playerId: // value for 'playerId'
+ *      seasonId: // value for 'seasonId'
+ *   },
+ * });
+ */
+export function usePlayerSeasonDataQuery(baseOptions: Apollo.QueryHookOptions<PlayerSeasonDataQuery, PlayerSeasonDataQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PlayerSeasonDataQuery, PlayerSeasonDataQueryVariables>(PlayerSeasonDataDocument, options);
+      }
+export function usePlayerSeasonDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PlayerSeasonDataQuery, PlayerSeasonDataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PlayerSeasonDataQuery, PlayerSeasonDataQueryVariables>(PlayerSeasonDataDocument, options);
+        }
+export type PlayerSeasonDataQueryHookResult = ReturnType<typeof usePlayerSeasonDataQuery>;
+export type PlayerSeasonDataLazyQueryHookResult = ReturnType<typeof usePlayerSeasonDataLazyQuery>;
+export type PlayerSeasonDataQueryResult = Apollo.QueryResult<PlayerSeasonDataQuery, PlayerSeasonDataQueryVariables>;
 export const GetRatingsDocument = gql`
     query GetRatings($where: RatingsWhereInput) {
   ratings(where: $where) {
@@ -2026,6 +2235,45 @@ export function useGetSeasonRatingsLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetSeasonRatingsQueryHookResult = ReturnType<typeof useGetSeasonRatingsQuery>;
 export type GetSeasonRatingsLazyQueryHookResult = ReturnType<typeof useGetSeasonRatingsLazyQuery>;
 export type GetSeasonRatingsQueryResult = Apollo.QueryResult<GetSeasonRatingsQuery, GetSeasonRatingsQueryVariables>;
+export const GetSeasonUserRatingsDocument = gql`
+    query GetSeasonUserRatings($seasonId: String!, $userId: String!) {
+  ratings(where: {seasonId: $seasonId, userId: $userId}) {
+    id
+    playerId
+    matchId
+    rating
+  }
+}
+    `;
+
+/**
+ * __useGetSeasonUserRatingsQuery__
+ *
+ * To run a query within a React component, call `useGetSeasonUserRatingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSeasonUserRatingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSeasonUserRatingsQuery({
+ *   variables: {
+ *      seasonId: // value for 'seasonId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetSeasonUserRatingsQuery(baseOptions: Apollo.QueryHookOptions<GetSeasonUserRatingsQuery, GetSeasonUserRatingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSeasonUserRatingsQuery, GetSeasonUserRatingsQueryVariables>(GetSeasonUserRatingsDocument, options);
+      }
+export function useGetSeasonUserRatingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSeasonUserRatingsQuery, GetSeasonUserRatingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSeasonUserRatingsQuery, GetSeasonUserRatingsQueryVariables>(GetSeasonUserRatingsDocument, options);
+        }
+export type GetSeasonUserRatingsQueryHookResult = ReturnType<typeof useGetSeasonUserRatingsQuery>;
+export type GetSeasonUserRatingsLazyQueryHookResult = ReturnType<typeof useGetSeasonUserRatingsLazyQuery>;
+export type GetSeasonUserRatingsQueryResult = Apollo.QueryResult<GetSeasonUserRatingsQuery, GetSeasonUserRatingsQueryVariables>;
 export const GetSeasonDocument = gql`
     query GetSeason($id: String!) {
   season(id: $id) {
@@ -2071,6 +2319,10 @@ export const GetSeasonsDocument = gql`
   seasons(where: $where) {
     id
     startDate
+    players {
+      id
+      playerId
+    }
   }
 }
     `;

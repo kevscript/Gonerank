@@ -44,11 +44,12 @@ export const MatchPlayerQuery = extendType({
           if (!args.where) {
             matchPlayers = await prisma.matchPlayer.findMany();
           } else {
-            const { matchId, playerId } = args.where;
+            const { matchId, playerId, seasonId } = args.where;
             matchPlayers = await prisma.matchPlayer.findMany({
               where: {
                 matchId: matchId ? matchId : undefined,
                 playerId: playerId ? playerId : undefined,
+                match: { seasonId: seasonId ? seasonId : undefined },
               },
             });
           }

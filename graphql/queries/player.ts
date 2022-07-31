@@ -74,3 +74,61 @@ export const DELETE_PLAYER = gql`
     }
   }
 `;
+
+export const PLAYER_SEASON_RATINGS = gql`
+  query PlayerSeasonRatings($playerId: String!, $seasonId: String!) {
+    ratings(where: { playerId: $playerId, seasonId: $seasonId }) {
+      id
+      matchId
+      userId
+      rating
+    }
+  }
+`;
+
+export const PLAYER_SEASON_DATA = gql`
+  query PlayerSeasonData($playerId: String!, $seasonId: String!) {
+    player(id: $playerId) {
+      id
+      lastName
+      country
+      firstName
+      countryCode
+      birthDate
+      image
+      active
+      seasons {
+        seasonId
+      }
+    }
+
+    matches(
+      where: { seasonId: $seasonId, archived: true, playerId: $playerId }
+    ) {
+      id
+      date
+      home
+      scored
+      conceeded
+      active
+      archived
+      competitionId
+      seasonId
+      opponentId
+    }
+
+    competitions {
+      id
+      abbreviation
+      name
+    }
+
+    clubs {
+      id
+      name
+      abbreviation
+      primary
+      secondary
+    }
+  }
+`;

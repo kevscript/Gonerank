@@ -18,6 +18,10 @@ export const GET_SEASONS = gql`
     seasons(where: $where) {
       id
       startDate
+      players {
+        id
+        playerId
+      }
     }
   }
 `;

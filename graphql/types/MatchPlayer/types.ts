@@ -5,5 +5,6 @@ export const MatchPlayersWhereInput = inputObjectType({
   definition: (t) => {
     t.string("matchId");
     t.string("playerId");
+    t.string("seasonId");
   },
 });
