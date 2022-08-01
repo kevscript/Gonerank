@@ -4,6 +4,13 @@ import ClubIcon from "@/components/Icons/Club";
 import TableCell from "../shared/TableCell";
 import Link from "next/link";
 import PublicTable from "../shared/PublicTable";
+import CalendarIcon from "../Icons/Calendar";
+import { numericalSort } from "@/utils/numericalSort";
+import LocationIcon from "../Icons/Location";
+import HomeIcon from "../Icons/HomeIcon";
+import PlaneIcon from "../Icons/PlaneIcon";
+import TrophyIcon from "../Icons/Trophy";
+import BallIcon from "../Icons/Ball";
 
 export type MatchesTableProps = {
   data: FormattedMatchStats[];
@@ -15,10 +22,10 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
       header: () => {
         return (
           <TableCell>
-            <div className="ml-2 relative w-4 h-4 flex justify-center items-center overflow-hidden">
+            <div className="relative w-4 h-4 flex justify-center items-center overflow-hidden">
               <ClubIcon primary="#999" secondary="#666" />
             </div>
-            <span className="ml-4 text-sm">Team</span>
+            <span className="ml-2 text-sm">Adversaire</span>
           </TableCell>
         );
       },
@@ -26,10 +33,10 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
       cell: ({ row }) => {
         const { opponent, id } = row.original || {};
         return (
-          <TableCell padding="p-0">
+          <TableCell padding="p-0" className="bg-white">
             <Link href={`/matches/${id}`}>
               <a className="w-full h-full flex items-center justify-start px-2">
-                <div className="relative w-6 h-6 flex justify-center items-center overflow-hidden">
+                <div className="relative w-4 h-4 flex justify-center items-center overflow-hidden">
                   {opponent ? (
                     <ClubIcon
                       primary={opponent?.primary}
@@ -48,21 +55,26 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
           </TableCell>
         );
       },
+      size: 250,
     },
     {
       header: () => {
         return (
-          <TableCell>
-            <span>date</span>
+          <TableCell className="justify-center" title="date du match">
+            <CalendarIcon className="w-3 h-3" />
           </TableCell>
         );
       },
       accessorKey: "date",
       cell: (info) => {
-        const date = new Date(info.getValue()).toLocaleDateString();
+        const date = new Date(info.getValue()).toLocaleDateString("fr-FR", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "2-digit",
+        });
         return (
-          <TableCell>
-            <span>{date}</span>
+          <TableCell className="justify-center  min-w-[80px]">
+            <span className="font-num">{date}</span>
           </TableCell>
         );
       },
@@ -70,42 +82,140 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
     {
       header: () => {
         return (
-          <TableCell>
-            <span>avg</span>
+          <TableCell className="justify-center" title="domicile/exterieur">
+            <LocationIcon className="w-4 h-4" />
           </TableCell>
         );
       },
-      id: "avg",
-      cell: ({ row }) => {
-        const { averageSum, averageQuantity } = row.original || {};
+      accessorKey: "home",
+      cell: (info) => {
+        const home = info.getValue();
         return (
-          <TableCell>
-            <span>
-              {averageSum && averageQuantity
-                ? (averageSum / averageQuantity).toFixed(2)
-                : "-"}
-            </span>
+          <TableCell className="justify-center min-w-[64px]">
+            {home ? (
+              <HomeIcon className="w-4 h-4" />
+            ) : (
+              <PlaneIcon className="w-4 h-4" />
+            )}
           </TableCell>
         );
       },
+      size: 100,
     },
     {
       header: () => {
         return (
-          <TableCell>
-            <span>tdc</span>
+          <TableCell className="justify-center" title="compétition">
+            <TrophyIcon className="w-4 h-4" />
+          </TableCell>
+        );
+      },
+      accessorKey: "competition",
+      cell: (info) => {
+        const competition = info.getValue();
+        return (
+          <TableCell className="justify-center min-w-[64px]">
+            <span>{competition.abbreviation}</span>
+          </TableCell>
+        );
+      },
+      size: 100,
+    },
+    {
+      header: () => {
+        return (
+          <TableCell className="justify-center" title="buts marqués">
+            <BallIcon className="w-3 h-3 fill-marine-600" />
+          </TableCell>
+        );
+      },
+      accessorKey: "scored",
+      cell: (info) => {
+        const scored = info.getValue();
+        return (
+          <TableCell className="justify-center min-w-[64px]">
+            <span className="font-num">{scored}</span>
+          </TableCell>
+        );
+      },
+      size: 100,
+    },
+    {
+      header: () => {
+        return (
+          <TableCell className="justify-center" title="buts concédés">
+            <BallIcon className="w-3 h-3 fill-red-600" />
+          </TableCell>
+        );
+      },
+      accessorKey: "conceeded",
+      cell: (info) => {
+        const conceeded = info.getValue();
+        return (
+          <TableCell className="justify-center min-w-[64px]">
+            <span className="font-num">{conceeded}</span>
+          </TableCell>
+        );
+      },
+      size: 100,
+    },
+    {
+      header: () => {
+        return (
+          <TableCell className="justify-end">
+            <span className="text-sm">TDC</span>
           </TableCell>
         );
       },
       accessorKey: "tendency",
+      accessorFn: (match) => {
+        const isNaN = Number.isNaN(match.tendency);
+        return isNaN ? undefined : match.tendency;
+      },
       cell: (info) => {
         const tendency = info.getValue();
         return (
-          <TableCell>
-            <span>{tendency.toFixed(1) || "-"}</span>
+          <TableCell className="justify-end">
+            <span className="font-num">
+              {tendency === undefined ? "-" : tendency.toFixed(1)}
+            </span>
           </TableCell>
         );
       },
+      sortDescFirst: true,
+      sortUndefined: 1,
+      sortingFn: (rowA, rowB) => numericalSort({ rowA, rowB, id: "tendency" }),
+      size: 200,
+    },
+    {
+      header: () => {
+        return (
+          <TableCell className="justify-end">
+            <span className="text-sm">AVG</span>
+          </TableCell>
+        );
+      },
+      id: "avg",
+      accessorFn: (match) => {
+        const { averageQuantity, averageSum } = match || {};
+        return averageSum && averageQuantity
+          ? averageSum / averageQuantity
+          : undefined;
+      },
+      cell: (info) => {
+        const avg = info.getValue();
+        return (
+          <TableCell className="justify-end">
+            <span className="font-num font-bold">
+              {avg === undefined ? "-" : avg.toFixed(2)}
+            </span>
+          </TableCell>
+        );
+      },
+      sortDescFirst: true,
+      sortUndefined: 1,
+      sortingFn: (rowA, rowB) => numericalSort({ rowA, rowB, id: "avg" }),
+      size: 200,
     },
   ];
 

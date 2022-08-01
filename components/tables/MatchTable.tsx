@@ -5,6 +5,10 @@ import Image from "next/image";
 import UserIcon from "../Icons/User";
 import TableCell from "../shared/TableCell";
 import PublicTable from "../shared/PublicTable";
+import RatingIcon from "../Icons/Rating";
+import MotmIcon from "../Icons/Motm";
+import BotmIcon from "../Icons/Botm";
+import { numericalSort } from "@/utils/numericalSort";
 
 export type MatchTableProps = {
   data: FormattedMatchPlayerStats[];
@@ -19,7 +23,7 @@ const MatchTable = ({ data }: MatchTableProps) => {
             <div className="ml-2 relative w-4 h-4 flex justify-center items-center rounded-full overflow-hidden bg-gray-200">
               <UserIcon />
             </div>
-            <span className="ml-4 text-sm">Player</span>
+            <span className="ml-4 text-sm">Joueur</span>
           </TableCell>
         );
       },
@@ -27,7 +31,7 @@ const MatchTable = ({ data }: MatchTableProps) => {
       cell: ({ row }) => {
         const { firstName, lastName, image, id } = row.original || {};
         return (
-          <TableCell padding="p-0">
+          <TableCell padding="p-0" className="bg-white">
             <Link href={`/players/${id}`}>
               <a className="w-full h-full flex items-center justify-start px-2">
                 <div className="relative w-8 h-8 flex justify-center items-center rounded-full overflow-hidden bg-gray-200">
@@ -51,72 +55,94 @@ const MatchTable = ({ data }: MatchTableProps) => {
           </TableCell>
         );
       },
+      size: 250,
     },
     {
       header: () => {
         return (
-          <TableCell>
-            <span>prize</span>
+          <TableCell className="justify-center">
+            <RatingIcon className="w-4 h-4" />
           </TableCell>
         );
       },
-      id: "prize",
+      id: "award",
+      accessorFn: (player) => {
+        const { motm, botm } = player || {};
+        return motm ? "a" : botm ? "c" : "b";
+      },
       cell: ({ row }) => {
         const { botm, motm } = row.original || {};
-
         return (
-          <TableCell>
-            {motm && <span>motm</span>}
-            {botm && <span>botm</span>}
+          <TableCell className="justify-center">
+            {motm && <MotmIcon className="w-4 h-4" />}
+            {botm && <BotmIcon className="w-4 h-4" />}
           </TableCell>
         );
       },
+      size: 100,
     },
     {
       header: () => {
         return (
-          <TableCell>
-            <span>avg</span>
+          <TableCell className="justify-end">
+            <span className="text-sm">AVG</span>
           </TableCell>
         );
       },
       id: "avg",
-      cell: ({ row }) => {
-        const { averageSum, averageQuantity } = row.original || {};
+      accessorFn: (player) => {
+        const { averageSum, averageQuantity } = player || {};
+        return averageSum && averageQuantity
+          ? averageSum / averageQuantity
+          : undefined;
+      },
+      cell: (info) => {
+        const avg = info.getValue();
 
         return (
-          <TableCell>
-            <span>
-              {averageSum && averageQuantity
-                ? (averageSum / averageQuantity).toFixed(2)
-                : "-"}
+          <TableCell className="justify-end">
+            <span className="font-num font-bold">
+              {avg === undefined ? "-" : avg.toFixed(2)}
             </span>
           </TableCell>
         );
       },
+      sortDescFirst: true,
+      sortUndefined: 1,
+      sortingFn: (rowA, rowB) => numericalSort({ rowA, rowB, id: "avg" }),
+      size: 200,
     },
     {
       header: () => {
         return (
-          <TableCell>
-            <span>tdc</span>
+          <TableCell className="justify-end">
+            <span className="text-sm">TDC</span>
           </TableCell>
         );
       },
       id: "tdc",
-      cell: ({ row }) => {
-        const { averageSum, averageQuantity } = row.original || {};
+      accessorFn: (player) => {
+        const { averageSum, averageQuantity } = player || {};
+        return averageSum && averageQuantity
+          ? averageSum - 5 * averageQuantity
+          : undefined;
+      },
+      cell: (info) => {
+        const tdc = info.getValue();
 
         return (
-          <TableCell>
-            <span>
-              {averageSum && averageQuantity
-                ? (averageSum - 5 * averageQuantity).toFixed(1)
-                : "-"}
+          <TableCell className="justify-end">
+            <span className="font-num">
+              {tdc === undefined ? "-" : tdc > 0 ? "+" : null}
+              {tdc !== undefined ? tdc.toFixed(1) : null}
             </span>
           </TableCell>
         );
       },
+      sortDescFirst: true,
+      sortUndefined: 1,
+      sortingFn: (rowA, rowB) => numericalSort({ rowA, rowB, id: "tdc" }),
+      size: 200,
     },
   ];
 
