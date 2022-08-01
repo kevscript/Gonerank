@@ -9,7 +9,7 @@ import {
   useGetRatingsLazyQuery,
 } from "graphql/generated/queryTypes";
 import Spinner from "@/components/shared/Spinner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import MatchVoter, { MatchFormInput } from "@/components/MatchVoter";
 import MatchInfo from "@/components/MatchInfo";
@@ -18,6 +18,8 @@ import InfoIcon from "@/components/Icons/Info";
 
 const HomePage: NextCustomPage = () => {
   const { data: session, status } = useSession();
+
+  const [twitterText, setTwitterText] = useState<string | null>(null);
 
   const [getUserMatchRatings, { data: userMatchRatingsData }] =
     useGetRatingsLazyQuery();
@@ -64,6 +66,45 @@ const HomePage: NextCustomPage = () => {
       });
   }, [matchData?.displayMatch, status, session, getUserMatchRatings]);
 
+  // setting up the twitter text
+  useEffect(() => {
+    if (
+      status === "authenticated" &&
+      userMatchRatingsData &&
+      userMatchRatingsData.ratings.length > 0 &&
+      matchData &&
+      matchData.displayMatch
+    ) {
+      const ratings: { firstName: string; lastName: string; rating: number }[] =
+        [];
+
+      userMatchRatingsData.ratings.forEach((r) => {
+        const player = matchData.displayMatch?.stats.find(
+          (s) => s.playerId === r.playerId
+        );
+        if (player) {
+          ratings.push({
+            firstName: player.firstName,
+            lastName: player.lastName,
+            rating: r.rating,
+          });
+        }
+      });
+
+      const ratingsArr = ratings
+        .sort((a, b) => (a.rating > b.rating ? -1 : 1))
+        .map((r) => encodeURI(`${r.lastName} - ${r.rating}`));
+
+      const ratingsText = ratingsArr.join("%0D%0A");
+      const headerText = `Mes notes vs ${matchData.displayMatch.opponent.abbreviation.toUpperCase()} - ${new Date(
+        matchData.displayMatch.date
+      ).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" })} :`;
+
+      const finalText = `${headerText}%0D%0A${ratingsText}`;
+      setTwitterText(finalText);
+    }
+  }, [status, userMatchRatingsData, matchData]);
+
   if (matchLoading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
@@ -86,7 +127,7 @@ const HomePage: NextCustomPage = () => {
 
   if (matchData?.displayMatch) {
     return (
-      <div className="p-4">
+      <div className="p-4 lg:pt-8">
         <Head>
           <title>Gonerank - Home</title>
           <meta name="description" content="Home page for Gonerank app" />
@@ -133,11 +174,22 @@ const HomePage: NextCustomPage = () => {
             <div className="max-w-7xl mx-auto">
               {userMatchRatingsData && userMatchRatingsData.ratings.length > 0 && (
                 <>
-                  <div className="w-full bg-gray-100 mt-4 h-10 rounded flex justify-center items-center">
-                    <span className="uppercase text-xs font-bold text-gray-400">
-                      Vos notes ont été soumises.
-                    </span>
+                  <div className="w-full flex flex-row flex-nowrap items-center mt-4 gap-x-2 lg:gap-x-4">
+                    <div className="flex-1 bg-gray-100 h-10 rounded flex justify-center items-center">
+                      <span className="uppercase text-xs font-bold text-gray-400">
+                        Vous avez déjà voté.
+                      </span>
+                    </div>
+                    <a
+                      href={`https://twitter.com/intent/tweet?via=GoneRank&text=${twitterText}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-20 h-10 rounded flex justify-center items-center bg-cyan-500 hover:bg-cyan-600 uppercase text-xs font-bold text-white"
+                    >
+                      Tweeter
+                    </a>
                   </div>
+
                   <MatchInfo
                     match={matchData!.displayMatch}
                     userRatings={userMatchRatingsData.ratings}
