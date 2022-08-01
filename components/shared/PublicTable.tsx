@@ -8,6 +8,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
+import ChevronIcon from "../Icons/Chevron";
 
 type PublicTableProps = {
   columns: ColumnDef<any>[];
@@ -28,7 +29,7 @@ const PublicTable = ({ columns, data, frozenId }: PublicTableProps) => {
   });
 
   return (
-    <table>
+    <table className="">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id} className="">
@@ -47,8 +48,8 @@ const PublicTable = ({ columns, data, frozenId }: PublicTableProps) => {
                   <div
                     {...{
                       className: header.column.getCanSort()
-                        ? "cursor-pointer select-none"
-                        : "",
+                        ? "cursor-pointer select-none flex flex-row w-full justify-between"
+                        : "flex flex-row w-full justify-between",
                       onClick: header.column.getToggleSortingHandler(),
                     }}
                   >
@@ -56,10 +57,18 @@ const PublicTable = ({ columns, data, frozenId }: PublicTableProps) => {
                       header.column.columnDef.header,
                       header.getContext()
                     )}
-                    {/* {{
-                      asc: " 🔼",
-                      desc: " 🔽",
-                    }[header.column.getIsSorted() as string] ?? null} */}
+                    {{
+                      asc: (
+                        <div className="mr-2 rotate-180 w-4 h-4 flex justify-center items-center">
+                          <ChevronIcon />
+                        </div>
+                      ),
+                      desc: (
+                        <div className="mr-2 w-4 h-4 flex justify-center items-center">
+                          <ChevronIcon />
+                        </div>
+                      ),
+                    }[header.column.getIsSorted() as string] ?? null}
                   </div>
                 )}
               </th>
@@ -68,17 +77,24 @@ const PublicTable = ({ columns, data, frozenId }: PublicTableProps) => {
         ))}
       </thead>
       <tbody>
-        {table.getRowModel().rows.map((row) => (
-          <tr key={row.id} className="relative border-b border-gray-100">
+        {table.getRowModel().rows.map((row, i) => (
+          <tr
+            key={row.id}
+            className={`relative border-b border-gray-100 hover:bg-marine-50 ${
+              i % 2 === 0 ? "bg-white" : "bg-gray-50"
+            }`}
+          >
             {row.getVisibleCells().map((cell) => (
               <td
                 key={cell.id}
-                className={`relative h-12 border-r last:border-r-0 border-gray-100 bg-white text-sm ${
+                className={`relative h-12 border-r last:border-r-0 border-gray-100 text-sm ${
                   frozenId &&
                   cell.id.endsWith(frozenId) &&
                   "sticky left-0 z-10 after:absolute after:top-0 after:right-0 after:-z-10 after:w-[1px] after:bg-gray-100 after:h-full"
                 }`}
-                style={{ width: cell.column.getSize() }}
+                style={{
+                  width: cell.column.getSize(),
+                }}
               >
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </td>
