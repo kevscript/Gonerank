@@ -1,4 +1,4 @@
-import { ApolloError } from "apollo-server-micro";
+import { ApolloError, ForbiddenError } from "apollo-server-micro";
 import { extendType, list, nonNull, stringArg } from "nexus";
 import { SeasonPlayerType } from "..";
 import prisma from "@/lib/prisma";
@@ -13,9 +13,9 @@ export const SeasonPlayerMutation = extendType({
         playerIds: nonNull(list(nonNull(stringArg()))),
       },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const seasonPlayersToCreate = args.playerIds.map((pId) => ({
             seasonId: args.seasonId,

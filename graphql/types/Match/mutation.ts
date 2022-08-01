@@ -16,9 +16,9 @@ export const MatchMutation = extendType({
       type: MatchType,
       args: { data: nonNull(arg({ type: CreateMatchInput })) },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const {
             date,
@@ -63,9 +63,9 @@ export const MatchMutation = extendType({
         data: nonNull(arg({ type: UpdateMatchInput })),
       },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const {
             date,
@@ -112,9 +112,9 @@ export const MatchMutation = extendType({
       type: MatchType,
       args: { id: nonNull(stringArg()) },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const deletedMatch = await prisma.match.delete({
             where: { id: args.id },

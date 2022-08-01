@@ -1,7 +1,7 @@
 import { extendType, list, nonNull, stringArg } from "nexus";
 import { MatchPlayerType } from "./MatchPlayer";
 import prisma from "@/lib/prisma";
-import { ApolloError } from "apollo-server-micro";
+import { ApolloError, ForbiddenError } from "apollo-server-micro";
 
 export const MatchPlayerMutation = extendType({
   type: "Mutation",
@@ -13,9 +13,9 @@ export const MatchPlayerMutation = extendType({
         playerIds: nonNull(list(nonNull(stringArg()))),
       },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const matchPlayersToCreate = args.playerIds.map((pId) => ({
             matchId: args.matchId,

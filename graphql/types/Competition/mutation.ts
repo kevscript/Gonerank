@@ -2,7 +2,11 @@ import { arg, extendType, nonNull, stringArg } from "nexus";
 import { CompetitionType } from "./Competition";
 import { CreateCompetitionInput, UpdateCompetitionInput } from "./types";
 import prisma from "@/lib/prisma";
-import { ApolloError, UserInputError } from "apollo-server-micro";
+import {
+  ApolloError,
+  ForbiddenError,
+  UserInputError,
+} from "apollo-server-micro";
 
 export const CompetitionMutation = extendType({
   type: "Mutation",
@@ -12,9 +16,9 @@ export const CompetitionMutation = extendType({
       type: CompetitionType,
       args: { data: nonNull(arg({ type: CreateCompetitionInput })) },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const createdCompetition = await prisma.competition.create({
             data: args.data,
@@ -39,9 +43,9 @@ export const CompetitionMutation = extendType({
         data: nonNull(arg({ type: UpdateCompetitionInput })),
       },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const { name, abbreviation } = args.data || {};
           const updatedCompetition = await prisma.competition.update({
@@ -70,9 +74,9 @@ export const CompetitionMutation = extendType({
       type: CompetitionType,
       args: { id: nonNull(stringArg()) },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const deletedCompetition = await prisma.competition.delete({
             where: { id: args.id },

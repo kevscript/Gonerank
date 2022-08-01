@@ -16,9 +16,9 @@ export const PlayerMutation = extendType({
       type: PlayerType,
       args: { data: nonNull(arg({ type: CreatePlayerInput })) },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const {
             birthDate,
@@ -60,9 +60,9 @@ export const PlayerMutation = extendType({
         data: nonNull(arg({ type: UpdatePlayerInput })),
       },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const {
             active,
@@ -104,9 +104,9 @@ export const PlayerMutation = extendType({
       type: PlayerType,
       args: { id: nonNull(stringArg()) },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const deletedPlayer = await prisma.player.delete({
             where: { id: args.id },

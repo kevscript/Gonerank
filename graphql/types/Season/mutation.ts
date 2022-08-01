@@ -1,7 +1,7 @@
 import { arg, extendType, nonNull, stringArg } from "nexus";
 import { SeasonType } from "./Season";
 import prisma from "@/lib/prisma";
-import { UserInputError } from "apollo-server-micro";
+import { ForbiddenError, UserInputError } from "apollo-server-micro";
 import { ApolloError } from "@apollo/client";
 import { CreateSeasonInput, UpdateSeasonInput } from "./types";
 
@@ -13,9 +13,9 @@ export const SeasonMutation = extendType({
       type: SeasonType,
       args: { data: nonNull(arg({ type: CreateSeasonInput })) },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const { startDate } = args.data || {};
           const createdSeason = await prisma.season.create({
@@ -41,9 +41,9 @@ export const SeasonMutation = extendType({
         data: nonNull(arg({ type: UpdateSeasonInput })),
       },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const { startDate } = args.data || {};
           const updatedSeason = await prisma.season.update({
@@ -69,9 +69,9 @@ export const SeasonMutation = extendType({
       type: SeasonType,
       args: { id: nonNull(stringArg()) },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const deletedSeason = await prisma.season.delete({
             where: { id: args.id },

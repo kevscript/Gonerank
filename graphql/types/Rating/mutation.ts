@@ -1,7 +1,7 @@
 import { arg, extendType, intArg, list, nonNull, stringArg } from "nexus";
 import { RatingType } from "./Rating";
 import prisma from "@/lib/prisma";
-import { ApolloError } from "apollo-server-micro";
+import { ApolloError, ForbiddenError } from "apollo-server-micro";
 import { CreateUserRatingsInput } from "./types";
 
 export const RatingMutation = extendType({
@@ -15,9 +15,9 @@ export const RatingMutation = extendType({
         ratings: nonNull(list(nonNull(arg({ type: CreateUserRatingsInput })))),
       },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN" || ctx.auth?.sub !== args.userId) {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN" || ctx.auth?.sub !== args.userId) {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const { userId, matchId, ratings } = args || {};
 

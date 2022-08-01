@@ -1,4 +1,8 @@
-import { ApolloError, UserInputError } from "apollo-server-micro";
+import {
+  ApolloError,
+  ForbiddenError,
+  UserInputError,
+} from "apollo-server-micro";
 import { arg, extendType, nonNull, stringArg } from "nexus";
 import { ClubType } from "./Club";
 import { CreateClubInput, UpdateClubInput } from "./types";
@@ -12,9 +16,9 @@ export const ClubMutation = extendType({
       type: ClubType,
       args: { data: nonNull(arg({ type: CreateClubInput })) },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const createdClub = await prisma.club.create({ data: args.data });
 
@@ -37,9 +41,9 @@ export const ClubMutation = extendType({
         data: nonNull(arg({ type: UpdateClubInput })),
       },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const { name, abbreviation, primary, secondary } = args.data || {};
           const updatedClub = await prisma.club.update({
@@ -68,9 +72,9 @@ export const ClubMutation = extendType({
       type: ClubType,
       args: { id: nonNull(stringArg()) },
       resolve: async (_, args, ctx) => {
-        // if (ctx.auth?.role !== "ADMIN") {
-        //   throw new ForbiddenError(`Forbidden Action`);
-        // }
+        if (ctx.auth?.role !== "ADMIN") {
+          throw new ForbiddenError(`Forbidden Action`);
+        }
         try {
           const deletedClub = await prisma.club.delete({
             where: { id: args.id },
