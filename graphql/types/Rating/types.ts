@@ -1,4 +1,5 @@
 import { inputObjectType } from "nexus";
+import { MatchesWhereInput } from "../Match";
 
 export const CreateUserRatingsInput = inputObjectType({
   name: "CreateUserRatingsInput",
@@ -15,5 +16,6 @@ export const RatingsWhereInput = inputObjectType({
     t.string("matchId");
     t.string("playerId");
     t.string("seasonId");
+    t.boolean("archived");
   },
 });

@@ -209,6 +209,7 @@ type Player {
 
 input PlayersWhereInput {
   active: Boolean
+  archived: Boolean
   birthDate: DateTime
   country: String
   countryCode: String
@@ -253,6 +254,7 @@ type Rating {
 }
 
 input RatingsWhereInput {
+  archived: Boolean
   matchId: String
   playerId: String
   seasonId: String

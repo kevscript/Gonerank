@@ -47,6 +47,7 @@ export const PlayerQuery = extendType({
               lastName,
               season,
               match,
+              archived,
             } = args.where;
             players = await prisma.player.findMany({
               where: {
@@ -65,6 +66,7 @@ export const PlayerQuery = extendType({
                 matches: {
                   some: {
                     matchId: match?.matchId ? match.matchId : undefined,
+                    match: { archived: archived ? true : undefined },
                   },
                 },
               },

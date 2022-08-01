@@ -333,6 +333,7 @@ export type Player = {
 
 export type PlayersWhereInput = {
   active?: InputMaybe<Scalars['Boolean']>;
+  archived?: InputMaybe<Scalars['Boolean']>;
   birthDate?: InputMaybe<Scalars['DateTime']>;
   country?: InputMaybe<Scalars['String']>;
   countryCode?: InputMaybe<Scalars['String']>;
@@ -468,6 +469,7 @@ export type Rating = {
 };
 
 export type RatingsWhereInput = {
+  archived?: InputMaybe<Scalars['Boolean']>;
   matchId?: InputMaybe<Scalars['String']>;
   playerId?: InputMaybe<Scalars['String']>;
   seasonId?: InputMaybe<Scalars['String']>;
@@ -1347,7 +1349,7 @@ export type GlobalDataLazyQueryHookResult = ReturnType<typeof useGlobalDataLazyQ
 export type GlobalDataQueryResult = Apollo.QueryResult<GlobalDataQuery, GlobalDataQueryVariables>;
 export const GlobalSeasonDataDocument = gql`
     query GlobalSeasonData($seasonId: String!) {
-  players(where: {season: {seasonId: $seasonId}}) {
+  players(where: {season: {seasonId: $seasonId}, archived: true}) {
     id
     lastName
     country
@@ -2137,7 +2139,7 @@ export type DeletePlayerMutationResult = Apollo.MutationResult<DeletePlayerMutat
 export type DeletePlayerMutationOptions = Apollo.BaseMutationOptions<DeletePlayerMutation, DeletePlayerMutationVariables>;
 export const PlayerSeasonRatingsDocument = gql`
     query PlayerSeasonRatings($playerId: String!, $seasonId: String!) {
-  ratings(where: {playerId: $playerId, seasonId: $seasonId}) {
+  ratings(where: {playerId: $playerId, seasonId: $seasonId, archived: true}) {
     id
     matchId
     userId
@@ -2322,7 +2324,7 @@ export type CreateUserRatingsMutationResult = Apollo.MutationResult<CreateUserRa
 export type CreateUserRatingsMutationOptions = Apollo.BaseMutationOptions<CreateUserRatingsMutation, CreateUserRatingsMutationVariables>;
 export const GetSeasonRatingsDocument = gql`
     query GetSeasonRatings($seasonId: String!) {
-  ratings(where: {seasonId: $seasonId}) {
+  ratings(where: {seasonId: $seasonId, archived: true}) {
     id
     playerId
     matchId
@@ -2360,7 +2362,7 @@ export type GetSeasonRatingsLazyQueryHookResult = ReturnType<typeof useGetSeason
 export type GetSeasonRatingsQueryResult = Apollo.QueryResult<GetSeasonRatingsQuery, GetSeasonRatingsQueryVariables>;
 export const GetSeasonUserRatingsDocument = gql`
     query GetSeasonUserRatings($seasonId: String!, $userId: String!) {
-  ratings(where: {seasonId: $seasonId, userId: $userId}) {
+  ratings(where: {seasonId: $seasonId, userId: $userId, archived: true}) {
     id
     playerId
     matchId

@@ -77,7 +77,9 @@ export const DELETE_PLAYER = gql`
 
 export const PLAYER_SEASON_RATINGS = gql`
   query PlayerSeasonRatings($playerId: String!, $seasonId: String!) {
-    ratings(where: { playerId: $playerId, seasonId: $seasonId }) {
+    ratings(
+      where: { playerId: $playerId, seasonId: $seasonId, archived: true }
+    ) {
       id
       matchId
       userId

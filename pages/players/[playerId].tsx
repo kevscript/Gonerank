@@ -103,7 +103,7 @@ const PlayerPage = () => {
   }, [playerSeasonRatings, status, session, playerSeasonData]);
 
   return (
-    <div>
+    <div className="p-4">
       Player page
       {status === "authenticated" && userStats && (
         <button onClick={() => toggleMode()}>Now : {mode}</button>

@@ -40,5 +40,6 @@ export const PlayersWhereInput = inputObjectType({
     t.boolean("active");
     t.field({ name: "season", type: SeasonPlayersWhereInput });
     t.field({ name: "match", type: MatchPlayersWhereInput });
+    t.boolean("archived");
   },
 });

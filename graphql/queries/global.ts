@@ -49,7 +49,7 @@ export const GLOBAL_DATA = gql`
 
 export const GLOBAL_SEASON_DATA = gql`
   query GlobalSeasonData($seasonId: String!) {
-    players(where: { season: { seasonId: $seasonId } }) {
+    players(where: { season: { seasonId: $seasonId }, archived: true }) {
       id
       lastName
       country
