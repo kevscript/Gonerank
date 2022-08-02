@@ -127,20 +127,20 @@ const HomePage: NextCustomPage = () => {
 
   if (matchData && matchData.displayMatch) {
     return (
-      <div className="p-4 lg:pt-8">
+      <div className="p-4 lg:p-8">
         <Head>
           <title>Gonerank - Home</title>
           <meta name="description" content="Home page for Gonerank app" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <div>
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-7xl">
             <MatchHeader match={matchData.displayMatch} />
           </div>
 
           {/** Not Authenticated */}
           {status === "unauthenticated" && (
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-7xl">
               <button
                 className="w-full bg-marine-50 mt-4 h-10 rounded flex justify-center items-center lg:mt-8"
                 onClick={() => signIn("twitter")}
@@ -156,7 +156,7 @@ const HomePage: NextCustomPage = () => {
 
           {/** Authenticated but DisplayMatch is Archived */}
           {status === "authenticated" && matchData?.displayMatch.archived && (
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-7xl ">
               <div className="w-full bg-red-50 mt-4 h-10 rounded flex justify-center items-cente lg:mt-8">
                 <span className="uppercase text-xs font-bold text-red-500">
                   Les votes sont fermés.
@@ -171,7 +171,7 @@ const HomePage: NextCustomPage = () => {
 
           {/** Authenticated, DisplayMatch is Active, but check if already voted */}
           {status === "authenticated" && !matchData?.displayMatch.archived && (
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-7xl">
               {userMatchRatingsData && userMatchRatingsData.ratings.length > 0 && (
                 <>
                   <div className="w-full flex flex-row flex-nowrap items-center mt-4 gap-x-2 lg:gap-x-4 lg:mt-8">

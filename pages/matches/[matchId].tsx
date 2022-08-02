@@ -26,10 +26,9 @@ const MatchPage = () => {
   >(null);
 
   const [mode, setMode] = useState<"user" | "all">("all");
-  const toggleMode = () => {
-    mode === "all" ? setMode("user") : setMode("all");
+  const toggleMode = (newMode: "all" | "user") => {
+    if (newMode !== mode) setMode(newMode);
   };
-
   // fetch all the data and ratings for the match
   useEffect(() => {
     if (matchId) {
@@ -44,7 +43,7 @@ const MatchPage = () => {
         players: matchData.players,
         ratings: matchRatings.ratings,
       });
-      formattedStats.length > 0 && setStats(formattedStats);
+      formattedStats && setStats(formattedStats);
     }
   }, [matchData, matchRatings]);
 
@@ -60,16 +59,39 @@ const MatchPage = () => {
         ratings: currentUserRatings,
       });
 
-      currentUserRatings.length > 0 && setUserStats(formattedStats);
+      currentUserRatings && setUserStats(formattedStats);
     }
   }, [matchData, matchRatings, status, session]);
 
   return (
-    <div className="p-4 lg:p-8">
-      Match page
-      {status === "authenticated" && userStats && (
-        <button onClick={() => toggleMode()}>Now : {mode}</button>
-      )}
+    <div className="p-4 lg:p-8 max-w-max">
+      <div className="flex flex-row gap-x-2 mb-4 justify-between">
+        {status === "authenticated" && userStats && (
+          <div className="h-10 flex flex-row justify-between items-center bg-gray-100 max-w-max  gap-x-[1px] px-[2px] rounded">
+            <button
+              onClick={() => toggleMode("all")}
+              className={`px-2 rounded-l-sm h-9 text-sm ${
+                mode === "all"
+                  ? "bg-white text-marine-600"
+                  : "bg-gray-100 hover:bg-gray-50 hover:text-marine-600"
+              }`}
+            >
+              Communauté
+            </button>
+            <button
+              onClick={() => toggleMode("user")}
+              className={`px-2 rounded-l-sm h-9 text-sm ${
+                mode === "user"
+                  ? "bg-white text-marine-600"
+                  : "bg-gray-100 hover:bg-gray-50 hover:text-marine-600"
+              }`}
+            >
+              Utilisateur
+            </button>
+          </div>
+        )}
+      </div>
+
       {stats && (
         <div>
           <Draggable>
