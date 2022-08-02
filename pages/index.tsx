@@ -125,7 +125,7 @@ const HomePage: NextCustomPage = () => {
     );
   }
 
-  if (matchData?.displayMatch) {
+  if (matchData && matchData.displayMatch) {
     return (
       <div className="p-4 lg:pt-8">
         <Head>
@@ -142,11 +142,11 @@ const HomePage: NextCustomPage = () => {
           {status === "unauthenticated" && (
             <div className="max-w-7xl mx-auto">
               <button
-                className="w-full bg-marine-50 mt-4 h-10 rounded flex justify-center items-center"
+                className="w-full bg-marine-50 mt-4 h-10 rounded flex justify-center items-center lg:mt-8"
                 onClick={() => signIn("twitter")}
               >
                 <span className="uppercase text-xs font-bold text-marine-600">
-                  Connectez-vous pour noter
+                  Connectez-vous pour voter.
                 </span>
                 <TwitterIcon className="w-4 h-4 ml-3 fill-marine-600" />
               </button>
@@ -157,7 +157,7 @@ const HomePage: NextCustomPage = () => {
           {/** Authenticated but DisplayMatch is Archived */}
           {status === "authenticated" && matchData?.displayMatch.archived && (
             <div className="max-w-7xl mx-auto">
-              <div className="w-full bg-red-50 mt-4 h-10 rounded flex justify-center items-center">
+              <div className="w-full bg-red-50 mt-4 h-10 rounded flex justify-center items-cente lg:mt-8">
                 <span className="uppercase text-xs font-bold text-red-500">
                   Les votes sont fermés.
                 </span>
@@ -174,7 +174,7 @@ const HomePage: NextCustomPage = () => {
             <div className="max-w-7xl mx-auto">
               {userMatchRatingsData && userMatchRatingsData.ratings.length > 0 && (
                 <>
-                  <div className="w-full flex flex-row flex-nowrap items-center mt-4 gap-x-2 lg:gap-x-4">
+                  <div className="w-full flex flex-row flex-nowrap items-center mt-4 gap-x-2 lg:gap-x-4 lg:mt-8">
                     <div className="flex-1 bg-gray-100 h-10 rounded flex justify-center items-center">
                       <span className="uppercase text-xs font-bold text-gray-400">
                         Vous avez déjà voté.

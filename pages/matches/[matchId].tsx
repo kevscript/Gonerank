@@ -65,7 +65,7 @@ const MatchPage = () => {
   }, [matchData, matchRatings, status, session]);
 
   return (
-    <div>
+    <div className="p-4">
       Match page
       {status === "authenticated" && userStats && (
         <button onClick={() => toggleMode()}>Now : {mode}</button>

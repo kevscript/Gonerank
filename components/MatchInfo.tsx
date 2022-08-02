@@ -12,8 +12,8 @@ export type MatchInfoProps = {
 const MatchInfo = ({ match, userRatings }: MatchInfoProps) => {
   return (
     <>
-      <ul className="mt-4 flex flex-col gap-2 lg:gap-4 lg:grid grid-cols-2">
-        {match.stats.map((player) => (
+      <ul className="mt-4 lg:mt-8 flex flex-col gap-2 lg:gap-4 lg:grid grid-cols-2">
+        {match?.stats.map((player) => (
           <li
             key={player.playerId}
             className="w-full h-10 lg:h-16 bg-white rounded lg:border-none border border-gray-100 flex items-center justify-between overflow-hidden first:mt-0 lg:drop-shadow-sm"

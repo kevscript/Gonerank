@@ -54,7 +54,7 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
     <>
       <form className="mt-4 lg:mt-8">
         <ul className="flex flex-col gap-2 lg:gap-4 lg:grid grid-cols-2">
-          {match.stats.map((player) => (
+          {match?.stats.map((player) => (
             <li
               key={player.playerId}
               className="w-full h-10 lg:h-16 bg-white rounded border border-gray-100 lg:border-none lg:drop-shadow-sm flex items-center justify-between overflow-hidden first:mt-0"
@@ -116,7 +116,7 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
             Veuillez confirmer vos notes, vous ne pourrez plus les modifier :
           </p>
           <ul className="flex mt-4 flex-wrap gap-1 lg:gap-2">
-            {match.stats.map((player) => (
+            {match?.stats.map((player) => (
               <li
                 key={player.playerId}
                 className="whitespace-nowrap flex items-center justify-between bg-marine-50 border border-marine-200 w-48 text-sm h-8"

@@ -1,3 +1,4 @@
+import Draggable from "@/components/shared/Draggable";
 import MatchesTable from "@/components/tables/MatchesTable";
 import {
   formatMatchesSeasonStats,
@@ -97,13 +98,17 @@ const MatchesPage = () => {
   }, [globalSeasonData, seasonUserRatings]);
 
   return (
-    <div>
+    <div className="p-4">
       Matches Page
       {status === "authenticated" && userStats && (
         <button onClick={() => toggleMode()}>Now : {mode}</button>
       )}
       {stats && (
-        <MatchesTable data={userStats && mode === "user" ? userStats : stats} />
+        <Draggable>
+          <MatchesTable
+            data={userStats && mode === "user" ? userStats : stats}
+          />
+        </Draggable>
       )}
     </div>
   );

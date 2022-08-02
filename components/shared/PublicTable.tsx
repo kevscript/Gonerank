@@ -37,7 +37,7 @@ const PublicTable = ({ columns, data, frozenId }: PublicTableProps) => {
               <th
                 key={header.id}
                 colSpan={header.colSpan}
-                className={`h-10 bg-gray-50 text-left border-r border-r-gray-100 last-border-r-0 ${
+                className={`h-10 bg-gray-50 text-left border-l border-l-gray-100 first:border-l-0 ${
                   frozenId &&
                   header.id.endsWith(frozenId) &&
                   "sticky left-0 z-10 after:absolute after:top-0 after:right-0 after:-z-10 after:w-[1px] after:bg-gray-100 after:h-full"
@@ -80,14 +80,12 @@ const PublicTable = ({ columns, data, frozenId }: PublicTableProps) => {
         {table.getRowModel().rows.map((row, i) => (
           <tr
             key={row.id}
-            className={`relative border-b border-gray-100 hover:bg-marine-50 ${
-              i % 2 === 0 ? "bg-white" : "bg-gray-50"
-            }`}
+            className={`relative border-b border-gray-100 hover:bg-marine-50 bg-white`}
           >
             {row.getVisibleCells().map((cell) => (
               <td
                 key={cell.id}
-                className={`relative h-12 border-r last:border-r-0 border-gray-100 text-sm ${
+                className={`relative h-12 border-l first:border-l-0 border-gray-100 text-sm ${
                   frozenId &&
                   cell.id.endsWith(frozenId) &&
                   "sticky left-0 z-10 after:absolute after:top-0 after:right-0 after:-z-10 after:w-[1px] after:bg-gray-100 after:h-full"
