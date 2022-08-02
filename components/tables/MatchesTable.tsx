@@ -169,10 +169,10 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
             </TableCell>
           );
         },
-        accessorKey: "tendency",
+        id: "tendency",
         accessorFn: (match) => {
-          const isNaN = Number.isNaN(match.tendency);
-          return isNaN ? undefined : match.tendency;
+          const { tendency, averageQuantity } = match || {};
+          return averageQuantity ? tendency : undefined;
         },
         cell: (info) => {
           const tendency = info.getValue();
