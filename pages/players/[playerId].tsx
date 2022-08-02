@@ -111,17 +111,19 @@ const PlayerPage = () => {
   }, [playerSeasonRatings, status, session, playerSeasonData]);
 
   return (
-    <div className="p-4">
+    <div className="p-4 lg:p-8">
       Player page
       {status === "authenticated" && userStats && (
         <button onClick={() => toggleMode()}>Now : {mode}</button>
       )}
       {stats && (
-        <Draggable>
-          <PlayerTable
-            data={userStats && mode === "user" ? userStats : stats}
-          />
-        </Draggable>
+        <div>
+          <Draggable>
+            <PlayerTable
+              data={userStats && mode === "user" ? userStats : stats}
+            />
+          </Draggable>
+        </div>
       )}
     </div>
   );

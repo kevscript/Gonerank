@@ -98,17 +98,19 @@ const MatchesPage = () => {
   }, [globalSeasonData, seasonUserRatings]);
 
   return (
-    <div className="p-4">
+    <div className="p-4 lg:p-8">
       Matches Page
       {status === "authenticated" && userStats && (
         <button onClick={() => toggleMode()}>Now : {mode}</button>
       )}
       {stats && (
-        <Draggable>
-          <MatchesTable
-            data={userStats && mode === "user" ? userStats : stats}
-          />
-        </Draggable>
+        <div>
+          <Draggable>
+            <MatchesTable
+              data={userStats && mode === "user" ? userStats : stats}
+            />
+          </Draggable>
+        </div>
       )}
     </div>
   );

@@ -154,7 +154,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
         sortDescFirst: true,
         sortUndefined: 1,
         sortingFn: (rowA, rowB) => numericalSort({ rowA, rowB, id: "homeTdc" }),
-        size: 300,
+        size: 150,
       },
       {
         header: () => (
@@ -196,6 +196,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
         sortDescFirst: true,
         sortUndefined: 1,
         sortingFn: (rowA, rowB) => numericalSort({ rowA, rowB, id: "awayTdc" }),
+        size: 100,
       },
       {
         header: () => (
@@ -236,6 +237,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
         sortUndefined: 1,
         sortingFn: (rowA, rowB) =>
           numericalSort({ rowA, rowB, id: "globalTdc" }),
+        size: 100,
       },
       {
         header: () => (
@@ -264,7 +266,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
         sortUndefined: 1,
         sortingFn: (rowA, rowB) =>
           numericalSort({ rowA, rowB, id: "homeAverage" }),
-        size: 300,
+        size: 150,
       },
       {
         header: () => (
@@ -293,6 +295,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
         sortUndefined: 1,
         sortingFn: (rowA, rowB) =>
           numericalSort({ rowA, rowB, id: "awayAverage" }),
+        size: 100,
       },
       {
         header: () => (
@@ -321,6 +324,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
         sortUndefined: 1,
         sortingFn: (rowA, rowB) =>
           numericalSort({ rowA, rowB, id: "globalAverage" }),
+        size: 100,
       },
     ],
     []

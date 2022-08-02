@@ -65,15 +65,19 @@ const MatchPage = () => {
   }, [matchData, matchRatings, status, session]);
 
   return (
-    <div className="p-4">
+    <div className="p-4 lg:p-8">
       Match page
       {status === "authenticated" && userStats && (
         <button onClick={() => toggleMode()}>Now : {mode}</button>
       )}
       {stats && (
-        <Draggable>
-          <MatchTable data={userStats && mode === "user" ? userStats : stats} />
-        </Draggable>
+        <div>
+          <Draggable>
+            <MatchTable
+              data={userStats && mode === "user" ? userStats : stats}
+            />
+          </Draggable>
+        </div>
       )}
     </div>
   );
