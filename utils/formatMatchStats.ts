@@ -4,7 +4,6 @@ import {
 } from "graphql/generated/queryTypes";
 
 export type FormatMatchStatsParams = {
-  match: MatchDataQuery["match"];
   players: MatchDataQuery["players"];
   ratings: MatchRatingsQuery["ratings"];
 };
@@ -17,7 +16,6 @@ export type FormattedMatchPlayerStats = MatchDataQuery["players"][0] & {
 };
 
 export const formatMatchStats = ({
-  match,
   players,
   ratings,
 }: FormatMatchStatsParams) => {
@@ -48,6 +46,16 @@ export const formatMatchStats = ({
   let botmIds: string[] = [];
 
   players.forEach((pl) => {
+    if (!matchPlayersStats[pl.id]) {
+      matchPlayersStats[pl.id] = {
+        ...playersById[pl.id],
+        averageSum: 0,
+        averageQuantity: 0,
+        motm: false,
+        botm: false,
+      };
+    }
+
     const playerAvg = matchPlayersStats[pl.id].averageSum
       ? matchPlayersStats[pl.id].averageSum /
         matchPlayersStats[pl.id].averageQuantity
