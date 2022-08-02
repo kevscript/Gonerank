@@ -64,10 +64,18 @@ const PlayerPage = () => {
   useEffect(() => {
     if (currentSeasonId && playerId) {
       getPlayerSeasonData({
-        variables: { playerId: playerId as string, seasonId: currentSeasonId },
+        variables: {
+          playerId: playerId as string,
+          seasonId: currentSeasonId,
+          archived: true,
+        },
       });
       getPlayerSeasonRatings({
-        variables: { playerId: playerId as string, seasonId: currentSeasonId },
+        variables: {
+          playerId: playerId as string,
+          seasonId: currentSeasonId,
+          archived: true,
+        },
       });
     }
   }, [playerId, currentSeasonId, getPlayerSeasonData, getPlayerSeasonRatings]);

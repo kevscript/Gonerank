@@ -44,8 +44,12 @@ const PlayersPage = () => {
       )[0];
       if (latestSeason) {
         setCurrentSeasonId(latestSeason.id);
-        getGlobalSeasonData({ variables: { seasonId: latestSeason.id } });
-        getSeasonRatings({ variables: { seasonId: latestSeason.id } });
+        getGlobalSeasonData({
+          variables: { seasonId: latestSeason.id, archived: true },
+        });
+        getSeasonRatings({
+          variables: { seasonId: latestSeason.id, archived: true },
+        });
       }
     }
   }, [seasonsData, getGlobalSeasonData, getSeasonRatings]);
@@ -57,7 +61,11 @@ const PlayersPage = () => {
       )[0];
       if (latestSeason) {
         getSeasonUserRatings({
-          variables: { seasonId: latestSeason.id, userId: session.user.id! },
+          variables: {
+            seasonId: latestSeason.id,
+            userId: session.user.id!,
+            archived: true,
+          },
         });
       }
     }

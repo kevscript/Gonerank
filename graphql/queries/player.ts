@@ -76,9 +76,13 @@ export const DELETE_PLAYER = gql`
 `;
 
 export const PLAYER_SEASON_RATINGS = gql`
-  query PlayerSeasonRatings($playerId: String!, $seasonId: String!) {
+  query PlayerSeasonRatings(
+    $playerId: String!
+    $seasonId: String!
+    $archived: Boolean
+  ) {
     ratings(
-      where: { playerId: $playerId, seasonId: $seasonId, archived: true }
+      where: { playerId: $playerId, seasonId: $seasonId, archived: $archived }
     ) {
       id
       matchId
@@ -89,7 +93,11 @@ export const PLAYER_SEASON_RATINGS = gql`
 `;
 
 export const PLAYER_SEASON_DATA = gql`
-  query PlayerSeasonData($playerId: String!, $seasonId: String!) {
+  query PlayerSeasonData(
+    $playerId: String!
+    $seasonId: String!
+    $archived: Boolean
+  ) {
     player(id: $playerId) {
       id
       lastName
@@ -105,7 +113,7 @@ export const PLAYER_SEASON_DATA = gql`
     }
 
     matches(
-      where: { seasonId: $seasonId, archived: true, playerId: $playerId }
+      where: { seasonId: $seasonId, archived: $archived, playerId: $playerId }
     ) {
       id
       date

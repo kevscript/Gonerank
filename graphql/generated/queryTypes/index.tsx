@@ -672,13 +672,9 @@ export type DeleteCompetitionMutationVariables = Exact<{
 
 export type DeleteCompetitionMutation = { __typename?: 'Mutation', deleteCompetition: { __typename?: 'Competition', id: string, name: string, abbreviation: string } };
 
-export type GlobalDataQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GlobalDataQuery = { __typename?: 'Query', seasons: Array<{ __typename?: 'Season', id: string, startDate: any }>, players: Array<{ __typename?: 'Player', id: string, lastName: string, country: string, firstName: string, countryCode: string, birthDate: any, image: string, active: boolean }>, matches: Array<{ __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string }>, competitions: Array<{ __typename?: 'Competition', id: string, name: string, abbreviation: string }>, clubs: Array<{ __typename?: 'Club', id: string, name: string, abbreviation: string, primary: string, secondary: string }> };
-
 export type GlobalSeasonDataQueryVariables = Exact<{
   seasonId: Scalars['String'];
+  archived?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -800,6 +796,7 @@ export type DeletePlayerMutation = { __typename?: 'Mutation', deletePlayer: { __
 export type PlayerSeasonRatingsQueryVariables = Exact<{
   playerId: Scalars['String'];
   seasonId: Scalars['String'];
+  archived?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -808,6 +805,7 @@ export type PlayerSeasonRatingsQuery = { __typename?: 'Query', ratings: Array<{ 
 export type PlayerSeasonDataQueryVariables = Exact<{
   playerId: Scalars['String'];
   seasonId: Scalars['String'];
+  archived?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -831,6 +829,7 @@ export type CreateUserRatingsMutation = { __typename?: 'Mutation', createUserRat
 
 export type GetSeasonRatingsQueryVariables = Exact<{
   seasonId: Scalars['String'];
+  archived?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -839,6 +838,7 @@ export type GetSeasonRatingsQuery = { __typename?: 'Query', ratings: Array<{ __t
 export type GetSeasonUserRatingsQueryVariables = Exact<{
   seasonId: Scalars['String'];
   userId: Scalars['String'];
+  archived?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -1278,78 +1278,9 @@ export function useDeleteCompetitionMutation(baseOptions?: Apollo.MutationHookOp
 export type DeleteCompetitionMutationHookResult = ReturnType<typeof useDeleteCompetitionMutation>;
 export type DeleteCompetitionMutationResult = Apollo.MutationResult<DeleteCompetitionMutation>;
 export type DeleteCompetitionMutationOptions = Apollo.BaseMutationOptions<DeleteCompetitionMutation, DeleteCompetitionMutationVariables>;
-export const GlobalDataDocument = gql`
-    query GlobalData {
-  seasons {
-    id
-    startDate
-  }
-  players {
-    id
-    lastName
-    country
-    firstName
-    countryCode
-    birthDate
-    image
-    active
-  }
-  matches {
-    id
-    date
-    home
-    scored
-    conceeded
-    active
-    archived
-    competitionId
-    seasonId
-    opponentId
-  }
-  competitions {
-    id
-    name
-    abbreviation
-  }
-  clubs {
-    id
-    name
-    abbreviation
-    primary
-    secondary
-  }
-}
-    `;
-
-/**
- * __useGlobalDataQuery__
- *
- * To run a query within a React component, call `useGlobalDataQuery` and pass it any options that fit your needs.
- * When your component renders, `useGlobalDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGlobalDataQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGlobalDataQuery(baseOptions?: Apollo.QueryHookOptions<GlobalDataQuery, GlobalDataQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GlobalDataQuery, GlobalDataQueryVariables>(GlobalDataDocument, options);
-      }
-export function useGlobalDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GlobalDataQuery, GlobalDataQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GlobalDataQuery, GlobalDataQueryVariables>(GlobalDataDocument, options);
-        }
-export type GlobalDataQueryHookResult = ReturnType<typeof useGlobalDataQuery>;
-export type GlobalDataLazyQueryHookResult = ReturnType<typeof useGlobalDataLazyQuery>;
-export type GlobalDataQueryResult = Apollo.QueryResult<GlobalDataQuery, GlobalDataQueryVariables>;
 export const GlobalSeasonDataDocument = gql`
-    query GlobalSeasonData($seasonId: String!) {
-  players(where: {season: {seasonId: $seasonId}, archived: true}) {
+    query GlobalSeasonData($seasonId: String!, $archived: Boolean) {
+  players(where: {season: {seasonId: $seasonId}, archived: $archived}) {
     id
     lastName
     country
@@ -1359,7 +1290,7 @@ export const GlobalSeasonDataDocument = gql`
     image
     active
   }
-  matches(where: {seasonId: $seasonId, archived: true}) {
+  matches(where: {seasonId: $seasonId, archived: $archived}) {
     id
     date
     home
@@ -1399,6 +1330,7 @@ export const GlobalSeasonDataDocument = gql`
  * const { data, loading, error } = useGlobalSeasonDataQuery({
  *   variables: {
  *      seasonId: // value for 'seasonId'
+ *      archived: // value for 'archived'
  *   },
  * });
  */
@@ -2138,8 +2070,8 @@ export type DeletePlayerMutationHookResult = ReturnType<typeof useDeletePlayerMu
 export type DeletePlayerMutationResult = Apollo.MutationResult<DeletePlayerMutation>;
 export type DeletePlayerMutationOptions = Apollo.BaseMutationOptions<DeletePlayerMutation, DeletePlayerMutationVariables>;
 export const PlayerSeasonRatingsDocument = gql`
-    query PlayerSeasonRatings($playerId: String!, $seasonId: String!) {
-  ratings(where: {playerId: $playerId, seasonId: $seasonId, archived: true}) {
+    query PlayerSeasonRatings($playerId: String!, $seasonId: String!, $archived: Boolean) {
+  ratings(where: {playerId: $playerId, seasonId: $seasonId, archived: $archived}) {
     id
     matchId
     userId
@@ -2162,6 +2094,7 @@ export const PlayerSeasonRatingsDocument = gql`
  *   variables: {
  *      playerId: // value for 'playerId'
  *      seasonId: // value for 'seasonId'
+ *      archived: // value for 'archived'
  *   },
  * });
  */
@@ -2177,7 +2110,7 @@ export type PlayerSeasonRatingsQueryHookResult = ReturnType<typeof usePlayerSeas
 export type PlayerSeasonRatingsLazyQueryHookResult = ReturnType<typeof usePlayerSeasonRatingsLazyQuery>;
 export type PlayerSeasonRatingsQueryResult = Apollo.QueryResult<PlayerSeasonRatingsQuery, PlayerSeasonRatingsQueryVariables>;
 export const PlayerSeasonDataDocument = gql`
-    query PlayerSeasonData($playerId: String!, $seasonId: String!) {
+    query PlayerSeasonData($playerId: String!, $seasonId: String!, $archived: Boolean) {
   player(id: $playerId) {
     id
     lastName
@@ -2191,7 +2124,7 @@ export const PlayerSeasonDataDocument = gql`
       seasonId
     }
   }
-  matches(where: {seasonId: $seasonId, archived: true, playerId: $playerId}) {
+  matches(where: {seasonId: $seasonId, archived: $archived, playerId: $playerId}) {
     id
     date
     home
@@ -2232,6 +2165,7 @@ export const PlayerSeasonDataDocument = gql`
  *   variables: {
  *      playerId: // value for 'playerId'
  *      seasonId: // value for 'seasonId'
+ *      archived: // value for 'archived'
  *   },
  * });
  */
@@ -2323,8 +2257,8 @@ export type CreateUserRatingsMutationHookResult = ReturnType<typeof useCreateUse
 export type CreateUserRatingsMutationResult = Apollo.MutationResult<CreateUserRatingsMutation>;
 export type CreateUserRatingsMutationOptions = Apollo.BaseMutationOptions<CreateUserRatingsMutation, CreateUserRatingsMutationVariables>;
 export const GetSeasonRatingsDocument = gql`
-    query GetSeasonRatings($seasonId: String!) {
-  ratings(where: {seasonId: $seasonId, archived: true}) {
+    query GetSeasonRatings($seasonId: String!, $archived: Boolean) {
+  ratings(where: {seasonId: $seasonId, archived: $archived}) {
     id
     playerId
     matchId
@@ -2346,6 +2280,7 @@ export const GetSeasonRatingsDocument = gql`
  * const { data, loading, error } = useGetSeasonRatingsQuery({
  *   variables: {
  *      seasonId: // value for 'seasonId'
+ *      archived: // value for 'archived'
  *   },
  * });
  */
@@ -2361,8 +2296,8 @@ export type GetSeasonRatingsQueryHookResult = ReturnType<typeof useGetSeasonRati
 export type GetSeasonRatingsLazyQueryHookResult = ReturnType<typeof useGetSeasonRatingsLazyQuery>;
 export type GetSeasonRatingsQueryResult = Apollo.QueryResult<GetSeasonRatingsQuery, GetSeasonRatingsQueryVariables>;
 export const GetSeasonUserRatingsDocument = gql`
-    query GetSeasonUserRatings($seasonId: String!, $userId: String!) {
-  ratings(where: {seasonId: $seasonId, userId: $userId, archived: true}) {
+    query GetSeasonUserRatings($seasonId: String!, $userId: String!, $archived: Boolean) {
+  ratings(where: {seasonId: $seasonId, userId: $userId, archived: $archived}) {
     id
     playerId
     matchId
@@ -2385,6 +2320,7 @@ export const GetSeasonUserRatingsDocument = gql`
  *   variables: {
  *      seasonId: // value for 'seasonId'
  *      userId: // value for 'userId'
+ *      archived: // value for 'archived'
  *   },
  * });
  */

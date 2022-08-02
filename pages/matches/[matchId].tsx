@@ -41,7 +41,6 @@ const MatchPage = () => {
   useEffect(() => {
     if (matchData && matchRatings) {
       const formattedStats = formatMatchStats({
-        match: matchData.match,
         players: matchData.players,
         ratings: matchRatings.ratings,
       });
@@ -57,7 +56,6 @@ const MatchPage = () => {
       );
 
       const formattedStats = formatMatchStats({
-        match: matchData.match,
         players: matchData.players,
         ratings: currentUserRatings,
       });

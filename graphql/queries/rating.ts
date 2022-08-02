@@ -27,8 +27,8 @@ export const CREATE_USER_RATINGS = gql`
 `;
 
 export const GET_SEASON_RATINGS = gql`
-  query GetSeasonRatings($seasonId: String!) {
-    ratings(where: { seasonId: $seasonId, archived: true }) {
+  query GetSeasonRatings($seasonId: String!, $archived: Boolean) {
+    ratings(where: { seasonId: $seasonId, archived: $archived }) {
       id
       playerId
       matchId
@@ -38,8 +38,14 @@ export const GET_SEASON_RATINGS = gql`
 `;
 
 export const GET_SEASON_USER_RATINGS = gql`
-  query GetSeasonUserRatings($seasonId: String!, $userId: String!) {
-    ratings(where: { seasonId: $seasonId, userId: $userId, archived: true }) {
+  query GetSeasonUserRatings(
+    $seasonId: String!
+    $userId: String!
+    $archived: Boolean
+  ) {
+    ratings(
+      where: { seasonId: $seasonId, userId: $userId, archived: $archived }
+    ) {
       id
       playerId
       matchId

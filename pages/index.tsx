@@ -184,7 +184,7 @@ const HomePage: NextCustomPage = () => {
                       href={`https://twitter.com/intent/tweet?via=GoneRank&text=${twitterText}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="w-20 h-10 rounded flex justify-center items-center bg-cyan-500 hover:bg-cyan-600 uppercase text-xs font-bold text-white"
+                      className="w-20 h-10 rounded flex justify-center items-center bg-sky-500 hover:bg-sky-600 uppercase text-xs font-bold text-white"
                     >
                       Tweeter
                     </a>
