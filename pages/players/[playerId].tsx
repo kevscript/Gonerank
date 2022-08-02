@@ -6,14 +6,13 @@ import {
 } from "@/utils/formatPlayerSeasonStats";
 import {
   GetSeasonsQuery,
-  PlayerSeasonRatingsQuery,
   useGetSeasonsQuery,
   usePlayerSeasonDataLazyQuery,
   usePlayerSeasonRatingsLazyQuery,
 } from "graphql/generated/queryTypes";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const PlayerPage = () => {
   const { data: session, status } = useSession();
@@ -23,8 +22,7 @@ const PlayerPage = () => {
   const [seasonsPlayed, setSeasonsPlayed] = useState<
     GetSeasonsQuery["seasons"] | null
   >(null);
-  const [currentSeasonId, setCurrentSeasonId] = useState<string | null>(null);
-
+  const [currentSeasonId, setCurrentSeasonId] = useState("");
   const { data: seasonsData } = useGetSeasonsQuery();
   const [getPlayerSeasonData, { data: playerSeasonData }] =
     usePlayerSeasonDataLazyQuery();
@@ -40,6 +38,13 @@ const PlayerPage = () => {
 
   const toggleMode = () => {
     mode === "all" ? setMode("user") : setMode("all");
+  };
+
+  const handleSeasonChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedSeasonId = e.target.value;
+    if (selectedSeasonId !== currentSeasonId) {
+      setCurrentSeasonId(selectedSeasonId);
+    }
   };
 
   // init seasons where player played
@@ -88,7 +93,7 @@ const PlayerPage = () => {
         clubs: playerSeasonData.clubs || [],
         ratings: playerSeasonRatings.ratings,
       });
-      formattedStats.length > 0 && setStats(formattedStats);
+      formattedStats && setStats(formattedStats);
     }
   }, [playerSeasonRatings, playerSeasonData]);
 
@@ -106,13 +111,31 @@ const PlayerPage = () => {
         ratings: currentUserRatings,
       });
 
-      currentUserRatings.length > 0 && setUserStats(formattedStats);
+      currentUserRatings && setUserStats(formattedStats);
     }
   }, [playerSeasonRatings, status, session, playerSeasonData]);
 
   return (
     <div className="p-4 lg:p-8">
-      Player page
+      {seasonsPlayed && (
+        <label>
+          <span>Season</span>
+          <select
+            className="outline-none"
+            value={currentSeasonId}
+            onChange={handleSeasonChange}
+          >
+            {seasonsPlayed.map((season) => (
+              <option key={season.id} value={season.id}>
+                {`${new Date(season.startDate).getFullYear()}/${
+                  new Date(season.startDate).getFullYear() + 1
+                }`}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
+
       {status === "authenticated" && userStats && (
         <button onClick={() => toggleMode()}>Now : {mode}</button>
       )}

@@ -4,7 +4,7 @@ import {
   useGetSeasonUserRatingsLazyQuery,
   useGlobalSeasonDataLazyQuery,
 } from "graphql/generated/queryTypes";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   formatPlayersSeasonStats,
   FormattedPlayerSeasonStats,
@@ -16,7 +16,9 @@ import PlayersTable from "@/components/tables/PlayersTable";
 const PlayersPage = () => {
   const { data: session, status } = useSession();
 
-  const [currentSeasonId, setCurrentSeasonId] = useState<string | null>(null);
+  const [currentSeasonId, setCurrentSeasonId] = useState("");
+  const [currentCompetitionId, setCurrentCompetitionId] = useState("all");
+
   const { data: seasonsData } = useGetSeasonsQuery();
   const [getGlobalSeasonData, { data: globalSeasonData }] =
     useGlobalSeasonDataLazyQuery();
@@ -35,6 +37,79 @@ const PlayersPage = () => {
 
   const toggleMode = () => {
     mode === "all" ? setMode("user") : setMode("all");
+  };
+
+  const handleSeasonChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedSeasonId = e.target.value;
+    if (selectedSeasonId !== currentSeasonId) {
+      setCurrentSeasonId(selectedSeasonId);
+      getGlobalSeasonData({
+        variables: { seasonId: selectedSeasonId, archived: true },
+      });
+      getSeasonRatings({
+        variables: { seasonId: selectedSeasonId, archived: true },
+      });
+
+      if (status === "authenticated" && session) {
+        getSeasonUserRatings({
+          variables: {
+            seasonId: selectedSeasonId,
+            userId: session.user.id!,
+            archived: true,
+          },
+        });
+      }
+    }
+  };
+
+  const handleCompetitionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCompetitionId = e.target.value;
+    if (
+      selectedCompetitionId !== currentCompetitionId &&
+      globalSeasonData &&
+      seasonRatings
+    ) {
+      const filteredMatchesByComp = globalSeasonData.matches.filter(
+        (m) => m.competitionId === selectedCompetitionId
+      );
+
+      setCurrentCompetitionId(selectedCompetitionId);
+      const formattedStats = formatPlayersSeasonStats({
+        players: globalSeasonData.players || [],
+        matches:
+          selectedCompetitionId === "all"
+            ? globalSeasonData.matches
+            : filteredMatchesByComp,
+        competitions: globalSeasonData.competitions || [],
+        clubs: globalSeasonData.clubs || [],
+        ratings:
+          selectedCompetitionId === "all"
+            ? seasonRatings.ratings
+            : seasonRatings.ratings.filter((r) =>
+                filteredMatchesByComp.some((m) => m.id === r.matchId)
+              ),
+      });
+      setStats(formattedStats);
+
+      if (status === "authenticated" && session && seasonUserRatings) {
+        const formattedUserStats = formatPlayersSeasonStats({
+          players: globalSeasonData.players || [],
+          matches:
+            selectedCompetitionId === "all"
+              ? globalSeasonData.matches
+              : filteredMatchesByComp,
+          competitions: globalSeasonData.competitions || [],
+          clubs: globalSeasonData.clubs || [],
+          ratings:
+            selectedCompetitionId === "all"
+              ? seasonUserRatings.ratings
+              : seasonUserRatings.ratings.filter((r) =>
+                  filteredMatchesByComp.some((m) => m.id === r.matchId)
+                ),
+        });
+        setUserStats(formattedUserStats);
+      }
+    }
   };
 
   useEffect(() => {
@@ -73,33 +148,94 @@ const PlayersPage = () => {
 
   useEffect(() => {
     if (globalSeasonData && seasonRatings) {
+      const filteredMatches =
+        currentCompetitionId === "all"
+          ? globalSeasonData.matches
+          : globalSeasonData.matches.filter(
+              (m) => m.competitionId === currentCompetitionId
+            );
+
       const formattedStats = formatPlayersSeasonStats({
         players: globalSeasonData.players || [],
-        matches: globalSeasonData.matches || [],
+        matches: filteredMatches || [],
         competitions: globalSeasonData.competitions || [],
         clubs: globalSeasonData.clubs || [],
-        ratings: seasonRatings.ratings,
+        ratings:
+          currentCompetitionId === "all"
+            ? seasonRatings.ratings
+            : seasonRatings.ratings.filter((r) =>
+                filteredMatches.some((m) => m.id === r.matchId)
+              ),
       });
       formattedStats && setStats(formattedStats);
     }
-  }, [globalSeasonData, seasonRatings]);
+  }, [globalSeasonData, seasonRatings, currentCompetitionId]);
 
   useEffect(() => {
     if (globalSeasonData && seasonUserRatings) {
+      const filteredMatches =
+        currentCompetitionId === "all"
+          ? globalSeasonData.matches
+          : globalSeasonData.matches.filter(
+              (m) => m.competitionId === currentCompetitionId
+            );
+
       const formattedStats = formatPlayersSeasonStats({
         players: globalSeasonData.players || [],
-        matches: globalSeasonData.matches || [],
+        matches: filteredMatches || [],
         competitions: globalSeasonData.competitions || [],
         clubs: globalSeasonData.clubs || [],
-        ratings: seasonUserRatings.ratings,
+        ratings:
+          currentCompetitionId === "all"
+            ? seasonUserRatings.ratings
+            : seasonUserRatings.ratings.filter((r) =>
+                filteredMatches.some((m) => m.id === r.matchId)
+              ),
       });
       formattedStats && setUserStats(formattedStats);
     }
-  }, [globalSeasonData, seasonUserRatings]);
+  }, [globalSeasonData, seasonUserRatings, currentCompetitionId]);
+
+  useEffect(() => {}, []);
 
   return (
     <div className="p-4 lg:p-8">
-      <h1>Players</h1>
+      {seasonsData && (
+        <label>
+          <span>Saison</span>
+          <select
+            className="outline-none"
+            value={currentSeasonId}
+            onChange={handleSeasonChange}
+          >
+            {seasonsData.seasons.map((season) => (
+              <option key={season.id} value={season.id}>
+                {`${new Date(season.startDate).getFullYear()}/${
+                  new Date(season.startDate).getFullYear() + 1
+                }`}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
+
+      {globalSeasonData && (
+        <label>
+          <span>Compétition</span>
+          <select
+            className="outline-none"
+            value={currentCompetitionId}
+            onChange={handleCompetitionChange}
+          >
+            <option value="all">Toutes compétitions</option>
+            {globalSeasonData.competitions.map((comp) => (
+              <option key={comp.id} value={comp.id}>
+                {comp.name}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
 
       {status === "authenticated" && userStats && (
         <button onClick={() => toggleMode()}>Now : {mode}</button>
