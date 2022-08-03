@@ -10,7 +10,7 @@ const NavLink = ({ label, path, Icon, isActive }: NavLinkProps) => {
     <>
       <Link href={path} passHref>
         <li
-          className={`mt-4 p-2 flex rounded-[10px] justify-center items-center first:mt-0 cursor-pointer lg:justify-start lg:self-stretch lg:mt-2 lg:mx-4 hover:bg-gray-100 ${
+          className={`mt-4 p-2 flex rounded justify-center items-center first:mt-0 cursor-pointer lg:justify-start lg:self-stretch lg:mt-2 lg:mx-4 hover:bg-gray-100 ${
             isActive && "bg-gray-100"
           }`}
         >

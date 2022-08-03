@@ -87,7 +87,7 @@ const Sidebar = () => {
             <div className="hidden lg:flex flex-col justify-center h-8 ml-2">
               <span className="text-base font-medium leading-4">Gonerank</span>
               <span className="text-xs font-mono font-thin text-gray-600 leading-3">
-                @kevscript
+                @gonerank
               </span>
             </div>
           </div>
