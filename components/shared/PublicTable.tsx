@@ -14,15 +14,30 @@ type PublicTableProps = {
   columns: ColumnDef<any>[];
   data: RowData[];
   frozenId?: string;
+  initialSortId?: string;
+  initialSortDesc?: boolean;
 };
 
-const PublicTable = ({ columns, data, frozenId }: PublicTableProps) => {
-  const [sorting, setSorting] = useState<SortingState>([]);
+const PublicTable = ({
+  columns,
+  data,
+  frozenId,
+  initialSortId,
+  initialSortDesc,
+}: PublicTableProps) => {
+  const [sorting, setSorting] = useState<SortingState>(() =>
+    initialSortId
+      ? [{ id: initialSortId, desc: initialSortDesc ? initialSortDesc : false }]
+      : []
+  );
 
   const table = useReactTable({
     columns: columns,
     data: data,
     state: { sorting },
+    // initialState: {
+    //   sorting: initialSort ? [{ id: initialSort, desc: true }] : undefined,
+    // },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
