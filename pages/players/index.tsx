@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 import PlayersTable from "@/components/tables/PlayersTable";
 import UserFilter from "@/components/shared/UserFilter";
 import SeasonSelector from "@/components/shared/SeasonSelector";
+import Spinner from "@/components/shared/Spinner";
 
 const PlayersPage = () => {
   const { data: session, status } = useSession();
@@ -200,12 +201,21 @@ const PlayersPage = () => {
 
   useEffect(() => {}, []);
 
+  if (!stats) {
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
     <div className="p-4 lg:p-8 max-w-max">
       <div className="flex flex-row flex-wrap gap-2 lg:gap-y-0 mb-4 justify-between">
         {status === "authenticated" && userStats && (
           <UserFilter toggleMode={toggleMode} mode={mode} />
         )}
+
         <div className="flex flex-row gap-x-2">
           {globalSeasonData && (
             <select
@@ -233,16 +243,13 @@ const PlayersPage = () => {
           )}
         </div>
       </div>
-
-      {stats && (
-        <div>
-          <Draggable>
-            <PlayersTable
-              data={userStats && mode === "user" ? userStats : stats}
-            />
-          </Draggable>
-        </div>
-      )}
+      <div>
+        <Draggable>
+          <PlayersTable
+            data={userStats && mode === "user" ? userStats : stats}
+          />
+        </Draggable>
+      </div>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import Draggable from "@/components/shared/Draggable";
+import Spinner from "@/components/shared/Spinner";
 import UserFilter from "@/components/shared/UserFilter";
 import MatchTable from "@/components/tables/MatchTable";
 import {
@@ -64,22 +65,31 @@ const MatchPage = () => {
     }
   }, [matchData, matchRatings, status, session]);
 
+  if (!matchData) {
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
     <div className="p-4 lg:p-8 max-w-max">
-      <div className="flex flex-row gap-x-2 mb-4 justify-between">
-        {status === "authenticated" && userStats && (
-          <UserFilter toggleMode={toggleMode} mode={mode} />
-        )}
-      </div>
-
       {stats && (
-        <div>
-          <Draggable>
-            <MatchTable
-              data={userStats && mode === "user" ? userStats : stats}
-            />
-          </Draggable>
-        </div>
+        <>
+          <div className="flex flex-row gap-x-2 mb-4 justify-between">
+            {status === "authenticated" && userStats && (
+              <UserFilter toggleMode={toggleMode} mode={mode} />
+            )}
+          </div>
+          <div>
+            <Draggable>
+              <MatchTable
+                data={userStats && mode === "user" ? userStats : stats}
+              />
+            </Draggable>
+          </div>
+        </>
       )}
     </div>
   );

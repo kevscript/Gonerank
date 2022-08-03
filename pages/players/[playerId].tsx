@@ -120,9 +120,17 @@ const PlayerPage = () => {
     }
   }, [playerSeasonRatings, status, session, playerSeasonData]);
 
+  if (!playerSeasonData) {
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
     <div className="p-4 lg:p-8 max-w-max">
-      {playerSeasonData?.player && (
+      {playerSeasonData.player && (
         <div className="w-full px-4 lg:px-8 py-4 bg-white rounded flex flex-row flex-nowrap items-center drop-shadow-sm overflow-hidden">
           <div className="w-12 h-12 lg:h-16 lg:w-16 flex justify-center items-center rounded-full relative bg-gray-100 overflow-hidden shadow-inner shrink-0">
             <Image
@@ -141,7 +149,7 @@ const PlayerPage = () => {
         </div>
       )}
 
-      {stats ? (
+      {stats && (
         <>
           <div className="flex flex-row flex-wrap gap-x-2 mb-4 mt-4 lg:mt-8 justify-between">
             {status === "authenticated" && userStats && (
@@ -163,10 +171,6 @@ const PlayerPage = () => {
             </Draggable>
           </div>
         </>
-      ) : (
-        <div className="w-full mx-auto py-8">
-          <Spinner />
-        </div>
       )}
     </div>
   );

@@ -1,5 +1,6 @@
 import Draggable from "@/components/shared/Draggable";
 import SeasonSelector from "@/components/shared/SeasonSelector";
+import Spinner from "@/components/shared/Spinner";
 import UserFilter from "@/components/shared/UserFilter";
 import MatchesTable from "@/components/tables/MatchesTable";
 import {
@@ -122,29 +123,39 @@ const MatchesPage = () => {
     }
   }, [globalSeasonData, seasonUserRatings]);
 
+  if (!globalSeasonData) {
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
     <div className="p-4 lg:p-8 max-w-max">
-      <div className="flex flex-row gap-x-2 mb-4 justify-between">
-        {status === "authenticated" && userStats && (
-          <UserFilter mode={mode} toggleMode={toggleMode} />
-        )}
-        {seasonsData && (
-          <SeasonSelector
-            currentSeasonId={currentSeasonId}
-            handleChange={handleSeasonChange}
-            seasons={seasonsData.seasons}
-          />
-        )}
-      </div>
-
       {stats && (
-        <div>
-          <Draggable>
-            <MatchesTable
-              data={userStats && mode === "user" ? userStats : stats}
-            />
-          </Draggable>
-        </div>
+        <>
+          <div className="flex flex-row gap-x-2 mb-4 justify-between">
+            {status === "authenticated" && userStats && (
+              <UserFilter mode={mode} toggleMode={toggleMode} />
+            )}
+            {seasonsData && (
+              <SeasonSelector
+                currentSeasonId={currentSeasonId}
+                handleChange={handleSeasonChange}
+                seasons={seasonsData.seasons}
+              />
+            )}
+          </div>
+
+          <div>
+            <Draggable>
+              <MatchesTable
+                data={userStats && mode === "user" ? userStats : stats}
+              />
+            </Draggable>
+          </div>
+        </>
       )}
     </div>
   );
