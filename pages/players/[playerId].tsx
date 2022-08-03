@@ -13,6 +13,11 @@ import {
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import { getAgeFromDate } from "@/utils/getAgeFromDate";
+import Spinner from "@/components/shared/Spinner";
+import UserFilter from "@/components/shared/UserFilter";
+import SeasonSelector from "@/components/shared/SeasonSelector";
 
 const PlayerPage = () => {
   const { data: session, status } = useSession();
@@ -117,55 +122,50 @@ const PlayerPage = () => {
 
   return (
     <div className="p-4 lg:p-8 max-w-max">
-      <div className="flex flex-row gap-x-2 mb-4 justify-between">
-        {status === "authenticated" && userStats && (
-          <div className="h-10 flex flex-row justify-between items-center bg-gray-100 max-w-max  gap-x-[1px] px-[2px] rounded">
-            <button
-              onClick={() => toggleMode("all")}
-              className={`px-2 rounded-l-sm h-9 text-sm ${
-                mode === "all"
-                  ? "bg-white text-marine-600"
-                  : "bg-gray-100 hover:bg-gray-50 hover:text-marine-600"
-              }`}
-            >
-              Communauté
-            </button>
-            <button
-              onClick={() => toggleMode("user")}
-              className={`px-2 rounded-l-sm h-9 text-sm ${
-                mode === "user"
-                  ? "bg-white text-marine-600"
-                  : "bg-gray-100 hover:bg-gray-50 hover:text-marine-600"
-              }`}
-            >
-              Utilisateur
-            </button>
-          </div>
-        )}
-        {seasonsPlayed && (
-          <select
-            className="outline-none h-10 border-2 border-gray-100 rounded px-2 text-sm text-marine-600"
-            value={currentSeasonId}
-            onChange={handleSeasonChange}
-          >
-            {seasonsPlayed.map((season) => (
-              <option key={season.id} value={season.id} className="text-black">
-                {`${new Date(season.startDate).getFullYear()}/${
-                  new Date(season.startDate).getFullYear() + 1
-                }`}
-              </option>
-            ))}
-          </select>
-        )}
-      </div>
-
-      {stats && (
-        <div>
-          <Draggable>
-            <PlayerTable
-              data={userStats && mode === "user" ? userStats : stats}
+      {playerSeasonData?.player && (
+        <div className="w-full px-4 lg:px-8 py-4 bg-white rounded flex flex-row flex-nowrap items-center drop-shadow-sm overflow-hidden">
+          <div className="w-12 h-12 lg:h-16 lg:w-16 flex justify-center items-center rounded-full relative bg-gray-100 overflow-hidden shadow-inner shrink-0">
+            <Image
+              src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${playerSeasonData.player.image}`}
+              alt="player avatar"
+              layout="fill"
             />
-          </Draggable>
+          </div>
+          <div className="flex flex-col flex-1 ml-4">
+            <h3 className="lg:text-xl whitespace-nowrap truncate overflow-hidden">{`${playerSeasonData.player.firstName} ${playerSeasonData.player.lastName}`}</h3>
+            <span className="text-sm whitespace-nowrap ">
+              {getAgeFromDate(playerSeasonData.player.birthDate)} ans,{" "}
+              {playerSeasonData.player.country}
+            </span>
+          </div>
+        </div>
+      )}
+
+      {stats ? (
+        <>
+          <div className="flex flex-row flex-wrap gap-x-2 mb-4 mt-4 lg:mt-8 justify-between">
+            {status === "authenticated" && userStats && (
+              <UserFilter toggleMode={toggleMode} mode={mode} />
+            )}
+            {seasonsPlayed && (
+              <SeasonSelector
+                currentSeasonId={currentSeasonId}
+                handleChange={handleSeasonChange}
+                seasons={seasonsPlayed}
+              />
+            )}
+          </div>
+          <div>
+            <Draggable>
+              <PlayerTable
+                data={userStats && mode === "user" ? userStats : stats}
+              />
+            </Draggable>
+          </div>
+        </>
+      ) : (
+        <div className="w-full mx-auto py-8">
+          <Spinner />
         </div>
       )}
     </div>
