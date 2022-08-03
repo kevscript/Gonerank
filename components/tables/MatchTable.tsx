@@ -30,6 +30,7 @@ const MatchTable = ({ data }: MatchTableProps) => {
           );
         },
         id: "player",
+        accessorFn: (player) => player.lastName,
         cell: ({ row }) => {
           const { firstName, lastName, image, id } = row.original || {};
           return (
@@ -150,7 +151,14 @@ const MatchTable = ({ data }: MatchTableProps) => {
     []
   );
 
-  return <PublicTable columns={columns} data={data} frozenId="player" />;
+  return (
+    <PublicTable
+      columns={columns}
+      data={data}
+      frozenId="player"
+      initialSortId="player"
+    />
+  );
 };
 
 export default MatchTable;

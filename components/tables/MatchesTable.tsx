@@ -225,7 +225,15 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
     []
   );
 
-  return <PublicTable columns={columns} data={data} frozenId="match" />;
+  return (
+    <PublicTable
+      columns={columns}
+      data={data}
+      frozenId="match"
+      initialSortId="date"
+      initialSortDesc={true}
+    />
+  );
 };
 
 export default MatchesTable;

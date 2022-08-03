@@ -27,7 +27,10 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
               <div className="relative w-4 h-4 flex justify-center items-center overflow-hidden">
                 <ClubIcon primary="#999" secondary="#666" />
               </div>
-              <span className="ml-2 text-sm">Adversaire</span>
+              <span className="ml-2 text-sm hidden md:inline-block">
+                Adversaire
+              </span>
+              <span className="ml-2 text-sm md:hidden">Adv.</span>
             </TableCell>
           );
         },
@@ -36,7 +39,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
         cell: ({ row }) => {
           const { opponent, id } = row.original || {};
           return (
-            <TableCell padding="p-0 bg-white">
+            <TableCell padding="p-0 bg-white min-w-[100px]">
               <Link href={`/matches/${id}`}>
                 <a className="w-full h-full flex items-center justify-start px-2">
                   <div className="relative w-4 h-4 flex justify-center items-center overflow-hidden">
@@ -50,8 +53,11 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
                     )}
                   </div>
 
-                  <span className="whitespace-nowrap ml-2">
+                  <span className="whitespace-nowrap ml-2 hidden lg:inline-block">
                     {opponent?.name || "opponent"}
+                  </span>
+                  <span className="whitespace-nowrap ml-2 lg:hidden">
+                    {opponent?.abbreviation || "opponent"}
                   </span>
                 </a>
               </Link>

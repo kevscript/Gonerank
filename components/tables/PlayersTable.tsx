@@ -330,7 +330,14 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
     []
   );
 
-  return <PublicTable columns={columns} data={data} frozenId="player" />;
+  return (
+    <PublicTable
+      columns={columns}
+      data={data}
+      frozenId="player"
+      initialSortId="player"
+    />
+  );
 };
 
 export default PlayersTable;
