@@ -58,17 +58,23 @@ export const PlayerQuery = extendType({
                 country: country ? country : undefined,
                 countryCode: countryCode ? countryCode : undefined,
                 image: image ? image : undefined,
-                seasons: {
-                  some: {
-                    seasonId: season?.seasonId ? season.seasonId : undefined,
-                  },
-                },
-                matches: {
-                  some: {
-                    matchId: match?.matchId ? match.matchId : undefined,
-                    match: { archived: archived ? true : undefined },
-                  },
-                },
+                seasons: season
+                  ? {
+                      some: {
+                        seasonId: season?.seasonId
+                          ? season.seasonId
+                          : undefined,
+                      },
+                    }
+                  : undefined,
+                matches: match
+                  ? {
+                      some: {
+                        matchId: match?.matchId ? match.matchId : undefined,
+                        match: { archived: archived ? true : undefined },
+                      },
+                    }
+                  : undefined,
               },
             });
           }

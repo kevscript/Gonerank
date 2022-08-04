@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GLOBAL_SEASON_DATA = gql`
   query GlobalSeasonData($seasonId: String!, $archived: Boolean) {
-    players(where: { season: { seasonId: $seasonId }, archived: $archived }) {
+    players(where: { season: { seasonId: $seasonId } }) {
       id
       lastName
       country

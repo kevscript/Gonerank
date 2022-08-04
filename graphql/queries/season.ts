@@ -75,26 +75,3 @@ export const GET_SEASON_PLAYERS = gql`
     }
   }
 `;
-
-export const GET_SEASON_PLAYERSTATS = gql`
-  query GetSeasonPlayerStats($seasonId: String!) {
-    season(id: $seasonId) {
-      id
-      startDate
-      playerStats {
-        playerId
-        firstName
-        lastName
-        image
-        matches {
-          matchId
-          averageSum
-          averageQuantity
-          tendency
-          motm
-          botm
-        }
-      }
-    }
-  }
-`;
