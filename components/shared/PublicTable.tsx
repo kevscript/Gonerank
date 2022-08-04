@@ -35,9 +35,6 @@ const PublicTable = ({
     columns: columns,
     data: data,
     state: { sorting },
-    // initialState: {
-    //   sorting: initialSort ? [{ id: initialSort, desc: true }] : undefined,
-    // },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),

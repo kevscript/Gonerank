@@ -8,15 +8,28 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
+import ChevronIcon from "../Icons/Chevron";
 
 type AdminTableProps = {
   columns: ColumnDef<any>[];
   data: RowData[];
   frozenId?: string;
+  initialSortId?: string;
+  initialSortDesc?: boolean;
 };
 
-const AdminTable = ({ columns, data, frozenId }: AdminTableProps) => {
-  const [sorting, setSorting] = useState<SortingState>([]);
+const AdminTable = ({
+  columns,
+  data,
+  frozenId,
+  initialSortDesc,
+  initialSortId,
+}: AdminTableProps) => {
+  const [sorting, setSorting] = useState<SortingState>(() =>
+    initialSortId
+      ? [{ id: initialSortId, desc: initialSortDesc ? initialSortDesc : false }]
+      : []
+  );
 
   const table = useReactTable({
     columns: columns,
@@ -47,8 +60,8 @@ const AdminTable = ({ columns, data, frozenId }: AdminTableProps) => {
                   <div
                     {...{
                       className: header.column.getCanSort()
-                        ? "cursor-pointer select-none"
-                        : "",
+                        ? "cursor-pointer select-none flex flex-row w-full justify-between"
+                        : "flex flex-row w-full justify-between",
                       onClick: header.column.getToggleSortingHandler(),
                     }}
                   >
@@ -56,10 +69,18 @@ const AdminTable = ({ columns, data, frozenId }: AdminTableProps) => {
                       header.column.columnDef.header,
                       header.getContext()
                     )}
-                    {/* {{
-                      asc: " 🔼",
-                      desc: " 🔽",
-                    }[header.column.getIsSorted() as string] ?? null} */}
+                    {{
+                      asc: (
+                        <div className="mr-2 rotate-180 w-4 h-4 flex justify-center items-center">
+                          <ChevronIcon />
+                        </div>
+                      ),
+                      desc: (
+                        <div className="mr-2 w-4 h-4 flex justify-center items-center">
+                          <ChevronIcon />
+                        </div>
+                      ),
+                    }[header.column.getIsSorted() as string] ?? null}
                   </div>
                 )}
               </th>
