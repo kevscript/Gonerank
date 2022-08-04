@@ -3,7 +3,7 @@ import { inputObjectType, objectType } from "nexus";
 export const CreateMatchInput = inputObjectType({
   name: "CreateMatchInput",
   definition: (t) => {
-    t.nonNull.dateTime("date");
+    t.nonNull.field("date", { type: "DateTime" });
     t.boolean("home");
     t.nonNull.int("scored");
     t.nonNull.int("conceeded");
@@ -18,7 +18,7 @@ export const CreateMatchInput = inputObjectType({
 export const UpdateMatchInput = inputObjectType({
   name: "UpdateMatchInput",
   definition: (t) => {
-    t.dateTime("date");
+    t.field("date", { type: "DateTime" });
     t.boolean("home");
     t.int("scored");
     t.int("conceeded");
@@ -33,7 +33,7 @@ export const UpdateMatchInput = inputObjectType({
 export const MatchesWhereInput = inputObjectType({
   name: "MatchesWhereInput",
   definition: (t) => {
-    t.dateTime("date");
+    t.field("date", { type: "DateTime" });
     t.boolean("home");
     t.int("scored");
     t.int("conceeded");

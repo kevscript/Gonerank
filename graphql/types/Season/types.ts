@@ -4,21 +4,21 @@ import { PlayerType } from "../Player";
 export const CreateSeasonInput = inputObjectType({
   name: "CreateSeasonInput",
   definition: (t) => {
-    t.nonNull.dateTime("startDate");
+    t.nonNull.field("startDate", { type: "DateTime" });
   },
 });
 
 export const UpdateSeasonInput = inputObjectType({
   name: "UpdateSeasonInput",
   definition: (t) => {
-    t.nonNull.dateTime("startDate");
+    t.nonNull.field("startDate", { type: "DateTime" });
   },
 });
 
 export const SeasonsWhereInput = inputObjectType({
   name: "SeasonsWhereInput",
   definition: (t) => {
-    t.nonNull.dateTime("startDate");
+    t.nonNull.field("startDate", { type: "DateTime" });
   },
 });
 

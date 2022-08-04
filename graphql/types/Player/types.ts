@@ -7,7 +7,7 @@ export const CreatePlayerInput = inputObjectType({
   definition: (t) => {
     t.nonNull.string("firstName");
     t.nonNull.string("lastName");
-    t.nonNull.dateTime("birthDate");
+    t.nonNull.field("birthDate", { type: "DateTime" });
     t.string("image");
     t.string("country");
     t.string("countryCode");
@@ -20,7 +20,7 @@ export const UpdatePlayerInput = inputObjectType({
   definition: (t) => {
     t.string("firstName");
     t.string("lastName");
-    t.dateTime("birthDate");
+    t.field("birthDate", { type: "DateTime" });
     t.string("image");
     t.string("country");
     t.string("countryCode");
@@ -33,7 +33,7 @@ export const PlayersWhereInput = inputObjectType({
   definition: (t) => {
     t.string("firstName");
     t.string("lastName");
-    t.dateTime("birthDate");
+    t.field("birthDate", { type: "DateTime" });
     t.string("image");
     t.string("country");
     t.string("countryCode");
