@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import SeasonForm, { SeasonFormInput } from "@/components/forms/SeasonForm";
+import { noTimezone } from "@/utils/noTimezone";
 
 describe("SeasonForm", () => {
   it("renders correct fields", () => {
@@ -36,7 +37,7 @@ describe("SeasonForm", () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
       expect(mockSubmit).toHaveBeenCalledWith(
         expect.objectContaining({
-          startDate: new Date(1998, 4, 20),
+          startDate: new Date(noTimezone(new Date(1998, 4, 20))),
         })
       );
     });
@@ -44,7 +45,7 @@ describe("SeasonForm", () => {
 
   it("renders with default values in props", () => {
     const defaultValues: SeasonFormInput = {
-      startDate: new Date("2011-10-05T00:00:00.000Z"),
+      startDate: new Date("2011-10-05T12:00:00.000Z"),
     };
     render(<SeasonForm onSubmit={jest.fn()} defaultValues={defaultValues} />);
 

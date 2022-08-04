@@ -254,7 +254,9 @@ const AdminPlayersPage: NextCustomPage = () => {
     <div className="p-4 lg:p-8 max-w-max">
       <div className="flex justify-end">
         <Link passHref href="/admin/players/create">
-          <Button label="Ajouter" />
+          <div>
+            <Button label="Ajouter" />
+          </div>
         </Link>
       </div>
       <div className="py-4">

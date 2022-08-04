@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import PlayerForm, { PlayerFormInput } from "@/components/forms/PlayerForm";
+import { noTimezone } from "@/utils/noTimezone";
 
 describe("PlayerForm", () => {
   it("renders correct fields", () => {
@@ -79,7 +80,8 @@ describe("PlayerForm", () => {
           lastName: "Potter",
           country: "United Kingdom",
           countryCode: "UK",
-          birthDate: new Date(1998, 4, 20),
+          image: "",
+          birthDate: new Date(noTimezone(new Date(1998, 4, 20))),
         })
       );
     });
@@ -92,7 +94,7 @@ describe("PlayerForm", () => {
       lastName: "Doe",
       country: "Brazil",
       countryCode: "BR",
-      birthDate: new Date("2011-10-05T00:00:00.000Z"),
+      birthDate: new Date("2011-10-05T12:00:00.000Z"),
       image: "",
     };
     render(<PlayerForm onSubmit={mockSubmit} defaultValues={defaultValues} />);

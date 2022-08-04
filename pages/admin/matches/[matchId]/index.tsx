@@ -1,5 +1,6 @@
 import MatchForm, { MatchFormInput } from "@/components/forms/MatchForm";
 import MatchIcon from "@/components/Icons/Match";
+import Spinner from "@/components/shared/Spinner";
 import { NextCustomPage } from "@/pages/_app";
 import { Match } from "@prisma/client";
 import {
@@ -49,6 +50,18 @@ const AdminMatchEditPage: NextCustomPage = () => {
     currMatch && setMatch(currMatch);
   }, [data, matchId]);
 
+  if (loading) {
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="text-red-600">{error.message}</div>;
+  }
+
   return (
     <div>
       <div className="flex items-end bg-gray-100 h-16 p-4">
@@ -58,8 +71,6 @@ const AdminMatchEditPage: NextCustomPage = () => {
         <h3>Editer Match</h3>
       </div>
       <div className="p-4">
-        {loading && <div>Loading...</div>}
-        {error && <div>{error.message}</div>}
         {match && (
           <MatchForm
             onSubmit={handleUpdateMatch}

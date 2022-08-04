@@ -1,3 +1,4 @@
+import { noTimezone } from "@/utils/noTimezone";
 import {
   GetClubsQuery,
   GetCompetitionsQuery,

@@ -10,6 +10,7 @@ import {
 } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { noTimezone } from "@/utils/noTimezone";
 
 export type DateInputProps<FieldValues> = {
   control: Control<FieldValues, object>;
@@ -43,7 +44,7 @@ const DateInput = <T,>({
         >
           <span className="ml-2 text-sm">{label}</span>
           <DatePicker
-            onChange={(date) => field.onChange(date)}
+            onChange={(date) => date && field.onChange(noTimezone(date))}
             selected={field.value as Date}
             dateFormat="dd/MM/yyyy"
             className={`h-10 px-2 bg-white border text-base rounded mt-1 w-full font-num ${

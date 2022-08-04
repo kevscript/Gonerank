@@ -8,6 +8,7 @@ import {
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import SeasonForm, { SeasonFormInput } from "@/components/forms/SeasonForm";
+import Spinner from "@/components/shared/Spinner";
 
 const AdminSeasonEditPage: NextCustomPage = () => {
   const { data, loading, error } = useGetSeasonsQuery();
@@ -28,6 +29,18 @@ const AdminSeasonEditPage: NextCustomPage = () => {
     currSeason && setSeason(currSeason);
   }, [data, seasonId]);
 
+  if (loading) {
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="text-red-600">{error.message}</div>;
+  }
+
   return (
     <div>
       <div className="flex items-end bg-gray-100 h-16 p-4">
@@ -36,8 +49,6 @@ const AdminSeasonEditPage: NextCustomPage = () => {
         </div>
         <h3>Editer Saison</h3>
       </div>
-      {loading && <div>Loading...</div>}
-      {error && <div>{error.message}</div>}
       {season && (
         <div className="p-4">
           <SeasonForm

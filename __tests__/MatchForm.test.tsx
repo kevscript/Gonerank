@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import MatchForm, { MatchFormProps } from "@/components/forms/MatchForm";
+import { noTimezone } from "@/utils/noTimezone";
 
 const mockProps: Partial<MatchFormProps> = {
   seasons: [
@@ -128,7 +129,7 @@ describe("MatchForm", () => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
       expect(mockSubmit).toHaveBeenCalledWith(
         expect.objectContaining({
-          date: new Date(1998, 4, 20),
+          date: new Date(noTimezone(new Date(1998, 4, 20))),
           seasonId: "1",
           competitionId: "1",
           opponentId: "1",
@@ -148,7 +149,7 @@ describe("MatchForm", () => {
       clubs: mockProps.clubs,
       onSubmit: mockSubmit,
       defaultValues: {
-        date: new Date("2011-10-05T00:00:00.000Z"),
+        date: new Date("2011-10-05T12:00:00.000Z"),
         seasonId: "2",
         competitionId: "2",
         opponentId: "2",
