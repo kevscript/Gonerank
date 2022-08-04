@@ -17,7 +17,7 @@ export const SeasonPlayerMutation = extendType({
           throw new ForbiddenError(`Forbidden Action`);
         }
         try {
-          const seasonPlayersToCreate = args.playerIds.map((pId) => ({
+          const seasonPlayersToCreate = args.playerIds.map((pId: string) => ({
             seasonId: args.seasonId,
             playerId: pId,
           }));
