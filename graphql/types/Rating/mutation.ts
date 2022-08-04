@@ -31,12 +31,14 @@ export const RatingMutation = extendType({
             );
           }
 
-          const ratingsToCreate = ratings.map((r) => ({
-            userId: userId,
-            matchId: matchId,
-            rating: r.rating,
-            playerId: r.playerId,
-          }));
+          const ratingsToCreate = ratings.map(
+            (r: { playerId: string; rating: number }) => ({
+              userId: userId,
+              matchId: matchId,
+              rating: r.rating,
+              playerId: r.playerId,
+            })
+          );
 
           const [createUserRatingsInfo, matchUserRatings] =
             await prisma.$transaction([
