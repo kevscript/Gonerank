@@ -95,15 +95,15 @@ const Sidebar = () => {
       </div>
 
       {/* Search bar */}
-      <div className="mt-8 p-2 flex justify-center items-center bg-gray-100 rounded-[10px] lg:self-stretch lg:mx-4 lg:justify-start cursor-pointer hover:bg-gray-200">
+      {/* <div className="mt-8 p-2 flex justify-center items-center bg-gray-100 rounded-[10px] lg:self-stretch lg:mx-4 lg:justify-start cursor-pointer hover:bg-gray-200">
         <SearchIcon className="w-4 h-4 stroke-gray-600" />
         <div className="hidden lg:block ml-4">
           <span>Search</span>
         </div>
-      </div>
+      </div> */}
 
       {/* Sidebar Navigation */}
-      <ul className="w-full mt-8 flex-1 flex flex-col items-center">
+      <ul className="w-full mt-16 flex-1 flex flex-col items-center">
         {navRoutes
           .filter((r) => r.type === navigationType)
           .map((route) => (
