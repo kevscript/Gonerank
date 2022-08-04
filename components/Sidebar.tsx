@@ -116,9 +116,6 @@ const Sidebar = () => {
       </ul>
 
       <div className="flex flex-col justify-center items-center lg:w-full lg:flex-row-reverse lg:justify-start lg:p-4">
-        {/* Darmode Selector */}
-        <MoonIcon className="w-4 h-4 my-4 lg:my-0 cursor-pointer" />
-
         {/* Admin Routes Switch */}
         {session && session.user.role === "ADMIN" && (
           <div className="px-4 my-4 lg:px-0 lg:my-0 lg:mr-2">

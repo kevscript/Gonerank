@@ -48,8 +48,6 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
     setModalIsOpen(false);
   };
 
-  console.log(getValues());
-
   return (
     <>
       <form className="mt-4 lg:mt-8">
@@ -104,7 +102,12 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
           ))}
         </ul>
         <div className="mt-4 flex justify-center lg:mt-8 gap-x-4">
-          <Button label="Réinitialiser" onClick={() => reset()} type="button" />
+          <Button
+            label="Réinitialiser"
+            onClick={() => reset()}
+            type="button"
+            variety="secondary"
+          />
           <Button
             label="Voter"
             onClick={() => setModalIsOpen(true)}
@@ -119,7 +122,7 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
             {match?.stats.map((player) => (
               <li
                 key={player.playerId}
-                className="whitespace-nowrap flex items-center justify-between bg-marine-50 border border-marine-200 w-48 text-sm h-8"
+                className="whitespace-nowrap flex items-center justify-between bg-marine-50 border border-marine-200 w-48 text-sm h-8 rounded overflow-hidden"
               >
                 <span className="flex-1 ml-2">
                   {player.firstName[0] + ". " + player.lastName}
@@ -130,21 +133,18 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
               </li>
             ))}
           </ul>
-          <div className="mt-8 flex justify-end">
-            <button
-              className="py-2 px-4 bg-gray-200 min-w-[80px] rounded-sm"
-              type="button"
+          <div className="mt-8 flex justify-end gap-x-2">
+            <Button
+              label="Annuler"
+              variety="secondary"
               onClick={() => setModalIsOpen(false)}
-            >
-              Annuler
-            </button>
-            <button
-              type="submit"
-              className="ml-4 py-2 px-4 bg-gray-200 min-w-[80px] rounded-sm"
+              type="button"
+            />
+            <Button
+              label="Confirmer"
               onClick={handleSubmit(submitHandler)}
-            >
-              Confirmer
-            </button>
+              type="submit"
+            />
           </div>
         </Modal>
       </form>
