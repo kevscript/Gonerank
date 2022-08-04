@@ -10,7 +10,8 @@
     "gql-gen": "graphql-codegen --config codegen.yml",
     "test": "jest --watch",
     "test-commit": "jest",
-    "post-install": "husky install"
+    "post-install": "husky install",
+    "vercel-build": "npx prisma generate && npx prisma migrate deploy && next build"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
