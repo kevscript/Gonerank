@@ -17,7 +17,7 @@ export const MatchPlayerMutation = extendType({
           throw new ForbiddenError(`Forbidden Action`);
         }
         try {
-          const matchPlayersToCreate = args.playerIds.map((pId) => ({
+          const matchPlayersToCreate = args.playerIds.map((pId: string) => ({
             matchId: args.matchId,
             playerId: pId,
           }));
