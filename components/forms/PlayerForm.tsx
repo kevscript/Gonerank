@@ -23,13 +23,6 @@ export type PlayerFormInput = {
 };
 
 const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
-  // const {
-  //   url,
-  //   loading: uploadLoading,
-  //   error: uploadError,
-  //   handleUpload,
-  // } = useUpload();
-
   const {
     data: files,
     loading,
@@ -165,10 +158,10 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
       <div className="w-full flex gap-x-4 mt-8">
         <Link href="/admin/players" passHref>
           <div>
-            <Button label="Cancel" />
+            <Button label="Annuler" />
           </div>
         </Link>
-        <Button type="submit" label="Create" />
+        <Button type="submit" label="Créer" />
       </div>
     </form>
   );

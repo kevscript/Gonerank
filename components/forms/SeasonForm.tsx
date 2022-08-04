@@ -42,10 +42,10 @@ const SeasonForm = ({ onSubmit, defaultValues }: SeasonFormProps) => {
       <div className="w-full flex gap-x-4 mt-8">
         <Link href="/admin/seasons" passHref>
           <div>
-            <Button label="Cancel" />
+            <Button label="Annuler" />
           </div>
         </Link>
-        <Button type="submit" label="Create" />
+        <Button type="submit" label="Créer" />
       </div>
     </form>
   );

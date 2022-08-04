@@ -9,14 +9,14 @@ describe("CompetitionForm", () => {
 
     expect(screen.getByRole("textbox", { name: /name/i })).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: /abbr/i })).toBeInTheDocument();
-    expect(screen.getByText(/create/i)).toBeInTheDocument();
-    expect(screen.getByText(/cancel/i)).toBeInTheDocument();
+    expect(screen.getByText(/créer/i)).toBeInTheDocument();
+    expect(screen.getByText(/annuler/i)).toBeInTheDocument();
   });
 
   it("renders errors", async () => {
     render(<CompetitionForm onSubmit={jest.fn()} />);
 
-    const submitButton = screen.getByText(/create/i);
+    const submitButton = screen.getByText(/créer/i);
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -35,7 +35,7 @@ describe("CompetitionForm", () => {
     const abbreviation = screen.getByRole("textbox", { name: /abbr/i });
     fireEvent.change(abbreviation, { target: { value: "L1" } });
 
-    const submitButton = screen.getByText(/create/i);
+    const submitButton = screen.getByText(/créer/i);
     fireEvent.click(submitButton);
 
     await waitFor(() => {

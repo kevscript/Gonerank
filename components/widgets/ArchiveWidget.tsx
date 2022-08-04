@@ -41,9 +41,13 @@ const ArchiveWidget = ({
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <div className="w-full">{children}</div>
         <div className="w-full flex flex-row flex-nowrap justify-end mt-4 gap-x-2">
-          <Button label="Cancel" onClick={() => setIsOpen(false)} />
           <Button
-            label={archived ? "Restore" : "Archive"}
+            label="Annuler"
+            onClick={() => setIsOpen(false)}
+            variety="secondary"
+          />
+          <Button
+            label={archived ? "Restorer" : "Archiver"}
             onClick={handleStatusUpdate}
           />
         </div>

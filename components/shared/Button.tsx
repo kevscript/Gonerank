@@ -4,6 +4,7 @@ export type ButtonProps = {
   className?: StringConstructor;
   onClick?: () => unknown;
   disabled?: boolean;
+  variety?: "primary" | "secondary";
 };
 
 const Button = ({
@@ -12,13 +13,20 @@ const Button = ({
   onClick,
   type = "button",
   disabled,
+  variety = "primary",
 }: ButtonProps) => {
+  const primaryStyles = "bg-marine-600 text-white hover:bg-marine-700";
+  const secondaryStyles =
+    "border border-marine-600 text-marine-600 hover:bg-marine-100";
+
+  const styles = variety === "secondary" ? secondaryStyles : primaryStyles;
+
   return (
     <button
       type={type}
-      className={`min-w-[80px] px-4 py-1.5 border border-gray-400 drop-shadow rounded ${
+      className={`min-w-[80px] px-4 py-1.5 border drop-shadow rounded  ${styles} ${
         className || ""
-      } ${disabled && "bg-red-100"}`}
+      } ${disabled && "bg-gray-100 border-none text-gray-600"}`}
       onClick={onClick}
       disabled={disabled}
     >

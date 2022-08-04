@@ -92,7 +92,7 @@ const PlayersPage = () => {
                 filteredMatchesByComp.some((m) => m.id === r.matchId)
               ),
       });
-      setStats(formattedStats);
+      formattedStats && setStats(formattedStats);
 
       if (status === "authenticated" && session && seasonUserRatings) {
         const formattedUserStats = formatPlayersSeasonStats({
@@ -110,7 +110,7 @@ const PlayersPage = () => {
                   filteredMatchesByComp.some((m) => m.id === r.matchId)
                 ),
         });
-        setUserStats(formattedUserStats);
+        formattedUserStats && setUserStats(formattedUserStats);
       }
     }
   };

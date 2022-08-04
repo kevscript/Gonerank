@@ -42,7 +42,7 @@ const ClubForm = ({ onSubmit, defaultValues }: ClubFormProps) => {
 
   return (
     <form
-      className="w-full"
+      className="w-full max-w-3xl"
       onSubmit={handleSubmit(submitHandler)}
       onKeyDown={(e) => checkKeyDown(e)}
     >
@@ -133,10 +133,10 @@ const ClubForm = ({ onSubmit, defaultValues }: ClubFormProps) => {
       <div className="w-full flex gap-x-4 mt-8">
         <Link href="/admin/clubs" passHref>
           <div>
-            <Button label="Cancel" />
+            <Button label="Annuler" />
           </div>
         </Link>
-        <Button type="submit" label="Create" />
+        <Button type="submit" label="Créer" />
       </div>
     </form>
   );

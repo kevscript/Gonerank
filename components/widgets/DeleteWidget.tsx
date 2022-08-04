@@ -47,7 +47,7 @@ const DeleteWidget = ({
         <div className="w-full">{children}</div>
         {validation && (
           <label className="text-sm flex flex-col w-full mt-4">
-            <span>Confirm deletion:</span>
+            <span>Confirmer la suppression:</span>
             <input
               type="text"
               value={validationInput}
@@ -58,8 +58,12 @@ const DeleteWidget = ({
           </label>
         )}
         <div className="w-full flex flex-row flex-nowrap justify-end mt-4 gap-x-2">
-          <Button label="Cancel" onClick={() => setIsOpen(false)} />
-          <Button label="Delete" onClick={handleDelete} />
+          <Button
+            label="Annuler"
+            onClick={() => setIsOpen(false)}
+            variety="secondary"
+          />
+          <Button label="Supprimer" onClick={handleDelete} />
         </div>
       </Modal>
     </>

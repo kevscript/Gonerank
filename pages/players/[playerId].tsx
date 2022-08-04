@@ -137,6 +137,7 @@ const PlayerPage = () => {
               src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${playerSeasonData.player.image}`}
               alt="player avatar"
               layout="fill"
+              objectFit="cover"
             />
           </div>
           <div className="flex flex-col flex-1 ml-4">

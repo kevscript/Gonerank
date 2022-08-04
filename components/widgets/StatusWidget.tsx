@@ -41,9 +41,13 @@ const StatusWidget = ({
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <div className="w-full">{children}</div>
         <div className="w-full flex flex-row flex-nowrap justify-end mt-4 gap-x-2">
-          <Button label="Cancel" onClick={() => setIsOpen(false)} />
           <Button
-            label={active ? "Deactivate" : "Activate"}
+            label="Annuler"
+            onClick={() => setIsOpen(false)}
+            variety="secondary"
+          />
+          <Button
+            label={active ? "Désactiver" : "Activer"}
             onClick={handleStatusUpdate}
           />
         </div>

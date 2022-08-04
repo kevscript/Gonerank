@@ -3,8 +3,8 @@ import MatchForm, { MatchFormProps } from "@/components/forms/MatchForm";
 
 const mockProps: Partial<MatchFormProps> = {
   seasons: [
-    { id: "1", startDate: new Date(1990, 5, 5) },
-    { id: "2", startDate: new Date(1991, 6, 6) },
+    { id: "1", startDate: new Date(1990, 5, 5), players: [] },
+    { id: "2", startDate: new Date(1991, 6, 6), players: [] },
   ],
   competitions: [
     { id: "1", name: "Ligue 1", abbreviation: "L1" },
@@ -59,8 +59,8 @@ describe("MatchForm", () => {
     expect(
       screen.getByRole("spinbutton", { name: /conceed/i })
     ).toBeInTheDocument();
-    expect(screen.getByText(/create/i)).toBeInTheDocument();
-    expect(screen.getByText(/cancel/i)).toBeInTheDocument();
+    expect(screen.getByText(/créer/i)).toBeInTheDocument();
+    expect(screen.getByText(/annuler/i)).toBeInTheDocument();
   });
 
   it("renders correct errors", async () => {
@@ -74,7 +74,7 @@ describe("MatchForm", () => {
 
     render(<MatchForm {...props} />);
 
-    const submitButton = screen.getByText(/create/i);
+    const submitButton = screen.getByText(/créer/i);
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -121,7 +121,7 @@ describe("MatchForm", () => {
     const conceeded = screen.getByRole("spinbutton", { name: /conceed/i });
     fireEvent.change(conceeded, { target: { value: 1 } });
 
-    const submitButton = screen.getByText(/create/i);
+    const submitButton = screen.getByText(/créer/i);
     fireEvent.click(submitButton);
 
     await waitFor(() => {

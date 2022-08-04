@@ -1,6 +1,7 @@
 import UserIcon from "@/components/Icons/User";
 import AdminTable from "@/components/shared/AdminTable";
 import Draggable from "@/components/shared/Draggable";
+import Spinner from "@/components/shared/Spinner";
 import TableCell from "@/components/shared/TableCell";
 import { NextCustomPage } from "@/pages/_app";
 import { User } from "@prisma/client";
@@ -67,11 +68,20 @@ const AdminUsersPage: NextCustomPage = () => {
     },
   ];
 
-  return (
-    <div className="p-4">
-      {loading && <div>Loading...</div>}
-      {error && <div className="text-red-600">{error.message}</div>}
+  if (loading) {
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
 
+  if (error) {
+    return <div className="text-red-600">{error.message}</div>;
+  }
+
+  return (
+    <div className="p-4 lg:p-8 max-w-max">
       {usersData?.users && (
         <Draggable>
           <AdminTable columns={userColumns} data={usersData.users} />

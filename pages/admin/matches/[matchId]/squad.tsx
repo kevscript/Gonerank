@@ -156,16 +156,16 @@ const AdminMatchSquadPage: NextCustomPage = () => {
             </select>
           </label>
         </div>
-        <ul className="flex flex-col flex-nowrap gap-y-1 mt-4">
+        <ul className="flex flex-col flex-nowrap gap-y-1 mt-4 lg:flex-row lg:flex-wrap lg:gap-2">
           {squad &&
             squad.map((p) => (
               <li
                 key={p.id}
-                className="relative p-2 w-full bg-white border border-gray-100 flex items-center justify-between flex-nowrap"
+                className="relative p-2 w-full bg-white border border-gray-100 flex items-center justify-between flex-nowrap lg:max-w-xs"
               >
                 <span>{p.firstName + " " + p.lastName}</span>
                 <div
-                  className="w-4 h-4 flex justify-center items-center"
+                  className="w-4 h-4 flex justify-center items-center cursor-pointer"
                   onClick={() => handleRemove(p.id)}
                 >
                   <CloseIcon className="w-3 h-3" />
@@ -176,10 +176,10 @@ const AdminMatchSquadPage: NextCustomPage = () => {
 
         <div className="w-full flex justify-end gap-x-2 mt-4">
           <Button
-            label="Cancel"
+            label="Annuler"
             onClick={() => router.push("/admin/matches")}
           />
-          <Button label="Update" onClick={() => setModalIsOpen(true)} />
+          <Button label="Soumettre" onClick={() => setModalIsOpen(true)} />
         </div>
         <Modal isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)}>
           <>
@@ -244,7 +244,7 @@ const AdminMatchSquadPage: NextCustomPage = () => {
               </ul>
             </div>
             <div className="w-full flex justify-end flex-nowrap gap-x-2 mt-4">
-              <Button label="Cancel" onClick={() => setModalIsOpen(false)} />
+              <Button label="Annuler" onClick={() => setModalIsOpen(false)} />
               <Button label="Confirm" onClick={handleConfirm} />
             </div>
           </>

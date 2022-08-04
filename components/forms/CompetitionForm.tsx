@@ -30,7 +30,7 @@ const CompetitionForm = ({ onSubmit, defaultValues }: CompetitionFormProps) => {
   };
 
   return (
-    <form className="w-full" onSubmit={handleSubmit(submitHandler)}>
+    <form className="w-full max-w-3xl" onSubmit={handleSubmit(submitHandler)}>
       <div className="flex w-full gap-x-4">
         <Input
           name="name"
@@ -63,10 +63,10 @@ const CompetitionForm = ({ onSubmit, defaultValues }: CompetitionFormProps) => {
       <div className="w-full flex gap-x-4 mt-8">
         <Link href="/admin/competitions" passHref>
           <div>
-            <Button label="Cancel" />
+            <Button label="Annuler" />
           </div>
         </Link>
-        <Button type="submit" label="Create" />
+        <Button type="submit" label="Créer" />
       </div>
     </form>
   );

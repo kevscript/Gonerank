@@ -14,14 +14,14 @@ describe("ClubForm", () => {
       screen.getByRole("textbox", { name: /secondary/i })
     ).toBeInTheDocument();
 
-    expect(screen.getByText(/create/i)).toBeInTheDocument();
-    expect(screen.getByText(/cancel/i)).toBeInTheDocument();
+    expect(screen.getByText(/créer/i)).toBeInTheDocument();
+    expect(screen.getByText(/annuler/i)).toBeInTheDocument();
   });
 
   it("renders errors", async () => {
     render(<ClubForm onSubmit={jest.fn()} />);
 
-    const submitButton = screen.getByText(/create/i);
+    const submitButton = screen.getByText(/créer/i);
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -49,7 +49,7 @@ describe("ClubForm", () => {
     const secondary = screen.getByRole("textbox", { name: /secondary/i });
     fireEvent.change(secondary, { target: { value: "#444" } });
 
-    const submitButton = screen.getByText(/create/i);
+    const submitButton = screen.getByText(/créer/i);
     fireEvent.click(submitButton);
 
     await waitFor(() => {

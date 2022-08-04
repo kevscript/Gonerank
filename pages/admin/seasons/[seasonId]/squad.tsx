@@ -2,6 +2,7 @@ import CloseIcon from "@/components/Icons/Close";
 import PlayerIcon from "@/components/Icons/Player";
 import Button from "@/components/shared/Button";
 import Modal from "@/components/shared/Modal";
+import Spinner from "@/components/shared/Spinner";
 import { NextCustomPage } from "@/pages/_app";
 import {
   GetPlayersQuery,
@@ -91,6 +92,18 @@ const AdminSeasonSquadPage: NextCustomPage = () => {
     }
   };
 
+  if (playersLoading) {
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
+
+  if (playersError) {
+    return <div className="text-red-600">{playersError.message}</div>;
+  }
+
   return (
     <>
       <div className="flex items-end bg-gray-100 h-16 p-4 gap-x-2">
@@ -122,12 +135,12 @@ const AdminSeasonSquadPage: NextCustomPage = () => {
             </select>
           </label>
         </div>
-        <ul className="flex flex-col flex-nowrap gap-y-1 mt-4">
+        <ul className="flex flex-col flex-nowrap gap-y-1 mt-4 lg:flex-row lg:flex-wrap lg:gap-2">
           {squad &&
             squad.map((p) => (
               <li
                 key={p.id}
-                className="relative p-2 w-full bg-white border border-gray-100 flex items-center justify-between flex-nowrap"
+                className="relative p-2 w-full bg-white border border-gray-100 flex items-center justify-between flex-nowrap lg:max-w-xs"
               >
                 <span>{p.firstName + " " + p.lastName}</span>
                 <div
@@ -142,10 +155,10 @@ const AdminSeasonSquadPage: NextCustomPage = () => {
 
         <div className="w-full flex justify-end gap-x-2 mt-4">
           <Button
-            label="Cancel"
+            label="Annuler"
             onClick={() => router.push("/admin/seasons")}
           />
-          <Button label="Update" onClick={() => setModalIsOpen(true)} />
+          <Button label="Soumettre" onClick={() => setModalIsOpen(true)} />
         </div>
         <Modal isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)}>
           <>
@@ -210,8 +223,8 @@ const AdminSeasonSquadPage: NextCustomPage = () => {
               </ul>
             </div>
             <div className="w-full flex justify-end flex-nowrap gap-x-2 mt-4">
-              <Button label="Cancel" onClick={() => setModalIsOpen(false)} />
-              <Button label="Confirm" onClick={handleConfirm} />
+              <Button label="Annuler" onClick={() => setModalIsOpen(false)} />
+              <Button label="Confirmer" onClick={handleConfirm} />
             </div>
           </>
         </Modal>

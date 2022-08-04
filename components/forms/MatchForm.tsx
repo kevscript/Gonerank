@@ -61,7 +61,7 @@ const MatchForm = ({
   }, [clubs, competitions, defaultValues, seasons, setValue]);
 
   return (
-    <form className="w-full" onSubmit={handleSubmit(submitHandler)}>
+    <form className="w-full max-w-5xl" onSubmit={handleSubmit(submitHandler)}>
       <div className="w-full flex gap-x-4">
         <DateInput<MatchFormInput>
           label="Date"
@@ -174,10 +174,10 @@ const MatchForm = ({
       <div className="w-full flex gap-x-4 mt-8">
         <Link href="/admin/matches" passHref>
           <div>
-            <Button label="Cancel" />
+            <Button label="Annuler" />
           </div>
         </Link>
-        <Button type="submit" label="Create" />
+        <Button type="submit" label="Créer" />
       </div>
     </form>
   );

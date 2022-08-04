@@ -7,7 +7,9 @@ import PlaneIcon from "@/components/Icons/PlaneIcon";
 import PlayerIcon from "@/components/Icons/Player";
 import TrophyIcon from "@/components/Icons/Trophy";
 import AdminTable from "@/components/shared/AdminTable";
+import Button from "@/components/shared/Button";
 import Draggable from "@/components/shared/Draggable";
+import Spinner from "@/components/shared/Spinner";
 import TableCell from "@/components/shared/TableCell";
 import ArchiveWidget from "@/components/widgets/ArchiveWidget";
 import DeleteWidget from "@/components/widgets/DeleteWidget";
@@ -415,22 +417,34 @@ const AdminMatchesPage: NextCustomPage = () => {
     },
   ];
 
+  if (loading) {
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="text-red-600">{error.message}</div>;
+  }
+
   return (
-    <div className="p-4">
+    <div className="p-4 lg:p-8 max-w-max">
       <div className="flex justify-end">
         <Link passHref href="/admin/matches/create">
-          <a className="px-2 py-1 bg-gray-200 rounded">Ajouter</a>
+          <Button label="Ajouter" />
         </Link>
       </div>
       <div className="py-4">
-        {loading && <div>Loading...</div>}
-        {error && <div className="text-red-600">{error.message}</div>}
         {matchesData?.matches && (
           <Draggable>
             <AdminTable
               columns={matchColumns}
               data={matchesData.matches}
               frozenId="date"
+              initialSortId="date"
+              initialSortDesc={true}
             />
           </Draggable>
         )}
