@@ -8,6 +8,7 @@ import {
 } from "graphql/generated/queryTypes";
 import { useRouter } from "next/router";
 import MatchForm, { MatchFormInput } from "@/components/forms/MatchForm";
+import { GET_MATCHES } from "graphql/queries/match";
 
 const AdminCreateMatch: NextCustomPage = () => {
   const { data: seasonsData } = useGetSeasonsQuery();
@@ -26,7 +27,7 @@ const AdminCreateMatch: NextCustomPage = () => {
 
   const [createMatch] = useCreateMatchMutation({
     onCompleted: () => router.push("/admin/matches"),
-    refetchQueries: ["GetMatches"],
+    refetchQueries: [{ query: GET_MATCHES }],
     awaitRefetchQueries: true,
   });
 
