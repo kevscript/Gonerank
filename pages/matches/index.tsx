@@ -131,6 +131,16 @@ const MatchesPage = () => {
     );
   }
 
+  if (globalSeasonData && globalSeasonData.matches.length === 0) {
+    return (
+      <div className="p-4 lg:p-8 h-screen flex items-start md:items-center justify-center">
+        <div className="flex justify-center flex-col items-center bg-marine-100 border border-marine-200 text-center text-marine-600 p-4 rounded md:p-8">
+          <p>Aucun match n&apos;est encore disponible pour cette saison.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-4 lg:p-8 max-w-max">
       {stats && (
