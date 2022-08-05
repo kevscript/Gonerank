@@ -36,7 +36,10 @@ const MatchHeader = ({ match }: MatchHeaderProps) => {
           })}
         </span>
       </div>
-      <div className="flex flex-col items-center justify-center">
+      <div
+        className="flex flex-col items-center justify-center"
+        title={match?.opponent.name}
+      >
         <ClubIcon
           className="w-12 h-12"
           primary={match?.opponent.primary || "#333"}

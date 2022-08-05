@@ -157,11 +157,12 @@ const HomePage: NextCustomPage = () => {
           {/** Authenticated but DisplayMatch is Archived */}
           {status === "authenticated" && matchData?.displayMatch.archived && (
             <div className="max-w-7xl ">
-              <div className="w-full bg-red-50 mt-4 h-10 rounded flex justify-center items-cente lg:mt-8">
+              <div className="w-full bg-red-50 mt-4 h-10 rounded flex justify-center items-center lg:mt-8">
                 <span className="uppercase text-xs font-bold text-red-500">
-                  Les votes sont fermés.
+                  Les votes sont finis.
                 </span>
               </div>
+
               <MatchInfo
                 match={matchData.displayMatch}
                 userRatings={userMatchRatingsData?.ratings || null}
@@ -175,8 +176,8 @@ const HomePage: NextCustomPage = () => {
               {userMatchRatingsData && userMatchRatingsData.ratings.length > 0 && (
                 <>
                   <div className="w-full flex flex-row flex-nowrap items-center mt-4 gap-x-2 lg:gap-x-4 lg:mt-8">
-                    <div className="flex-1 bg-gray-100 h-10 rounded flex justify-center items-center">
-                      <span className="uppercase text-xs font-bold text-gray-400">
+                    <div className="flex-1 bg-marine-50 h-10 rounded flex justify-center items-center">
+                      <span className="uppercase text-xs font-bold text-marine-600">
                         Vous avez déjà voté.
                       </span>
                     </div>
@@ -200,7 +201,7 @@ const HomePage: NextCustomPage = () => {
                 <>
                   <div className="w-full bg-marine-50 mt-4 h-10 rounded flex justify-center items-center">
                     <span className="uppercase text-xs font-bold text-marine-600">
-                      Les votes sont ouverts.
+                      Les votes sont ouverts!
                     </span>
                   </div>
 

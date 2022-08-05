@@ -34,23 +34,12 @@ const MatchInfo = ({ match, userRatings }: MatchInfoProps) => {
               </span>
             </div>
 
-            <div
-              className={`flex h-full items-center w-12 lg:w-16 justify-center font-num text-sm lg:text-base font-bold ${
-                userRatings
-                  ? "bg-marine-50 text-black"
-                  : "bg-marine-100 text-marine-600"
-              }`}
-            >
-              <span>
-                {player.avgSum
-                  ? (player.avgSum / player.numOfAvg).toFixed(2)
-                  : "-"}
-              </span>
-            </div>
-
             {userRatings && (
-              <div className="flex h-full items-center w-10 lg:w-16 justify-center text-sm lg:text-base bg-marine-100">
-                <span className="text-marine-600 font-num font-bold lg:font-black">
+              <div
+                className="flex h-full items-center w-10 lg:w-16 justify-center text-sm lg:text-base bg-marine-100"
+                title="la note de l'utilisateur"
+              >
+                <span className="text-marine-600 font-num lg:font-bold">
                   {
                     userRatings.find((r) => r.playerId === player.playerId)
                       ?.rating
@@ -58,6 +47,17 @@ const MatchInfo = ({ match, userRatings }: MatchInfoProps) => {
                 </span>
               </div>
             )}
+
+            <div
+              title="moyenne des notes de la communauté"
+              className={`flex h-full items-center w-12 lg:w-16 justify-center font-num text-sm lg:text-base font-bold bg-marine-200 text-marine-800`}
+            >
+              <span>
+                {player.avgSum
+                  ? (player.avgSum / player.numOfAvg).toFixed(2)
+                  : "-"}
+              </span>
+            </div>
           </li>
         ))}
       </ul>
