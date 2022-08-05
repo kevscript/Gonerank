@@ -31,10 +31,8 @@ export const prisma: PrismaClient<Prisma.PrismaClientOptions, "query"> =
 
 if (process.env.NODE_ENV !== "production") global.prisma = prisma;
 
-// prisma.$on("query", (e) => {
-//   console.log("Query time: " + e.duration + "ms");
-//   console.log("Duration: " + e.duration + "ms");
-//   console.log("\n");
-// });
+prisma.$on("query", (e) => {
+  console.log("Query time: " + e.duration + "ms");
+});
 
 export default prisma;
