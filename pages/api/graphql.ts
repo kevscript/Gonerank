@@ -15,6 +15,7 @@ const apolloServer = new ApolloServer({
     const auth = await getToken({ req, secret });
     return { auth: auth, prisma: prisma };
   },
+  introspection: process.env.NODE_ENV !== "production",
 });
 
 const startServer = apolloServer.start();
