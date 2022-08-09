@@ -7,7 +7,7 @@ const Switcher = ({ checked, handleToggle }: SwitcherProps) => {
   return (
     <label
       htmlFor="switcher"
-      className="flex items-center cursor-pointer relative"
+      className="relative flex items-center cursor-pointer"
     >
       <input
         onChange={handleToggle}
@@ -16,12 +16,12 @@ const Switcher = ({ checked, handleToggle }: SwitcherProps) => {
         id="switcher"
         className={`sr-only peer after:checked:translate-x-full checked:after:border-white checked:after:left-1.5`}
       />
-      <div className="absolute h-4 w-4 rounded-full bg-white border-2 border-gray-200 transition-transform peer-checked:translate-x-full peer-checked:border-marine-200"></div>
+      <div className="absolute w-4 h-4 transition-transform bg-white border-2 border-gray-200 rounded-full peer-checked:translate-x-full peer-checked:border-marine-200"></div>
       <div
         className={`border-2 h-4 w-8 rounded-full ${
           checked
             ? "bg-marine-600 border-marine-600"
-            : "bg-gray-400 border-gray-400  "
+            : "bg-gray-400 border-gray-400"
         }`}
       ></div>
     </label>

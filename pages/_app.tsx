@@ -6,6 +6,7 @@ import { NextPage } from "next";
 import AdminGuard from "@/components/AdminGuard";
 import { ApolloProvider } from "@apollo/client";
 import apolloClient from "@/lib/apollo";
+import { ThemeProvider } from "next-themes";
 
 export type NextCustomPage<P = any, IP = P> = NextPage<P, IP> & {
   isAdminPage?: boolean;
@@ -17,18 +18,20 @@ function MyApp({ pageProps: { session, ...pageProps }, ...props }: AppProps) {
   return (
     <ApolloProvider client={apolloClient}>
       <SessionProvider session={session}>
-        <div className="flex">
-          <Sidebar />
-          <div className="min-h-screen w-full pl-16 lg:pl-64">
-            {Component.isAdminPage ? (
-              <AdminGuard>
+        <ThemeProvider attribute="class">
+          <div className="flex">
+            <Sidebar />
+            <div className="w-full min-h-screen pl-16 lg:pl-64">
+              {Component.isAdminPage ? (
+                <AdminGuard>
+                  <Component {...pageProps} />
+                </AdminGuard>
+              ) : (
                 <Component {...pageProps} />
-              </AdminGuard>
-            ) : (
-              <Component {...pageProps} />
-            )}
+              )}
+            </div>
           </div>
-        </div>
+        </ThemeProvider>
       </SessionProvider>
     </ApolloProvider>
   );
