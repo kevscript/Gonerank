@@ -24,10 +24,10 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
         header: () => {
           return (
             <TableCell title="Joueurs">
-              <div className="relative flex items-center justify-center w-4 h-4 ml-2 overflow-hidden bg-gray-200 rounded-full">
-                <UserIcon />
+              <div className="relative flex items-center justify-center w-4 h-4 ml-2 overflow-hidden bg-gray-200 rounded-full dark:bg-slate-600">
+                <UserIcon className="dark:fill-slate-300" />
               </div>
-              <span className="ml-4 text-sm">Joueur</span>
+              <span className="ml-4 text-sm dark:text-slate-300">Joueur</span>
             </TableCell>
           );
         },
@@ -36,7 +36,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
         cell: ({ row }) => {
           const { firstName, lastName, image, id } = row.original || {};
           return (
-            <TableCell padding="p-0" className="bg-white">
+            <TableCell padding="p-0" className="bg-white dark:bg-slate-900">
               <Link href={`/players/${id}`}>
                 <a className="flex items-center justify-start w-full h-full px-2">
                   <div className="relative flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-200 rounded-full">
@@ -65,7 +65,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
       {
         header: () => (
           <TableCell className="justify-center" title="nombre de matchs joués">
-            <MatchIcon className="w-4 h-4" />
+            <MatchIcon className="w-4 h-4 dark:fill-slate-300" />
           </TableCell>
         ),
         id: "matches",
@@ -86,7 +86,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
             className="justify-center"
             title="nombre de fois homme du match"
           >
-            <MotmIcon className="w-4 h-4" />
+            <MotmIcon className="w-4 h-4 dark:fill-slate-300" />
           </TableCell>
         ),
         accessorKey: "globalMotm",
@@ -103,7 +103,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
             className="justify-center"
             title="nombre de fois boulet du match"
           >
-            <BotmIcon className="w-3.5 h-3.5" />
+            <BotmIcon className="w-3.5 h-3.5 dark:fill-slate-300" />
           </TableCell>
         ),
         accessorKey: "globalBotm",
@@ -120,7 +120,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
             className="items-center justify-end"
             title="tendance à domicile"
           >
-            <HomeIcon className="w-4 h-4" />
+            <HomeIcon className="w-4 h-4 dark:fill-slate-300" />
           </TableCell>
         ),
         accessorFn: (player) => {
@@ -162,7 +162,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
             className="items-center justify-end"
             title="tendance à l'exterieur"
           >
-            <PlaneIcon className="w-4 h-4" />
+            <PlaneIcon className="w-4 h-4 dark:fill-slate-300" />
           </TableCell>
         ),
         id: "awayTdc",
@@ -204,7 +204,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
             className="items-center justify-end"
             title="tendance globale"
           >
-            <span className="ml-1 text-sm">TDC</span>
+            <span className="ml-1 text-sm dark:text-slate-300">TDC</span>
           </TableCell>
         ),
         id: "globalTdc",
@@ -245,7 +245,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
             className="items-center justify-end"
             title="moyenne à domicile"
           >
-            <HomeIcon className="w-4 h-4" />
+            <HomeIcon className="w-4 h-4 dark:fill-slate-300" />
           </TableCell>
         ),
         id: "homeAverage",
@@ -274,7 +274,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
             className="items-center justify-end"
             title="moyenne à l'exterieur"
           >
-            <PlaneIcon className="w-4 h-4" />
+            <PlaneIcon className="w-4 h-4 dark:fill-slate-300" />
           </TableCell>
         ),
         id: "awayAverage",
@@ -303,7 +303,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
             className="items-center justify-end"
             title="moyenne globale"
           >
-            <span className="ml-1 text-sm">AVG</span>
+            <span className="ml-1 text-sm dark:text-slate-300">AVG</span>
           </TableCell>
         ),
         id: "globalAverage",

@@ -42,7 +42,7 @@ const AdminSeasonsPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell className="justify-center">
-          <CalendarIcon className="w-3 h-3" />
+          <CalendarIcon className="w-3 h-3 dark:fill-slate-300" />
         </TableCell>
       ),
       id: "season",
@@ -66,7 +66,7 @@ const AdminSeasonsPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell className="justify-center">
-          <span className="text-sm">startDate</span>
+          <span className="text-sm dark:text-slate-300">startDate</span>
         </TableCell>
       ),
       id: "startDate",
@@ -91,7 +91,7 @@ const AdminSeasonsPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell className="justify-center">
-            <span className="text-sm">squad</span>
+            <span className="text-sm dark:text-slate-300">squad</span>
           </TableCell>
         );
       },
@@ -101,10 +101,10 @@ const AdminSeasonsPage: NextCustomPage = () => {
           <Link href={`/admin/seasons/${row.original!.id}/squad`} passHref>
             <div className="w-full h-full">
               <TableCell
-                className="justify-center cursor-pointer bg-pink-50 group hover:bg-pink-300"
+                className="justify-center cursor-pointer bg-pink-50 dark:bg-pink-600/20 group hover:bg-pink-300 dark:hover:bg-pink-600/40"
                 padding="px-0"
               >
-                <PlayerIcon className="w-4 h-4 fill-black" />
+                <PlayerIcon className="w-4 h-4 fill-black dark:fill-gray-300 group:hover:fill-white" />
               </TableCell>
             </div>
           </Link>
@@ -115,7 +115,7 @@ const AdminSeasonsPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell className="justify-center">
-          <span className="text-sm">edit</span>
+          <span className="text-sm dark:text-slate-300">edit</span>
         </TableCell>
       ),
       id: "edit",
@@ -124,10 +124,10 @@ const AdminSeasonsPage: NextCustomPage = () => {
           <Link href={`/admin/seasons/${row.original!.id}`} passHref>
             <div className="w-full h-full">
               <TableCell
-                className="justify-center cursor-pointer bg-marine-100 group hover:bg-marine-400"
+                className="justify-center cursor-pointer bg-marine-100 dark:bg-marine-600/20 group hover:bg-marine-400 dark:hover:bg-marine-600/40"
                 padding="px-0"
               >
-                <EditIcon className="w-4 h-4 fill-black group-hover:fill-white" />
+                <EditIcon className="w-4 h-4 fill-black dark:fill-white group-hover:fill-white" />
               </TableCell>
             </div>
           </Link>
@@ -138,7 +138,7 @@ const AdminSeasonsPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell className="justify-center">
-          <span className="text-sm">delete</span>
+          <span className="text-sm dark:text-slate-300">delete</span>
         </TableCell>
       ),
       id: "delete",

@@ -17,6 +17,7 @@ const ThemeSwitcher = () => {
 
   return (
     <Switcher
+      id="themeSwitcher"
       checked={theme === "dark" ? true : false}
       handleToggle={() => setTheme(theme === "dark" ? "light" : "dark")}
     />

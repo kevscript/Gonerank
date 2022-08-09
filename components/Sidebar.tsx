@@ -76,7 +76,7 @@ const Sidebar = () => {
   }, [session, router]);
 
   return (
-    <div className="fixed top-0 left-0 bottom-0 w-16 bg-white border-r-[2px] border-gray-100 pt-8 pb-8 lg:pb-0 flex flex-col items-center lg:w-64 z-10">
+    <div className="fixed top-0 left-0 bottom-0 w-16 bg-white border-r-[2px] border-gray-100 pt-8 pb-8 lg:pb-0 flex flex-col items-center lg:w-64 z-10 dark:bg-slate-900 dark:border-slate-600">
       {/* Sidebar Header */}
       <div className="flex flex-col items-center w-full lg:flex-row lg:justify-between lg:px-4">
         <div>
@@ -87,7 +87,7 @@ const Sidebar = () => {
                 <span className="text-base font-medium leading-4">
                   Gonerank
                 </span>
-                <span className="font-mono text-xs font-thin leading-3 text-gray-600">
+                <span className="font-mono text-xs font-thin leading-3 text-gray-600 dark:text-white">
                   @gonerank
                 </span>
               </div>
@@ -126,6 +126,7 @@ const Sidebar = () => {
           <div className="px-4 my-4 lg:px-0 lg:my-0 lg:mr-2">
             <Switcher
               checked={navigationType === "admin" ? true : false}
+              id="navSwitcher"
               handleToggle={() =>
                 setNavigationType((x) => (x === "user" ? "admin" : "user"))
               }

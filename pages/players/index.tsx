@@ -219,15 +219,19 @@ const PlayersPage = () => {
         <div className="flex flex-row gap-x-2">
           {globalSeasonData && (
             <select
-              className="h-10 px-2 text-sm border-2 border-gray-100 rounded outline-none text-marine-600"
+              className="h-10 px-2 text-sm border-2 border-gray-100 rounded outline-none dark:border-slate-600 text-marine-600 dark:text-white dark:bg-slate-700"
               value={currentCompetitionId}
               onChange={handleCompetitionChange}
             >
-              <option value="all" className="text-black">
+              <option value="all" className="text-black dark:text-white">
                 Toutes compétitions
               </option>
               {globalSeasonData.competitions.map((comp) => (
-                <option key={comp.id} value={comp.id} className="text-black">
+                <option
+                  key={comp.id}
+                  value={comp.id}
+                  className="text-black dark:text-white"
+                >
                   {comp.name}
                 </option>
               ))}

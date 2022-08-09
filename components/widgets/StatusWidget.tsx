@@ -27,13 +27,13 @@ const StatusWidget = ({
       <div
         className={`group w-full h-full flex justify-center items-center cursor-pointer ${
           active
-            ? "bg-green-100 hover:bg-green-300"
-            : "bg-gray-100 hover:bg-gray-300"
+            ? "bg-green-100 hover:bg-green-300 dark:bg-green-600/20 dark:hover:bg-green-600/40"
+            : "bg-gray-100 hover:bg-gray-300 dark:bg-gray-600/20 dark:hover:bg-gray-600/40"
         }`}
         onClick={() => setIsOpen(true)}
       >
         {active ? (
-          <EyeIcon className="w-5 h-5 fill-gray-500 group-hover:fill-white" />
+          <EyeIcon className="w-5 h-5 fill-gray-500 group-hover:fill-white dark:fill-gray-300" />
         ) : (
           <EyeClosedIcon className="w-5 h-5 fill-gray-500 group-hover:fill-gray-600" />
         )}

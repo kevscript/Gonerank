@@ -49,10 +49,10 @@ const AdminPlayersPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell>
-            <div className="relative flex items-center justify-center w-4 h-4 ml-2 overflow-hidden bg-gray-200 rounded-full">
-              <UserIcon />
+            <div className="relative flex items-center justify-center w-4 h-4 ml-2 overflow-hidden bg-gray-200 rounded-full dark:bg-slate-600">
+              <UserIcon className="dark:bg-slate-300" />
             </div>
-            <span className="ml-4 text-sm">Player</span>
+            <span className="ml-4 text-sm dark:text-slate-300">Player</span>
           </TableCell>
         );
       },
@@ -62,7 +62,7 @@ const AdminPlayersPage: NextCustomPage = () => {
         const { firstName, lastName, image } = row.original || {};
         return (
           <TableCell className="flex px-2 flex-nowrap">
-            <div className="relative flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-200 rounded-full">
+            <div className="relative flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-200 rounded-full dark:bg-slate-600">
               {image ? (
                 <Image
                   src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${image}`}
@@ -86,7 +86,7 @@ const AdminPlayersPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell className="justify-center">
-            <span className="text-sm">birthDate</span>
+            <span className="text-sm dark:text-slate-300">birthDate</span>
           </TableCell>
         );
       },
@@ -111,7 +111,7 @@ const AdminPlayersPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell>
-            <span className="text-sm">country</span>
+            <span className="text-sm dark:text-slate-300">country</span>
           </TableCell>
         );
       },
@@ -129,7 +129,7 @@ const AdminPlayersPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell>
-            <span className="text-sm">code</span>
+            <span className="text-sm dark:text-slate-300">code</span>
           </TableCell>
         );
       },
@@ -147,7 +147,7 @@ const AdminPlayersPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell className="justify-center">
-            <span className="text-sm">status</span>
+            <span className="text-sm dark:text-slate-300">status</span>
           </TableCell>
         );
       },
@@ -185,7 +185,7 @@ const AdminPlayersPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell className="justify-center">
-            <span className="text-sm">edit</span>
+            <span className="text-sm dark:text-slate-300">edit</span>
           </TableCell>
         );
       },
@@ -195,10 +195,10 @@ const AdminPlayersPage: NextCustomPage = () => {
           <Link href={`/admin/players/${row.original!.id}`} passHref>
             <div className="w-full h-full">
               <TableCell
-                className="justify-center cursor-pointer bg-marine-100 group hover:bg-marine-400"
+                className="justify-center cursor-pointer bg-marine-100 dark:bg-marine-600/20 group hover:bg-marine-400 dark:hover:bg-marine-600/40"
                 padding="px-0"
               >
-                <EditIcon className="w-4 h-4 fill-black group-hover:fill-white" />
+                <EditIcon className="w-4 h-4 fill-black dark:fill-gray-300 group-hover:fill-white" />
               </TableCell>
             </div>
           </Link>
@@ -210,7 +210,7 @@ const AdminPlayersPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell className="justify-center px-2">
-            <span className="text-sm">delete</span>
+            <span className="text-sm dark:text-slate-300">delete</span>
           </TableCell>
         );
       },

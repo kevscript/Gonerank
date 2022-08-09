@@ -113,7 +113,7 @@ const AdminMatchesPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell className="justify-center">
-          <span className="text-sm">date</span>
+          <span className="text-sm dark:text-slate-300">date</span>
         </TableCell>
       ),
       id: "date",
@@ -139,7 +139,7 @@ const AdminMatchesPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell className="justify-center">
-          <CalendarIcon className="w-3 h-3" />
+          <CalendarIcon className="w-3 h-3 dark:fill-slate-300" />
         </TableCell>
       ),
       id: "season",
@@ -180,7 +180,7 @@ const AdminMatchesPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell className="justify-center">
-          <LocationIcon className="w-3 h-3" />
+          <LocationIcon className="w-3 h-3 dark:fill-slate-300" />
         </TableCell>
       ),
       id: "location",
@@ -190,9 +190,9 @@ const AdminMatchesPage: NextCustomPage = () => {
         return (
           <TableCell className="justify-center">
             {home ? (
-              <HomeIcon className="w-4 h-4" />
+              <HomeIcon className="w-4 h-4 dark:fill-slate-300" />
             ) : (
-              <PlaneIcon className="w-4 h-4" />
+              <PlaneIcon className="w-4 h-4 dark:fill-slate-300" />
             )}
           </TableCell>
         );
@@ -232,7 +232,7 @@ const AdminMatchesPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell>
-          <span className="text-sm">opponent</span>
+          <span className="text-sm dark:text-slate-300">opponent</span>
         </TableCell>
       ),
       id: "opponent",
@@ -252,7 +252,7 @@ const AdminMatchesPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell className="justify-center">
-            <span className="text-sm">squad</span>
+            <span className="text-sm dark:text-slate-300">squad</span>
           </TableCell>
         );
       },
@@ -262,10 +262,10 @@ const AdminMatchesPage: NextCustomPage = () => {
           <Link href={`/admin/matches/${row.original!.id}/squad`} passHref>
             <div className="w-full h-full">
               <TableCell
-                className="justify-center cursor-pointer bg-pink-50 group hover:bg-pink-300"
+                className="justify-center cursor-pointer bg-pink-50 dark:bg-pink-600/20 group hover:bg-pink-300 dark:hover:bg-pink-600/40"
                 padding="px-0"
               >
-                <PlayerIcon className="w-4 h-4 fill-black" />
+                <PlayerIcon className="w-4 h-4 fill-black dark:fill-gray-300 group:dark:hover:fill-white" />
               </TableCell>
             </div>
           </Link>
@@ -277,7 +277,7 @@ const AdminMatchesPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell className="justify-center">
-            <span className="text-sm">active</span>
+            <span className="text-sm dark:text-slate-300">active</span>
           </TableCell>
         );
       },
@@ -320,7 +320,7 @@ const AdminMatchesPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell className="justify-center">
-            <span className="text-sm">archived</span>
+            <span className="text-sm dark:text-slate-300">archived</span>
           </TableCell>
         );
       },
@@ -332,7 +332,7 @@ const AdminMatchesPage: NextCustomPage = () => {
         return active ? (
           <TableCell padding="px-0">
             <div
-              className="flex items-center justify-center w-full h-full bg-gray-100 cursor-pointer"
+              className="flex items-center justify-center w-full h-full bg-gray-100 cursor-pointer dark:bg-gray-600/60"
               onClick={() => alert("Can't archive an active match")}
             >
               <span className="text-xs font-bold text-gray-300">ACTIVE</span>
@@ -363,7 +363,7 @@ const AdminMatchesPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell className="justify-center">
-            <span className="text-sm">edit</span>
+            <span className="text-sm dark:text-slate-300">edit</span>
           </TableCell>
         );
       },
@@ -373,10 +373,10 @@ const AdminMatchesPage: NextCustomPage = () => {
           <Link href={`/admin/matches/${row.original!.id}`} passHref>
             <div className="w-full h-full">
               <TableCell
-                className="justify-center cursor-pointer bg-marine-100 group hover:bg-marine-400"
+                className="justify-center cursor-pointer bg-marine-100 dark:bg-marine-600/20 group hover:bg-marine-400 dark:hover:bg-marine-600/40"
                 padding="px-0"
               >
-                <EditIcon className="w-4 h-4 fill-black group-hover:fill-white" />
+                <EditIcon className="w-4 h-4 fill-black dark:fill-gray-300 group-hover:fill-white" />
               </TableCell>
             </div>
           </Link>
@@ -388,7 +388,7 @@ const AdminMatchesPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell className="justify-center">
-            <span className="text-sm">delete</span>
+            <span className="text-sm dark:text-slate-300">delete</span>
           </TableCell>
         );
       },

@@ -129,7 +129,7 @@ const AdminMatchSquadPage: NextCustomPage = () => {
 
   return (
     <>
-      <div className="flex items-end h-16 p-4 bg-gray-100 gap-x-2">
+      <div className="flex items-end h-16 p-4 bg-gray-100 gap-x-2 dark:bg-slate-900">
         <div className="flex items-center justify-center w-6 h-6 mr-2 overflow-hidden bg-gray-200 rounded-full">
           <PlayerIcon className="w-3 h-3 fill-marine-600" />
         </div>
@@ -142,7 +142,10 @@ const AdminMatchSquadPage: NextCustomPage = () => {
       <div className="p-4">
         <div className="mt-4">
           <label>
-            <select onChange={handleSelect} className="w-full h-10 px-2">
+            <select
+              onChange={handleSelect}
+              className="w-full h-10 px-2 dark:bg-slate-900"
+            >
               <option value="empty">-- select a player --</option>
               {squad &&
                 seasonPlayersData &&
@@ -161,14 +164,14 @@ const AdminMatchSquadPage: NextCustomPage = () => {
             squad.map((p) => (
               <li
                 key={p.id}
-                className="relative flex items-center justify-between w-full p-2 bg-white border border-gray-100 flex-nowrap lg:max-w-xs"
+                className="relative flex items-center justify-between w-full p-2 bg-white border border-gray-100 dark:bg-slate-900 flex-nowrap lg:max-w-xs"
               >
                 <span>{p.firstName + " " + p.lastName}</span>
                 <div
                   className="flex items-center justify-center w-4 h-4 cursor-pointer"
                   onClick={() => handleRemove(p.id)}
                 >
-                  <CloseIcon className="w-3 h-3" />
+                  <CloseIcon className="w-3 h-3 dark:fill-slate-300" />
                 </div>
               </li>
             ))}

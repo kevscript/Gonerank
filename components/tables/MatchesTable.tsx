@@ -27,7 +27,9 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
               <div className="relative flex items-center justify-center w-4 h-4 overflow-hidden">
                 <ClubIcon primary="#999" secondary="#666" />
               </div>
-              <span className="ml-2 text-sm">Adversaire</span>
+              <span className="ml-2 text-sm dark:text-slate-300">
+                Adversaire
+              </span>
             </TableCell>
           );
         },
@@ -63,7 +65,7 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
         header: () => {
           return (
             <TableCell className="justify-center" title="date du match">
-              <CalendarIcon className="w-3 h-3" />
+              <CalendarIcon className="w-3 h-3 dark:fill-slate-300" />
             </TableCell>
           );
         },
@@ -85,7 +87,7 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
         header: () => {
           return (
             <TableCell className="justify-center" title="domicile/exterieur">
-              <LocationIcon className="w-4 h-4" />
+              <LocationIcon className="w-4 h-4 dark:fill-slate-300" />
             </TableCell>
           );
         },
@@ -165,7 +167,7 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
         header: () => {
           return (
             <TableCell className="justify-end">
-              <span className="text-sm">TDC</span>
+              <span className="text-sm dark:text-slate-300">TDC</span>
             </TableCell>
           );
         },
@@ -195,7 +197,7 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
         header: () => {
           return (
             <TableCell className="justify-end">
-              <span className="text-sm">AVG</span>
+              <span className="text-sm dark:text-slate-300">AVG</span>
             </TableCell>
           );
         },

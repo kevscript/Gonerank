@@ -33,7 +33,7 @@ const Input = ({
         type={type ? type : "text"}
         min={type === "number" ? 0 : undefined}
         max={type === "number" ? 12 : undefined}
-        className={`h-10 rounded bg-white border px-2 text-base mt-1 ${
+        className={`h-10 rounded bg-white dark:bg-slate-900 border px-2 text-base mt-1 ${
           error
             ? "border-red-400 outline-red-500 bg-red-50"
             : value || value === 0

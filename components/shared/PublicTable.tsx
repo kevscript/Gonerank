@@ -49,10 +49,10 @@ const PublicTable = ({
               <th
                 key={header.id}
                 colSpan={header.colSpan}
-                className={`h-10 bg-gray-50 text-left border-l border-l-gray-100 first:border-l-0 ${
+                className={`h-10 bg-gray-50 dark:bg-slate-800 text-left border-l border-l-gray-100 dark:border-l-slate-600 first:border-l-0 ${
                   frozenId &&
                   header.id.endsWith(frozenId) &&
-                  "sticky left-0 z-10 after:absolute after:top-0 after:right-0 after:-z-10 after:w-[1px] after:bg-gray-100 after:h-full"
+                  "sticky left-0 z-10 after:absolute after:top-0 after:right-0 after:-z-10 after:w-[1px] after:bg-gray-100 dark:after:bg-slate-600 after:h-full"
                 }`}
                 style={{ width: header.getSize() }}
               >
@@ -72,12 +72,12 @@ const PublicTable = ({
                     {{
                       asc: (
                         <div className="flex items-center justify-center w-4 h-4 mr-2 rotate-180">
-                          <ChevronIcon />
+                          <ChevronIcon className="dark:fill-white" />
                         </div>
                       ),
                       desc: (
                         <div className="flex items-center justify-center w-4 h-4 mr-2">
-                          <ChevronIcon />
+                          <ChevronIcon className="dark:fill-white" />
                         </div>
                       ),
                     }[header.column.getIsSorted() as string] ?? null}
@@ -92,15 +92,15 @@ const PublicTable = ({
         {table.getRowModel().rows.map((row, i) => (
           <tr
             key={row.id}
-            className={`relative border-b border-gray-100 hover:bg-marine-50 bg-white`}
+            className={`relative border-b dark:border-b-slate-600 border-gray-100 hover:bg-marine-50 bg-white dark:bg-slate-900 dark:hover:bg-slate-800`}
           >
             {row.getVisibleCells().map((cell) => (
               <td
                 key={cell.id}
-                className={`relative h-12 border-l first:border-l-0 border-gray-100 text-sm ${
+                className={`relative h-12 border-l first:border-l-0 border-gray-100 dark:border-slate-600 text-sm ${
                   frozenId &&
                   cell.id.endsWith(frozenId) &&
-                  "sticky left-0 z-10 after:absolute after:top-0 after:right-0 after:-z-10 after:w-[1px] after:bg-gray-100 after:h-full"
+                  "sticky left-0 z-10 after:absolute after:top-0 after:right-0 after:-z-10 after:w-[1px] after:bg-gray-100 dark:after:bg-slate-600 after:h-full"
                 }`}
                 style={{
                   width: cell.column.getSize(),

@@ -25,7 +25,7 @@ const LoggedInNavigation = ({ user }: LoggedInNavigationProps) => {
         id="usermenu-button"
         aria-haspopup="true"
         aria-controls="usermenu"
-        className="flex items-center lg:w-full lg:p-4 lg:hover:bg-gray-100 lg:border-t lg:border-gray-300"
+        className="flex items-center lg:w-full lg:p-4 lg:hover:bg-gray-100 lg:border-t lg:border-gray-300 dark:lg:hover:bg-slate-800 dark:lg:border-slate-600"
       >
         <div className="relative flex items-end justify-center w-8 h-8 overflow-hidden rounded-full shadow-inner bg-marine-300">
           {user.image ? (
@@ -51,18 +51,18 @@ const LoggedInNavigation = ({ user }: LoggedInNavigationProps) => {
 
       {isOpen && (
         <ul
-          className="absolute bottom-0 flex flex-col bg-white border border-gray-300 rounded lg:bottom-16 left-9 lg:left-0 lg:w-full drop-shadow-sm lg:rounded-none lg:border-y lg:border-x-0"
+          className="absolute bottom-0 flex flex-col bg-white border border-gray-300 rounded dark:bg-slate-700 dark:border-slate-600 lg:bottom-16 left-9 lg:left-0 lg:w-full drop-shadow-sm lg:rounded-none lg:border-y lg:border-x-0"
           id="usermenu"
           role="menu"
           aria-labelledby="usermenu-button"
         >
           <li
-            className="flex items-center justify-between h-8 px-4 border-b border-gray-200 lg:h-10 hover:bg-gray-200 last:border-b-0"
+            className="flex items-center justify-between h-8 px-4 border-b border-gray-200 dark:border-slate-600 lg:h-10 hover:bg-gray-200 dark:hover:bg-slate-600 last:border-b-0"
             role="menuitem"
             onClick={() => signOut()}
           >
             <span>Déconnexion</span>
-            <SignOutIcon className="w-4 h-4 ml-2" />
+            <SignOutIcon className="w-4 h-4 ml-2 dark:fill-white" />
           </li>
         </ul>
       )}

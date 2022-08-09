@@ -22,10 +22,10 @@ const MatchTable = ({ data }: MatchTableProps) => {
         header: () => {
           return (
             <TableCell title="joueurs">
-              <div className="relative flex items-center justify-center w-4 h-4 ml-2 overflow-hidden bg-gray-200 rounded-full">
-                <UserIcon />
+              <div className="relative flex items-center justify-center w-4 h-4 ml-2 overflow-hidden bg-gray-200 rounded-full dark:bg-slate-600">
+                <UserIcon className="dark:fill-slate-300" />
               </div>
-              <span className="ml-4 text-sm">Joueur</span>
+              <span className="ml-4 text-sm dark:text-slate-300">Joueur</span>
             </TableCell>
           );
         },
@@ -64,7 +64,7 @@ const MatchTable = ({ data }: MatchTableProps) => {
         header: () => {
           return (
             <TableCell className="justify-center" title="distinctions">
-              <RatingIcon className="w-4 h-4" />
+              <RatingIcon className="w-4 h-4 dark:fill-slate-300" />
             </TableCell>
           );
         },
@@ -88,7 +88,7 @@ const MatchTable = ({ data }: MatchTableProps) => {
         header: () => {
           return (
             <TableCell className="justify-end" title="tendance">
-              <span className="text-sm">TDC</span>
+              <span className="text-sm dark:text-slate-300">TDC</span>
             </TableCell>
           );
         },
@@ -120,7 +120,7 @@ const MatchTable = ({ data }: MatchTableProps) => {
         header: () => {
           return (
             <TableCell className="justify-end" title="moyenne">
-              <span className="text-sm">AVG</span>
+              <span className="text-sm dark:text-slate-300">AVG</span>
             </TableCell>
           );
         },

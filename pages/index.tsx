@@ -116,8 +116,8 @@ const HomePage: NextCustomPage = () => {
   if (matchError) {
     return (
       <div className="p-4">
-        <div className="flex items-center justify-center w-full p-4 bg-gray-100 rounded">
-          <p className="text-sm font-normal text-center text-gray-600">
+        <div className="flex items-center justify-center w-full p-4 bg-gray-300 rounded dark:bg-slate-900">
+          <p className="text-sm font-normal text-center text-gray-600 dark:text-white">
             {matchError.message}
           </p>
         </div>
@@ -176,8 +176,8 @@ const HomePage: NextCustomPage = () => {
               {userMatchRatingsData && userMatchRatingsData.ratings.length > 0 && (
                 <>
                   <div className="flex flex-row items-center w-full mt-4 flex-nowrap gap-x-2 lg:gap-x-4 lg:mt-8">
-                    <div className="flex items-center justify-center flex-1 h-10 rounded bg-marine-50">
-                      <span className="text-xs font-bold uppercase text-marine-600">
+                    <div className="flex items-center justify-center flex-1 h-10 rounded bg-marine-50 dark:bg-slate-600">
+                      <span className="text-xs font-bold uppercase text-marine-600 dark:text-white">
                         Vous avez déjà voté.
                       </span>
                     </div>
@@ -185,7 +185,7 @@ const HomePage: NextCustomPage = () => {
                       href={`https://twitter.com/intent/tweet?via=GoneRank&text=${twitterText}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex items-center justify-center w-20 h-10 text-xs font-bold text-white uppercase rounded bg-sky-500 hover:bg-sky-600"
+                      className="flex items-center justify-center w-20 h-10 text-xs font-bold text-white uppercase rounded bg-marine-600 hover:bg-marine-700"
                     >
                       Tweeter
                     </a>

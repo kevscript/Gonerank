@@ -9,7 +9,7 @@ export type MatchHeaderProps = {
 const MatchHeader = ({ match }: MatchHeaderProps) => {
   return (
     <div
-      className={`w-full bg-white border border-gray-100 lg:border-none lg:drop-shadow-sm rounded flex justify-between py-4 px-8 ${
+      className={`w-full bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-300 lg:border-none lg:drop-shadow-sm rounded flex justify-between py-4 px-8 ${
         !match?.home && "flex-row-reverse"
       }`}
     >

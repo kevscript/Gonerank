@@ -27,10 +27,12 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
               <div className="relative flex items-center justify-center w-4 h-4 overflow-hidden">
                 <ClubIcon primary="#999" secondary="#666" />
               </div>
-              <span className="hidden ml-2 text-sm md:inline-block">
+              <span className="hidden ml-2 text-sm md:inline-block dark:text-slate-300">
                 Adversaire
               </span>
-              <span className="ml-2 text-sm md:hidden">Adv.</span>
+              <span className="ml-2 text-sm md:hidden dark:text-slate-300">
+                Adv.
+              </span>
             </TableCell>
           );
         },
@@ -70,7 +72,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
         header: () => {
           return (
             <TableCell className="justify-center" title="date du match">
-              <CalendarIcon className="w-3 h-3" />
+              <CalendarIcon className="w-3 h-3 dark:fill-slate-300" />
             </TableCell>
           );
         },
@@ -92,7 +94,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
         header: () => {
           return (
             <TableCell className="justify-center" title="domicile/exterieur">
-              <LocationIcon className="w-4 h-4" />
+              <LocationIcon className="w-4 h-4 dark:fill-slate-300" />
             </TableCell>
           );
         },
@@ -102,9 +104,9 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
           return (
             <TableCell className="justify-center min-w-[64px]">
               {home ? (
-                <HomeIcon className="w-4 h-4" />
+                <HomeIcon className="w-4 h-4 dark:fill-slate-300" />
               ) : (
-                <PlaneIcon className="w-4 h-4" />
+                <PlaneIcon className="w-4 h-4 dark:fill-slate-300" />
               )}
             </TableCell>
           );
@@ -172,7 +174,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
         header: () => {
           return (
             <TableCell className="justify-end text-sm" title="tendance">
-              <span>TDC</span>
+              <span className="dark:text-slate-300">TDC</span>
             </TableCell>
           );
         },
@@ -204,7 +206,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
         header: () => {
           return (
             <TableCell className="justify-end text-sm" title="moyenne">
-              <span>AVG</span>
+              <span className="dark:text-slate-300">AVG</span>
             </TableCell>
           );
         },

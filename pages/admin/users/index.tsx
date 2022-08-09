@@ -43,7 +43,7 @@ const AdminUsersPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell>
-          <span className="text-sm">email</span>
+          <span className="text-sm dark:text-slate-300">email</span>
         </TableCell>
       ),
       accessorKey: "email",
@@ -56,7 +56,7 @@ const AdminUsersPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell>
-          <span>role</span>
+          <span className="text-sm dark:text-slate-300">role</span>
         </TableCell>
       ),
       accessorKey: "role",

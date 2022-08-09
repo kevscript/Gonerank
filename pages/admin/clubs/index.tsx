@@ -120,9 +120,9 @@ const AdminClubsPage: NextCustomPage = () => {
       cell: ({ row }) => {
         return (
           <Link href={`/admin/clubs/${row.original!.id}`} passHref>
-            <div className="justify-center w-full h-full cursor-pointer bg-marine-100 group hover:bg-marine-400">
+            <div className="justify-center w-full h-full cursor-pointer bg-marine-100 dark:bg-marine-600/20 group hover:bg-marine-400 dark:hover:bg-marine-600/40">
               <TableCell className="justify-center">
-                <EditIcon className="w-4 h-4 fill-black group-hover:fill-white" />
+                <EditIcon className="w-4 h-4 fill-black dark:fill-gray-300 group-hover:fill-white" />
               </TableCell>
             </div>
           </Link>

@@ -38,10 +38,10 @@ const DeleteWidget = ({
   return (
     <>
       <div
-        className="flex items-center justify-center w-full h-full bg-red-100 cursor-pointer group hover:bg-red-400"
+        className="flex items-center justify-center w-full h-full bg-red-100 cursor-pointer dark:bg-red-600/20 group hover:bg-red-400 dark:hover:bg-red-600/40"
         onClick={() => setIsOpen(true)}
       >
-        <TrashIcon className="w-4 h-4 fill-black group-hover:fill-white" />
+        <TrashIcon className="w-4 h-4 fill-black dark:fill-gray-300 group-hover:fill-white" />
       </div>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <div className="w-full">{children}</div>
