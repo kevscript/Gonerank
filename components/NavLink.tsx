@@ -25,7 +25,7 @@ const NavLink = ({ label, path, Icon, isActive }: NavLinkProps) => {
           ) : (
             <div className="w-[18px] h-[18px] bg-slate-300"></div>
           )}
-          <span className="hidden font-medium ml-4 lg:block">{label}</span>
+          <span className="hidden ml-4 font-medium lg:block">{label}</span>
         </li>
       </Link>
     </>

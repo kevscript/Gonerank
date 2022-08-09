@@ -122,7 +122,7 @@ const PlayerPage = () => {
 
   if (!playerSeasonData) {
     return (
-      <div className="w-full min-h-screen flex justify-center items-center">
+      <div className="flex items-center justify-center w-full min-h-screen">
         <Spinner />
       </div>
     );
@@ -131,8 +131,8 @@ const PlayerPage = () => {
   return (
     <div className="p-4 lg:p-8 max-w-max">
       {playerSeasonData.player && (
-        <div className="w-full px-4 lg:px-8 py-4 bg-white rounded flex flex-row flex-nowrap items-center drop-shadow-sm overflow-hidden">
-          <div className="w-12 h-12 lg:h-16 lg:w-16 flex justify-center items-center rounded-full relative bg-gray-100 overflow-hidden shadow-inner shrink-0">
+        <div className="flex flex-row items-center w-full px-4 py-4 overflow-hidden bg-white rounded lg:px-8 flex-nowrap drop-shadow-sm">
+          <div className="relative flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-100 rounded-full shadow-inner lg:h-16 lg:w-16 shrink-0">
             <Image
               src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${playerSeasonData.player.image}`}
               alt="player avatar"
@@ -141,7 +141,7 @@ const PlayerPage = () => {
             />
           </div>
           <div className="flex flex-col flex-1 ml-4">
-            <h3 className="lg:text-xl whitespace-nowrap truncate overflow-hidden">{`${playerSeasonData.player.firstName} ${playerSeasonData.player.lastName}`}</h3>
+            <h3 className="overflow-hidden truncate lg:text-xl whitespace-nowrap">{`${playerSeasonData.player.firstName} ${playerSeasonData.player.lastName}`}</h3>
             <span className="text-sm whitespace-nowrap ">
               {getAgeFromDate(playerSeasonData.player.birthDate)} ans,{" "}
               {playerSeasonData.player.country}
@@ -152,7 +152,7 @@ const PlayerPage = () => {
 
       {stats && (
         <>
-          <div className="flex flex-row flex-wrap gap-x-2 mb-4 mt-4 lg:mt-8 justify-between">
+          <div className="flex flex-row flex-wrap justify-between mt-4 mb-4 gap-x-2 lg:mt-8">
             {status === "authenticated" && userStats && (
               <UserFilter toggleMode={toggleMode} mode={mode} />
             )}

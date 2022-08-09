@@ -20,7 +20,7 @@ const AdminGuard = ({ children }: AdminGuardProps) => {
   if (isAdmin) return <>{children}</>;
 
   return (
-    <div className="flex w-full h-screen justify-center items-center">
+    <div className="flex items-center justify-center w-full h-screen">
       <Spinner />
     </div>
   );

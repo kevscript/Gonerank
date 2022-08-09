@@ -63,7 +63,7 @@ const MatchForm = ({
 
   return (
     <form className="w-full max-w-5xl" onSubmit={handleSubmit(submitHandler)}>
-      <div className="w-full flex gap-x-4">
+      <div className="flex w-full gap-x-4">
         <DateInput<MatchFormInput>
           label="Date"
           control={control}
@@ -127,7 +127,7 @@ const MatchForm = ({
         </>
       </SelectInput>
 
-      <div className="w-full flex gap-x-4">
+      <div className="flex w-full gap-x-4">
         <SelectInput<MatchFormInput>
           label="Location"
           name="home"
@@ -172,7 +172,7 @@ const MatchForm = ({
         />
       </div>
 
-      <div className="w-full flex gap-x-4 mt-8">
+      <div className="flex w-full mt-8 gap-x-4">
         <Link href="/admin/matches" passHref>
           <div>
             <Button label="Annuler" />

@@ -84,7 +84,7 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
         }}
       />
 
-      <div className="w-full flex gap-x-4">
+      <div className="flex w-full gap-x-4">
         <Input
           register={register}
           name="country"
@@ -120,7 +120,7 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
         rules={{ required: "Required" }}
       />
 
-      <div className="w-full flex gap-x-2 items-end">
+      <div className="flex items-end w-full gap-x-2">
         <SelectInput
           register={register}
           name="image"
@@ -139,9 +139,9 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
         {loading ? (
           "Uploading..."
         ) : (
-          <label className="cursor-pointer  bg-gray-600 border border-gray-200 rounded h-10 p-2 w-24 flex justify-center items-center">
+          <label className="flex items-center justify-center w-24 h-10 p-2 bg-gray-600 border border-gray-200 rounded cursor-pointer">
             <PhotoIcon className="w-4 h-4 fill-white" />
-            <span className="ml-2 text-sm text-white font-normal">Upload</span>
+            <span className="ml-2 text-sm font-normal text-white">Upload</span>
 
             <input
               type="file"
@@ -155,7 +155,7 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
         )}
       </div>
 
-      <div className="w-full flex gap-x-4 mt-8">
+      <div className="flex w-full mt-8 gap-x-4">
         <Link href="/admin/players" passHref>
           <div>
             <Button label="Annuler" />

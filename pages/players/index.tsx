@@ -203,7 +203,7 @@ const PlayersPage = () => {
 
   if (!stats) {
     return (
-      <div className="w-full min-h-screen flex justify-center items-center">
+      <div className="flex items-center justify-center w-full min-h-screen">
         <Spinner />
       </div>
     );
@@ -211,7 +211,7 @@ const PlayersPage = () => {
 
   return (
     <div className="p-4 lg:p-8 max-w-max">
-      <div className="flex flex-row flex-wrap gap-2 lg:gap-y-0 mb-4 justify-between">
+      <div className="flex flex-row flex-wrap justify-between gap-2 mb-4 lg:gap-y-0">
         {status === "authenticated" && userStats && (
           <UserFilter toggleMode={toggleMode} mode={mode} />
         )}
@@ -219,7 +219,7 @@ const PlayersPage = () => {
         <div className="flex flex-row gap-x-2">
           {globalSeasonData && (
             <select
-              className="outline-none h-10 border-2 border-gray-100 rounded px-2 text-sm text-marine-600"
+              className="h-10 px-2 text-sm border-2 border-gray-100 rounded outline-none text-marine-600"
               value={currentCompetitionId}
               onChange={handleCompetitionChange}
             >

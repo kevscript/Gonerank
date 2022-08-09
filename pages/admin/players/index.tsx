@@ -49,7 +49,7 @@ const AdminPlayersPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell>
-            <div className="ml-2 relative w-4 h-4 flex justify-center items-center rounded-full overflow-hidden bg-gray-200">
+            <div className="relative flex items-center justify-center w-4 h-4 ml-2 overflow-hidden bg-gray-200 rounded-full">
               <UserIcon />
             </div>
             <span className="ml-4 text-sm">Player</span>
@@ -61,8 +61,8 @@ const AdminPlayersPage: NextCustomPage = () => {
       cell: ({ row }) => {
         const { firstName, lastName, image } = row.original || {};
         return (
-          <TableCell className="flex flex-nowrap px-2">
-            <div className="relative w-8 h-8 flex justify-center items-center rounded-full overflow-hidden bg-gray-200">
+          <TableCell className="flex px-2 flex-nowrap">
+            <div className="relative flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-200 rounded-full">
               {image ? (
                 <Image
                   src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${image}`}
@@ -74,7 +74,7 @@ const AdminPlayersPage: NextCustomPage = () => {
                 <UserIcon />
               )}
             </div>
-            <span className="whitespace-nowrap ml-2">
+            <span className="ml-2 whitespace-nowrap">
               {firstName![0] + ". " + lastName}
             </span>
           </TableCell>
@@ -195,7 +195,7 @@ const AdminPlayersPage: NextCustomPage = () => {
           <Link href={`/admin/players/${row.original!.id}`} passHref>
             <div className="w-full h-full">
               <TableCell
-                className="bg-marine-100 cursor-pointer justify-center group hover:bg-marine-400"
+                className="justify-center cursor-pointer bg-marine-100 group hover:bg-marine-400"
                 padding="px-0"
               >
                 <EditIcon className="w-4 h-4 fill-black group-hover:fill-white" />
@@ -240,7 +240,7 @@ const AdminPlayersPage: NextCustomPage = () => {
 
   if (loading) {
     return (
-      <div className="w-full min-h-screen flex justify-center items-center">
+      <div className="flex items-center justify-center w-full min-h-screen">
         <Spinner />
       </div>
     );

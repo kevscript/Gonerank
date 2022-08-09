@@ -26,12 +26,12 @@ const Modal = ({ children, isOpen, onClose }: ModalProps) => {
   return createPortal(
     <>
       <div
-        className="w-screen h-screen fixed bg-black/80 top-0 left-0 right-0 bottom-0 flex justify-center items-center z-50"
+        className="fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center w-screen h-screen bg-black/80"
         onClick={(e) => handleClose(e, false)}
       >
         <div className="relative bg-white w-10/12 max-w-[768px] h-fit max-h-[calc(100%-80px)] overflow-y-auto overflow-x-hidden">
           <div
-            className="absolute right-2 top-2 flex justify-center items-center w-4 h-4"
+            className="absolute flex items-center justify-center w-4 h-4 right-2 top-2"
             onClick={(e) => handleClose(e, true)}
           >
             <CloseIcon className="w-3 h-3" />

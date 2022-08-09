@@ -81,7 +81,7 @@ const AdminCompetitionsPage: NextCustomPage = () => {
           <Link href={`/admin/competitions/${row.original!.id}`} passHref>
             <div className="w-full h-full">
               <TableCell
-                className="bg-marine-100 cursor-pointer justify-center group hover:bg-marine-400"
+                className="justify-center cursor-pointer bg-marine-100 group hover:bg-marine-400"
                 padding="px-0"
               >
                 <EditIcon className="w-4 h-4 fill-black group-hover:fill-white" />
@@ -123,7 +123,7 @@ const AdminCompetitionsPage: NextCustomPage = () => {
 
   if (loading) {
     return (
-      <div className="w-full min-h-screen flex justify-center items-center">
+      <div className="flex items-center justify-center w-full min-h-screen">
         <Spinner />
       </div>
     );

@@ -262,7 +262,7 @@ const AdminMatchesPage: NextCustomPage = () => {
           <Link href={`/admin/matches/${row.original!.id}/squad`} passHref>
             <div className="w-full h-full">
               <TableCell
-                className="bg-pink-50 cursor-pointer justify-center group hover:bg-pink-300"
+                className="justify-center cursor-pointer bg-pink-50 group hover:bg-pink-300"
                 padding="px-0"
               >
                 <PlayerIcon className="w-4 h-4 fill-black" />
@@ -289,7 +289,7 @@ const AdminMatchesPage: NextCustomPage = () => {
         return archived ? (
           <TableCell padding="px-0">
             <div
-              className="w-full h-full bg-gray-100 flex justify-center items-center cursor-pointer"
+              className="flex items-center justify-center w-full h-full bg-gray-100 cursor-pointer"
               onClick={() => alert("Can't activate an archived match")}
             >
               <span className="text-xs font-bold text-gray-300">ARCHIVED</span>
@@ -332,7 +332,7 @@ const AdminMatchesPage: NextCustomPage = () => {
         return active ? (
           <TableCell padding="px-0">
             <div
-              className="w-full h-full bg-gray-100 flex justify-center items-center cursor-pointer"
+              className="flex items-center justify-center w-full h-full bg-gray-100 cursor-pointer"
               onClick={() => alert("Can't archive an active match")}
             >
               <span className="text-xs font-bold text-gray-300">ACTIVE</span>
@@ -373,7 +373,7 @@ const AdminMatchesPage: NextCustomPage = () => {
           <Link href={`/admin/matches/${row.original!.id}`} passHref>
             <div className="w-full h-full">
               <TableCell
-                className="bg-marine-100 cursor-pointer justify-center group hover:bg-marine-400"
+                className="justify-center cursor-pointer bg-marine-100 group hover:bg-marine-400"
                 padding="px-0"
               >
                 <EditIcon className="w-4 h-4 fill-black group-hover:fill-white" />
@@ -419,7 +419,7 @@ const AdminMatchesPage: NextCustomPage = () => {
 
   if (loading) {
     return (
-      <div className="w-full min-h-screen flex justify-center items-center">
+      <div className="flex items-center justify-center w-full min-h-screen">
         <Spinner />
       </div>
     );

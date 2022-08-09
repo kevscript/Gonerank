@@ -12,14 +12,14 @@ export type MatchInfoProps = {
 const MatchInfo = ({ match, userRatings }: MatchInfoProps) => {
   return (
     <>
-      <ul className="mt-4 lg:mt-8 flex flex-col gap-2 lg:gap-4 lg:grid grid-cols-2">
+      <ul className="flex flex-col grid-cols-2 gap-2 mt-4 lg:mt-8 lg:gap-4 lg:grid">
         {match?.stats.map((player) => (
           <li
             key={player.playerId}
-            className="w-full h-10 lg:h-16 bg-white rounded lg:border-none border border-gray-100 flex items-center justify-between overflow-hidden first:mt-0 lg:drop-shadow-sm"
+            className="flex items-center justify-between w-full h-10 overflow-hidden bg-white border border-gray-100 rounded lg:h-16 lg:border-none first:mt-0 lg:drop-shadow-sm"
           >
             <div className="flex items-center flex-1 w-full">
-              <div className="relative w-6 h-6 lg:w-12 lg:h-12 rounded-full bg-gray-300 ml-2 flex justify-center items-center overflow-hidden">
+              <div className="relative flex items-center justify-center w-6 h-6 ml-2 overflow-hidden bg-gray-300 rounded-full lg:w-12 lg:h-12">
                 {player.image ? (
                   <Image
                     src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${player.image}`}
@@ -36,7 +36,7 @@ const MatchInfo = ({ match, userRatings }: MatchInfoProps) => {
 
             {userRatings && (
               <div
-                className="flex h-full items-center w-10 lg:w-16 justify-center text-sm lg:text-base bg-marine-100"
+                className="flex items-center justify-center w-10 h-full text-sm lg:w-16 lg:text-base bg-marine-100"
                 title="la note de l'utilisateur"
               >
                 <span className="text-marine-600 font-num lg:font-bold">

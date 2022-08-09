@@ -125,7 +125,7 @@ const MatchesPage = () => {
 
   if (!globalSeasonData) {
     return (
-      <div className="w-full min-h-screen flex justify-center items-center">
+      <div className="flex items-center justify-center w-full min-h-screen">
         <Spinner />
       </div>
     );
@@ -133,8 +133,8 @@ const MatchesPage = () => {
 
   if (globalSeasonData && globalSeasonData.matches.length === 0) {
     return (
-      <div className="p-4 lg:p-8 h-screen flex items-start md:items-center justify-center">
-        <div className="flex justify-center flex-col items-center bg-marine-100 border border-marine-200 text-center text-marine-600 p-4 rounded md:p-8">
+      <div className="flex items-start justify-center h-screen p-4 lg:p-8 md:items-center">
+        <div className="flex flex-col items-center justify-center p-4 text-center border rounded bg-marine-100 border-marine-200 text-marine-600 md:p-8">
           <p>Aucun match n&apos;est encore disponible pour cette saison.</p>
         </div>
       </div>
@@ -145,7 +145,7 @@ const MatchesPage = () => {
     <div className="p-4 lg:p-8 max-w-max">
       {stats && (
         <>
-          <div className="flex flex-row gap-x-2 mb-4 justify-between">
+          <div className="flex flex-row justify-between mb-4 gap-x-2">
             {status === "authenticated" && userStats && (
               <UserFilter mode={mode} toggleMode={toggleMode} />
             )}

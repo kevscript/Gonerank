@@ -38,7 +38,7 @@ const DeleteWidget = ({
   return (
     <>
       <div
-        className="bg-red-100 group hover:bg-red-400 w-full h-full flex justify-center items-center cursor-pointer"
+        className="flex items-center justify-center w-full h-full bg-red-100 cursor-pointer group hover:bg-red-400"
         onClick={() => setIsOpen(true)}
       >
         <TrashIcon className="w-4 h-4 fill-black group-hover:fill-white" />
@@ -46,18 +46,18 @@ const DeleteWidget = ({
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <div className="w-full">{children}</div>
         {validation && (
-          <label className="text-sm flex flex-col w-full mt-4">
+          <label className="flex flex-col w-full mt-4 text-sm">
             <span>Confirmer la suppression:</span>
             <input
               type="text"
               value={validationInput}
               onChange={handleValidationInput}
               placeholder={validation}
-              className="h-8 px-2 mt-1 w-full border border-gray-300 outline-marine-600"
+              className="w-full h-8 px-2 mt-1 border border-gray-300 outline-marine-600"
             />
           </label>
         )}
-        <div className="w-full flex flex-row flex-nowrap justify-end mt-4 gap-x-2">
+        <div className="flex flex-row justify-end w-full mt-4 flex-nowrap gap-x-2">
           <Button
             label="Annuler"
             onClick={() => setIsOpen(false)}

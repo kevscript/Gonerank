@@ -45,7 +45,7 @@ const Input = ({
       {error && (
         <div className="w-full">
           <span
-            className="block text-sm ml-2 text-red-500"
+            className="block ml-2 text-sm text-red-500"
             data-testid={`error-${name}`}
           >
             {error.message}

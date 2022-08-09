@@ -60,7 +60,7 @@ const CompetitionForm = ({ onSubmit, defaultValues }: CompetitionFormProps) => {
         />
       </div>
 
-      <div className="w-full flex gap-x-4 mt-8">
+      <div className="flex w-full mt-8 gap-x-4">
         <Link href="/admin/competitions" passHref>
           <div>
             <Button label="Annuler" />

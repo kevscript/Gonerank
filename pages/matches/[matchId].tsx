@@ -67,7 +67,7 @@ const MatchPage = () => {
 
   if (!matchData) {
     return (
-      <div className="w-full min-h-screen flex justify-center items-center">
+      <div className="flex items-center justify-center w-full min-h-screen">
         <Spinner />
       </div>
     );
@@ -77,7 +77,7 @@ const MatchPage = () => {
     <div className="p-4 lg:p-8 max-w-max">
       {stats && (
         <>
-          <div className="flex flex-row gap-x-2 mb-4 justify-between">
+          <div className="flex flex-row justify-between mb-4 gap-x-2">
             {status === "authenticated" && userStats && (
               <UserFilter toggleMode={toggleMode} mode={mode} />
             )}

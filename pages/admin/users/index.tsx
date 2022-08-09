@@ -26,7 +26,7 @@ const AdminUsersPage: NextCustomPage = () => {
         return (
           <TableCell>
             <div className="flex items-center">
-              <div className="w-6 h-6 bg-red-600 flex justify-center items-center rounded-full overflow-hidden">
+              <div className="flex items-center justify-center w-6 h-6 overflow-hidden bg-red-600 rounded-full">
                 {image ? (
                   <Image src={image} alt="user" width={24} height={24} />
                 ) : (
@@ -70,7 +70,7 @@ const AdminUsersPage: NextCustomPage = () => {
 
   if (loading) {
     return (
-      <div className="w-full min-h-screen flex justify-center items-center">
+      <div className="flex items-center justify-center w-full min-h-screen">
         <Spinner />
       </div>
     );

@@ -24,7 +24,7 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
         header: () => {
           return (
             <TableCell>
-              <div className="relative w-4 h-4 flex justify-center items-center overflow-hidden">
+              <div className="relative flex items-center justify-center w-4 h-4 overflow-hidden">
                 <ClubIcon primary="#999" secondary="#666" />
               </div>
               <span className="ml-2 text-sm">Adversaire</span>
@@ -37,8 +37,8 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
           return (
             <TableCell padding="p-0" className="bg-white">
               <Link href={`/matches/${id}`}>
-                <a className="w-full h-full flex items-center justify-start px-2">
-                  <div className="relative w-4 h-4 flex justify-center items-center overflow-hidden">
+                <a className="flex items-center justify-start w-full h-full px-2">
+                  <div className="relative flex items-center justify-center w-4 h-4 overflow-hidden">
                     {opponent ? (
                       <ClubIcon
                         primary={opponent?.primary}
@@ -49,7 +49,7 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
                     )}
                   </div>
 
-                  <span className="whitespace-nowrap ml-2">
+                  <span className="ml-2 whitespace-nowrap">
                     {opponent?.name || "opponent"}
                   </span>
                 </a>
@@ -210,7 +210,7 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
           const avg = info.getValue();
           return (
             <TableCell className="justify-end">
-              <span className="font-num font-bold">
+              <span className="font-bold font-num">
                 {avg === undefined ? "-" : avg.toFixed(2)}
               </span>
             </TableCell>

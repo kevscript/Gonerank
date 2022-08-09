@@ -13,7 +13,7 @@ const SeasonSelector = ({
 }: SeasonSelectorProps) => {
   return (
     <select
-      className="outline-none h-10 border-2 border-gray-100 rounded px-2 text-sm text-marine-600 cursor-pointer"
+      className="h-10 px-2 text-sm border-2 border-gray-100 rounded outline-none cursor-pointer text-marine-600"
       value={currentSeasonId}
       onChange={handleChange}
     >

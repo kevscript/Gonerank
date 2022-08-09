@@ -24,7 +24,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
         header: () => {
           return (
             <TableCell title="Joueurs">
-              <div className="ml-2 relative w-4 h-4 flex justify-center items-center rounded-full overflow-hidden bg-gray-200">
+              <div className="relative flex items-center justify-center w-4 h-4 ml-2 overflow-hidden bg-gray-200 rounded-full">
                 <UserIcon />
               </div>
               <span className="ml-4 text-sm">Joueur</span>
@@ -38,8 +38,8 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
           return (
             <TableCell padding="p-0" className="bg-white">
               <Link href={`/players/${id}`}>
-                <a className="w-full h-full flex items-center justify-start px-2">
-                  <div className="relative w-8 h-8 flex justify-center items-center rounded-full overflow-hidden bg-gray-200">
+                <a className="flex items-center justify-start w-full h-full px-2">
+                  <div className="relative flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-200 rounded-full">
                     {image ? (
                       <Image
                         src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${image}`}
@@ -52,7 +52,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
                     )}
                   </div>
 
-                  <span className="whitespace-nowrap ml-2">
+                  <span className="ml-2 whitespace-nowrap">
                     {firstName![0] + ". " + lastName}
                   </span>
                 </a>
@@ -117,7 +117,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
       {
         header: () => (
           <TableCell
-            className="justify-end items-center"
+            className="items-center justify-end"
             title="tendance à domicile"
           >
             <HomeIcon className="w-4 h-4" />
@@ -159,7 +159,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
       {
         header: () => (
           <TableCell
-            className="justify-end items-center"
+            className="items-center justify-end"
             title="tendance à l'exterieur"
           >
             <PlaneIcon className="w-4 h-4" />
@@ -201,10 +201,10 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
       {
         header: () => (
           <TableCell
-            className="justify-end items-center"
+            className="items-center justify-end"
             title="tendance globale"
           >
-            <span className="text-sm ml-1">TDC</span>
+            <span className="ml-1 text-sm">TDC</span>
           </TableCell>
         ),
         id: "globalTdc",
@@ -226,7 +226,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
 
           return (
             <TableCell className="justify-end min-w-[80px]">
-              <span className="font-num font-bold">
+              <span className="font-bold font-num">
                 {tendency === undefined ? "-" : tendency > 0 ? "+" : null}
                 {tendency !== undefined ? tendency.toFixed(1) : null}
               </span>
@@ -242,7 +242,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
       {
         header: () => (
           <TableCell
-            className="justify-end items-center"
+            className="items-center justify-end"
             title="moyenne à domicile"
           >
             <HomeIcon className="w-4 h-4" />
@@ -271,7 +271,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
       {
         header: () => (
           <TableCell
-            className="justify-end items-center"
+            className="items-center justify-end"
             title="moyenne à l'exterieur"
           >
             <PlaneIcon className="w-4 h-4" />
@@ -300,10 +300,10 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
       {
         header: () => (
           <TableCell
-            className="justify-end items-center"
+            className="items-center justify-end"
             title="moyenne globale"
           >
-            <span className="text-sm ml-1">AVG</span>
+            <span className="ml-1 text-sm">AVG</span>
           </TableCell>
         ),
         id: "globalAverage",
@@ -314,7 +314,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
           const globalAverage = info.getValue();
           return (
             <TableCell className="justify-end items-center min-w-[80px]">
-              <span className="font-num font-bold">
+              <span className="font-bold font-num">
                 {globalAverage !== undefined ? globalAverage.toFixed(2) : "-"}
               </span>
             </TableCell>

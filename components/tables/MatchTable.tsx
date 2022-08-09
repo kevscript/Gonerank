@@ -22,7 +22,7 @@ const MatchTable = ({ data }: MatchTableProps) => {
         header: () => {
           return (
             <TableCell title="joueurs">
-              <div className="ml-2 relative w-4 h-4 flex justify-center items-center rounded-full overflow-hidden bg-gray-200">
+              <div className="relative flex items-center justify-center w-4 h-4 ml-2 overflow-hidden bg-gray-200 rounded-full">
                 <UserIcon />
               </div>
               <span className="ml-4 text-sm">Joueur</span>
@@ -36,8 +36,8 @@ const MatchTable = ({ data }: MatchTableProps) => {
           return (
             <TableCell padding="p-0" className="bg-white">
               <Link href={`/players/${id}`}>
-                <a className="w-full h-full flex items-center justify-start px-2">
-                  <div className="relative w-8 h-8 flex justify-center items-center rounded-full overflow-hidden bg-gray-200">
+                <a className="flex items-center justify-start w-full h-full px-2">
+                  <div className="relative flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-200 rounded-full">
                     {image ? (
                       <Image
                         src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${image}`}
@@ -50,7 +50,7 @@ const MatchTable = ({ data }: MatchTableProps) => {
                     )}
                   </div>
 
-                  <span className="whitespace-nowrap ml-2">
+                  <span className="ml-2 whitespace-nowrap">
                     {firstName![0] + ". " + lastName}
                   </span>
                 </a>
@@ -136,7 +136,7 @@ const MatchTable = ({ data }: MatchTableProps) => {
 
           return (
             <TableCell className="justify-end">
-              <span className="font-num font-bold">
+              <span className="font-bold font-num">
                 {avg === undefined ? "-" : avg.toFixed(2)}
               </span>
             </TableCell>

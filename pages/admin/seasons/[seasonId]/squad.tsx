@@ -94,7 +94,7 @@ const AdminSeasonSquadPage: NextCustomPage = () => {
 
   if (playersLoading) {
     return (
-      <div className="w-full min-h-screen flex justify-center items-center">
+      <div className="flex items-center justify-center w-full min-h-screen">
         <Spinner />
       </div>
     );
@@ -106,8 +106,8 @@ const AdminSeasonSquadPage: NextCustomPage = () => {
 
   return (
     <>
-      <div className="flex items-end bg-gray-100 h-16 p-4 gap-x-2">
-        <div className="w-6 h-6 rounded-full overflow-hidden flex justify-center items-center bg-gray-200 mr-2">
+      <div className="flex items-end h-16 p-4 bg-gray-100 gap-x-2">
+        <div className="flex items-center justify-center w-6 h-6 mr-2 overflow-hidden bg-gray-200 rounded-full">
           <PlayerIcon className="w-3 h-3 fill-marine-600" />
         </div>
         {seasonData && (
@@ -135,16 +135,16 @@ const AdminSeasonSquadPage: NextCustomPage = () => {
             </select>
           </label>
         </div>
-        <ul className="flex flex-col flex-nowrap gap-y-1 mt-4 lg:flex-row lg:flex-wrap lg:gap-2">
+        <ul className="flex flex-col mt-4 flex-nowrap gap-y-1 lg:flex-row lg:flex-wrap lg:gap-2">
           {squad &&
             squad.map((p) => (
               <li
                 key={p.id}
-                className="relative p-2 w-full bg-white border border-gray-100 flex items-center justify-between flex-nowrap lg:max-w-xs"
+                className="relative flex items-center justify-between w-full p-2 bg-white border border-gray-100 flex-nowrap lg:max-w-xs"
               >
                 <span>{p.firstName + " " + p.lastName}</span>
                 <div
-                  className="w-4 h-4 flex justify-center items-center"
+                  className="flex items-center justify-center w-4 h-4"
                   onClick={() => handleRemove(p.id)}
                 >
                   <CloseIcon className="w-3 h-3" />
@@ -153,7 +153,7 @@ const AdminSeasonSquadPage: NextCustomPage = () => {
             ))}
         </ul>
 
-        <div className="w-full flex justify-end gap-x-2 mt-4">
+        <div className="flex justify-end w-full mt-4 gap-x-2">
           <Button
             label="Annuler"
             onClick={() => router.push("/admin/seasons")}
@@ -166,7 +166,7 @@ const AdminSeasonSquadPage: NextCustomPage = () => {
               <span>Current Squad :</span>
             </div>
             <div className="mt-4">
-              <ul className="text-sm flex flex-wrap gap-1">
+              <ul className="flex flex-wrap gap-1 text-sm">
                 {initialSquad &&
                   squad &&
                   squad.map((p) => {
@@ -177,9 +177,9 @@ const AdminSeasonSquadPage: NextCustomPage = () => {
                       return (
                         <li
                           key={p.id}
-                          className="w-48 bg-gray-50 border border-gray-200 p-1 flex flex-nowrap"
+                          className="flex w-48 p-1 border border-gray-200 bg-gray-50 flex-nowrap"
                         >
-                          <div className="w-4 h-full flex justify-center items-center">
+                          <div className="flex items-center justify-center w-4 h-full">
                             =
                           </div>
                           <span className="flex-1 ml-2">
@@ -191,9 +191,9 @@ const AdminSeasonSquadPage: NextCustomPage = () => {
                       return (
                         <li
                           key={p.id}
-                          className="w-48 bg-marine-50 p-1 border border-marine-300 text-marine-900 flex flex-nowrap"
+                          className="flex w-48 p-1 border bg-marine-50 border-marine-300 text-marine-900 flex-nowrap"
                         >
-                          <div className="w-4 h-full flex justify-center items-center">
+                          <div className="flex items-center justify-center w-4 h-full">
                             +
                           </div>
                           <span className="flex-1 ml-2">
@@ -210,9 +210,9 @@ const AdminSeasonSquadPage: NextCustomPage = () => {
                     .map((p) => (
                       <li
                         key={p.id}
-                        className="w-48 bg-red-100 p-1 border border-red-300 text-red-900 flex flex-nowrap"
+                        className="flex w-48 p-1 text-red-900 bg-red-100 border border-red-300 flex-nowrap"
                       >
-                        <div className="w-4 h-full flex justify-center items-center">
+                        <div className="flex items-center justify-center w-4 h-full">
                           -
                         </div>
                         <span className="flex-1 ml-2">
@@ -222,7 +222,7 @@ const AdminSeasonSquadPage: NextCustomPage = () => {
                     ))}
               </ul>
             </div>
-            <div className="w-full flex justify-end flex-nowrap gap-x-2 mt-4">
+            <div className="flex justify-end w-full mt-4 flex-nowrap gap-x-2">
               <Button label="Annuler" onClick={() => setModalIsOpen(false)} />
               <Button label="Confirmer" onClick={handleConfirm} />
             </div>

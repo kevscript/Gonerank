@@ -24,10 +24,10 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
         header: () => {
           return (
             <TableCell title="adversaire">
-              <div className="relative w-4 h-4 flex justify-center items-center overflow-hidden">
+              <div className="relative flex items-center justify-center w-4 h-4 overflow-hidden">
                 <ClubIcon primary="#999" secondary="#666" />
               </div>
-              <span className="ml-2 text-sm hidden md:inline-block">
+              <span className="hidden ml-2 text-sm md:inline-block">
                 Adversaire
               </span>
               <span className="ml-2 text-sm md:hidden">Adv.</span>
@@ -41,8 +41,8 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
           return (
             <TableCell padding="p-0 bg-white min-w-[100px]">
               <Link href={`/matches/${id}`}>
-                <a className="w-full h-full flex items-center justify-start px-2">
-                  <div className="relative w-4 h-4 flex justify-center items-center overflow-hidden">
+                <a className="flex items-center justify-start w-full h-full px-2">
+                  <div className="relative flex items-center justify-center w-4 h-4 overflow-hidden">
                     {opponent ? (
                       <ClubIcon
                         primary={opponent?.primary}
@@ -53,10 +53,10 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
                     )}
                   </div>
 
-                  <span className="whitespace-nowrap ml-2 hidden lg:inline-block">
+                  <span className="hidden ml-2 whitespace-nowrap lg:inline-block">
                     {opponent?.name || "opponent"}
                   </span>
-                  <span className="whitespace-nowrap ml-2 lg:hidden">
+                  <span className="ml-2 whitespace-nowrap lg:hidden">
                     {opponent?.abbreviation || "opponent"}
                   </span>
                 </a>
@@ -171,7 +171,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="text-sm justify-end" title="tendance">
+            <TableCell className="justify-end text-sm" title="tendance">
               <span>TDC</span>
             </TableCell>
           );
@@ -203,7 +203,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="text-sm justify-end" title="moyenne">
+            <TableCell className="justify-end text-sm" title="moyenne">
               <span>AVG</span>
             </TableCell>
           );
@@ -219,7 +219,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
           const average = info.getValue();
           return (
             <TableCell className="justify-end min-w-[80px]">
-              <span className="font-num font-bold">
+              <span className="font-bold font-num">
                 {average === undefined ? "-" : average.toFixed(2)}
               </span>
             </TableCell>

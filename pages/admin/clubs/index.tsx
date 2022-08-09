@@ -66,7 +66,7 @@ const AdminClubsPage: NextCustomPage = () => {
     },
     {
       header: () => (
-        <TableCell className="text-sm justify-center">
+        <TableCell className="justify-center text-sm">
           <span>prim.</span>
         </TableCell>
       ),
@@ -89,7 +89,7 @@ const AdminClubsPage: NextCustomPage = () => {
     },
     {
       header: () => (
-        <TableCell className="text-sm justify-center">
+        <TableCell className="justify-center text-sm">
           <span>sec.</span>
         </TableCell>
       ),
@@ -112,7 +112,7 @@ const AdminClubsPage: NextCustomPage = () => {
     },
     {
       header: () => (
-        <TableCell className="text-sm justify-center">
+        <TableCell className="justify-center text-sm">
           <span className="text-sm">edit</span>
         </TableCell>
       ),
@@ -120,7 +120,7 @@ const AdminClubsPage: NextCustomPage = () => {
       cell: ({ row }) => {
         return (
           <Link href={`/admin/clubs/${row.original!.id}`} passHref>
-            <div className="w-full h-full bg-marine-100 cursor-pointer justify-center group hover:bg-marine-400">
+            <div className="justify-center w-full h-full cursor-pointer bg-marine-100 group hover:bg-marine-400">
               <TableCell className="justify-center">
                 <EditIcon className="w-4 h-4 fill-black group-hover:fill-white" />
               </TableCell>
@@ -132,7 +132,7 @@ const AdminClubsPage: NextCustomPage = () => {
     },
     {
       header: () => (
-        <TableCell className="text-sm justify-center">
+        <TableCell className="justify-center text-sm">
           <span className="text-sm">delete</span>
         </TableCell>
       ),
@@ -160,7 +160,7 @@ const AdminClubsPage: NextCustomPage = () => {
 
   if (loading) {
     return (
-      <div className="w-full min-h-screen flex justify-center items-center">
+      <div className="flex items-center justify-center w-full min-h-screen">
         <Spinner />
       </div>
     );

@@ -40,7 +40,7 @@ const StatusWidget = ({
       </div>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <div className="w-full">{children}</div>
-        <div className="w-full flex flex-row flex-nowrap justify-end mt-4 gap-x-2">
+        <div className="flex flex-row justify-end w-full mt-4 flex-nowrap gap-x-2">
           <Button
             label="Annuler"
             onClick={() => setIsOpen(false)}

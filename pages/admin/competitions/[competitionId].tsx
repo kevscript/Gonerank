@@ -40,8 +40,8 @@ const AdminCompetitionEditPage: NextCustomPage = () => {
 
   return (
     <div>
-      <div className="flex items-end bg-gray-100 h-16 p-4">
-        <div className="w-6 h-6 rounded-full overflow-hidden flex justify-center items-end bg-gray-200 mr-2">
+      <div className="flex items-end h-16 p-4 bg-gray-100">
+        <div className="flex items-end justify-center w-6 h-6 mr-2 overflow-hidden bg-gray-200 rounded-full">
           <TrophyIcon className="w-3 h-3 fill-marine-600" />
         </div>
         <h3>Editer Saison</h3>

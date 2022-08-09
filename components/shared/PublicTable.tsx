@@ -71,12 +71,12 @@ const PublicTable = ({
                     )}
                     {{
                       asc: (
-                        <div className="mr-2 rotate-180 w-4 h-4 flex justify-center items-center">
+                        <div className="flex items-center justify-center w-4 h-4 mr-2 rotate-180">
                           <ChevronIcon />
                         </div>
                       ),
                       desc: (
-                        <div className="mr-2 w-4 h-4 flex justify-center items-center">
+                        <div className="flex items-center justify-center w-4 h-4 mr-2">
                           <ChevronIcon />
                         </div>
                       ),
