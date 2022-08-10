@@ -13,9 +13,18 @@ const MatchHeader = ({ match }: MatchHeaderProps) => {
         !match?.home && "flex-row-reverse"
       }`}
     >
-      <div className="flex flex-col items-center justify-center">
+      <div
+        className={`flex flex-col items-center justify-center xl:flex-nowrap xl:gap-4 xl:flex-1 ${
+          match?.home
+            ? "xl:flex-row xl:justify-start"
+            : "xl:flex-row-reverse xl:justify-end"
+        }`}
+      >
         <LyonIcon className="w-12 h-12" />
-        <span className="mt-1 font-bold">OL</span>
+        <span className="mt-1 font-bold xl:hidden">OL</span>
+        <span className="hidden text-lg uppercase xl:inline-block">
+          Olympique Lyonnais
+        </span>
       </div>
       <div className="flex flex-col items-center">
         <span className="text-xs lg:text-base">{match?.competition.name}</span>
@@ -37,7 +46,11 @@ const MatchHeader = ({ match }: MatchHeaderProps) => {
         </span>
       </div>
       <div
-        className="flex flex-col items-center justify-center"
+        className={`flex flex-col items-center justify-center xl:flex-nowrap xl:gap-4 xl:flex-1 ${
+          match?.home
+            ? "xl:flex-row-reverse xl:justify-start"
+            : "xl:flex-row xl:justify-end"
+        }`}
         title={match?.opponent.name}
       >
         <ClubIcon
@@ -45,8 +58,11 @@ const MatchHeader = ({ match }: MatchHeaderProps) => {
           primary={match?.opponent.primary || "#333"}
           secondary={match?.opponent.secondary || "#444"}
         />
-        <span className="mt-1 font-bold" title={match?.opponent.name}>
+        <span className="mt-1 font-bold xl:hidden" title={match?.opponent.name}>
           {match?.opponent.abbreviation}
+        </span>
+        <span className="hidden text-lg uppercase xl:inline-block">
+          {match?.opponent.name}
         </span>
       </div>
     </div>

@@ -14,7 +14,7 @@ const LoggedOutNavigation = () => {
   return (
     <div
       ref={containerRef}
-      className="relative cursor-pointer lg:w-full lg:p-4"
+      className="relative cursor-pointer xl:w-full xl:p-4"
     >
       {/** Mobile */}
       <button
@@ -23,7 +23,7 @@ const LoggedOutNavigation = () => {
         id="usermenu-button"
         aria-haspopup="true"
         aria-controls="usermenu"
-        className="flex items-center lg:hidden"
+        className="flex items-center xl:hidden"
       >
         <div className="relative flex items-end justify-center w-8 h-8 overflow-hidden bg-gray-300 border-2 rounded-full shadow-inner">
           <UserIcon className="w-6 h-6 fill-gray-600" />
@@ -32,7 +32,7 @@ const LoggedOutNavigation = () => {
 
       {isOpen && (
         <ul
-          className="absolute bottom-0 flex flex-col min-w-full bg-white border border-gray-300 rounded lg:hidden w-max left-9 drop-shadow-sm"
+          className="absolute bottom-0 flex flex-col min-w-full bg-white border border-gray-300 rounded xl:hidden w-max left-9 drop-shadow-sm"
           id="usermenu"
           role="menu"
           aria-labelledby="usermenu-button"
@@ -55,7 +55,7 @@ const LoggedOutNavigation = () => {
 
       {/** Desktop */}
       <button
-        className="items-center justify-between hidden w-full h-10 text-sm rounded lg:flex bg-sky-500 hover:bg-sky-400"
+        className="items-center justify-between hidden w-full h-10 text-sm rounded xl:flex bg-sky-500 hover:bg-sky-400"
         onClick={() => signIn("twitter")}
         type="button"
         id="userlogin-button"

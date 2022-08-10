@@ -51,14 +51,14 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
   return (
     <>
       <form className="mt-4 lg:mt-8">
-        <ul className="flex flex-col grid-cols-2 gap-2 lg:gap-4 lg:grid">
+        <ul className="flex flex-col grid-cols-2 gap-2 md:grid">
           {match?.stats.map((player) => (
             <li
               key={player.playerId}
-              className="flex items-center justify-between w-full h-10 overflow-hidden bg-white border border-gray-100 rounded lg:h-16 lg:border-none lg:drop-shadow-sm first:mt-0"
+              className="flex items-center justify-between w-full h-10 overflow-hidden bg-white border border-gray-100 rounded md:h-12 lg:h-16 lg:border-none lg:drop-shadow-sm first:mt-0"
             >
               <div className="flex items-center flex-1 w-full">
-                <div className="relative flex items-center justify-center w-6 h-6 ml-2 overflow-hidden bg-gray-300 rounded-full lg:w-12 lg:h-12">
+                <div className="relative flex items-center justify-center w-6 h-6 ml-2 overflow-hidden bg-gray-300 rounded-full md:w-8 md:h-8 lg:w-12 lg:h-12">
                   {player.image ? (
                     <Image
                       src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${player.image}`}
@@ -68,7 +68,7 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
                     />
                   ) : null}
                 </div>
-                <span className="ml-2 text-sm lg:text-base lg:font-medium whitespace-nowrap">
+                <span className="ml-2 text-sm md:text-base md:font-medium whitespace-nowrap">
                   {player.firstName![0] + ". " + player.lastName}
                 </span>
               </div>

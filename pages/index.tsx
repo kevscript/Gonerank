@@ -15,11 +15,13 @@ import MatchVoter, { MatchFormInput } from "@/components/MatchVoter";
 import MatchInfo from "@/components/MatchInfo";
 import MatchHeader from "@/components/MatchHeader";
 import InfoIcon from "@/components/Icons/Info";
+import MatchDisplay from "@/components/MatchDisplay";
+import MatchDisplayNoUser from "@/components/MatchDisplayNoUser";
 
 const HomePage: NextCustomPage = () => {
   const { data: session, status } = useSession();
 
-  const [twitterText, setTwitterText] = useState<string | null>(null);
+  const [twitterText, setTwitterText] = useState<string>("");
 
   const [getUserMatchRatings, { data: userMatchRatingsData }] =
     useGetRatingsLazyQuery();
@@ -105,14 +107,6 @@ const HomePage: NextCustomPage = () => {
     }
   }, [status, userMatchRatingsData, matchData]);
 
-  if (matchLoading) {
-    return (
-      <div className="flex items-center justify-center w-full h-screen">
-        <Spinner />
-      </div>
-    );
-  }
-
   if (matchError) {
     return (
       <div className="p-4">
@@ -125,98 +119,7 @@ const HomePage: NextCustomPage = () => {
     );
   }
 
-  if (matchData && matchData.displayMatch) {
-    return (
-      <div className="p-4 lg:p-8">
-        <Head>
-          <title>Gonerank - Home</title>
-          <meta name="description" content="Home page for Gonerank app" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <div>
-          <div className="max-w-7xl">
-            <MatchHeader match={matchData.displayMatch} />
-          </div>
-
-          {/** Not Authenticated */}
-          {status === "unauthenticated" && (
-            <div className="max-w-7xl">
-              <button
-                className="flex items-center justify-center w-full h-10 mt-4 rounded bg-marine-50 lg:mt-8"
-                onClick={() => signIn("twitter")}
-              >
-                <span className="text-xs font-bold uppercase text-marine-600">
-                  Connectez-vous pour voter.
-                </span>
-                <TwitterIcon className="w-4 h-4 ml-3 fill-marine-600" />
-              </button>
-              <MatchInfo match={matchData.displayMatch} />
-            </div>
-          )}
-
-          {/** Authenticated but DisplayMatch is Archived */}
-          {status === "authenticated" && matchData?.displayMatch.archived && (
-            <div className="max-w-7xl ">
-              <div className="flex items-center justify-center w-full h-10 mt-4 rounded bg-red-50 lg:mt-8">
-                <span className="text-xs font-bold text-red-500 uppercase">
-                  Les votes sont finis.
-                </span>
-              </div>
-
-              <MatchInfo
-                match={matchData.displayMatch}
-                userRatings={userMatchRatingsData?.ratings || null}
-              />
-            </div>
-          )}
-
-          {/** Authenticated, DisplayMatch is Active, but check if already voted */}
-          {status === "authenticated" && !matchData?.displayMatch.archived && (
-            <div className="max-w-7xl">
-              {userMatchRatingsData && userMatchRatingsData.ratings.length > 0 && (
-                <>
-                  <div className="flex flex-row items-center w-full mt-4 flex-nowrap gap-x-2 lg:gap-x-4 lg:mt-8">
-                    <div className="flex items-center justify-center flex-1 h-10 rounded bg-marine-50 dark:bg-slate-600">
-                      <span className="text-xs font-bold uppercase text-marine-600 dark:text-white">
-                        Vous avez déjà voté.
-                      </span>
-                    </div>
-                    <a
-                      href={`https://twitter.com/intent/tweet?via=GoneRank&text=${twitterText}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center justify-center w-20 h-10 text-xs font-bold text-white uppercase rounded bg-marine-600 hover:bg-marine-700"
-                    >
-                      Tweeter
-                    </a>
-                  </div>
-
-                  <MatchInfo
-                    match={matchData!.displayMatch}
-                    userRatings={userMatchRatingsData.ratings}
-                  />
-                </>
-              )}
-              {userMatchRatingsData?.ratings.length === 0 && (
-                <>
-                  <div className="flex items-center justify-center w-full h-10 mt-4 rounded bg-marine-50">
-                    <span className="text-xs font-bold uppercase text-marine-600">
-                      Les votes sont ouverts!
-                    </span>
-                  </div>
-
-                  <MatchVoter
-                    match={matchData!.displayMatch}
-                    onSubmit={handleVote}
-                  />
-                </>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  } else {
+  if (matchData && !matchData.displayMatch) {
     return (
       <div className="w-full h-screen p-4">
         <div className="flex flex-col w-11/12 h-full mx-auto md:justify-center lg:items-center lg:w-3/5">
@@ -241,6 +144,45 @@ const HomePage: NextCustomPage = () => {
       </div>
     );
   }
+
+  return (
+    <div className="">
+      <Head>
+        <title>Gonerank - Home</title>
+        <meta name="description" content="Home page for Gonerank app" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <div className="flex flex-col w-full min-h-screen">
+        <div className="hidden w-full md:block md:px-4 md:py-8 lg:px-8 2xl:px-16">
+          <div className="w-full bg-white rounded drop-shadow-sm">
+            Breadcrumbs
+          </div>
+        </div>
+
+        <div className="flex justify-between flex-1 w-full p-4 gap-x-8 2xl:gap-x-16 md:pt-0 md:pb-8 lg:px-8 2xl:px-16">
+          {matchData && matchData.displayMatch ? (
+            <div className="flex flex-col flex-1 min-h-fit">
+              {status === "authenticated" ? (
+                <MatchDisplay
+                  match={matchData.displayMatch}
+                  userRatings={userMatchRatingsData?.ratings}
+                  handleVote={handleVote}
+                  twitterText={twitterText}
+                />
+              ) : (
+                <MatchDisplayNoUser match={matchData.displayMatch} />
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center justify-center flex-1 my-8">
+              <Spinner />
+            </div>
+          )}
+          <div className="hidden bg-red-600 rounded min-h-fit drop-shadow-sm lg:block lg:w-60 2xl:w-72"></div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default HomePage;

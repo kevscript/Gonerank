@@ -21,7 +21,7 @@ function MyApp({ pageProps: { session, ...pageProps }, ...props }: AppProps) {
         <ThemeProvider attribute="class">
           <div className="flex">
             <Sidebar />
-            <div className="w-full min-h-screen pl-16 lg:pl-64">
+            <div className="w-full min-h-screen pl-16 xl:pl-64">
               {Component.isAdminPage ? (
                 <AdminGuard>
                   <Component {...pageProps} />
