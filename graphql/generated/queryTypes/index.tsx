@@ -351,6 +351,7 @@ export type Query = {
   competition: Competition;
   competitions: Array<Competition>;
   displayMatch?: Maybe<Match>;
+  latestSeason: Season;
   match: Match;
   matchPlayer: MatchPlayer;
   matchPlayers: Array<MatchPlayer>;
@@ -857,6 +858,11 @@ export type GetSeasonsQueryVariables = Exact<{
 
 
 export type GetSeasonsQuery = { __typename?: 'Query', seasons: Array<{ __typename?: 'Season', id: string, startDate: any, players: Array<{ __typename?: 'SeasonPlayer', id: string, playerId: string }> }> };
+
+export type GetLatestSeasonQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetLatestSeasonQuery = { __typename?: 'Query', latestSeason: { __typename?: 'Season', id: string, startDate: any, playerStats?: Array<{ __typename?: 'SeasonPlayerStats', playerId: string, firstName: string, lastName: string, image: string, matches: Array<{ __typename?: 'SeasonPlayerMatchStats', matchId: string, averageSum: number, averageQuantity: number, tendency: number, motm: boolean, botm: boolean }> }> | null } };
 
 export type CreateSeasonMutationVariables = Exact<{
   data: CreateSeasonInput;
@@ -2408,6 +2414,55 @@ export function useGetSeasonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetSeasonsQueryHookResult = ReturnType<typeof useGetSeasonsQuery>;
 export type GetSeasonsLazyQueryHookResult = ReturnType<typeof useGetSeasonsLazyQuery>;
 export type GetSeasonsQueryResult = Apollo.QueryResult<GetSeasonsQuery, GetSeasonsQueryVariables>;
+export const GetLatestSeasonDocument = gql`
+    query GetLatestSeason {
+  latestSeason {
+    id
+    startDate
+    playerStats {
+      playerId
+      firstName
+      lastName
+      image
+      matches {
+        matchId
+        averageSum
+        averageQuantity
+        tendency
+        motm
+        botm
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetLatestSeasonQuery__
+ *
+ * To run a query within a React component, call `useGetLatestSeasonQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLatestSeasonQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLatestSeasonQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetLatestSeasonQuery(baseOptions?: Apollo.QueryHookOptions<GetLatestSeasonQuery, GetLatestSeasonQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetLatestSeasonQuery, GetLatestSeasonQueryVariables>(GetLatestSeasonDocument, options);
+      }
+export function useGetLatestSeasonLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLatestSeasonQuery, GetLatestSeasonQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLatestSeasonQuery, GetLatestSeasonQueryVariables>(GetLatestSeasonDocument, options);
+        }
+export type GetLatestSeasonQueryHookResult = ReturnType<typeof useGetLatestSeasonQuery>;
+export type GetLatestSeasonLazyQueryHookResult = ReturnType<typeof useGetLatestSeasonLazyQuery>;
+export type GetLatestSeasonQueryResult = Apollo.QueryResult<GetLatestSeasonQuery, GetLatestSeasonQueryVariables>;
 export const CreateSeasonDocument = gql`
     mutation CreateSeason($data: CreateSeasonInput!) {
   createSeason(data: $data) {

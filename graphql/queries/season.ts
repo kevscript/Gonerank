@@ -26,6 +26,29 @@ export const GET_SEASONS = gql`
   }
 `;
 
+export const GET_LATEST_SEASON = gql`
+  query GetLatestSeason {
+    latestSeason {
+      id
+      startDate
+      playerStats {
+        playerId
+        firstName
+        lastName
+        image
+        matches {
+          matchId
+          averageSum
+          averageQuantity
+          tendency
+          motm
+          botm
+        }
+      }
+    }
+  }
+`;
+
 export const CREATE_SEASON = gql`
   mutation CreateSeason($data: CreateSeasonInput!) {
     createSeason(data: $data) {

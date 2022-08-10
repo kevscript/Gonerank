@@ -51,5 +51,27 @@ export const SeasonQuery = extendType({
         }
       },
     });
+
+    t.field("latestSeason", {
+      type: SeasonType,
+      resolve: async () => {
+        try {
+          const seasons = await prisma.season.findMany({
+            orderBy: { startDate: "desc" },
+            take: 1,
+          });
+
+          const latestSeason = seasons.length > 0 ? seasons[0] : null;
+
+          if (latestSeason) {
+            return latestSeason;
+          } else {
+            throw new ApolloError(`Couldn't get Latest Season`);
+          }
+        } catch (err) {
+          throw err as ApolloError;
+        }
+      },
+    });
   },
 });

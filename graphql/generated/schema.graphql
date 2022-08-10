@@ -226,6 +226,7 @@ type Query {
   competition(id: String!): Competition!
   competitions(where: CompetitionsWhereInput): [Competition!]!
   displayMatch: Match
+  latestSeason: Season!
   match(id: String!): Match!
   matchPlayer(matchId: String!, playerId: String!): MatchPlayer!
   matchPlayers(where: MatchPlayersWhereInput): [MatchPlayer!]!

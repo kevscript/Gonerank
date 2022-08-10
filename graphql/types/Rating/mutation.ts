@@ -15,7 +15,8 @@ export const RatingMutation = extendType({
         ratings: nonNull(list(nonNull(arg({ type: CreateUserRatingsInput })))),
       },
       resolve: async (_, args, ctx) => {
-        if (ctx.auth?.role !== "ADMIN" || ctx.auth?.sub !== args.userId) {
+        console.log(ctx.auth?.sub, args.userId);
+        if (ctx.auth?.role !== "ADMIN" && ctx.auth?.sub !== args.userId) {
           throw new ForbiddenError(`Forbidden Action`);
         }
         try {
