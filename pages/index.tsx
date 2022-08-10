@@ -1,30 +1,29 @@
 import Head from "next/head";
 import Image from "next/image";
-import TwitterIcon from "../components/Icons/Twitter";
 import { NextCustomPage } from "./_app";
 import {
   CreateUserRatingsInput,
   useCreateUserRatingsMutation,
   useGetDisplayMatchQuery,
+  useGetLatestSeasonQuery,
   useGetRatingsLazyQuery,
 } from "graphql/generated/queryTypes";
 import Spinner from "@/components/shared/Spinner";
 import { useEffect, useState } from "react";
-import { signIn, useSession } from "next-auth/react";
-import MatchVoter, { MatchFormInput } from "@/components/MatchVoter";
-import MatchInfo from "@/components/MatchInfo";
-import MatchHeader from "@/components/MatchHeader";
+import { useSession } from "next-auth/react";
+import { MatchFormInput } from "@/components/MatchDisplay/MatchVoter";
 import InfoIcon from "@/components/Icons/Info";
 import MatchDisplay from "@/components/MatchDisplay";
-import MatchDisplayNoUser from "@/components/MatchDisplayNoUser";
+import MatchDisplayNoUser from "@/components/MatchDisplay/MatchDisplayNoUser";
+import LatestSeasonRanking, {
+  RankingType,
+} from "@/components/LatestSeasonRanking";
 
 const HomePage: NextCustomPage = () => {
   const { data: session, status } = useSession();
 
   const [twitterText, setTwitterText] = useState<string>("");
-
-  const [getUserMatchRatings, { data: userMatchRatingsData }] =
-    useGetRatingsLazyQuery();
+  const [rankingType, setRankingType] = useState<RankingType>("average");
 
   const {
     data: matchData,
@@ -32,8 +31,13 @@ const HomePage: NextCustomPage = () => {
     error: matchError,
   } = useGetDisplayMatchQuery();
 
+  const { data: latestSeasonData } = useGetLatestSeasonQuery();
+
+  const [getUserMatchRatings, { data: userMatchRatingsData }] =
+    useGetRatingsLazyQuery();
+
   const [createUserRatings] = useCreateUserRatingsMutation({
-    refetchQueries: ["GetRatings", "GetDisplayMatch"],
+    refetchQueries: ["GetRatings", "GetDisplayMatch", "GetLatestSeason"],
     awaitRefetchQueries: true,
   });
 
@@ -53,6 +57,10 @@ const HomePage: NextCustomPage = () => {
     } else {
       throw new Error("Couldn't submit votes, no matchData or auth session");
     }
+  };
+
+  const handleRankingType = (type: RankingType) => {
+    if (rankingType !== type) setRankingType(type);
   };
 
   useEffect(() => {
@@ -152,14 +160,14 @@ const HomePage: NextCustomPage = () => {
         <meta name="description" content="Home page for Gonerank app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-col w-full min-h-screen">
+      <div className="flex flex-col w-full min-h-screen lg:h-screen lg:overflow-hidden">
         <div className="hidden w-full md:block md:px-4 md:py-8 lg:px-8 2xl:px-16">
           <div className="w-full bg-white rounded drop-shadow-sm">
             Breadcrumbs
           </div>
         </div>
 
-        <div className="flex justify-between flex-1 w-full p-4 gap-x-8 2xl:gap-x-16 md:pt-0 md:pb-8 lg:px-8 2xl:px-16">
+        <div className="flex justify-between flex-1 w-full p-4 overflow-hidden gap-x-8 2xl:gap-x-16 md:pt-0 md:pb-8 lg:px-8 2xl:px-16">
           {matchData && matchData.displayMatch ? (
             <div className="flex flex-col flex-1 min-h-fit">
               {status === "authenticated" ? (
@@ -178,7 +186,17 @@ const HomePage: NextCustomPage = () => {
               <Spinner />
             </div>
           )}
-          <div className="hidden bg-red-600 rounded min-h-fit drop-shadow-sm lg:block lg:w-60 2xl:w-72"></div>
+          {latestSeasonData && latestSeasonData.latestSeason ? (
+            <LatestSeasonRanking
+              rankingType={rankingType}
+              season={latestSeasonData.latestSeason}
+              handleRankingType={handleRankingType}
+            />
+          ) : (
+            <div className="items-center justify-center hidden overflow-scroll min-h-fit lg:flex lg:w-60 2xl:w-72 scroll-hide">
+              <Spinner />
+            </div>
+          )}
         </div>
       </div>
     </div>
