@@ -2,8 +2,8 @@ import { GetDisplayMatchQuery } from "graphql/generated/queryTypes";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import Button from "./shared/Button";
-import Modal from "./shared/Modal";
+import Button from "../shared/Button";
+import Modal from "../shared/Modal";
 
 export type MatchVoterProps = {
   match: GetDisplayMatchQuery["displayMatch"];
@@ -55,10 +55,10 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
           {match?.stats.map((player) => (
             <li
               key={player.playerId}
-              className="flex items-center justify-between w-full h-10 overflow-hidden bg-white border border-gray-100 rounded md:h-12 lg:h-16 lg:border-none lg:drop-shadow-sm first:mt-0"
+              className="flex items-center justify-between w-full h-10 overflow-hidden bg-white border border-gray-100 rounded md:h-12 xl:h-16 xl:border-none xl:drop-shadow-sm first:mt-0"
             >
               <div className="flex items-center flex-1 w-full">
-                <div className="relative flex items-center justify-center w-6 h-6 ml-2 overflow-hidden bg-gray-300 rounded-full md:w-8 md:h-8 lg:w-12 lg:h-12">
+                <div className="relative flex items-center justify-center w-6 h-6 ml-2 overflow-hidden bg-gray-300 rounded-full md:w-8 md:h-8 xl:w-12 xl:h-12">
                   {player.image ? (
                     <Image
                       src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${player.image}`}
@@ -76,7 +76,7 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
               <div className="flex items-center h-full">
                 <button
                   type="button"
-                  className="flex items-center justify-center w-6 h-full font-bold lg:w-10 bg-marine-100 hover:bg-marine-200 text-marine-600"
+                  className="flex items-center justify-center w-6 h-full font-bold lg:w-8 xl:w-10 bg-marine-100 hover:bg-marine-200 text-marine-600"
                   onClick={() => handleDecrement(player.playerId)}
                 >
                   -
@@ -87,12 +87,12 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
                     max: 10,
                     valueAsNumber: true,
                   })}
-                  className={`w-10 lg:w-14 lg:font-black lg:text-lg text-center font-num font-bold outline-none h-full text-marine-600`}
+                  className={`w-10 xl:w-14 xl:font-black xl:text-lg text-center font-num font-bold outline-none h-full text-marine-600`}
                   readOnly={true}
                 />
                 <button
                   type="button"
-                  className="flex items-center justify-center w-6 h-full font-bold lg:w-10 bg-marine-100 hover:bg-marine-200 text-marine-600"
+                  className="flex items-center justify-center w-6 h-full font-bold lg:w-8 xl:w-10 bg-marine-100 hover:bg-marine-200 text-marine-600"
                   onClick={() => handleIncrement(player.playerId)}
                 >
                   +
@@ -101,7 +101,7 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
             </li>
           ))}
         </ul>
-        <div className="flex justify-center mt-4 lg:mt-8 gap-x-4">
+        <div className="flex justify-center mt-4 xl:mt-8 gap-x-4">
           <Button
             label="Réinitialiser"
             onClick={() => reset()}

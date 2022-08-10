@@ -1,5 +1,5 @@
 import { signIn } from "next-auth/react";
-import TwitterIcon from "./Icons/Twitter";
+import TwitterIcon from "../Icons/Twitter";
 
 export type MatchInfoBarProps = {
   archived?: boolean;
