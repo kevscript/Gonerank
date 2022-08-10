@@ -24,14 +24,14 @@ const LatestSeasonAvgRanking = ({ stats }: LatestSeasonAvgRankingProps) => {
               key={p.id}
               className="flex flex-row flex-shrink-0 w-full h-8 text-sm"
             >
-              <div className="flex items-center justify-center w-8 h-full bg-white border-b border-gray-100 rounded font-num">
+              <div className="flex items-center justify-center w-8 h-full bg-white border border-gray-100 rounded dark:bg-dark-500 dark:border-dark-300 font-num">
                 {i + 1}
               </div>
-              <div className="flex items-center justify-between flex-1 ml-1 overflow-hidden bg-white border-b border-gray-100 rounded">
+              <div className="flex items-center justify-between flex-1 ml-1 overflow-hidden bg-white border border-gray-100 rounded dark:bg-dark-500 dark:border-dark-300">
                 <span className="px-2">
                   {p.firstName[0] + ". " + p.lastName}
                 </span>
-                <div className="flex items-center justify-center w-12 h-full bg-marine-100 text-marine-600 font-num">
+                <div className="flex items-center justify-center w-12 h-full bg-marine-100 dark:bg-dark-400 text-marine-600 font-num">
                   {p.globalAvgSum
                     ? (p.globalAvgSum / p.globalAvgQuantity).toFixed(2)
                     : "-"}

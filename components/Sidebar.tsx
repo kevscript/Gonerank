@@ -76,7 +76,7 @@ const Sidebar = () => {
   }, [session, router]);
 
   return (
-    <div className="fixed top-0 left-0 bottom-0 w-16 bg-white border-r-[2px] border-gray-100 pt-8 pb-8 xl:pb-0 flex flex-col items-center xl:w-64 z-10 dark:bg-slate-900 dark:border-slate-600">
+    <div className="fixed top-0 bottom-0 left-0 z-10 flex flex-col w-16 pt-8 pb-8 bg-white drop-shadow-sm items-cen xl:pb-0 xl:w-64 dark:bg-dark-500">
       {/* Sidebar Header */}
       <div className="flex flex-col items-center w-full xl:flex-row xl:justify-between xl:px-4">
         <div>

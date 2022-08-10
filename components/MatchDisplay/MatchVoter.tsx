@@ -55,10 +55,10 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
           {match?.stats.map((player) => (
             <li
               key={player.playerId}
-              className="flex items-center justify-between w-full h-10 overflow-hidden bg-white border border-gray-100 rounded md:h-12 xl:h-16 xl:border-none xl:drop-shadow-sm first:mt-0"
+              className="flex items-center justify-between w-full h-10 overflow-hidden bg-white border border-gray-100 rounded dark:bg-dark-500 dark:border-dark-400 md:h-12 xl:h-16 xl:border-none xl:drop-shadow-sm first:mt-0"
             >
               <div className="flex items-center flex-1 w-full">
-                <div className="relative flex items-center justify-center w-6 h-6 ml-2 overflow-hidden bg-gray-300 rounded-full md:w-8 md:h-8 xl:w-12 xl:h-12">
+                <div className="relative flex items-center justify-center w-6 h-6 ml-2 overflow-hidden bg-gray-300 rounded-full dark:bg-dark-600 md:w-8 md:h-8 xl:w-12 xl:h-12">
                   {player.image ? (
                     <Image
                       src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${player.image}`}
@@ -76,7 +76,7 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
               <div className="flex items-center h-full">
                 <button
                   type="button"
-                  className="flex items-center justify-center w-6 h-full font-bold lg:w-8 xl:w-10 bg-marine-100 hover:bg-marine-200 text-marine-600"
+                  className="flex items-center justify-center w-6 h-full font-bold lg:w-8 xl:w-10 bg-marine-100 hover:bg-marine-200 text-marine-600 dark:bg-dark-400 dark:hover:bg-dark-300"
                   onClick={() => handleDecrement(player.playerId)}
                 >
                   -
@@ -87,12 +87,12 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
                     max: 10,
                     valueAsNumber: true,
                   })}
-                  className={`w-10 xl:w-14 xl:font-black xl:text-lg text-center font-num font-bold outline-none h-full text-marine-600`}
+                  className={`w-10 xl:w-14 xl:font-black xl:text-lg text-center font-num font-bold outline-none h-full text-marine-600 dark:text-white`}
                   readOnly={true}
                 />
                 <button
                   type="button"
-                  className="flex items-center justify-center w-6 h-full font-bold lg:w-8 xl:w-10 bg-marine-100 hover:bg-marine-200 text-marine-600"
+                  className="flex items-center justify-center w-6 h-full font-bold lg:w-8 xl:w-10 bg-marine-100 hover:bg-marine-200 text-marine-600 dark:bg-dark-400 dark:hover:bg-dark-300"
                   onClick={() => handleIncrement(player.playerId)}
                 >
                   +
@@ -122,7 +122,7 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
             {match?.stats.map((player) => (
               <li
                 key={player.playerId}
-                className="flex items-center justify-between w-48 h-8 overflow-hidden text-sm border rounded whitespace-nowrap bg-marine-50 border-marine-200"
+                className="flex items-center justify-between w-48 h-8 overflow-hidden text-sm border rounded whitespace-nowrap bg-marine-50 border-marine-200 dark:bg-dark-300 dark:borde-marine-600"
               >
                 <span className="flex-1 ml-2">
                   {player.firstName[0] + ". " + player.lastName}

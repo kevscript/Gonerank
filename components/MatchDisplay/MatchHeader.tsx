@@ -9,7 +9,7 @@ export type MatchHeaderProps = {
 const MatchHeader = ({ match }: MatchHeaderProps) => {
   return (
     <div
-      className={`w-full bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-300 lg:border-none lg:drop-shadow-sm rounded flex justify-between py-4 px-8 ${
+      className={`w-full bg-white dark:bg-dark-500 lg:border-none lg:drop-shadow-sm rounded flex justify-between py-4 px-8 ${
         !match?.home && "flex-row-reverse"
       }`}
     >
@@ -33,9 +33,9 @@ const MatchHeader = ({ match }: MatchHeaderProps) => {
             !match?.home && "flex-row-reverse"
           }`}
         >
-          <span>{match?.scored}</span>
-          <span className="lg:mx-2">:</span>
-          <span>{match?.conceeded}</span>
+          <span className="dark:text-marine-600">{match?.scored}</span>
+          <span className="lg:mx-2 dark:text-marine-600">:</span>
+          <span className="dark:text-marine-600">{match?.conceeded}</span>
         </div>
         <span className="text-xs lg:text-base font-num">
           {new Date(match?.date).toLocaleDateString("fr-FR", {
