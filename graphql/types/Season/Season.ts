@@ -38,7 +38,9 @@ export const SeasonType = objectType({
             include: {
               player: {
                 include: {
-                  ratings: { where: { match: { seasonId: parent.id } } },
+                  ratings: {
+                    where: { match: { seasonId: parent.id, archived: true } },
+                  },
                 },
               },
             },
