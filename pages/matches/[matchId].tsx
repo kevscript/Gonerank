@@ -1,3 +1,4 @@
+import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import Draggable from "@/components/shared/Draggable";
 import Spinner from "@/components/shared/Spinner";
 import UserFilter from "@/components/shared/UserFilter";
@@ -74,23 +75,44 @@ const MatchPage = () => {
   }
 
   return (
-    <div className="p-4 lg:p-8 max-w-max">
-      {stats && (
-        <>
-          <div className="flex flex-row justify-between mb-4 gap-x-2">
-            {status === "authenticated" && userStats && (
-              <UserFilter toggleMode={toggleMode} mode={mode} />
-            )}
-          </div>
-          <div>
-            <Draggable>
-              <MatchTable
-                data={userStats && mode === "user" ? userStats : stats}
-              />
-            </Draggable>
-          </div>
-        </>
-      )}
+    <div>
+      <Breadcrumbs
+        crumbs={[
+          { label: "Acceuil", path: "/" },
+          { label: "Matchs", path: "/matches" },
+          {
+            label: matchData
+              ? `${matchData.match.opponent}${new Date(
+                  matchData.match.date
+                ).toLocaleDateString("fr-FR", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "2-digit",
+                })}`
+              : "",
+            path: `/matches/${matchId}`,
+          },
+        ]}
+      />
+
+      <div className="p-4 max-w-max md:py-0 md:px-4 lg:px-8 2xl:px-16">
+        {stats && (
+          <>
+            <div className="flex flex-row justify-between mb-4 gap-x-2">
+              {status === "authenticated" && userStats && (
+                <UserFilter toggleMode={toggleMode} mode={mode} />
+              )}
+            </div>
+            <div>
+              <Draggable>
+                <MatchTable
+                  data={userStats && mode === "user" ? userStats : stats}
+                />
+              </Draggable>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };

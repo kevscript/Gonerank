@@ -15,6 +15,7 @@ import PlayersTable from "@/components/tables/PlayersTable";
 import UserFilter from "@/components/shared/UserFilter";
 import SeasonSelector from "@/components/shared/SeasonSelector";
 import Spinner from "@/components/shared/Spinner";
+import Breadcrumbs from "@/components/shared/Breadcrumbs";
 
 const PlayersPage = () => {
   const { data: session, status } = useSession();
@@ -210,49 +211,58 @@ const PlayersPage = () => {
   }
 
   return (
-    <div className="p-4 lg:p-8 max-w-max">
-      <div className="flex flex-row flex-wrap justify-between gap-2 mb-4 lg:gap-y-0">
-        {status === "authenticated" && userStats && (
-          <UserFilter toggleMode={toggleMode} mode={mode} />
-        )}
+    <div>
+      <Breadcrumbs
+        crumbs={[
+          { label: "Acceuil", path: "/" },
+          { label: "Joueurs", path: "/players" },
+        ]}
+      />
 
-        <div className="flex flex-row gap-x-2">
-          {globalSeasonData && (
-            <select
-              className="h-10 px-2 text-sm border-2 border-gray-100 rounded outline-none dark:border-slate-600 text-marine-600 dark:text-white dark:bg-slate-700"
-              value={currentCompetitionId}
-              onChange={handleCompetitionChange}
-            >
-              <option value="all" className="text-black dark:text-white">
-                Toutes compétitions
-              </option>
-              {globalSeasonData.competitions.map((comp) => (
-                <option
-                  key={comp.id}
-                  value={comp.id}
-                  className="text-black dark:text-white"
-                >
-                  {comp.name}
+      <div className="p-4 max-w-max md:py-0 md:px-4 lg:px-8 2xl:px-16">
+        <div className="flex flex-row flex-wrap justify-between gap-2 mb-4 lg:gap-y-0">
+          {status === "authenticated" && userStats && (
+            <UserFilter toggleMode={toggleMode} mode={mode} />
+          )}
+
+          <div className="flex flex-row gap-x-2">
+            {globalSeasonData && (
+              <select
+                className="h-10 px-2 text-sm border-2 border-gray-100 rounded outline-none cursor-pointer dark:border-dark-300 text-marine-600 dark:text-white dark:bg-dark-400"
+                value={currentCompetitionId}
+                onChange={handleCompetitionChange}
+              >
+                <option value="all" className="text-black dark:text-white">
+                  Toutes compétitions
                 </option>
-              ))}
-            </select>
-          )}
+                {globalSeasonData.competitions.map((comp) => (
+                  <option
+                    key={comp.id}
+                    value={comp.id}
+                    className="text-black dark:text-white"
+                  >
+                    {comp.name}
+                  </option>
+                ))}
+              </select>
+            )}
 
-          {seasonsData && (
-            <SeasonSelector
-              currentSeasonId={currentSeasonId}
-              handleChange={handleSeasonChange}
-              seasons={seasonsData.seasons}
-            />
-          )}
+            {seasonsData && (
+              <SeasonSelector
+                currentSeasonId={currentSeasonId}
+                handleChange={handleSeasonChange}
+                seasons={seasonsData.seasons}
+              />
+            )}
+          </div>
         </div>
-      </div>
-      <div>
-        <Draggable>
-          <PlayersTable
-            data={userStats && mode === "user" ? userStats : stats}
-          />
-        </Draggable>
+        <div>
+          <Draggable>
+            <PlayersTable
+              data={userStats && mode === "user" ? userStats : stats}
+            />
+          </Draggable>
+        </div>
       </div>
     </div>
   );

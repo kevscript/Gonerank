@@ -18,6 +18,7 @@ import { getAgeFromDate } from "@/utils/getAgeFromDate";
 import Spinner from "@/components/shared/Spinner";
 import UserFilter from "@/components/shared/UserFilter";
 import SeasonSelector from "@/components/shared/SeasonSelector";
+import Breadcrumbs from "@/components/shared/Breadcrumbs";
 
 const PlayerPage = () => {
   const { data: session, status } = useSession();
@@ -129,50 +130,64 @@ const PlayerPage = () => {
   }
 
   return (
-    <div className="p-4 lg:p-8 max-w-max">
-      {playerSeasonData.player && (
-        <div className="flex flex-row items-center w-full px-4 py-4 overflow-hidden bg-white rounded dark:bg-slate-900 lg:px-8 flex-nowrap drop-shadow-sm">
-          <div className="relative flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-100 rounded-full shadow-inner lg:h-16 lg:w-16 shrink-0">
-            <Image
-              src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${playerSeasonData.player.image}`}
-              alt="player avatar"
-              layout="fill"
-              objectFit="cover"
-            />
+    <div>
+      <Breadcrumbs
+        crumbs={[
+          { label: "Acceuil", path: "/" },
+          { label: "Joueurs", path: "/players" },
+          {
+            label: playerSeasonData
+              ? `${playerSeasonData.player.firstName} ${playerSeasonData.player.lastName}`
+              : "",
+            path: `/players/${playerId}`,
+          },
+        ]}
+      />
+      <div className="p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16 max-w-max">
+        {playerSeasonData.player && (
+          <div className="flex flex-row items-center w-full px-4 py-4 overflow-hidden bg-white rounded dark:bg-slate-900 lg:px-8 flex-nowrap drop-shadow-sm">
+            <div className="relative flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-100 rounded-full shadow-inner lg:h-16 lg:w-16 shrink-0">
+              <Image
+                src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${playerSeasonData.player.image}`}
+                alt="player avatar"
+                layout="fill"
+                objectFit="cover"
+              />
+            </div>
+            <div className="flex flex-col flex-1 ml-4">
+              <h3 className="overflow-hidden truncate lg:text-xl whitespace-nowrap">{`${playerSeasonData.player.firstName} ${playerSeasonData.player.lastName}`}</h3>
+              <span className="text-sm whitespace-nowrap ">
+                {getAgeFromDate(playerSeasonData.player.birthDate)} ans,{" "}
+                {playerSeasonData.player.country}
+              </span>
+            </div>
           </div>
-          <div className="flex flex-col flex-1 ml-4">
-            <h3 className="overflow-hidden truncate lg:text-xl whitespace-nowrap">{`${playerSeasonData.player.firstName} ${playerSeasonData.player.lastName}`}</h3>
-            <span className="text-sm whitespace-nowrap ">
-              {getAgeFromDate(playerSeasonData.player.birthDate)} ans,{" "}
-              {playerSeasonData.player.country}
-            </span>
-          </div>
-        </div>
-      )}
+        )}
 
-      {stats && (
-        <>
-          <div className="flex flex-row flex-wrap justify-between mt-4 mb-4 gap-x-2 lg:mt-8">
-            {status === "authenticated" && userStats && (
-              <UserFilter toggleMode={toggleMode} mode={mode} />
-            )}
-            {seasonsPlayed && (
-              <SeasonSelector
-                currentSeasonId={currentSeasonId}
-                handleChange={handleSeasonChange}
-                seasons={seasonsPlayed}
-              />
-            )}
-          </div>
-          <div>
-            <Draggable>
-              <PlayerTable
-                data={userStats && mode === "user" ? userStats : stats}
-              />
-            </Draggable>
-          </div>
-        </>
-      )}
+        {stats && (
+          <>
+            <div className="flex flex-row flex-wrap justify-between mt-4 mb-4 gap-x-2 lg:mt-8">
+              {status === "authenticated" && userStats && (
+                <UserFilter toggleMode={toggleMode} mode={mode} />
+              )}
+              {seasonsPlayed && (
+                <SeasonSelector
+                  currentSeasonId={currentSeasonId}
+                  handleChange={handleSeasonChange}
+                  seasons={seasonsPlayed}
+                />
+              )}
+            </div>
+            <div>
+              <Draggable>
+                <PlayerTable
+                  data={userStats && mode === "user" ? userStats : stats}
+                />
+              </Draggable>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
+import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import { NextCustomPage } from "./_app";
 import {
   CreateUserRatingsInput,
@@ -154,19 +155,14 @@ const HomePage: NextCustomPage = () => {
   }
 
   return (
-    <div className="">
+    <div>
       <Head>
         <title>Gonerank - Home</title>
         <meta name="description" content="Home page for Gonerank app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-col w-full min-h-screen lg:h-screen lg:overflow-hidden">
-        <div className="hidden w-full md:block md:px-4 md:py-8 lg:px-8 2xl:px-16">
-          <div className="w-full bg-white rounded drop-shadow-sm">
-            Breadcrumbs
-          </div>
-        </div>
-
+        <Breadcrumbs crumbs={[{ label: "Acceuil", path: "/" }]} />
         <div className="flex justify-between flex-1 w-full p-4 overflow-hidden gap-x-8 2xl:gap-x-16 md:pt-0 md:pb-8 lg:px-8 2xl:px-16">
           {matchData && matchData.displayMatch ? (
             <div className="flex flex-col flex-1 min-h-fit">

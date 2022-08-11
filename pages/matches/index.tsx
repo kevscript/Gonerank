@@ -1,3 +1,4 @@
+import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import Draggable from "@/components/shared/Draggable";
 import SeasonSelector from "@/components/shared/SeasonSelector";
 import Spinner from "@/components/shared/Spinner";
@@ -134,7 +135,7 @@ const MatchesPage = () => {
   if (globalSeasonData && globalSeasonData.matches.length === 0) {
     return (
       <div className="flex items-start justify-center h-screen p-4 lg:p-8 md:items-center">
-        <div className="flex flex-col items-center justify-center p-4 text-center border rounded bg-marine-100 border-marine-200 text-marine-600 md:p-8">
+        <div className="flex flex-col items-center justify-center p-4 text-center border rounded bg-marine-100 border-marine-200 text-marine-400 md:p-8 dark:bg-marine-900/10 dark:border-marine-400">
           <p>Aucun match n&apos;est encore disponible pour cette saison.</p>
         </div>
       </div>
@@ -142,31 +143,39 @@ const MatchesPage = () => {
   }
 
   return (
-    <div className="p-4 lg:p-8 max-w-max">
-      {stats && (
-        <>
-          <div className="flex flex-row justify-between mb-4 gap-x-2">
-            {status === "authenticated" && userStats && (
-              <UserFilter mode={mode} toggleMode={toggleMode} />
-            )}
-            {seasonsData && (
-              <SeasonSelector
-                currentSeasonId={currentSeasonId}
-                handleChange={handleSeasonChange}
-                seasons={seasonsData.seasons}
-              />
-            )}
-          </div>
+    <div>
+      <Breadcrumbs
+        crumbs={[
+          { label: "Acceuil", path: "/" },
+          { label: "Matchs", path: "/matches" },
+        ]}
+      />
+      <div className="p-4 max-w-max md:py-0 md:px-4 lg:px-8 2xl:px-16">
+        {stats && (
+          <>
+            <div className="flex flex-row justify-between mb-4 gap-x-2">
+              {status === "authenticated" && userStats && (
+                <UserFilter mode={mode} toggleMode={toggleMode} />
+              )}
+              {seasonsData && (
+                <SeasonSelector
+                  currentSeasonId={currentSeasonId}
+                  handleChange={handleSeasonChange}
+                  seasons={seasonsData.seasons}
+                />
+              )}
+            </div>
 
-          <div>
-            <Draggable>
-              <MatchesTable
-                data={userStats && mode === "user" ? userStats : stats}
-              />
-            </Draggable>
-          </div>
-        </>
-      )}
+            <div>
+              <Draggable>
+                <MatchesTable
+                  data={userStats && mode === "user" ? userStats : stats}
+                />
+              </Draggable>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };
