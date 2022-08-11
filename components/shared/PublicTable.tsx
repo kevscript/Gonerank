@@ -49,10 +49,10 @@ const PublicTable = ({
               <th
                 key={header.id}
                 colSpan={header.colSpan}
-                className={`h-10 bg-gray-50 dark:bg-slate-800 text-left border-l border-l-gray-100 dark:border-l-slate-600 first:border-l-0 ${
+                className={`h-10 bg-gray-50 dark:bg-dark-400 text-left border-l border-l-gray-100 dark:border-l-dark-300 first:border-l-0 ${
                   frozenId &&
                   header.id.endsWith(frozenId) &&
-                  "sticky left-0 z-10 after:absolute after:top-0 after:right-0 after:-z-10 after:w-[1px] after:bg-gray-100 dark:after:bg-slate-600 after:h-full"
+                  "sticky left-0 z-10 after:absolute after:top-0 after:right-0 after:-z-10 after:w-[1px] after:bg-gray-100 dark:after:bg-dark-300 after:h-full"
                 }`}
                 style={{ width: header.getSize() }}
               >
@@ -92,15 +92,15 @@ const PublicTable = ({
         {table.getRowModel().rows.map((row, i) => (
           <tr
             key={row.id}
-            className={`relative border-b dark:border-b-slate-600 border-gray-100 hover:bg-marine-50 bg-white dark:bg-slate-900 dark:hover:bg-slate-800`}
+            className={`relative border-b dark:border-b-dark-300 border-gray-100 hover:bg-marine-50 bg-white dark:bg-dark-500 dark:hover:bg-dark-400`}
           >
             {row.getVisibleCells().map((cell) => (
               <td
                 key={cell.id}
-                className={`relative h-12 border-l first:border-l-0 border-gray-100 dark:border-slate-600 text-sm ${
+                className={`relative h-12 border-l first:border-l-0 border-gray-100 dark:border-dark-300 text-sm ${
                   frozenId &&
                   cell.id.endsWith(frozenId) &&
-                  "sticky left-0 z-10 after:absolute after:top-0 after:right-0 after:-z-10 after:w-[1px] after:bg-gray-100 dark:after:bg-slate-600 after:h-full"
+                  "sticky left-0 z-10 after:absolute after:top-0 after:right-0 after:-z-10 after:w-[1px] after:bg-gray-100 dark:after:bg-dark-300 after:h-full"
                 }`}
                 style={{
                   width: cell.column.getSize(),

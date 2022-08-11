@@ -39,7 +39,7 @@ const MatchInfo = ({ match, userRatings }: MatchInfoProps) => {
                 className="flex items-center justify-center w-10 h-full text-sm font-bold md:text-base md:w-12 xl:w-14 bg-marine-100 dark:bg-dark-400"
                 title="la note de l'utilisateur"
               >
-                <span className="text-marine-600 dark:text-marine-600 font-num xl:font-bold">
+                <span className="text-marine-600 dark:text-marine-400 font-num xl:font-bold">
                   {
                     userRatings.find((r) => r.playerId === player.playerId)
                       ?.rating

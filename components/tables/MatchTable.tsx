@@ -21,11 +21,11 @@ const MatchTable = ({ data }: MatchTableProps) => {
       {
         header: () => {
           return (
-            <TableCell title="joueurs">
-              <div className="relative flex items-center justify-center w-4 h-4 ml-2 overflow-hidden bg-gray-200 rounded-full dark:bg-slate-600">
-                <UserIcon className="dark:fill-slate-300" />
+            <TableCell title="joueurs" header>
+              <div className="relative flex items-center justify-center w-4 h-4 ml-2 overflow-hidden bg-gray-200 rounded-full dark:bg-gray-600">
+                <UserIcon className="dark:fill-gray-300" />
               </div>
-              <span className="ml-4 text-sm dark:text-slate-300">Joueur</span>
+              <span className="ml-4 text-sm dark:text-gray-300">Joueur</span>
             </TableCell>
           );
         },
@@ -34,7 +34,7 @@ const MatchTable = ({ data }: MatchTableProps) => {
         cell: ({ row }) => {
           const { firstName, lastName, image, id } = row.original || {};
           return (
-            <TableCell padding="p-0" className="bg-white">
+            <TableCell padding="p-0">
               <Link href={`/players/${id}`}>
                 <a className="flex items-center justify-start w-full h-full px-2">
                   <div className="relative flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-200 rounded-full">
@@ -63,8 +63,8 @@ const MatchTable = ({ data }: MatchTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-center" title="distinctions">
-              <RatingIcon className="w-4 h-4 dark:fill-slate-300" />
+            <TableCell className="justify-center" title="distinctions" header>
+              <RatingIcon className="w-4 h-4 dark:fill-gray-300" />
             </TableCell>
           );
         },
@@ -87,8 +87,8 @@ const MatchTable = ({ data }: MatchTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-end" title="tendance">
-              <span className="text-sm dark:text-slate-300">TDC</span>
+            <TableCell className="justify-end" title="tendance" header>
+              <span className="text-sm dark:text-gray-300">TDC</span>
             </TableCell>
           );
         },
@@ -119,8 +119,8 @@ const MatchTable = ({ data }: MatchTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-end" title="moyenne">
-              <span className="text-sm dark:text-slate-300">AVG</span>
+            <TableCell className="justify-end" title="moyenne" header>
+              <span className="text-sm dark:text-gray-300">AVG</span>
             </TableCell>
           );
         },

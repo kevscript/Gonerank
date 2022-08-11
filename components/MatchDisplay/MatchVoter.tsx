@@ -76,7 +76,7 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
               <div className="flex items-center h-full">
                 <button
                   type="button"
-                  className="flex items-center justify-center w-6 h-full font-bold lg:w-8 xl:w-10 bg-marine-100 hover:bg-marine-200 text-marine-600 dark:bg-dark-400 dark:hover:bg-dark-300"
+                  className="flex items-center justify-center w-6 h-full font-bold lg:w-8 xl:w-10 bg-marine-100 hover:bg-marine-200 text-marine-600 dark:bg-dark-400 dark:hover:bg-dark-300 dark:text-marine-400"
                   onClick={() => handleDecrement(player.playerId)}
                 >
                   -
@@ -92,7 +92,7 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
                 />
                 <button
                   type="button"
-                  className="flex items-center justify-center w-6 h-full font-bold lg:w-8 xl:w-10 bg-marine-100 hover:bg-marine-200 text-marine-600 dark:bg-dark-400 dark:hover:bg-dark-300"
+                  className="flex items-center justify-center w-6 h-full font-bold lg:w-8 xl:w-10 bg-marine-100 hover:bg-marine-200 text-marine-600 dark:bg-dark-400 dark:hover:bg-dark-300 dark:text-marine-400"
                   onClick={() => handleIncrement(player.playerId)}
                 >
                   +

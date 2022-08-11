@@ -23,14 +23,14 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
       {
         header: () => {
           return (
-            <TableCell title="adversaire">
+            <TableCell title="adversaire" header>
               <div className="relative flex items-center justify-center w-4 h-4 overflow-hidden">
                 <ClubIcon primary="#999" secondary="#666" />
               </div>
-              <span className="hidden ml-2 text-sm md:inline-block dark:text-slate-300">
+              <span className="hidden ml-2 text-sm md:inline-block dark:text-gray-300">
                 Adversaire
               </span>
-              <span className="ml-2 text-sm md:hidden dark:text-slate-300">
+              <span className="ml-2 text-sm md:hidden dark:text-gray-300">
                 Adv.
               </span>
             </TableCell>
@@ -71,8 +71,8 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-center" title="date du match">
-              <CalendarIcon className="w-3 h-3 dark:fill-slate-300" />
+            <TableCell className="justify-center" title="date du match" header>
+              <CalendarIcon className="w-3 h-3 dark:fill-gray-300" />
             </TableCell>
           );
         },
@@ -93,8 +93,12 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-center" title="domicile/exterieur">
-              <LocationIcon className="w-4 h-4 dark:fill-slate-300" />
+            <TableCell
+              className="justify-center"
+              title="domicile/exterieur"
+              header
+            >
+              <LocationIcon className="w-4 h-4 dark:fill-gray-300" />
             </TableCell>
           );
         },
@@ -104,9 +108,9 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
           return (
             <TableCell className="justify-center min-w-[64px]">
               {home ? (
-                <HomeIcon className="w-4 h-4 dark:fill-slate-300" />
+                <HomeIcon className="w-4 h-4 dark:fill-gray-300" />
               ) : (
-                <PlaneIcon className="w-4 h-4 dark:fill-slate-300" />
+                <PlaneIcon className="w-4 h-4 dark:fill-gray-300" />
               )}
             </TableCell>
           );
@@ -116,7 +120,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-center" title="compétition">
+            <TableCell className="justify-center" title="compétition" header>
               <TrophyIcon className="w-4 h-4" />
             </TableCell>
           );
@@ -135,7 +139,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-center" title="buts marqués">
+            <TableCell className="justify-center" title="buts marqués" header>
               <BallIcon className="w-3 h-3 fill-marine-600" />
             </TableCell>
           );
@@ -154,7 +158,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-center" title="buts concédés">
+            <TableCell className="justify-center" title="buts concédés" header>
               <BallIcon className="w-3 h-3 fill-red-600" />
             </TableCell>
           );
@@ -173,8 +177,8 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-end text-sm" title="tendance">
-              <span className="dark:text-slate-300">TDC</span>
+            <TableCell className="justify-end text-sm" title="tendance" header>
+              <span className="dark:text-gray-300">TDC</span>
             </TableCell>
           );
         },
@@ -205,8 +209,8 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-end text-sm" title="moyenne">
-              <span className="dark:text-slate-300">AVG</span>
+            <TableCell className="justify-end text-sm" title="moyenne" header>
+              <span className="dark:text-gray-300">AVG</span>
             </TableCell>
           );
         },

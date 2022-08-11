@@ -41,7 +41,7 @@ const LatestSeasonRanking = ({
           <button
             className={`w-full h-full rounded uppercase text-xs font-bold bg-white dark:bg-dark-400 border ${
               rankingType === "average"
-                ? "border-marine-600 text-marine-600"
+                ? "border-marine-600 text-marine-600 dark:text-marine-400"
                 : "border-gray-200 text-gray-500 hover:text-marine-500 hover:border-marine-300 dark:border-dark-300 dark:hover:border-marine-500 dark:text-gray-100"
             }`}
             onClick={() => handleRankingType("average")}
@@ -53,7 +53,7 @@ const LatestSeasonRanking = ({
           <button
             className={`w-full h-full rounded uppercase text-xs font-bold border bg-white dark:bg-dark-400 ${
               rankingType === "tendency"
-                ? "border-marine-600 text-marine-600"
+                ? "border-marine-600 text-marine-600 dark:text-marine-400"
                 : "border-gray-200 text-gray-500 hover:text-marine-500 hover:border-marine-300 dark:border-dark-300 dark:hover:border-marine-500 dark:text-gray-100"
             }`}
             onClick={() => handleRankingType("tendency")}
@@ -65,7 +65,7 @@ const LatestSeasonRanking = ({
           <button
             className={`w-full h-full rounded uppercase text-xs font-bold bg-white dark:bg-dark-400 border ${
               rankingType === "award"
-                ? "border-marine-600 text-marine-600"
+                ? "border-marine-600 text-marine-600 dark:text-marine-400"
                 : "border-gray-200 text-gray-500 hover:text-marine-500 hover:border-marine-300 dark:border-dark-300 dark:hover:border-marine-500 dark:text-gray-100"
             }`}
             onClick={() => handleRankingType("award")}

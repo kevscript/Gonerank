@@ -31,7 +31,7 @@ const LatestSeasonAvgRanking = ({ stats }: LatestSeasonAvgRankingProps) => {
                 <span className="px-2">
                   {p.firstName[0] + ". " + p.lastName}
                 </span>
-                <div className="flex items-center justify-center w-12 h-full bg-marine-100 dark:bg-dark-400 text-marine-600 font-num">
+                <div className="flex items-center justify-center w-12 h-full bg-marine-100 dark:bg-dark-400 text-marine-600 dark:text-marine-400 font-num">
                   {p.globalAvgSum
                     ? (p.globalAvgSum / p.globalAvgQuantity).toFixed(2)
                     : "-"}

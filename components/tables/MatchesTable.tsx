@@ -23,11 +23,11 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
       {
         header: () => {
           return (
-            <TableCell>
+            <TableCell header>
               <div className="relative flex items-center justify-center w-4 h-4 overflow-hidden">
                 <ClubIcon primary="#999" secondary="#666" />
               </div>
-              <span className="ml-2 text-sm dark:text-slate-300">
+              <span className="ml-2 text-sm dark:text-gray-300">
                 Adversaire
               </span>
             </TableCell>
@@ -37,7 +37,7 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
         cell: ({ row }) => {
           const { opponent, id } = row.original || {};
           return (
-            <TableCell padding="p-0" className="bg-white">
+            <TableCell padding="p-0" header>
               <Link href={`/matches/${id}`}>
                 <a className="flex items-center justify-start w-full h-full px-2">
                   <div className="relative flex items-center justify-center w-4 h-4 overflow-hidden">
@@ -64,8 +64,8 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-center" title="date du match">
-              <CalendarIcon className="w-3 h-3 dark:fill-slate-300" />
+            <TableCell className="justify-center" title="date du match" header>
+              <CalendarIcon className="w-3 h-3 dark:fill-gray-300" />
             </TableCell>
           );
         },
@@ -86,8 +86,12 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-center" title="domicile/exterieur">
-              <LocationIcon className="w-4 h-4 dark:fill-slate-300" />
+            <TableCell
+              className="justify-center"
+              title="domicile/exterieur"
+              header
+            >
+              <LocationIcon className="w-4 h-4 dark:fill-gray-300" />
             </TableCell>
           );
         },
@@ -109,7 +113,7 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-center" title="compétition">
+            <TableCell className="justify-center" title="compétition" header>
               <TrophyIcon className="w-4 h-4" />
             </TableCell>
           );
@@ -128,7 +132,7 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-center" title="buts marqués">
+            <TableCell className="justify-center" title="buts marqués" header>
               <BallIcon className="w-3 h-3 fill-marine-600" />
             </TableCell>
           );
@@ -147,7 +151,7 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-center" title="buts concédés">
+            <TableCell className="justify-center" title="buts concédés" header>
               <BallIcon className="w-3 h-3 fill-red-600" />
             </TableCell>
           );
@@ -166,8 +170,8 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-end">
-              <span className="text-sm dark:text-slate-300">TDC</span>
+            <TableCell className="justify-end" header>
+              <span className="text-sm dark:text-gray-300">TDC</span>
             </TableCell>
           );
         },
@@ -196,8 +200,8 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-end">
-              <span className="text-sm dark:text-slate-300">AVG</span>
+            <TableCell className="justify-end" header>
+              <span className="text-sm dark:text-gray-300">AVG</span>
             </TableCell>
           );
         },
