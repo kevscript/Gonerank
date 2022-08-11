@@ -1,6 +1,6 @@
 const GonerankLogo = () => {
   return (
-    <div className="w-8 h-8 bg-marine-600 rounded-[10px] border-2 border-marine-900 flex justify-center items-center shadow-inner">
+    <div className="flex items-center justify-center w-8 h-8 border-2 rounded shadow-inner bg-marine-600 border-marine-900">
       <span className="block text-base font-black text-white">GR</span>
     </div>
   );
