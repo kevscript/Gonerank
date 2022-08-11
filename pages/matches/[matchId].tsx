@@ -78,7 +78,7 @@ const MatchPage = () => {
     <div>
       <Breadcrumbs
         crumbs={[
-          { label: "Acceuil", path: "/" },
+          { label: "Accueil", path: "/" },
           { label: "Matchs", path: "/matches" },
           {
             label: matchData

@@ -214,7 +214,7 @@ const PlayersPage = () => {
     <div>
       <Breadcrumbs
         crumbs={[
-          { label: "Acceuil", path: "/" },
+          { label: "Accueil", path: "/" },
           { label: "Joueurs", path: "/players" },
         ]}
       />

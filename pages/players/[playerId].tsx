@@ -133,7 +133,7 @@ const PlayerPage = () => {
     <div>
       <Breadcrumbs
         crumbs={[
-          { label: "Acceuil", path: "/" },
+          { label: "Accueil", path: "/" },
           { label: "Joueurs", path: "/players" },
           {
             label: playerSeasonData

@@ -164,7 +164,7 @@ const HomePage: NextCustomPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-col w-full min-h-screen lg:h-screen lg:overflow-hidden">
-        <Breadcrumbs crumbs={[{ label: "Acceuil", path: "/" }]} />
+        <Breadcrumbs crumbs={[{ label: "Accueil", path: "/" }]} />
         <div className="flex justify-between flex-1 w-full p-4 overflow-hidden gap-x-8 2xl:gap-x-16 md:pt-0 md:pb-8 lg:px-8 2xl:px-16">
           {matchData && matchData.displayMatch ? (
             <div className="flex flex-col flex-1 min-h-fit">
