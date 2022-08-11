@@ -15,7 +15,7 @@ const TableCell = ({
   title,
   header = false,
 }: TableCellProps) => {
-  const styles = `w-full h-full flex items-center bg-white dark:bg-dark-500 ${padding} ${className} ${
+  const styles = `w-full h-full flex items-center ${padding} ${className} ${
     header ? "bg-gray-50 dark:bg-dark-400" : "bg-white dark:bg-dark-500"
   }`;
   return (
