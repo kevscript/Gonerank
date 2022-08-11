@@ -41,8 +41,8 @@ const AdminSeasonsPage: NextCustomPage = () => {
   const seasonColumns: ColumnDef<Season>[] = [
     {
       header: () => (
-        <TableCell className="justify-center">
-          <CalendarIcon className="w-3 h-3 dark:fill-slate-300" />
+        <TableCell className="justify-center" opaque header>
+          <CalendarIcon className="w-3 h-3 dark:fill-gray-300" />
         </TableCell>
       ),
       id: "season",
@@ -50,7 +50,7 @@ const AdminSeasonsPage: NextCustomPage = () => {
         const { startDate } = row.original || {};
         const year = startDate && new Date(startDate).getFullYear();
         return (
-          <TableCell className="justify-center">
+          <TableCell className="justify-center" opaque>
             <span>
               {year
                 ? `${String(year).substring(2)}/${String(year + 1).substring(
@@ -66,7 +66,7 @@ const AdminSeasonsPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell className="justify-center">
-          <span className="text-sm dark:text-slate-300">startDate</span>
+          <span className="text-sm dark:text-gray-300">startDate</span>
         </TableCell>
       ),
       id: "startDate",
@@ -91,7 +91,7 @@ const AdminSeasonsPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell className="justify-center">
-            <span className="text-sm dark:text-slate-300">squad</span>
+            <span className="text-sm dark:text-gray-300">squad</span>
           </TableCell>
         );
       },
@@ -115,7 +115,7 @@ const AdminSeasonsPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell className="justify-center">
-          <span className="text-sm dark:text-slate-300">edit</span>
+          <span className="text-sm dark:text-gray-300">edit</span>
         </TableCell>
       ),
       id: "edit",
@@ -138,7 +138,7 @@ const AdminSeasonsPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell className="justify-center">
-          <span className="text-sm dark:text-slate-300">delete</span>
+          <span className="text-sm dark:text-gray-300">delete</span>
         </TableCell>
       ),
       id: "delete",

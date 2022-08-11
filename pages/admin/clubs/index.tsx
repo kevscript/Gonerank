@@ -37,14 +37,14 @@ const AdminClubsPage: NextCustomPage = () => {
   const clubColumns: ColumnDef<Club>[] = [
     {
       header: () => (
-        <TableCell className="text-sm">
+        <TableCell className="text-sm" opaque header>
           <span>abbr</span>
         </TableCell>
       ),
       id: "abbr",
       accessorKey: "abbreviation",
       cell: (info) => (
-        <TableCell>
+        <TableCell opaque>
           <span>{info.getValue()}</span>
         </TableCell>
       ),
@@ -77,8 +77,9 @@ const AdminClubsPage: NextCustomPage = () => {
         return (
           <TableCell className="py-2">
             <div
-              className={`w-full h-full flex justify-center items-center px-1 drop-shadow`}
+              className={`w-full h-full flex justify-center items-center px-1 drop-shadow cursor-pointer`}
               style={{ backgroundColor: primary }}
+              onClick={() => primary && navigator.clipboard.writeText(primary)}
             >
               <span className={`${textColor} text-xs`}>{primary}</span>
             </div>
@@ -100,8 +101,11 @@ const AdminClubsPage: NextCustomPage = () => {
         return (
           <TableCell className="py-2">
             <div
-              className={`w-full h-full flex justify-center items-center px-1 drop-shadow`}
+              className={`w-full h-full flex justify-center items-center px-1 drop-shadow cursor-pointer`}
               style={{ backgroundColor: secondary }}
+              onClick={() =>
+                secondary && navigator.clipboard.writeText(secondary)
+              }
             >
               <span className={`${textColor} text-xs`}>{secondary}</span>
             </div>

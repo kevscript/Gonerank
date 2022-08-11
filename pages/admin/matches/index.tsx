@@ -112,8 +112,8 @@ const AdminMatchesPage: NextCustomPage = () => {
   const matchColumns: ColumnDef<Match>[] = [
     {
       header: () => (
-        <TableCell className="justify-center">
-          <span className="text-sm dark:text-slate-300">date</span>
+        <TableCell className="justify-center" opaque header>
+          <span className="text-sm dark:text-gray-300">date</span>
         </TableCell>
       ),
       id: "date",
@@ -121,7 +121,7 @@ const AdminMatchesPage: NextCustomPage = () => {
       cell: (info) => {
         const date = new Date(info.getValue());
         return (
-          <TableCell className="justify-center">
+          <TableCell className="justify-center" opaque>
             <span>
               {date
                 ? date.toLocaleDateString("fr-FR", {
@@ -139,7 +139,7 @@ const AdminMatchesPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell className="justify-center">
-          <CalendarIcon className="w-3 h-3 dark:fill-slate-300" />
+          <CalendarIcon className="w-3 h-3 dark:fill-gray-300" />
         </TableCell>
       ),
       id: "season",
@@ -180,7 +180,7 @@ const AdminMatchesPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell className="justify-center">
-          <LocationIcon className="w-3 h-3 dark:fill-slate-300" />
+          <LocationIcon className="w-3 h-3 dark:fill-gray-300" />
         </TableCell>
       ),
       id: "location",
@@ -190,9 +190,9 @@ const AdminMatchesPage: NextCustomPage = () => {
         return (
           <TableCell className="justify-center">
             {home ? (
-              <HomeIcon className="w-4 h-4 dark:fill-slate-300" />
+              <HomeIcon className="w-4 h-4 dark:fill-gray-300" />
             ) : (
-              <PlaneIcon className="w-4 h-4 dark:fill-slate-300" />
+              <PlaneIcon className="w-4 h-4 dark:fill-gray-300" />
             )}
           </TableCell>
         );
@@ -232,7 +232,7 @@ const AdminMatchesPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell>
-          <span className="text-sm dark:text-slate-300">opponent</span>
+          <span className="text-sm dark:text-gray-300">opponent</span>
         </TableCell>
       ),
       id: "opponent",
@@ -252,7 +252,7 @@ const AdminMatchesPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell className="justify-center">
-            <span className="text-sm dark:text-slate-300">squad</span>
+            <span className="text-sm dark:text-gray-300">squad</span>
           </TableCell>
         );
       },
@@ -277,7 +277,7 @@ const AdminMatchesPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell className="justify-center">
-            <span className="text-sm dark:text-slate-300">active</span>
+            <span className="text-sm dark:text-gray-300">active</span>
           </TableCell>
         );
       },
@@ -320,7 +320,7 @@ const AdminMatchesPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell className="justify-center">
-            <span className="text-sm dark:text-slate-300">archived</span>
+            <span className="text-sm dark:text-gray-300">archived</span>
           </TableCell>
         );
       },
@@ -363,7 +363,7 @@ const AdminMatchesPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell className="justify-center">
-            <span className="text-sm dark:text-slate-300">edit</span>
+            <span className="text-sm dark:text-gray-300">edit</span>
           </TableCell>
         );
       },
@@ -388,7 +388,7 @@ const AdminMatchesPage: NextCustomPage = () => {
       header: () => {
         return (
           <TableCell className="justify-center">
-            <span className="text-sm dark:text-slate-300">delete</span>
+            <span className="text-sm dark:text-gray-300">delete</span>
           </TableCell>
         );
       },

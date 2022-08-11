@@ -129,7 +129,7 @@ const AdminMatchSquadPage: NextCustomPage = () => {
 
   return (
     <>
-      <div className="flex items-end h-16 p-4 bg-gray-100 gap-x-2 dark:bg-slate-900">
+      <div className="flex items-end h-16 p-4 bg-gray-100 gap-x-2 dark:bg-dark-400">
         <div className="flex items-center justify-center w-6 h-6 mr-2 overflow-hidden bg-gray-200 rounded-full">
           <PlayerIcon className="w-3 h-3 fill-marine-600" />
         </div>
@@ -144,7 +144,7 @@ const AdminMatchSquadPage: NextCustomPage = () => {
           <label>
             <select
               onChange={handleSelect}
-              className="w-full h-10 px-2 dark:bg-slate-900"
+              className="w-full h-10 px-2 dark:bg-dark-400"
             >
               <option value="empty">-- select a player --</option>
               {squad &&
@@ -167,7 +167,7 @@ const AdminMatchSquadPage: NextCustomPage = () => {
             squad.map((p) => (
               <li
                 key={p.id}
-                className="relative flex items-center justify-between w-full p-2 bg-white border border-gray-100 dark:bg-slate-900 flex-nowrap lg:max-w-xs"
+                className="relative flex items-center justify-between w-full p-2 bg-white border border-gray-100 dark:bg-dark-400 flex-nowrap lg:max-w-xs"
               >
                 <span>{p.firstName + " " + p.lastName}</span>
                 <div

@@ -19,7 +19,7 @@ const AdminPlayerCreatePage: NextCustomPage = () => {
 
   return (
     <>
-      <div className="flex items-end h-16 p-4 bg-gray-100 dark:bg-slate-900">
+      <div className="flex items-end h-16 p-4 bg-gray-100 dark:bg-dark-400">
         <div className="flex items-end justify-center w-6 h-6 mr-2 overflow-hidden bg-gray-200 rounded-full">
           <UserIcon className="w-5 h-5 fill-marine-600" />
         </div>

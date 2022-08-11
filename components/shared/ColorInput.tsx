@@ -68,7 +68,7 @@ const ColorInput = ({
         ></div>
         <input
           type="text"
-          className={`w-full h-full pl-2 outline-none border-none dark:bg-slate-900 ${
+          className={`w-full h-full pl-2 outline-none border-none dark:bg-dark-400 ${
             error ? "bg-red-50" : ""
           }`}
           {...register(name, options)}

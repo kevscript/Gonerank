@@ -47,7 +47,7 @@ const DateInput = <T,>({
             onChange={(date) => date && field.onChange(noTimezone(date))}
             selected={field.value as Date}
             dateFormat="dd/MM/yyyy"
-            className={`h-10 px-2 bg-white dark:bg-slate-900 border text-base rounded mt-1 w-full font-num ${
+            className={`h-10 px-2 bg-white dark:bg-dark-400 border text-base rounded mt-1 w-full font-num ${
               error
                 ? "border-red-400 outline-red-600 bg-red-50"
                 : value

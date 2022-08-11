@@ -16,7 +16,7 @@ const AdminUsersPage: NextCustomPage = () => {
   const userColumns: ColumnDef<User>[] = [
     {
       header: () => (
-        <TableCell>
+        <TableCell opaque header>
           <span className="text-sm">user</span>
         </TableCell>
       ),
@@ -24,7 +24,7 @@ const AdminUsersPage: NextCustomPage = () => {
       cell: ({ row }) => {
         const { image, name } = row.original || {};
         return (
-          <TableCell>
+          <TableCell opaque>
             <div className="flex items-center">
               <div className="flex items-center justify-center w-6 h-6 overflow-hidden bg-red-600 rounded-full">
                 {image ? (
@@ -43,7 +43,7 @@ const AdminUsersPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell>
-          <span className="text-sm dark:text-slate-300">email</span>
+          <span className="text-sm dark:text-gray-300">email</span>
         </TableCell>
       ),
       accessorKey: "email",
@@ -56,7 +56,7 @@ const AdminUsersPage: NextCustomPage = () => {
     {
       header: () => (
         <TableCell>
-          <span className="text-sm dark:text-slate-300">role</span>
+          <span className="text-sm dark:text-gray-300">role</span>
         </TableCell>
       ),
       accessorKey: "role",
