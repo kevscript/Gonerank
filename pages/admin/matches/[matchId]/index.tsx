@@ -65,7 +65,7 @@ const AdminMatchEditPage: NextCustomPage = () => {
   return (
     <div>
       <div className="flex items-end h-16 p-4 bg-gray-100 dark:bg-slate-900">
-        <div className="flex items-end justify-center w-6 h-6 mr-2 overflow-hidden bg-gray-200 rounded-full">
+        <div className="flex items-center justify-center w-6 h-6 mr-2 overflow-hidden bg-gray-200 rounded-full">
           <MatchIcon className="w-3 h-3 fill-marine-600" />
         </div>
         <h3>Editer Match</h3>

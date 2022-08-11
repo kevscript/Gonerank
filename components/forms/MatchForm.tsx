@@ -119,11 +119,14 @@ const MatchForm = ({
         value={getValues("opponentId")}
       >
         <>
-          {clubs?.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
+          {clubs &&
+            [...clubs]
+              .sort((a, b) => (a.name > b.name ? 1 : -1))
+              .map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
         </>
       </SelectInput>
 

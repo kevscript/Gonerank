@@ -130,6 +130,7 @@ const AdminSeasonSquadPage: NextCustomPage = () => {
                 playersData &&
                 playersData.players
                   .filter((player) => !squad.some((p) => p.id === player.id))
+                  .sort((a, b) => (a.lastName > b.lastName ? 1 : -1))
                   .map((p) => (
                     <option key={p.id} value={p.id}>
                       {p.firstName + " " + p.lastName}
