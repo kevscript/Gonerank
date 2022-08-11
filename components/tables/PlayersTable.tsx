@@ -23,7 +23,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
       {
         header: () => {
           return (
-            <TableCell title="Joueurs" header>
+            <TableCell title="Joueurs" opaque header>
               <div className="relative flex items-center justify-center w-4 h-4 ml-2 overflow-hidden bg-gray-200 rounded-full dark:bg-gray-600">
                 <UserIcon className="dark:fill-gray-300" />
               </div>
@@ -36,7 +36,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
         cell: ({ row }) => {
           const { firstName, lastName, image, id } = row.original || {};
           return (
-            <TableCell padding="p-0">
+            <TableCell padding="p-0" opaque>
               <Link href={`/players/${id}`}>
                 <a className="flex items-center justify-start w-full h-full px-2">
                   <div className="relative flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-200 rounded-full">
@@ -64,11 +64,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
       },
       {
         header: () => (
-          <TableCell
-            className="justify-center"
-            title="nombre de matchs joués"
-            header
-          >
+          <TableCell className="justify-center" title="nombre de matchs joués">
             <MatchIcon className="w-4 h-4 dark:fill-gray-300" />
           </TableCell>
         ),
@@ -89,7 +85,6 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
           <TableCell
             className="justify-center"
             title="nombre de fois homme du match"
-            header
           >
             <MotmIcon className="w-4 h-4 dark:fill-gray-300" />
           </TableCell>
@@ -107,7 +102,6 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
           <TableCell
             className="justify-center"
             title="nombre de fois boulet du match"
-            header
           >
             <BotmIcon className="w-3.5 h-3.5 dark:fill-gray-300" />
           </TableCell>
@@ -125,7 +119,6 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
           <TableCell
             className="items-center justify-end"
             title="tendance à domicile"
-            header
           >
             <HomeIcon className="w-4 h-4 dark:fill-gray-300" />
           </TableCell>
@@ -168,7 +161,6 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
           <TableCell
             className="items-center justify-end"
             title="tendance à l'exterieur"
-            header
           >
             <PlaneIcon className="w-4 h-4 dark:fill-gray-300" />
           </TableCell>
@@ -211,7 +203,6 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
           <TableCell
             className="items-center justify-end"
             title="tendance globale"
-            header
           >
             <span className="ml-1 text-sm dark:text-gray-300">TDC</span>
           </TableCell>
@@ -253,7 +244,6 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
           <TableCell
             className="items-center justify-end"
             title="moyenne à domicile"
-            header
           >
             <HomeIcon className="w-4 h-4 dark:fill-gray-300" />
           </TableCell>
@@ -283,7 +273,6 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
           <TableCell
             className="items-center justify-end"
             title="moyenne à l'exterieur"
-            header
           >
             <PlaneIcon className="w-4 h-4 dark:fill-gray-300" />
           </TableCell>
@@ -313,7 +302,6 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
           <TableCell
             className="items-center justify-end"
             title="moyenne globale"
-            header
           >
             <span className="ml-1 text-sm dark:text-gray-300">AVG</span>
           </TableCell>

@@ -23,7 +23,7 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
       {
         header: () => {
           return (
-            <TableCell header>
+            <TableCell opaque header>
               <div className="relative flex items-center justify-center w-4 h-4 overflow-hidden">
                 <ClubIcon primary="#999" secondary="#666" />
               </div>
@@ -37,7 +37,7 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
         cell: ({ row }) => {
           const { opponent, id } = row.original || {};
           return (
-            <TableCell padding="p-0" header>
+            <TableCell padding="p-0" opaque>
               <Link href={`/matches/${id}`}>
                 <a className="flex items-center justify-start w-full h-full px-2">
                   <div className="relative flex items-center justify-center w-4 h-4 overflow-hidden">

@@ -21,7 +21,7 @@ const MatchTable = ({ data }: MatchTableProps) => {
       {
         header: () => {
           return (
-            <TableCell title="joueurs" header>
+            <TableCell title="joueurs" opaque header>
               <div className="relative flex items-center justify-center w-4 h-4 ml-2 overflow-hidden bg-gray-200 rounded-full dark:bg-gray-600">
                 <UserIcon className="dark:fill-gray-300" />
               </div>
@@ -34,7 +34,7 @@ const MatchTable = ({ data }: MatchTableProps) => {
         cell: ({ row }) => {
           const { firstName, lastName, image, id } = row.original || {};
           return (
-            <TableCell padding="p-0">
+            <TableCell padding="p-0" opaque>
               <Link href={`/players/${id}`}>
                 <a className="flex items-center justify-start w-full h-full px-2">
                   <div className="relative flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-200 rounded-full">

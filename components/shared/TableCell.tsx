@@ -6,6 +6,7 @@ export type TableCellProps = {
   padding?: string;
   title?: string;
   header?: boolean;
+  opaque?: boolean;
 };
 
 const TableCell = ({
@@ -14,9 +15,14 @@ const TableCell = ({
   padding = "px-2",
   title,
   header = false,
+  opaque = false,
 }: TableCellProps) => {
   const styles = `w-full h-full flex items-center ${padding} ${className} ${
-    header ? "bg-gray-50 dark:bg-dark-400" : "bg-white dark:bg-dark-500"
+    header && opaque
+      ? "bg-gray-50 dark:bg-dark-400"
+      : opaque && !header
+      ? "bg-white dark:bg-dark-500"
+      : ""
   }`;
   return (
     <div className={styles} title={title}>

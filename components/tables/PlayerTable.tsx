@@ -23,7 +23,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
       {
         header: () => {
           return (
-            <TableCell title="adversaire" header>
+            <TableCell title="adversaire" opaque header>
               <div className="relative flex items-center justify-center w-4 h-4 overflow-hidden">
                 <ClubIcon primary="#999" secondary="#666" />
               </div>
@@ -41,7 +41,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
         cell: ({ row }) => {
           const { opponent, id } = row.original || {};
           return (
-            <TableCell padding="p-0 bg-white min-w-[100px]">
+            <TableCell padding="p-0 bg-white min-w-[100px]" opaque>
               <Link href={`/matches/${id}`}>
                 <a className="flex items-center justify-start w-full h-full px-2">
                   <div className="relative flex items-center justify-center w-4 h-4 overflow-hidden">
