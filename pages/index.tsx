@@ -19,6 +19,8 @@ import MatchDisplayNoUser from "@/components/MatchDisplay/MatchDisplayNoUser";
 import LatestSeasonRanking, {
   RankingType,
 } from "@/components/LatestSeasonRanking";
+import MatchDisplaySkeleton from "@/components/MatchDisplay/MatchDisplaySkeleton";
+import LatestSeasonRankingSkeleton from "@/components/LatestSeasonRanking/LatestSeasonRankingSkeleton";
 
 const HomePage: NextCustomPage = () => {
   const { data: session, status } = useSession();
@@ -178,9 +180,7 @@ const HomePage: NextCustomPage = () => {
               )}
             </div>
           ) : (
-            <div className="flex items-center justify-center flex-1 my-8">
-              <Spinner />
-            </div>
+            <MatchDisplaySkeleton />
           )}
           {latestSeasonData && latestSeasonData.latestSeason ? (
             <LatestSeasonRanking
@@ -189,9 +189,7 @@ const HomePage: NextCustomPage = () => {
               handleRankingType={handleRankingType}
             />
           ) : (
-            <div className="items-center justify-center hidden overflow-scroll min-h-fit lg:flex lg:w-60 2xl:w-72 scroll-hide">
-              <Spinner />
-            </div>
+            <LatestSeasonRankingSkeleton />
           )}
         </div>
       </div>
