@@ -12,6 +12,7 @@ import {
   useMatchRatingsLazyQuery,
 } from "graphql/generated/queryTypes";
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
@@ -69,6 +70,14 @@ const MatchPage = () => {
   if (!matchData) {
     return (
       <div className="flex items-center justify-center w-full min-h-screen">
+        <Head>
+          <title>Gonerank - Matchs</title>
+          <meta
+            name="description"
+            content="Page avec les statistiques des matchs"
+          />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
         <Spinner />
       </div>
     );
@@ -76,6 +85,27 @@ const MatchPage = () => {
 
   return (
     <div>
+      <Head>
+        <title>
+          Gonerank -{" "}
+          {matchData
+            ? matchData.match.opponent +
+              " " +
+              new Date(matchData.match.date).toLocaleDateString()
+            : "Match"}
+        </title>
+        <meta
+          name="description"
+          content={`Page des statistiques pour le match contre ${
+            matchData
+              ? matchData.match.opponent +
+                ", le " +
+                new Date(matchData.match.date).toLocaleDateString()
+              : "un adversaire"
+          }`}
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Breadcrumbs
         crumbs={[
           { label: "Accueil", path: "/" },

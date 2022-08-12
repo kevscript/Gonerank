@@ -15,6 +15,7 @@ import {
   useGlobalSeasonDataLazyQuery,
 } from "graphql/generated/queryTypes";
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 
 const MatchesPage = () => {
@@ -127,6 +128,14 @@ const MatchesPage = () => {
   if (!globalSeasonData) {
     return (
       <div className="flex items-center justify-center w-full min-h-screen">
+        <Head>
+          <title>Gonerank - Matchs</title>
+          <meta
+            name="description"
+            content="Page avec les statistiques des matchs"
+          />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
         <Spinner />
       </div>
     );
@@ -135,6 +144,14 @@ const MatchesPage = () => {
   if (globalSeasonData && globalSeasonData.matches.length === 0) {
     return (
       <div className="flex items-start justify-center h-screen p-4 lg:p-8 md:items-center">
+        <Head>
+          <title>Gonerank - Matchs</title>
+          <meta
+            name="description"
+            content="Page avec les statistiques des matchs"
+          />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
         <div className="flex flex-col items-center justify-center p-4 text-center border rounded bg-marine-100 border-marine-200 text-marine-400 md:p-8 dark:bg-marine-900/10 dark:border-marine-400">
           <p>Aucun match n&apos;est encore disponible pour cette saison.</p>
         </div>
@@ -144,6 +161,14 @@ const MatchesPage = () => {
 
   return (
     <div>
+      <Head>
+        <title>Gonerank - Matchs</title>
+        <meta
+          name="description"
+          content="Page avec les statistiques des matchs"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Breadcrumbs
         crumbs={[
           { label: "Accueil", path: "/" },

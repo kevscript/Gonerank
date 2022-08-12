@@ -19,6 +19,7 @@ import Spinner from "@/components/shared/Spinner";
 import UserFilter from "@/components/shared/UserFilter";
 import SeasonSelector from "@/components/shared/SeasonSelector";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
+import Head from "next/head";
 
 const PlayerPage = () => {
   const { data: session, status } = useSession();
@@ -124,6 +125,14 @@ const PlayerPage = () => {
   if (!playerSeasonData) {
     return (
       <div className="flex items-center justify-center w-full min-h-screen">
+        <Head>
+          <title>Gonerank - Joueur</title>
+          <meta
+            name="description"
+            content={`Page des statistiques pour un joueur`}
+          />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
         <Spinner />
       </div>
     );
@@ -131,6 +140,27 @@ const PlayerPage = () => {
 
   return (
     <div>
+      <Head>
+        <title>
+          Gonerank -{" "}
+          {playerSeasonData
+            ? playerSeasonData.player.firstName +
+              " " +
+              playerSeasonData.player.lastName
+            : "Joueur"}
+        </title>
+        <meta
+          name="description"
+          content={`Page des statistiques pour ${
+            playerSeasonData
+              ? playerSeasonData.player.firstName +
+                " " +
+                playerSeasonData.player.lastName
+              : "un joueur"
+          }`}
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Breadcrumbs
         crumbs={[
           { label: "Accueil", path: "/" },

@@ -30,6 +30,7 @@ const Button = ({
       } ${disabled && "bg-gray-100 border-none text-gray-600"}`}
       onClick={onClick}
       disabled={disabled}
+      name={label}
     >
       {label}
     </button>

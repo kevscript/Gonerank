@@ -7,6 +7,9 @@ export type SwitcherProps = {
 const Switcher = ({ checked, handleToggle, id }: SwitcherProps) => {
   return (
     <label htmlFor={id} className="relative flex items-center cursor-pointer">
+      <span className="sr-only" aria-label={id}>
+        {id}
+      </span>
       <input
         onChange={handleToggle}
         defaultChecked={checked}

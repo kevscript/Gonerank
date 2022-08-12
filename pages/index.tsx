@@ -159,8 +159,11 @@ const HomePage: NextCustomPage = () => {
   return (
     <div>
       <Head>
-        <title>Gonerank - Home</title>
-        <meta name="description" content="Home page for Gonerank app" />
+        <title>Gonerank - Accueil</title>
+        <meta
+          name="description"
+          content="Page d'accueil et d'évaluation de l'application Gonerank"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-col w-full min-h-screen lg:h-screen lg:overflow-hidden">

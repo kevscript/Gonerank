@@ -16,6 +16,7 @@ import UserFilter from "@/components/shared/UserFilter";
 import SeasonSelector from "@/components/shared/SeasonSelector";
 import Spinner from "@/components/shared/Spinner";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
+import Head from "next/head";
 
 const PlayersPage = () => {
   const { data: session, status } = useSession();
@@ -205,6 +206,14 @@ const PlayersPage = () => {
   if (!stats) {
     return (
       <div className="flex items-center justify-center w-full min-h-screen">
+        <Head>
+          <title>Gonerank - Joueurs</title>
+          <meta
+            name="description"
+            content="Page avec les statistiques des joueurs"
+          />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
         <Spinner />
       </div>
     );
@@ -212,6 +221,14 @@ const PlayersPage = () => {
 
   return (
     <div>
+      <Head>
+        <title>Gonerank - Joueurs</title>
+        <meta
+          name="description"
+          content="Page avec les statistiques des joueurs"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Breadcrumbs
         crumbs={[
           { label: "Accueil", path: "/" },
