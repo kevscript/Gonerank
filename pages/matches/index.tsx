@@ -134,7 +134,6 @@ const MatchesPage = () => {
             name="description"
             content="Page avec les statistiques des matchs"
           />
-          <link rel="icon" href="/favicon.ico" />
         </Head>
         <Spinner />
       </div>
@@ -150,7 +149,6 @@ const MatchesPage = () => {
             name="description"
             content="Page avec les statistiques des matchs"
           />
-          <link rel="icon" href="/favicon.ico" />
         </Head>
         <div className="flex flex-col items-center justify-center p-4 text-center border rounded bg-marine-100 border-marine-200 text-marine-400 md:p-8 dark:bg-marine-900/10 dark:border-marine-400">
           <p>Aucun match n&apos;est encore disponible pour cette saison.</p>

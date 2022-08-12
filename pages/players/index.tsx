@@ -212,7 +212,6 @@ const PlayersPage = () => {
             name="description"
             content="Page avec les statistiques des joueurs"
           />
-          <link rel="icon" href="/favicon.ico" />
         </Head>
         <Spinner />
       </div>
@@ -227,7 +226,6 @@ const PlayersPage = () => {
           name="description"
           content="Page avec les statistiques des joueurs"
         />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <Breadcrumbs
         crumbs={[

@@ -121,6 +121,13 @@ const HomePage: NextCustomPage = () => {
   if (matchError) {
     return (
       <div className="p-4">
+        <Head>
+          <title>Gonerank - Accueil</title>
+          <meta
+            name="description"
+            content="Page d'accueil et d'évaluation de l'application Gonerank"
+          />
+        </Head>
         <div className="flex items-center justify-center w-full p-4 bg-gray-300 rounded dark:bg-slate-900">
           <p className="text-sm font-normal text-center text-gray-600 dark:text-white">
             {matchError.message}
@@ -133,6 +140,13 @@ const HomePage: NextCustomPage = () => {
   if (matchData && !matchData.displayMatch) {
     return (
       <div className="w-full h-screen p-4">
+        <Head>
+          <title>Gonerank - Accueil</title>
+          <meta
+            name="description"
+            content="Page d'accueil et d'évaluation de l'application Gonerank"
+          />
+        </Head>
         <div className="flex flex-col w-11/12 h-full mx-auto md:justify-center lg:items-center lg:w-3/5">
           <div className="relative flex items-center justify-center w-full overflow-hidden border rounded border-marine-300">
             <Image
@@ -164,7 +178,6 @@ const HomePage: NextCustomPage = () => {
           name="description"
           content="Page d'accueil et d'évaluation de l'application Gonerank"
         />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-col w-full min-h-screen lg:h-screen lg:overflow-hidden">
         <Breadcrumbs crumbs={[{ label: "Accueil", path: "/" }]} />

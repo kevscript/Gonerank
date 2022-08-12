@@ -131,7 +131,6 @@ const PlayerPage = () => {
             name="description"
             content={`Page des statistiques pour un joueur`}
           />
-          <link rel="icon" href="/favicon.ico" />
         </Head>
         <Spinner />
       </div>
@@ -159,7 +158,6 @@ const PlayerPage = () => {
               : "un joueur"
           }`}
         />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <Breadcrumbs
         crumbs={[
@@ -175,8 +173,8 @@ const PlayerPage = () => {
       />
       <div className="p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16 max-w-max">
         {playerSeasonData.player && (
-          <div className="flex flex-row items-center w-full px-4 py-4 overflow-hidden bg-white rounded dark:bg-slate-900 lg:px-8 flex-nowrap drop-shadow-sm">
-            <div className="relative flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-100 rounded-full shadow-inner lg:h-16 lg:w-16 shrink-0">
+          <div className="flex flex-row items-center w-full px-4 py-4 overflow-hidden bg-white rounded dark:bg-dark-500 lg:px-8 flex-nowrap drop-shadow-sm">
+            <div className="relative flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-100 rounded-full shadow-inner dark:bg-dark-300 lg:h-16 lg:w-16 shrink-0">
               <Image
                 src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${playerSeasonData.player.image}`}
                 alt="player avatar"
