@@ -23,6 +23,7 @@ const LoggedOutNavigation = () => {
         id="usermenu-button"
         aria-haspopup="true"
         aria-controls="usermenu"
+        name="ouvrir menu utilisateur"
         className="flex items-center justify-center xl:hidden"
       >
         <div className="relative flex items-end justify-center w-8 h-8 overflow-hidden bg-gray-300 border-2 rounded-full shadow-inner dark:bg-dark-600 dark:border-dark-300">

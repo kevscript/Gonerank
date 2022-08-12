@@ -28,6 +28,7 @@ const LoggedInNavigation = ({ user }: LoggedInNavigationProps) => {
         id="usermenu-button"
         aria-haspopup="true"
         aria-controls="usermenu"
+        name="ouvrir menu utilisateur"
         className="flex items-center xl:w-full xl:p-4 xl:hover:bg-gray-100 xl:border-t xl:border-gray-300 dark:xl:hover:bg-dark-400 dark:xl:border-dark-300"
       >
         <div className="relative flex items-end justify-center w-8 h-8 overflow-hidden rounded-full shadow-inner bg-marine-300 dark:bg-marine-600">
