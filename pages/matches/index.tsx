@@ -140,23 +140,6 @@ const MatchesPage = () => {
     );
   }
 
-  if (globalSeasonData && globalSeasonData.matches.length === 0) {
-    return (
-      <div className="flex items-start justify-center h-screen p-4 lg:p-8 md:items-center">
-        <Head>
-          <title>Gonerank - Matchs</title>
-          <meta
-            name="description"
-            content="Page avec les statistiques des matchs"
-          />
-        </Head>
-        <div className="flex flex-col items-center justify-center p-4 text-center border rounded bg-marine-100 border-marine-200 text-marine-400 md:p-8 dark:bg-marine-900/10 dark:border-marine-400">
-          <p>Aucun match n&apos;est encore disponible pour cette saison.</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div>
       <Head>
@@ -196,6 +179,16 @@ const MatchesPage = () => {
                 />
               </Draggable>
             </div>
+
+            {globalSeasonData && globalSeasonData.matches.length === 0 && (
+              <div className="flex items-center justify-center mt-4">
+                <div className="flex flex-col items-center justify-center w-full p-4 text-center border rounded bg-marine-100 border-marine-200 text-marine-400 md:p-8 dark:bg-marine-900/10 dark:border-marine-400">
+                  <p>
+                    Aucun match n&apos;est encore disponible pour cette saison.
+                  </p>
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>

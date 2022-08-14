@@ -222,6 +222,16 @@ const PlayerPage = () => {
                 />
               </Draggable>
             </div>
+
+            {stats.length === 0 && (
+              <div className="flex items-center justify-center mt-4">
+                <div className="flex flex-col items-center justify-center w-full p-4 text-center border rounded bg-marine-100 border-marine-200 text-marine-400 md:p-8 dark:bg-marine-900/10 dark:border-marine-400">
+                  <p>
+                    Aucun match n&apos;est encore disponible pour cette saison.
+                  </p>
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>
