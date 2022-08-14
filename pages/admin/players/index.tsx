@@ -110,34 +110,23 @@ const AdminPlayersPage: NextCustomPage = () => {
     {
       header: () => {
         return (
-          <TableCell>
+          <TableCell className="justify-center">
             <span className="text-sm dark:text-gray-300">country</span>
           </TableCell>
         );
       },
       accessorKey: "country",
-      cell: (info) => {
+      cell: ({ row }) => {
+        const { country, countryCode } = row.original || {};
         return (
-          <TableCell>
-            <span>{info.getValue()}</span>
-          </TableCell>
-        );
-      },
-      size: 150,
-    },
-    {
-      header: () => {
-        return (
-          <TableCell>
-            <span className="text-sm dark:text-gray-300">code</span>
-          </TableCell>
-        );
-      },
-      accessorKey: "countryCode",
-      cell: (info) => {
-        return (
-          <TableCell>
-            <span>{info.getValue()}</span>
+          <TableCell className="justify-center">
+            <Image
+              src={`https://countryflagsapi.com/png/${countryCode}`}
+              width={20}
+              height={12}
+              alt={country}
+              title={country}
+            />
           </TableCell>
         );
       },

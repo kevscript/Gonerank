@@ -2,7 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["pbs.twimg.com", "obiidvredbcigmtiepbg.supabase.co"],
+    domains: [
+      "pbs.twimg.com",
+      "obiidvredbcigmtiepbg.supabase.co",
+      "countryflagsapi.com",
+    ],
   },
 };
 

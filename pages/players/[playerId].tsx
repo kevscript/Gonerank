@@ -184,10 +184,19 @@ const PlayerPage = () => {
             </div>
             <div className="flex flex-col flex-1 ml-4">
               <h3 className="overflow-hidden truncate lg:text-xl whitespace-nowrap">{`${playerSeasonData.player.firstName} ${playerSeasonData.player.lastName}`}</h3>
-              <span className="text-sm whitespace-nowrap ">
-                {getAgeFromDate(playerSeasonData.player.birthDate)} ans,{" "}
-                {playerSeasonData.player.country}
-              </span>
+              <div className="flex items-center">
+                <span className="mr-2 text-sm whitespace-nowrap">
+                  {getAgeFromDate(playerSeasonData.player.birthDate)} ans
+                </span>
+                <Image
+                  className="drop-shadow-sm"
+                  src={`https://countryflagsapi.com/png/${playerSeasonData.player.countryCode}`}
+                  height={12}
+                  width={18}
+                  alt={playerSeasonData.player.country}
+                  title={playerSeasonData.player.country}
+                />
+              </div>
             </div>
           </div>
         )}
