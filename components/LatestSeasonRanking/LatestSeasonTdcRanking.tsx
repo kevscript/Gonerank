@@ -7,7 +7,10 @@ export type LatestSeasonTdcRankingProps = {
 
 const LatestSeasonTdcRanking = ({ stats }: LatestSeasonTdcRankingProps) => {
   return (
-    <ul className="flex flex-col w-full h-full gap-y-[2px]">
+    <ul
+      className="flex flex-col w-full h-full gap-y-[2px]"
+      data-testid="tdcRanking"
+    >
       {stats &&
         stats
           .sort((a, b) => rankingTendencySort({ xA: a, xB: b }))

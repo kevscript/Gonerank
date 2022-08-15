@@ -7,7 +7,10 @@ export type LatestSeasonAwardRankingProps = {
 
 const LatestSeasonAwardRanking = ({ stats }: LatestSeasonAwardRankingProps) => {
   return (
-    <ul className="flex flex-col w-full h-full gap-y-[2px]">
+    <ul
+      className="flex flex-col w-full h-full gap-y-[2px]"
+      data-testid="awrRanking"
+    >
       {stats &&
         stats
           .sort((a, b) => rankingAwardSort({ xA: a, xB: b }))

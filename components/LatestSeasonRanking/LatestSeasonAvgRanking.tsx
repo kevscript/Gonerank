@@ -6,7 +6,7 @@ export type LatestSeasonAvgRankingProps = {
 
 const LatestSeasonAvgRanking = ({ stats }: LatestSeasonAvgRankingProps) => {
   return (
-    <ul className="flex flex-col w-full h-full gap-y-[2px]">
+    <ul className="flex flex-col w-full h-full gap-y-[2px]" data-testid="avgRanking">
       {stats &&
         stats
           .sort((a, b) => {

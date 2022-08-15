@@ -46,6 +46,7 @@ const LatestSeasonRanking = ({
             }`}
             onClick={() => handleRankingType("average")}
           >
+            <span className="sr-only">Averages</span>
             Avg
           </button>
         </li>
@@ -58,6 +59,7 @@ const LatestSeasonRanking = ({
             }`}
             onClick={() => handleRankingType("tendency")}
           >
+            <span className="sr-only">Tendencies</span>
             Tdc
           </button>
         </li>
@@ -70,7 +72,8 @@ const LatestSeasonRanking = ({
             }`}
             onClick={() => handleRankingType("award")}
           >
-            AWR
+            <span className="sr-only">Awards</span>
+            Awr
           </button>
         </li>
       </ul>
