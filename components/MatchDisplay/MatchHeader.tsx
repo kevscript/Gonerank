@@ -33,9 +33,13 @@ const MatchHeader = ({ match }: MatchHeaderProps) => {
             !match?.home && "flex-row-reverse"
           }`}
         >
-          <span className="dark:text-marine-400">{match?.scored}</span>
+          <span className="dark:text-marine-400" title="buts marqués">
+            {match?.scored}
+          </span>
           <span className="lg:mx-2 dark:text-marine-400">:</span>
-          <span className="dark:text-marine-400">{match?.conceeded}</span>
+          <span className="dark:text-marine-400" title="buts concédés">
+            {match?.conceeded}
+          </span>
         </div>
         <span className="text-xs lg:text-base font-num">
           {new Date(match?.date).toLocaleDateString("fr-FR", {

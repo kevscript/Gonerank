@@ -40,10 +40,8 @@ const MatchInfo = ({ match, userRatings }: MatchInfoProps) => {
                 title="la note de l'utilisateur"
               >
                 <span className="text-marine-600 dark:text-marine-400 font-num xl:font-bold">
-                  {
-                    userRatings.find((r) => r.playerId === player.playerId)
-                      ?.rating
-                  }
+                  {userRatings.find((r) => r.playerId === player.playerId)
+                    ?.rating || "-"}
                 </span>
               </div>
             )}

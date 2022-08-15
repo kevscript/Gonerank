@@ -78,9 +78,14 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
                   type="button"
                   className="flex items-center justify-center w-6 h-full font-bold lg:w-8 xl:w-10 bg-marine-100 hover:bg-marine-200 text-marine-600 dark:bg-dark-400 dark:hover:bg-dark-300 dark:text-marine-400"
                   onClick={() => handleDecrement(player.playerId)}
+                  data-testid={`decrement-${player.playerId}`}
                 >
                   -
                 </button>
+                <label
+                  className="sr-only"
+                  htmlFor={`${player.playerId}`}
+                >{`${player.firstName} ${player.lastName}`}</label>
                 <input
                   {...register(`${player.playerId}`, {
                     min: 1,
@@ -89,11 +94,13 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
                   })}
                   className={`w-10 xl:w-14 xl:font-black xl:text-lg text-center font-num font-bold outline-none h-full text-marine-600 dark:text-white`}
                   readOnly={true}
+                  id={`${player.playerId}`}
                 />
                 <button
                   type="button"
                   className="flex items-center justify-center w-6 h-full font-bold lg:w-8 xl:w-10 bg-marine-100 hover:bg-marine-200 text-marine-600 dark:bg-dark-400 dark:hover:bg-dark-300 dark:text-marine-400"
                   onClick={() => handleIncrement(player.playerId)}
+                  data-testid={`increment-${player.playerId}`}
                 >
                   +
                 </button>
