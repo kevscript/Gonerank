@@ -18,7 +18,7 @@ function MyApp({ pageProps: { session, ...pageProps }, ...props }: AppProps) {
   return (
     <ApolloProvider client={apolloClient}>
       <SessionProvider session={session}>
-        <ThemeProvider attribute="class">
+        <ThemeProvider attribute="class" defaultTheme="dark">
           <div className="flex">
             <Sidebar />
             <div className="w-full min-h-screen pl-16 xl:pl-64">
