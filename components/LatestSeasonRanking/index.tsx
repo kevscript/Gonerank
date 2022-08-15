@@ -24,7 +24,7 @@ const LatestSeasonRanking = ({
 
   return (
     <div className="flex-col hidden lg:flex lg:w-60 2xl:w-72">
-      <div className="flex items-center justify-center flex-shrink-0 w-full h-16 bg-white dark:bg-dark-500 drop-shadow-sm">
+      <div className="flex flex-col items-center justify-center flex-shrink-0 w-full h-20 bg-white dark:bg-dark-500 drop-shadow-sm gap-y-1">
         <span className="text-sm font-bold uppercase">
           Classement{" "}
           <span className="font-num">
@@ -33,6 +33,11 @@ const LatestSeasonRanking = ({
               .toString()
               .substring(2)}
           </span>
+        </span>
+        <span className="text-xs">
+          {rankingType === "average" && "Moyennes"}
+          {rankingType === "tendency" && "Tendances"}
+          {rankingType === "award" && "Récompenses"}
         </span>
       </div>
 
