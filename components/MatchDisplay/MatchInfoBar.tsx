@@ -18,7 +18,7 @@ const MatchInfoBar = ({
     <>
       {authenticated === false ? (
         <button
-          className="flex items-center justify-center w-full h-10 mt-4 rounded bg-marine-50 dark:bg-marine-900/50 lg:mt-8"
+          className="flex items-center justify-center w-full h-10 p-4 mt-4 rounded bg-marine-50 dark:bg-marine-900/50 lg:mt-8"
           onClick={() => signIn("twitter")}
         >
           <span className="text-xs font-bold uppercase text-marine-600 dark:text-white">
