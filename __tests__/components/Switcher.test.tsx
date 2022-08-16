@@ -5,6 +5,7 @@ import userEvent from "@testing-library/user-event";
 describe("Switcher", () => {
   it("renders properly", () => {
     const switcherProps: SwitcherProps = {
+      id: "1",
       checked: false,
       handleToggle: () => true,
     };
@@ -17,6 +18,7 @@ describe("Switcher", () => {
   it("calls handler on click", async () => {
     const mockedHandler = jest.fn();
     const switcherProps: SwitcherProps = {
+      id: "1",
       checked: false,
       handleToggle: mockedHandler,
     };
@@ -29,6 +31,7 @@ describe("Switcher", () => {
 
   it("un/checks the checkbox on click", async () => {
     const switcherProps: SwitcherProps = {
+      id: "1",
       checked: false,
       handleToggle: () => true,
     };
