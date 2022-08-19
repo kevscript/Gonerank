@@ -129,7 +129,7 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
             {match?.stats.map((player) => (
               <li
                 key={player.playerId}
-                className="flex items-center justify-between w-48 h-8 overflow-hidden text-sm border rounded whitespace-nowrap bg-marine-50 border-marine-200 dark:bg-dark-300 dark:borde-marine-600"
+                className="flex items-center justify-between w-48 h-8 overflow-hidden text-sm border rounded whitespace-nowrap bg-marine-50 border-marine-200 dark:bg-dark-300 dark:border-marine-600"
               >
                 <span className="flex-1 ml-2">
                   {player.firstName[0] + ". " + player.lastName}
