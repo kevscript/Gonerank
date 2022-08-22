@@ -17,6 +17,7 @@ import SeasonSelector from "@/components/shared/SeasonSelector";
 import Spinner from "@/components/shared/Spinner";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import Head from "next/head";
+import VisualFilter from "@/components/shared/VisualFilter";
 
 const PlayersPage = () => {
   const { data: session, status } = useSession();
@@ -39,6 +40,11 @@ const PlayersPage = () => {
   >(null);
 
   const [mode, setMode] = useState<"user" | "all">("all");
+  const [visual, setVisual] = useState<"table" | "chart">("table");
+
+  const toggleVisual = (newVisual: "table" | "chart") => {
+    if (newVisual !== visual) setVisual(newVisual);
+  };
 
   const toggleMode = (newMode: "all" | "user") => {
     if (newMode !== mode) setMode(newMode);
@@ -236,11 +242,14 @@ const PlayersPage = () => {
 
       <div className="p-4 max-w-max md:py-0 md:px-4 lg:px-8 2xl:px-16">
         <div className="flex flex-row flex-wrap justify-between gap-2 mb-4 lg:gap-y-0">
-          {status === "authenticated" && userStats && (
-            <UserFilter toggleMode={toggleMode} mode={mode} />
-          )}
+          <div className="flex flex-row">
+            <VisualFilter toggleVisual={toggleVisual} visual={visual} />
+          </div>
 
           <div className="flex flex-row gap-x-2">
+            {status === "authenticated" && userStats && (
+              <UserFilter toggleMode={toggleMode} mode={mode} />
+            )}
             {globalSeasonData && (
               <select
                 className="h-10 px-2 text-sm border-2 border-gray-100 rounded outline-none cursor-pointer dark:border-dark-300 text-marine-600 dark:text-white dark:bg-dark-400"
@@ -272,11 +281,15 @@ const PlayersPage = () => {
           </div>
         </div>
         <div>
-          <Draggable>
-            <PlayersTable
-              data={userStats && mode === "user" ? userStats : stats}
-            />
-          </Draggable>
+          {visual === "table" && (
+            <Draggable>
+              <PlayersTable
+                data={userStats && mode === "user" ? userStats : stats}
+              />
+            </Draggable>
+          )}
+
+          {visual === "chart" && <h1>CHARTS HERE</h1>}
         </div>
       </div>
     </div>
