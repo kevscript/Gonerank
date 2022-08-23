@@ -1,4 +1,5 @@
 import {
+  GlobalSeasonDataDocument,
   useGetSeasonRatingsLazyQuery,
   useGetSeasonsQuery,
   useGetSeasonUserRatingsLazyQuery,
@@ -12,204 +13,176 @@ import {
 import Draggable from "@/components/shared/Draggable";
 import { useSession } from "next-auth/react";
 import PlayersTable from "@/components/tables/PlayersTable";
-import UserFilter from "@/components/shared/UserFilter";
-import SeasonSelector from "@/components/shared/SeasonSelector";
 import Spinner from "@/components/shared/Spinner";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import Head from "next/head";
-import VisualFilter from "@/components/shared/VisualFilter";
+import PlayersChart from "@/components/charts/PlayersChart";
+import { formatPlayersChartData } from "@/utils/charts/formatPlayersChartData";
+import PlayersFilters from "@/components/PlayersFilters";
+import { VisualFilterOptions } from "@/components/shared/VisualFilter";
+import { WhoFilterOptions } from "@/components/shared/WhoFilter";
 
 const PlayersPage = () => {
   const { data: session, status } = useSession();
 
-  const [currentSeasonId, setCurrentSeasonId] = useState("");
-  const [currentCompetitionId, setCurrentCompetitionId] = useState("all");
+  const { data: { seasons } = {} } = useGetSeasonsQuery();
+  const [
+    getGlobalSeasonData,
+    {
+      data: { clubs, competitions, matches, players } = {
+        clubs: undefined,
+        competitions: undefined,
+        matches: undefined,
+        players: undefined,
+      },
+    },
+  ] = useGlobalSeasonDataLazyQuery();
 
-  const { data: seasonsData } = useGetSeasonsQuery();
-  const [getGlobalSeasonData, { data: globalSeasonData }] =
-    useGlobalSeasonDataLazyQuery();
+  const [
+    getSeasonRatings,
+    { data: { ratings: seasonRatings } = { ratings: undefined } },
+  ] = useGetSeasonRatingsLazyQuery();
+  const [
+    getSeasonUserRatings,
+    { data: { ratings: seasonUserRatings } = { ratings: undefined } },
+  ] = useGetSeasonUserRatingsLazyQuery();
 
-  const [getSeasonRatings, { data: seasonRatings }] =
-    useGetSeasonRatingsLazyQuery();
-  const [getSeasonUserRatings, { data: seasonUserRatings }] =
-    useGetSeasonUserRatingsLazyQuery();
-
-  const [stats, setStats] = useState<FormattedPlayerSeasonStats[] | null>(null);
+  const [communityStats, setCommunityStats] = useState<
+    FormattedPlayerSeasonStats[] | null
+  >(null);
   const [userStats, setUserStats] = useState<
     FormattedPlayerSeasonStats[] | null
   >(null);
 
-  const [mode, setMode] = useState<"user" | "all">("all");
-  const [visual, setVisual] = useState<"table" | "chart">("table");
-
-  const toggleVisual = (newVisual: "table" | "chart") => {
-    if (newVisual !== visual) setVisual(newVisual);
-  };
-
-  const toggleMode = (newMode: "all" | "user") => {
-    if (newMode !== mode) setMode(newMode);
-  };
-
+  const [currentSeasonId, setCurrentSeasonId] = useState("");
   const handleSeasonChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedSeasonId = e.target.value;
     if (selectedSeasonId !== currentSeasonId) {
       setCurrentSeasonId(selectedSeasonId);
+    }
+  };
+
+  const [currentCompetitionId, setCurrentCompetitionId] = useState("all");
+  const handleCompetitionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCompetitionId = e.target.value;
+    if (selectedCompetitionId !== currentCompetitionId) {
+      setCurrentCompetitionId(selectedCompetitionId);
+    }
+  };
+
+  const [whoFilter, setWhoFilter] = useState<WhoFilterOptions>("community");
+  const toggleWho = (newWho: WhoFilterOptions) => {
+    if (newWho !== whoFilter) setWhoFilter(newWho);
+  };
+
+  const [visualFilter, setVisual] = useState<VisualFilterOptions>("table");
+  const toggleVisual = (newVisual: VisualFilterOptions) => {
+    if (newVisual !== visualFilter) setVisual(newVisual);
+  };
+
+  // setting the initial season
+  useEffect(() => {
+    if (seasons && !currentSeasonId) {
+      const latestSeason = seasons.sort((a, b) =>
+        new Date(a.startDate) < new Date(b.startDate) ? 1 : -1
+      )[0];
+
+      latestSeason && setCurrentSeasonId(latestSeason.id);
+    }
+  }, [seasons, currentSeasonId]);
+
+  // fetching season data whenever season changes
+  useEffect(() => {
+    if (currentSeasonId) {
       getGlobalSeasonData({
-        variables: { seasonId: selectedSeasonId, archived: true },
+        variables: { seasonId: currentSeasonId, archived: true },
       });
       getSeasonRatings({
-        variables: { seasonId: selectedSeasonId, archived: true },
+        variables: { seasonId: currentSeasonId, archived: true },
       });
 
       if (status === "authenticated" && session) {
         getSeasonUserRatings({
           variables: {
-            seasonId: selectedSeasonId,
+            seasonId: currentSeasonId,
             userId: session.user.id!,
             archived: true,
           },
         });
       }
     }
-  };
+  }, [
+    currentSeasonId,
+    getGlobalSeasonData,
+    getSeasonRatings,
+    getSeasonUserRatings,
+    session,
+    status,
+  ]);
 
-  const handleCompetitionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedCompetitionId = e.target.value;
-    if (
-      selectedCompetitionId !== currentCompetitionId &&
-      globalSeasonData &&
-      seasonRatings
-    ) {
-      const filteredMatchesByComp = globalSeasonData.matches.filter(
-        (m) => m.competitionId === selectedCompetitionId
-      );
-
-      setCurrentCompetitionId(selectedCompetitionId);
-      const formattedStats = formatPlayersSeasonStats({
-        players: globalSeasonData.players || [],
-        matches:
-          selectedCompetitionId === "all"
-            ? globalSeasonData.matches
-            : filteredMatchesByComp,
-        competitions: globalSeasonData.competitions || [],
-        clubs: globalSeasonData.clubs || [],
-        ratings:
-          selectedCompetitionId === "all"
-            ? seasonRatings.ratings
-            : seasonRatings.ratings.filter((r) =>
-                filteredMatchesByComp.some((m) => m.id === r.matchId)
-              ),
-      });
-      formattedStats && setStats(formattedStats);
-
-      if (status === "authenticated" && session && seasonUserRatings) {
-        const formattedUserStats = formatPlayersSeasonStats({
-          players: globalSeasonData.players || [],
-          matches:
-            selectedCompetitionId === "all"
-              ? globalSeasonData.matches
-              : filteredMatchesByComp,
-          competitions: globalSeasonData.competitions || [],
-          clubs: globalSeasonData.clubs || [],
-          ratings:
-            selectedCompetitionId === "all"
-              ? seasonUserRatings.ratings
-              : seasonUserRatings.ratings.filter((r) =>
-                  filteredMatchesByComp.some((m) => m.id === r.matchId)
-                ),
-        });
-        formattedUserStats && setUserStats(formattedUserStats);
-      }
-    }
-  };
-
+  // format community stats
   useEffect(() => {
-    if (seasonsData?.seasons) {
-      const latestSeason = seasonsData.seasons.sort((a, b) =>
-        new Date(a.startDate) < new Date(b.startDate) ? 1 : -1
-      )[0];
-      if (latestSeason) {
-        setCurrentSeasonId(latestSeason.id);
-        getGlobalSeasonData({
-          variables: { seasonId: latestSeason.id, archived: true },
-        });
-        getSeasonRatings({
-          variables: { seasonId: latestSeason.id, archived: true },
-        });
-      }
-    }
-  }, [seasonsData, getGlobalSeasonData, getSeasonRatings]);
-
-  useEffect(() => {
-    if (seasonsData?.seasons && status === "authenticated" && session) {
-      const latestSeason = seasonsData.seasons.sort((a, b) =>
-        new Date(a.startDate) < new Date(b.startDate) ? 1 : -1
-      )[0];
-      if (latestSeason) {
-        getSeasonUserRatings({
-          variables: {
-            seasonId: latestSeason.id,
-            userId: session.user.id!,
-            archived: true,
-          },
-        });
-      }
-    }
-  }, [seasonsData, getSeasonUserRatings, status, session]);
-
-  useEffect(() => {
-    if (globalSeasonData && seasonRatings) {
+    if (matches && seasonRatings) {
       const filteredMatches =
         currentCompetitionId === "all"
-          ? globalSeasonData.matches
-          : globalSeasonData.matches.filter(
-              (m) => m.competitionId === currentCompetitionId
-            );
+          ? matches
+          : matches.filter((m) => m.competitionId === currentCompetitionId);
 
       const formattedStats = formatPlayersSeasonStats({
-        players: globalSeasonData.players || [],
+        players: players || [],
         matches: filteredMatches || [],
-        competitions: globalSeasonData.competitions || [],
-        clubs: globalSeasonData.clubs || [],
+        competitions: competitions || [],
+        clubs: clubs || [],
         ratings:
           currentCompetitionId === "all"
-            ? seasonRatings.ratings
-            : seasonRatings.ratings.filter((r) =>
+            ? seasonRatings
+            : seasonRatings.filter((r) =>
                 filteredMatches.some((m) => m.id === r.matchId)
               ),
       });
-      formattedStats && setStats(formattedStats);
+      formattedStats && setCommunityStats(formattedStats);
     }
-  }, [globalSeasonData, seasonRatings, currentCompetitionId]);
+  }, [
+    matches,
+    seasonRatings,
+    currentCompetitionId,
+    players,
+    competitions,
+    clubs,
+  ]);
 
+  // format user stats
   useEffect(() => {
-    if (globalSeasonData && seasonUserRatings) {
+    if (matches && seasonUserRatings) {
       const filteredMatches =
         currentCompetitionId === "all"
-          ? globalSeasonData.matches
-          : globalSeasonData.matches.filter(
-              (m) => m.competitionId === currentCompetitionId
-            );
+          ? matches
+          : matches.filter((m) => m.competitionId === currentCompetitionId);
 
       const formattedStats = formatPlayersSeasonStats({
-        players: globalSeasonData.players || [],
+        players: players || [],
         matches: filteredMatches || [],
-        competitions: globalSeasonData.competitions || [],
-        clubs: globalSeasonData.clubs || [],
+        competitions: competitions || [],
+        clubs: clubs || [],
         ratings:
           currentCompetitionId === "all"
-            ? seasonUserRatings.ratings
-            : seasonUserRatings.ratings.filter((r) =>
+            ? seasonUserRatings
+            : seasonUserRatings.filter((r) =>
                 filteredMatches.some((m) => m.id === r.matchId)
               ),
       });
       formattedStats && setUserStats(formattedStats);
     }
-  }, [globalSeasonData, seasonUserRatings, currentCompetitionId]);
+  }, [
+    matches,
+    seasonUserRatings,
+    currentCompetitionId,
+    players,
+    competitions,
+    clubs,
+  ]);
 
-  useEffect(() => {}, []);
-
-  if (!stats) {
+  if (!communityStats) {
     return (
       <div className="flex items-center justify-center w-full min-h-screen">
         <Head>
@@ -241,55 +214,41 @@ const PlayersPage = () => {
       />
 
       <div className="p-4 max-w-max md:py-0 md:px-4 lg:px-8 2xl:px-16">
-        <div className="flex flex-row flex-wrap justify-between gap-2 mb-4 lg:gap-y-0">
-          <div className="flex flex-row">
-            <VisualFilter toggleVisual={toggleVisual} visual={visual} />
-          </div>
+        <PlayersFilters
+          isAuth={status === "authenticated" && userStats ? true : false}
+          who={whoFilter}
+          toggleWho={toggleWho}
+          visual={visualFilter}
+          toggleVisual={toggleVisual}
+          competitions={competitions}
+          seasons={seasons}
+          currentCompetitionId={currentCompetitionId}
+          currentSeasonId={currentSeasonId}
+          handleCompetitionChange={handleCompetitionChange}
+          handleSeasonChange={handleSeasonChange}
+        />
 
-          <div className="flex flex-row gap-x-2">
-            {status === "authenticated" && userStats && (
-              <UserFilter toggleMode={toggleMode} mode={mode} />
-            )}
-            {globalSeasonData && (
-              <select
-                className="h-10 px-2 text-sm border-2 border-gray-100 rounded outline-none cursor-pointer dark:border-dark-300 text-marine-600 dark:text-white dark:bg-dark-400"
-                value={currentCompetitionId}
-                onChange={handleCompetitionChange}
-              >
-                <option value="all" className="text-black dark:text-white">
-                  Toutes compétitions
-                </option>
-                {globalSeasonData.competitions.map((comp) => (
-                  <option
-                    key={comp.id}
-                    value={comp.id}
-                    className="text-black dark:text-white"
-                  >
-                    {comp.name}
-                  </option>
-                ))}
-              </select>
-            )}
-
-            {seasonsData && (
-              <SeasonSelector
-                currentSeasonId={currentSeasonId}
-                handleChange={handleSeasonChange}
-                seasons={seasonsData.seasons}
-              />
-            )}
-          </div>
-        </div>
         <div>
-          {visual === "table" && (
+          {visualFilter === "table" && (
             <Draggable>
               <PlayersTable
-                data={userStats && mode === "user" ? userStats : stats}
+                data={
+                  userStats && whoFilter === "user" ? userStats : communityStats
+                }
               />
             </Draggable>
           )}
-
-          {visual === "chart" && <h1>CHARTS HERE</h1>}
+        </div>
+        <div>
+          {visualFilter === "chart" && (
+            <PlayersChart
+              data={
+                userStats && whoFilter === "user"
+                  ? formatPlayersChartData(userStats)
+                  : formatPlayersChartData(communityStats)
+              }
+            />
+          )}
         </div>
       </div>
     </div>

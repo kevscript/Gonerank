@@ -1,6 +1,7 @@
 import ChartIcon from "../Icons/Chart";
 import TableIcon from "../Icons/Table";
-import UserIcon from "../Icons/User";
+
+export type VisualFilterOptions = "table" | "chart";
 
 export type VisualFilterProps = {
   toggleVisual: (x: "table" | "chart") => unknown;
