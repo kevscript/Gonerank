@@ -335,7 +335,8 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
       columns={columns}
       data={data}
       frozenId="player"
-      initialSortId="player"
+      initialSortId="globalAverage"
+      initialSortDesc={true}
     />
   );
 };
