@@ -18,46 +18,54 @@ export type FormattedPlayersChartData = {
   homeAverage: number;
   globalMotm: number;
   globalBotm: number;
-  matches: PlayerMatchStatsMatches[];
+  color: string;
+  matches: Array<
+    PlayerMatchStatsMatches & {
+      avgProgress: number;
+      tdcProgress: number;
+    }
+  >;
 };
 
 export const formatPlayersChartData = (data: FormattedPlayerSeasonStats[]) => {
-  const players: FormattedPlayersChartData[] = data.map((player) => {
+  const players = data.map((player) => {
     return {
       ...player,
       matches: Object.values(player.matches),
     };
   });
 
-  const x = players.map((player) => {
-    const sortedMatches = player.matches.sort((a, b) =>
-      new Date(a.date) < new Date(b.date) ? -1 : 1
-    );
+  const formatted: FormattedPlayersChartData[] = players
+    .sort((a, b) => (a.lastName > b.lastName ? 1 : -1))
+    .map((player, i) => {
+      const sortedMatches = player.matches.sort((a, b) =>
+        new Date(a.date) < new Date(b.date) ? -1 : 1
+      );
 
-    let currAvgProgress = 0;
-    let currAvgProgressQuantity = 0;
-    let currTdcProgress = 0;
+      let currAvgProgress: number = 0;
+      let currAvgProgressQuantity: number = 0;
+      let currTdcProgress: number = 0;
 
-    const matches = sortedMatches.map((m) => {
-      if (m.averageQuantity) {
-        currAvgProgress += m.averageSum / m.averageQuantity;
-        currAvgProgressQuantity++;
-        currTdcProgress += m.averageSum - 5 * m.averageQuantity;
+      const matches = sortedMatches.map((m) => {
+        if (m.averageQuantity) {
+          currAvgProgress += m.averageSum / m.averageQuantity;
+          currAvgProgressQuantity++;
+          currTdcProgress += m.averageSum - 5 * m.averageQuantity;
+        }
 
         return {
           ...m,
           avgProgress: currAvgProgress / currAvgProgressQuantity,
           tdcProgress: currTdcProgress,
         };
-      }
+      });
+
+      return {
+        ...player,
+        color: `hsla(${(360 / players.length) * i + 1}, 100%, 50%, 60%)`,
+        matches: matches,
+      };
     });
 
-    return {
-      ...player,
-      matches: matches,
-    };
-  });
-
-  console.log(x);
-  return x;
+  return formatted;
 };
