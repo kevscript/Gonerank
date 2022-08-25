@@ -18,7 +18,6 @@ export type FormattedPlayersChartData = {
   homeAverage: number;
   globalMotm: number;
   globalBotm: number;
-  color: string;
   matches: Array<
     PlayerMatchStatsMatches & {
       avgProgress: number;
@@ -62,7 +61,6 @@ export const formatPlayersChartData = (data: FormattedPlayerSeasonStats[]) => {
 
       return {
         ...player,
-        color: `hsla(${(360 / players.length) * i + 1}, 100%, 50%, 60%)`,
         matches: matches,
       };
     });

@@ -16,7 +16,10 @@ import Spinner from "@/components/shared/Spinner";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import Head from "next/head";
 import PlayersAvgLinearChart from "@/components/charts/PlayersAvgLinearChart";
-import { formatPlayersChartData } from "@/utils/charts/formatPlayersChartData";
+import {
+  formatPlayersChartData,
+  FormattedPlayersChartData,
+} from "@/utils/charts/formatPlayersChartData";
 import PlayersFilters from "@/components/PlayersFilters";
 import { VisualFilterOptions } from "@/components/shared/VisualFilter";
 import { WhoFilterOptions } from "@/components/shared/WhoFilter";
@@ -53,6 +56,12 @@ const PlayersPage = () => {
   const [userStats, setUserStats] = useState<
     FormattedPlayerSeasonStats[] | null
   >(null);
+  const [communityChartStats, setCommunityChartStats] = useState<
+    FormattedPlayersChartData[] | null
+  >(null);
+  const [userChartStats, setUserChartStats] = useState<
+    FormattedPlayersChartData[] | null
+  >(null);
 
   const [currentSeasonId, setCurrentSeasonId] = useState("");
   const handleSeasonChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -81,6 +90,14 @@ const PlayersPage = () => {
   };
 
   const [idsToShow, setIdsToShow] = useState<string[]>([]);
+  const [highlightedPlayer, setHighlightedPlayer] = useState<string | null>(
+    null
+  );
+
+  const highlightPlayer = (pId: string | null) => {
+    if (pId === null) setHighlightedPlayer(null);
+    if (typeof pId === "string") setHighlightedPlayer(pId);
+  };
 
   const togglePlayerLine = (pId: string) => {
     let newIds = [...idsToShow];
@@ -156,7 +173,11 @@ const PlayersPage = () => {
                 filteredMatches.some((m) => m.id === r.matchId)
               ),
       });
-      formattedStats && setCommunityStats(formattedStats);
+
+      if (formattedStats) {
+        setCommunityStats(formattedStats);
+        setCommunityChartStats(formatPlayersChartData(formattedStats));
+      }
     }
   }, [
     matches,
@@ -187,7 +208,11 @@ const PlayersPage = () => {
                 filteredMatches.some((m) => m.id === r.matchId)
               ),
       });
-      formattedStats && setUserStats(formattedStats);
+
+      if (formattedStats) {
+        setUserStats(formattedStats);
+        setUserChartStats(formatPlayersChartData(formattedStats));
+      }
     }
   }, [
     matches,
@@ -200,16 +225,16 @@ const PlayersPage = () => {
 
   // init player IDS to show in chart
   useEffect(() => {
-    if (communityStats && idsToShow.length === 0) {
+    if (communityChartStats && idsToShow.length === 0) {
       let ids: string[] = [];
 
-      communityStats.forEach((player, i) => {
-        i % 2 === 0 && ids.push(player.id);
+      communityChartStats.forEach((player, i) => {
+        player.matches.length > 1 && ids.push(player.id);
       });
 
       setIdsToShow(ids);
     }
-  }, [communityStats, idsToShow]);
+  }, [communityChartStats, idsToShow]);
 
   if (!communityStats) {
     return (
@@ -271,27 +296,31 @@ const PlayersPage = () => {
           </Draggable>
         )}
 
-        {visualFilter === "chart" && (
-          <div className="relative flex w-full mt-16 gap-x-16">
-            <div className="flex-1">
+        {visualFilter === "chart" && communityChartStats && (
+          <div className="relative flex w-full mt-16 gap-x-8">
+            <div className="flex-1 w-0">
               <PlayersAvgLinearChart
                 players={
-                  userStats && whoFilter === "user"
-                    ? formatPlayersChartData(userStats)
-                    : formatPlayersChartData(communityStats)
+                  userChartStats && whoFilter === "user"
+                    ? userChartStats
+                    : communityChartStats
                 }
                 idsToShow={idsToShow}
+                highlightPlayer={highlightPlayer}
+                highlightedPlayer={highlightedPlayer}
               />
             </div>
 
             <ChartPlayersList
               players={
-                userStats && whoFilter === "user"
-                  ? formatPlayersChartData(userStats)
-                  : formatPlayersChartData(communityStats)
+                userChartStats && whoFilter === "user"
+                  ? userChartStats
+                  : communityChartStats
               }
               idsToShow={idsToShow}
               togglePlayerLine={togglePlayerLine}
+              highlightedPlayer={highlightedPlayer}
+              highlightPlayer={highlightPlayer}
             />
           </div>
         )}
