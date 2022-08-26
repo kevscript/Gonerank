@@ -27,6 +27,7 @@ import ChartPlayersList from "@/components/ChartPlayersList";
 import PlayersAvgProgressChart from "@/components/charts/PlayersAvgProgressChart";
 import PlayersTdcLinearChart from "@/components/charts/PlayersTdcLinearChart";
 import PlayersTdcProgressChart from "@/components/charts/PlayersTdcProgressChart";
+import ChartContainer from "@/components/charts/ChartContainer";
 
 const PlayersPage = () => {
   const { data: session, status } = useSession();
@@ -307,8 +308,7 @@ const PlayersPage = () => {
         >
           <div className="relative flex flex-1 h-full py-8 gap-x-8">
             <div className="flex flex-col flex-1 overflow-scroll scroll-hide gap-y-16">
-              <div className="flex flex-col flex-1">
-                <h3 className="mb-4 text-center">Moyenne Linéaire</h3>
+              <ChartContainer title="Moyenne Linéaire">
                 <PlayersAvgLinearChart
                   players={
                     userChartStats && whoFilter === "user"
@@ -319,10 +319,9 @@ const PlayersPage = () => {
                   highlightPlayer={highlightPlayer}
                   highlightedPlayer={highlightedPlayer}
                 />
-              </div>
+              </ChartContainer>
 
-              <div className="flex flex-col flex-1">
-                <h3 className="mb-4 text-center">Moyenne Progressive</h3>
+              <ChartContainer title="Moyen Progressive">
                 <PlayersAvgProgressChart
                   players={
                     userChartStats && whoFilter === "user"
@@ -333,10 +332,9 @@ const PlayersPage = () => {
                   highlightPlayer={highlightPlayer}
                   highlightedPlayer={highlightedPlayer}
                 />
-              </div>
+              </ChartContainer>
 
-              <div className="flex flex-col flex-1">
-                <h3 className="mb-4 text-center">Tendance Linéaire</h3>
+              <ChartContainer title="Tendance Linéaire">
                 <PlayersTdcLinearChart
                   players={
                     userChartStats && whoFilter === "user"
@@ -347,11 +345,10 @@ const PlayersPage = () => {
                   highlightPlayer={highlightPlayer}
                   highlightedPlayer={highlightedPlayer}
                 />
-              </div>
+              </ChartContainer>
 
-              <div className="flex flex-col flex-1">
-                <h3 className="mb-4 text-center">Tendance Progressive</h3>
-                <PlayersTdcProgressChart
+              <ChartContainer title="Tendance Progressive">
+                <PlayersTdcLinearChart
                   players={
                     userChartStats && whoFilter === "user"
                       ? userChartStats
@@ -361,7 +358,7 @@ const PlayersPage = () => {
                   highlightPlayer={highlightPlayer}
                   highlightedPlayer={highlightedPlayer}
                 />
-              </div>
+              </ChartContainer>
             </div>
 
             <div className="h-full overflow-scroll scroll-hide w-72">

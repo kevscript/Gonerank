@@ -24,6 +24,8 @@ const PlayersTdcLinearChart = ({
   highlightPlayer,
   highlightedPlayer,
 }: PlayersTdcLinearChartProps) => {
+  const getTicks = () => {};
+
   const getDomain = () => {
     let highestTdc = -999999999;
     let lowestTdc = 999999999;
@@ -38,13 +40,21 @@ const PlayersTdcLinearChart = ({
       });
     });
 
+    if (Math.abs(highestTdc) > Math.abs(lowestTdc)) {
+      return [Math.floor(-Math.abs(highestTdc)), Math.ceil(highestTdc)];
+    }
+
+    if (Math.abs(highestTdc) < Math.abs(lowestTdc)) {
+      return [Math.floor(lowestTdc), Math.ceil(Math.abs(lowestTdc))];
+    }
+
     return [Math.floor(lowestTdc), Math.ceil(highestTdc)];
   };
 
   if (!players) return null;
   return (
     <ResponsiveContainer aspect={16.0 / 9.0} height="56.25%">
-      <LineChart margin={{ top: 0, right: 32, left: -32, bottom: 0 }}>
+      <LineChart margin={{ top: 0, right: 32, left: -32, bottom: 32 }}>
         <XAxis
           dataKey={(x) => {
             return new Date(x.date).toLocaleDateString("fr-FR", {
@@ -54,25 +64,32 @@ const PlayersTdcLinearChart = ({
           }}
           allowDuplicatedCategory={false}
           stroke="white"
-          tickMargin={8}
+          tickMargin={16}
+          tickLine={false}
+          padding={{ left: 4, right: 4 }}
+          minTickGap={32}
+          fontSize={14}
           axisLine={false}
         />
         <YAxis
           type="number"
           dataKey={(x) => x.averageSum - 5 * x.averageQuantity}
           domain={getDomain()}
+          ticks={[0]}
           stroke="white"
           tickMargin={8}
+          tickLine={false}
+          fontSize={14}
           axisLine={false}
         />
-        <ReferenceLine y={5} strokeDasharray="1 5" strokeOpacity="1" />
+
         <CartesianGrid
-          stroke="#ffffff"
-          strokeDasharray="1 5"
+          stroke="#666666"
+          strokeDasharray="1 2"
           strokeOpacity="1"
-          fill="#1f1f1f"
-          fillOpacity={0.4}
+          fill="#1b1b1b"
         />
+        <ReferenceLine y={0} strokeOpacity="1" stroke="#666666" />
         {players
           .filter((p) => p.matches.length > 0)
           .sort((a, b) => (a.globalAverage > b.globalAverage ? 1 : -1))
