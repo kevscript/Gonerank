@@ -82,7 +82,7 @@ const MatchTable = ({ data }: MatchTableProps) => {
             </TableCell>
           );
         },
-        size: 100,
+        size: 150,
       },
       {
         header: () => {
@@ -114,7 +114,7 @@ const MatchTable = ({ data }: MatchTableProps) => {
         sortDescFirst: true,
         sortUndefined: 1,
         sortingFn: (rowA, rowB) => numericalSort({ rowA, rowB, id: "tdc" }),
-        size: 200,
+        size: 1000,
       },
       {
         header: () => {
@@ -156,7 +156,8 @@ const MatchTable = ({ data }: MatchTableProps) => {
       columns={columns}
       data={data}
       frozenId="player"
-      initialSortId="player"
+      initialSortId="avg"
+      initialSortDesc={true}
     />
   );
 };

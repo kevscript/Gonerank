@@ -60,7 +60,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
             </TableCell>
           );
         },
-        size: 250,
+        size: 500,
       },
       {
         header: () => (
@@ -154,7 +154,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
         sortDescFirst: true,
         sortUndefined: 1,
         sortingFn: (rowA, rowB) => numericalSort({ rowA, rowB, id: "homeTdc" }),
-        size: 150,
+        size: 250,
       },
       {
         header: () => (
@@ -266,7 +266,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
         sortUndefined: 1,
         sortingFn: (rowA, rowB) =>
           numericalSort({ rowA, rowB, id: "homeAverage" }),
-        size: 150,
+        size: 250,
       },
       {
         header: () => (

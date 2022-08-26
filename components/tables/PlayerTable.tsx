@@ -66,7 +66,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
             </TableCell>
           );
         },
-        size: 250,
+        size: 400,
       },
       {
         header: () => {
@@ -115,7 +115,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
             </TableCell>
           );
         },
-        size: 100,
+        size: 150,
       },
       {
         header: () => {
@@ -134,7 +134,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
             </TableCell>
           );
         },
-        size: 100,
+        size: 150,
       },
       {
         header: () => {
@@ -153,7 +153,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
             </TableCell>
           );
         },
-        size: 100,
+        size: 150,
       },
       {
         header: () => {
@@ -172,7 +172,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
             </TableCell>
           );
         },
-        size: 100,
+        size: 150,
       },
       {
         header: () => {

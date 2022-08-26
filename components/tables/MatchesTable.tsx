@@ -59,7 +59,7 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
             </TableCell>
           );
         },
-        size: 250,
+        size: 400,
       },
       {
         header: () => {
@@ -101,14 +101,14 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
           return (
             <TableCell className="justify-center min-w-[64px]">
               {home ? (
-                <HomeIcon className="w-4 h-4" />
+                <HomeIcon className="w-4 h-4 dark:fill-gray-300" />
               ) : (
-                <PlaneIcon className="w-4 h-4" />
+                <PlaneIcon className="w-4 h-4 dark:fill-gray-300" />
               )}
             </TableCell>
           );
         },
-        size: 100,
+        size: 150,
       },
       {
         header: () => {
@@ -127,7 +127,7 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
             </TableCell>
           );
         },
-        size: 100,
+        size: 150,
       },
       {
         header: () => {
@@ -146,7 +146,7 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
             </TableCell>
           );
         },
-        size: 100,
+        size: 150,
       },
       {
         header: () => {
@@ -165,12 +165,12 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
             </TableCell>
           );
         },
-        size: 100,
+        size: 150,
       },
       {
         header: () => {
           return (
-            <TableCell className="justify-end" header>
+            <TableCell className="justify-end min-w-[80px]" header>
               <span className="text-sm dark:text-gray-300">TDC</span>
             </TableCell>
           );
@@ -200,7 +200,7 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
       {
         header: () => {
           return (
-            <TableCell className="justify-end" header>
+            <TableCell className="justify-end min-w-[80px]" header>
               <span className="text-sm dark:text-gray-300">AVG</span>
             </TableCell>
           );
