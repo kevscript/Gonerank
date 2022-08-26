@@ -1,7 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import MatchHeader, {
-  MatchHeaderProps,
-} from "@/components/MatchDisplay/MatchHeader";
+import MatchHeader, { MatchHeaderProps } from "@/components/shared/MatchHeader";
 import { getDisplayMatchMockReturnValue } from "@/mocks/getDisplayMatch";
 
 describe("MatchHeader", () => {

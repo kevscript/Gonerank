@@ -1,9 +1,12 @@
-import { GetDisplayMatchQuery } from "graphql/generated/queryTypes";
+import {
+  GetDisplayMatchQuery,
+  MatchDataQuery,
+} from "graphql/generated/queryTypes";
 import ClubIcon from "../Icons/Club";
 import LyonIcon from "../Icons/Lyon";
 
 export type MatchHeaderProps = {
-  match: GetDisplayMatchQuery["displayMatch"];
+  match: GetDisplayMatchQuery["displayMatch"] | MatchDataQuery["match"];
 };
 
 const MatchHeader = ({ match }: MatchHeaderProps) => {
