@@ -6,24 +6,24 @@ import SeasonSelector from "./shared/SeasonSelector";
 import WhoFilter, { WhoFilterOptions } from "./shared/WhoFilter";
 import VisualFilter, { VisualFilterOptions } from "./shared/VisualFilter";
 
-export type PlayersFiltersProps = {
+export type OptionsFilterProps = {
   visual: VisualFilterOptions;
   toggleVisual: (x: VisualFilterOptions) => void;
   who: WhoFilterOptions;
   toggleWho: (x: WhoFilterOptions) => void;
 
-  seasons: GetSeasonsQuery["seasons"] | undefined;
-  competitions: GlobalSeasonDataQuery["competitions"] | undefined;
+  seasons?: GetSeasonsQuery["seasons"] | undefined;
+  competitions?: GlobalSeasonDataQuery["competitions"] | undefined;
   isAuth: boolean;
 
-  currentCompetitionId: string;
-  currentSeasonId: string;
+  currentCompetitionId?: string;
+  currentSeasonId?: string;
 
-  handleCompetitionChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  handleSeasonChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleCompetitionChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleSeasonChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
-const PlayersFilters = ({
+const OptionsFilter = ({
   visual,
   toggleVisual,
   who,
@@ -35,9 +35,9 @@ const PlayersFilters = ({
   handleCompetitionChange,
   handleSeasonChange,
   isAuth,
-}: PlayersFiltersProps) => {
+}: OptionsFilterProps) => {
   return (
-    <div className="flex flex-row flex-wrap justify-between gap-2 mb-4 lg:gap-y-0">
+    <div className="flex flex-row flex-wrap justify-between gap-2 lg:gap-y-0">
       <div className="flex flex-row">
         <VisualFilter toggleVisual={toggleVisual} visual={visual} />
       </div>
@@ -45,16 +45,16 @@ const PlayersFilters = ({
       <div className="flex flex-row gap-x-2">
         {isAuth && <WhoFilter toggleWho={toggleWho} who={who} />}
 
-        <select
-          className="h-10 px-2 text-sm border-2 border-gray-100 rounded outline-none cursor-pointer dark:border-dark-300 text-marine-600 dark:text-white dark:bg-dark-400"
-          value={currentCompetitionId}
-          onChange={handleCompetitionChange}
-        >
-          <option value="all" className="text-black dark:text-white">
-            Toutes compétitions
-          </option>
-          {competitions &&
-            competitions.map((comp) => (
+        {competitions && (
+          <select
+            className="h-10 px-2 text-sm border-2 border-gray-100 rounded outline-none cursor-pointer dark:border-dark-300 text-marine-600 dark:text-white dark:bg-dark-400"
+            value={currentCompetitionId}
+            onChange={handleCompetitionChange}
+          >
+            <option value="all" className="text-black dark:text-white">
+              Toutes compétitions
+            </option>
+            {competitions.map((comp) => (
               <option
                 key={comp.id}
                 value={comp.id}
@@ -63,11 +63,12 @@ const PlayersFilters = ({
                 {comp.name}
               </option>
             ))}
-        </select>
-        {seasons && (
+          </select>
+        )}
+        {seasons && currentSeasonId && (
           <SeasonSelector
             currentSeasonId={currentSeasonId}
-            handleChange={handleSeasonChange}
+            handleChange={handleSeasonChange!}
             seasons={seasons}
           />
         )}
@@ -76,4 +77,4 @@ const PlayersFilters = ({
   );
 };
 
-export default PlayersFilters;
+export default OptionsFilter;

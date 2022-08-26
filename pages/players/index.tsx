@@ -20,7 +20,7 @@ import {
   formatPlayersChartData,
   FormattedPlayersChartData,
 } from "@/utils/charts/formatPlayersChartData";
-import PlayersFilters from "@/components/PlayersFilters";
+import OptionsFilter from "@/components/OptionsFilter";
 import { VisualFilterOptions } from "@/components/shared/VisualFilter";
 import { WhoFilterOptions } from "@/components/shared/WhoFilter";
 import ChartPlayersList from "@/components/ChartPlayersList";
@@ -272,7 +272,7 @@ const PlayersPage = () => {
       />
 
       <div className={`w-full p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16`}>
-        <PlayersFilters
+        <OptionsFilter
           isAuth={status === "authenticated" && userStats ? true : false}
           who={whoFilter}
           toggleWho={toggleWho}
@@ -288,7 +288,9 @@ const PlayersPage = () => {
       </div>
 
       {visualFilter === "table" && (
-        <div className={`w-full p-4 md:py-8 md:px-4 lg:px-8 2xl:px-16 flex-1`}>
+        <div
+          className={`w-full p-4 md:py-8 md:px-4 lg:px-8 2xl:px-16 flex-1 flex justify-center`}
+        >
           <Draggable>
             <PlayersTable
               data={

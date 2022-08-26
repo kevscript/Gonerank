@@ -16,10 +16,11 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { getAgeFromDate } from "@/utils/getAgeFromDate";
 import Spinner from "@/components/shared/Spinner";
-import UserFilter from "@/components/shared/UserFilter";
-import SeasonSelector from "@/components/shared/SeasonSelector";
+import { WhoFilterOptions } from "@/components/shared/WhoFilter";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import Head from "next/head";
+import OptionsFilter from "@/components/OptionsFilter";
+import { VisualFilterOptions } from "@/components/shared/VisualFilter";
 
 const PlayerPage = () => {
   const { data: session, status } = useSession();
@@ -29,24 +30,45 @@ const PlayerPage = () => {
   const [seasonsPlayed, setSeasonsPlayed] = useState<
     GetSeasonsQuery["seasons"] | null
   >(null);
-  const [currentSeasonId, setCurrentSeasonId] = useState("");
-  const { data: seasonsData } = useGetSeasonsQuery();
-  const [getPlayerSeasonData, { data: playerSeasonData }] =
-    usePlayerSeasonDataLazyQuery();
-  const [getPlayerSeasonRatings, { data: playerSeasonRatings }] =
-    usePlayerSeasonRatingsLazyQuery();
 
-  const [stats, setStats] = useState<FormattedPlayerSeasonStats[] | null>(null);
+  const { data: { seasons } = {} } = useGetSeasonsQuery();
+
+  const [
+    getPlayerSeasonData,
+    {
+      data: { clubs, competitions, matches, player } = {
+        clubs: undefined,
+        competitions: undefined,
+        matches: undefined,
+        player: undefined,
+      },
+    },
+  ] = usePlayerSeasonDataLazyQuery();
+
+  const [
+    getPlayerSeasonRatings,
+    { data: { ratings: playerSeasonRatings } = { ratings: undefined } },
+  ] = usePlayerSeasonRatingsLazyQuery();
+
+  const [communityStats, setCommunityStats] = useState<
+    FormattedPlayerSeasonStats[] | null
+  >(null);
   const [userStats, setUserStats] = useState<
     FormattedPlayerSeasonStats[] | null
   >(null);
 
-  const [mode, setMode] = useState<"user" | "all">("all");
-
-  const toggleMode = (newMode: "all" | "user") => {
-    if (newMode !== mode) setMode(newMode);
+  const [whoFilter, setWhoFilter] = useState<WhoFilterOptions>("community");
+  const toggleWho = (newWho: WhoFilterOptions) => {
+    if (newWho !== whoFilter) setWhoFilter(newWho);
   };
 
+  const [visualFilter, setVisualFilter] =
+    useState<VisualFilterOptions>("table");
+  const toggleVisual = (newVisual: VisualFilterOptions) => {
+    if (newVisual !== visualFilter) setVisualFilter(newVisual);
+  };
+
+  const [currentSeasonId, setCurrentSeasonId] = useState("");
   const handleSeasonChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedSeasonId = e.target.value;
     if (selectedSeasonId !== currentSeasonId) {
@@ -54,10 +76,18 @@ const PlayerPage = () => {
     }
   };
 
-  // init seasons where player played
+  const [currentCompetitionId, setCurrentCompetitionId] = useState("all");
+  const handleCompetitionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCompetitionId = e.target.value;
+    if (selectedCompetitionId !== currentCompetitionId) {
+      setCurrentCompetitionId(selectedCompetitionId);
+    }
+  };
+
+  // setting the initial season
   useEffect(() => {
-    if (seasonsData?.seasons) {
-      const playedSeasons = seasonsData.seasons.filter((s) =>
+    if (seasons && !currentSeasonId) {
+      const playedSeasons = seasons.filter((s) =>
         s.players.some((p) => p.playerId === (playerId as string))
       );
 
@@ -70,9 +100,9 @@ const PlayerPage = () => {
         latestSeason && setCurrentSeasonId(latestSeason.id);
       }
     }
-  }, [seasonsData, playerId]);
+  }, [seasons, currentSeasonId, playerId]);
 
-  // fetch all the data and ratings in the player season
+  // fetching data whenever season changes
   useEffect(() => {
     if (currentSeasonId && playerId) {
       getPlayerSeasonData({
@@ -93,43 +123,74 @@ const PlayerPage = () => {
   }, [playerId, currentSeasonId, getPlayerSeasonData, getPlayerSeasonRatings]);
 
   useEffect(() => {
-    if (playerSeasonData && playerSeasonRatings) {
+    if (matches && playerSeasonRatings) {
+      const filteredMatches =
+        currentCompetitionId === "all"
+          ? matches
+          : matches.filter((m) => m.competitionId === currentCompetitionId);
+
       const formattedStats = formatPlayerSeasonStats({
-        matches: playerSeasonData.matches || [],
-        competitions: playerSeasonData.competitions || [],
-        clubs: playerSeasonData.clubs || [],
-        ratings: playerSeasonRatings.ratings,
+        matches: filteredMatches || [],
+        competitions: competitions || [],
+        clubs: clubs || [],
+        ratings:
+          currentCompetitionId === "all"
+            ? playerSeasonRatings
+            : playerSeasonRatings.filter((r) =>
+                filteredMatches.some((m) => m.id === r.matchId)
+              ),
       });
-      formattedStats && setStats(formattedStats);
+      formattedStats && setCommunityStats(formattedStats);
     }
-  }, [playerSeasonRatings, playerSeasonData]);
+  }, [playerSeasonRatings, matches, competitions, clubs, currentCompetitionId]);
 
   // if the ratings are here and a user is authenticated, filter his ratings
   useEffect(() => {
-    if (playerSeasonData && playerSeasonRatings && status === "authenticated") {
-      const currentUserRatings = playerSeasonRatings.ratings.filter(
+    if (matches && playerSeasonRatings && status === "authenticated") {
+      const currentUserRatings = playerSeasonRatings.filter(
         (r) => r.userId === session.user.id
       );
 
+      const filteredMatches =
+        currentCompetitionId === "all"
+          ? matches
+          : matches.filter((m) => m.competitionId === currentCompetitionId);
+
       const formattedStats = formatPlayerSeasonStats({
-        matches: playerSeasonData.matches || [],
-        competitions: playerSeasonData.competitions || [],
-        clubs: playerSeasonData.clubs || [],
-        ratings: currentUserRatings,
+        matches: filteredMatches || [],
+        competitions: competitions || [],
+        clubs: clubs || [],
+        ratings:
+          currentCompetitionId === "all"
+            ? currentUserRatings
+            : currentUserRatings.filter((r) =>
+                filteredMatches.some((m) => m.id === r.matchId)
+              ),
       });
 
       currentUserRatings && setUserStats(formattedStats);
     }
-  }, [playerSeasonRatings, status, session, playerSeasonData]);
+  }, [
+    playerSeasonRatings,
+    status,
+    session,
+    matches,
+    competitions,
+    clubs,
+    currentCompetitionId,
+  ]);
 
-  if (!playerSeasonData) {
+  if (!communityStats) {
     return (
       <div className="flex items-center justify-center w-full min-h-screen">
         <Head>
-          <title>Gonerank - Joueur</title>
+          <title>
+            Gonerank -{" "}
+            {player ? player.firstName + " " + player.lastName : "Joueur"}
+          </title>
           <meta
             name="description"
-            content={`Page des statistiques pour un joueur`}
+            content="Page avec les statistiques pour un joueur"
           />
         </Head>
         <Spinner />
@@ -138,24 +199,16 @@ const PlayerPage = () => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col w-full">
       <Head>
         <title>
           Gonerank -{" "}
-          {playerSeasonData
-            ? playerSeasonData.player.firstName +
-              " " +
-              playerSeasonData.player.lastName
-            : "Joueur"}
+          {player ? player.firstName + " " + player.lastName : "Joueur"}
         </title>
         <meta
           name="description"
           content={`Page des statistiques pour ${
-            playerSeasonData
-              ? playerSeasonData.player.firstName +
-                " " +
-                playerSeasonData.player.lastName
-              : "un joueur"
+            player ? player.firstName + " " + player.lastName : "un joueur"
           }`}
         />
       </Head>
@@ -164,66 +217,72 @@ const PlayerPage = () => {
           { label: "Accueil", path: "/" },
           { label: "Joueurs", path: "/players" },
           {
-            label: playerSeasonData
-              ? `${playerSeasonData.player.firstName} ${playerSeasonData.player.lastName}`
-              : "",
+            label: player ? `${player.firstName} ${player.lastName}` : "",
             path: `/players/${playerId}`,
           },
         ]}
       />
-      <div className="p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16 max-w-max">
-        {playerSeasonData.player && (
+
+      {player && (
+        <div className="w-full p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16">
           <div className="flex flex-row items-center w-full px-4 py-4 overflow-hidden bg-white rounded dark:bg-dark-500 lg:px-8 flex-nowrap drop-shadow-sm">
             <div className="relative flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-100 rounded-full shadow-inner dark:bg-dark-300 lg:h-16 lg:w-16 shrink-0">
               <Image
-                src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${playerSeasonData.player.image}`}
+                src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${player.image}`}
                 alt="player avatar"
                 layout="fill"
                 objectFit="cover"
               />
             </div>
             <div className="flex flex-col flex-1 ml-4">
-              <h3 className="overflow-hidden truncate lg:text-xl whitespace-nowrap">{`${playerSeasonData.player.firstName} ${playerSeasonData.player.lastName}`}</h3>
+              <h3 className="overflow-hidden truncate lg:text-xl whitespace-nowrap">{`${player.firstName} ${player.lastName}`}</h3>
               <div className="flex items-center">
                 <span className="mr-2 text-sm whitespace-nowrap">
-                  {getAgeFromDate(playerSeasonData.player.birthDate)} ans
+                  {getAgeFromDate(player.birthDate)} ans
                 </span>
                 <Image
                   className="drop-shadow-sm"
-                  src={`https://countryflagsapi.com/png/${playerSeasonData.player.countryCode}`}
+                  src={`https://countryflagsapi.com/png/${player.countryCode}`}
                   height={12}
                   width={18}
-                  alt={playerSeasonData.player.country}
-                  title={playerSeasonData.player.country}
+                  alt={player.country}
+                  title={player.country}
                 />
               </div>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        {stats && (
-          <>
-            <div className="flex flex-row flex-wrap justify-between mt-4 mb-4 gap-x-2 lg:mt-8">
-              {status === "authenticated" && userStats && (
-                <UserFilter toggleMode={toggleMode} mode={mode} />
-              )}
-              {seasonsPlayed && (
-                <SeasonSelector
-                  currentSeasonId={currentSeasonId}
-                  handleChange={handleSeasonChange}
-                  seasons={seasonsPlayed}
-                />
-              )}
-            </div>
-            <div>
-              <Draggable>
-                <PlayerTable
-                  data={userStats && mode === "user" ? userStats : stats}
-                />
-              </Draggable>
-            </div>
+      <div className={`w-full p-4 md:py-8 md:px-4 lg:px-8 2xl:px-16`}>
+        <OptionsFilter
+          isAuth={status === "authenticated" && userStats ? true : false}
+          who={whoFilter}
+          toggleWho={toggleWho}
+          visual={visualFilter}
+          toggleVisual={toggleVisual}
+          competitions={competitions}
+          seasons={seasons}
+          currentCompetitionId={currentCompetitionId}
+          currentSeasonId={currentSeasonId}
+          handleCompetitionChange={handleCompetitionChange}
+          handleSeasonChange={handleSeasonChange}
+        />
+      </div>
 
-            {stats.length === 0 && (
+      {visualFilter === "table" && (
+        <>
+          <div
+            className={`flex flex-col w-full p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16 flex-1 justify-center`}
+          >
+            <Draggable>
+              <PlayerTable
+                data={
+                  userStats && whoFilter === "user" ? userStats : communityStats
+                }
+              />
+            </Draggable>
+            {communityStats.length === 0 && (
               <div className="flex items-center justify-center mt-4">
                 <div className="flex flex-col items-center justify-center w-full p-4 text-center border rounded bg-marine-100 border-marine-200 text-marine-400 md:p-8 dark:bg-marine-900/10 dark:border-marine-400">
                   <p>
@@ -232,9 +291,17 @@ const PlayerPage = () => {
                 </div>
               </div>
             )}
-          </>
-        )}
-      </div>
+          </div>
+        </>
+      )}
+
+      {visualFilter === "chart" && (
+        <div
+          className={`w-full p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16 flex-1 overflow-hidden scroll-hide`}
+        >
+          Charts
+        </div>
+      )}
     </div>
   );
 };
