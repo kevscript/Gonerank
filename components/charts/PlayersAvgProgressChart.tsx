@@ -11,30 +11,28 @@ import {
 
 import { FormattedPlayersChartData } from "@/utils/charts/formatPlayersChartData";
 
-type PlayersAvgLinearChartProps = {
+type PlayersAvgProgressChartProps = {
   players: FormattedPlayersChartData[];
   idsToShow: string[];
   highlightPlayer: (id: string | null) => void;
   highlightedPlayer: string | null;
 };
 
-const PlayersAvgLinearChart = ({
+const PlayersAvgProgressChart = ({
   players,
   idsToShow,
   highlightPlayer,
   highlightedPlayer,
-}: PlayersAvgLinearChartProps) => {
+}: PlayersAvgProgressChartProps) => {
   const getDomain = () => {
     let highestAvg = 0;
     let lowestAvg = 10;
 
     players.forEach((player) => {
       player.matches.forEach((m) => {
-        if (m.averageQuantity) {
-          if (m.averageSum / m.averageQuantity > highestAvg)
-            highestAvg = m.averageSum / m.averageQuantity;
-          if (m.averageSum / m.averageQuantity < lowestAvg)
-            lowestAvg = m.averageSum / m.averageQuantity;
+        if (typeof m.avgProgress === "number") {
+          if (m.avgProgress > highestAvg) highestAvg = m.avgProgress;
+          if (m.avgProgress < lowestAvg) lowestAvg = m.avgProgress;
         }
       });
     });
@@ -60,7 +58,7 @@ const PlayersAvgLinearChart = ({
         />
         <YAxis
           type="number"
-          dataKey={(x) => x.averageSum / x.averageQuantity}
+          dataKey="avgProgress"
           domain={getDomain()}
           stroke="white"
           tickMargin={8}
@@ -82,7 +80,7 @@ const PlayersAvgLinearChart = ({
               key={player.id}
               data={player.matches}
               type="monotone"
-              dataKey={(x) => x.averageSum / x.averageQuantity}
+              dataKey="avgProgress"
               stroke={`hsla(${
                 (360 / idsToShow.length) * idsToShow.indexOf(player.id) + 1
               }, 100%, 50%, ${
@@ -146,4 +144,4 @@ const PlayersAvgLinearChart = ({
   );
 };
 
-export default PlayersAvgLinearChart;
+export default PlayersAvgProgressChart;

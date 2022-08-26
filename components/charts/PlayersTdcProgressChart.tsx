@@ -11,35 +11,33 @@ import {
 
 import { FormattedPlayersChartData } from "@/utils/charts/formatPlayersChartData";
 
-type PlayersAvgLinearChartProps = {
+type PlayersTdcProgressChartProps = {
   players: FormattedPlayersChartData[];
   idsToShow: string[];
   highlightPlayer: (id: string | null) => void;
   highlightedPlayer: string | null;
 };
 
-const PlayersAvgLinearChart = ({
+const PlayersTdcProgressChart = ({
   players,
   idsToShow,
   highlightPlayer,
   highlightedPlayer,
-}: PlayersAvgLinearChartProps) => {
+}: PlayersTdcProgressChartProps) => {
   const getDomain = () => {
-    let highestAvg = 0;
-    let lowestAvg = 10;
+    let highestTdc = -999999999;
+    let lowestTdc = 999999999;
 
     players.forEach((player) => {
       player.matches.forEach((m) => {
-        if (m.averageQuantity) {
-          if (m.averageSum / m.averageQuantity > highestAvg)
-            highestAvg = m.averageSum / m.averageQuantity;
-          if (m.averageSum / m.averageQuantity < lowestAvg)
-            lowestAvg = m.averageSum / m.averageQuantity;
+        if (typeof m.tdcProgress === "number") {
+          if (m.tdcProgress > highestTdc) highestTdc = m.tdcProgress;
+          if (m.tdcProgress < lowestTdc) lowestTdc = m.tdcProgress;
         }
       });
     });
 
-    return [Math.floor(lowestAvg), Math.ceil(highestAvg)];
+    return [Math.floor(lowestTdc), Math.ceil(highestTdc)];
   };
 
   if (!players) return null;
@@ -60,7 +58,7 @@ const PlayersAvgLinearChart = ({
         />
         <YAxis
           type="number"
-          dataKey={(x) => x.averageSum / x.averageQuantity}
+          dataKey="tdcProgress"
           domain={getDomain()}
           stroke="white"
           tickMargin={8}
@@ -82,7 +80,7 @@ const PlayersAvgLinearChart = ({
               key={player.id}
               data={player.matches}
               type="monotone"
-              dataKey={(x) => x.averageSum / x.averageQuantity}
+              dataKey="tdcProgress"
               stroke={`hsla(${
                 (360 / idsToShow.length) * idsToShow.indexOf(player.id) + 1
               }, 100%, 50%, ${
@@ -146,4 +144,4 @@ const PlayersAvgLinearChart = ({
   );
 };
 
-export default PlayersAvgLinearChart;
+export default PlayersTdcProgressChart;

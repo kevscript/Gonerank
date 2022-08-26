@@ -24,6 +24,9 @@ import PlayersFilters from "@/components/PlayersFilters";
 import { VisualFilterOptions } from "@/components/shared/VisualFilter";
 import { WhoFilterOptions } from "@/components/shared/WhoFilter";
 import ChartPlayersList from "@/components/ChartPlayersList";
+import PlayersAvgProgressChart from "@/components/charts/PlayersAvgProgressChart";
+import PlayersTdcLinearChart from "@/components/charts/PlayersTdcLinearChart";
+import PlayersTdcProgressChart from "@/components/charts/PlayersTdcProgressChart";
 
 const PlayersPage = () => {
   const { data: session, status } = useSession();
@@ -252,7 +255,7 @@ const PlayersPage = () => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col w-full h-screen">
       <Head>
         <title>Gonerank - Joueurs</title>
         <meta
@@ -260,6 +263,7 @@ const PlayersPage = () => {
           content="Page avec les statistiques des joueurs"
         />
       </Head>
+
       <Breadcrumbs
         crumbs={[
           { label: "Accueil", path: "/" },
@@ -267,11 +271,7 @@ const PlayersPage = () => {
         ]}
       />
 
-      <div
-        className={`${
-          visualFilter === "table" ? "max-w-max" : "w-full"
-        } p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16`}
-      >
+      <div className={`w-full p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16`}>
         <PlayersFilters
           isAuth={status === "authenticated" && userStats ? true : false}
           who={whoFilter}
@@ -285,8 +285,10 @@ const PlayersPage = () => {
           handleCompetitionChange={handleCompetitionChange}
           handleSeasonChange={handleSeasonChange}
         />
+      </div>
 
-        {visualFilter === "table" && (
+      {visualFilter === "table" && (
+        <div className={`w-full p-4 md:py-8 md:px-4 lg:px-8 2xl:px-16 flex-1`}>
           <Draggable>
             <PlayersTable
               data={
@@ -294,37 +296,88 @@ const PlayersPage = () => {
               }
             />
           </Draggable>
-        )}
+        </div>
+      )}
 
-        {visualFilter === "chart" && communityChartStats && (
-          <div className="relative flex w-full mt-16 gap-x-8">
-            <div className="flex-1 w-0">
-              <PlayersAvgLinearChart
+      {visualFilter === "chart" && communityChartStats && (
+        <div
+          className={`w-full p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16 flex-1 overflow-hidden scroll-hide`}
+        >
+          <div className="relative flex flex-1 h-full py-8 gap-x-8">
+            <div className="flex flex-col flex-1 overflow-scroll scroll-hide gap-y-16">
+              <div className="flex flex-col flex-1">
+                <h3 className="mb-4 text-center">Moyenne Linéaire</h3>
+                <PlayersAvgLinearChart
+                  players={
+                    userChartStats && whoFilter === "user"
+                      ? userChartStats
+                      : communityChartStats
+                  }
+                  idsToShow={idsToShow}
+                  highlightPlayer={highlightPlayer}
+                  highlightedPlayer={highlightedPlayer}
+                />
+              </div>
+
+              <div className="flex flex-col flex-1">
+                <h3 className="mb-4 text-center">Moyenne Progressive</h3>
+                <PlayersAvgProgressChart
+                  players={
+                    userChartStats && whoFilter === "user"
+                      ? userChartStats
+                      : communityChartStats
+                  }
+                  idsToShow={idsToShow}
+                  highlightPlayer={highlightPlayer}
+                  highlightedPlayer={highlightedPlayer}
+                />
+              </div>
+
+              <div className="flex flex-col flex-1">
+                <h3 className="mb-4 text-center">Tendance Linéaire</h3>
+                <PlayersTdcLinearChart
+                  players={
+                    userChartStats && whoFilter === "user"
+                      ? userChartStats
+                      : communityChartStats
+                  }
+                  idsToShow={idsToShow}
+                  highlightPlayer={highlightPlayer}
+                  highlightedPlayer={highlightedPlayer}
+                />
+              </div>
+
+              <div className="flex flex-col flex-1">
+                <h3 className="mb-4 text-center">Tendance Progressive</h3>
+                <PlayersTdcProgressChart
+                  players={
+                    userChartStats && whoFilter === "user"
+                      ? userChartStats
+                      : communityChartStats
+                  }
+                  idsToShow={idsToShow}
+                  highlightPlayer={highlightPlayer}
+                  highlightedPlayer={highlightedPlayer}
+                />
+              </div>
+            </div>
+
+            <div className="h-full overflow-scroll scroll-hide w-72">
+              <ChartPlayersList
                 players={
                   userChartStats && whoFilter === "user"
                     ? userChartStats
                     : communityChartStats
                 }
                 idsToShow={idsToShow}
-                highlightPlayer={highlightPlayer}
+                togglePlayerLine={togglePlayerLine}
                 highlightedPlayer={highlightedPlayer}
+                highlightPlayer={highlightPlayer}
               />
             </div>
-
-            <ChartPlayersList
-              players={
-                userChartStats && whoFilter === "user"
-                  ? userChartStats
-                  : communityChartStats
-              }
-              idsToShow={idsToShow}
-              togglePlayerLine={togglePlayerLine}
-              highlightedPlayer={highlightedPlayer}
-              highlightPlayer={highlightPlayer}
-            />
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
