@@ -6,6 +6,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.responsive-px {
+  @apply w-full px-4 lg:px-8 2xl:px-16;
+}
+
 .recharts-wrapper .recharts-cartesian-grid-horizontal line:last-child,
 .recharts-wrapper .recharts-cartesian-grid-horizontal line:nth-last-child(2) {
   stroke-opacity: 0;
@@ -26,6 +30,7 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
 a {
   color: inherit;
   text-decoration: none;

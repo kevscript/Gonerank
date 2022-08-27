@@ -23,7 +23,7 @@ import {
 import OptionsFilter from "@/components/OptionsFilter";
 import { VisualFilterOptions } from "@/components/shared/VisualFilter";
 import { WhoFilterOptions } from "@/components/shared/WhoFilter";
-import ChartPlayersList from "@/components/ChartPlayersList";
+import ChartPlayersList from "@/components/charts/ChartPlayersList";
 import PlayersAvgProgressChart from "@/components/charts/PlayersAvgProgressChart";
 import PlayersTdcLinearChart from "@/components/charts/PlayersTdcLinearChart";
 import PlayersTdcProgressChart from "@/components/charts/PlayersTdcProgressChart";
@@ -256,7 +256,7 @@ const PlayersPage = () => {
   }
 
   return (
-    <div className="flex flex-col w-full h-screen">
+    <div className="flex flex-col w-full h-screen responsive-px">
       <Head>
         <title>Gonerank - Joueurs</title>
         <meta
@@ -265,33 +265,31 @@ const PlayersPage = () => {
         />
       </Head>
 
-      <Breadcrumbs
-        crumbs={[
-          { label: "Accueil", path: "/" },
-          { label: "Joueurs", path: "/players" },
-        ]}
-      />
-
-      <div className={`w-full p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16`}>
-        <OptionsFilter
-          isAuth={status === "authenticated" && userStats ? true : false}
-          who={whoFilter}
-          toggleWho={toggleWho}
-          visual={visualFilter}
-          toggleVisual={toggleVisual}
-          competitions={competitions}
-          seasons={seasons}
-          currentCompetitionId={currentCompetitionId}
-          currentSeasonId={currentSeasonId}
-          handleCompetitionChange={handleCompetitionChange}
-          handleSeasonChange={handleSeasonChange}
+      <div className="hidden w-full my-8 md:flex">
+        <Breadcrumbs
+          crumbs={[
+            { label: "Accueil", path: "/" },
+            { label: "Joueurs", path: "/players" },
+          ]}
         />
       </div>
 
+      <OptionsFilter
+        isAuth={status === "authenticated" && userStats ? true : false}
+        who={whoFilter}
+        toggleWho={toggleWho}
+        visual={visualFilter}
+        toggleVisual={toggleVisual}
+        competitions={competitions}
+        seasons={seasons}
+        currentCompetitionId={currentCompetitionId}
+        currentSeasonId={currentSeasonId}
+        handleCompetitionChange={handleCompetitionChange}
+        handleSeasonChange={handleSeasonChange}
+      />
+
       {visualFilter === "table" && (
-        <div
-          className={`w-full p-4 md:py-8 md:px-4 lg:px-8 2xl:px-16 flex-1 flex justify-center`}
-        >
+        <div className="flex justify-center flex-1 w-full md:py-8">
           <Draggable>
             <PlayersTable
               data={
@@ -303,11 +301,9 @@ const PlayersPage = () => {
       )}
 
       {visualFilter === "chart" && communityChartStats && (
-        <div
-          className={`w-full p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16 flex-1 overflow-hidden scroll-hide`}
-        >
+        <div className="flex-1 w-full overflow-hidden scroll-hide">
           <div className="relative flex flex-1 h-full py-8 gap-x-8">
-            <div className="flex flex-col flex-1 overflow-scroll scroll-hide gap-y-16">
+            <div className="flex flex-col flex-1 overflow-scroll scroll-hide gap-y-8">
               <ChartContainer title="Moyenne Linéaire">
                 <PlayersAvgLinearChart
                   players={
@@ -321,7 +317,7 @@ const PlayersPage = () => {
                 />
               </ChartContainer>
 
-              <ChartContainer title="Moyen Progressive">
+              <ChartContainer title="Moyenne Progressive">
                 <PlayersAvgProgressChart
                   players={
                     userChartStats && whoFilter === "user"
@@ -361,7 +357,7 @@ const PlayersPage = () => {
               </ChartContainer>
             </div>
 
-            <div className="h-full overflow-scroll scroll-hide w-72">
+            <div className="h-full">
               <ChartPlayersList
                 players={
                   userChartStats && whoFilter === "user"

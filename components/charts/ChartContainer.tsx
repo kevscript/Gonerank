@@ -1,13 +1,18 @@
 export type ChartContainerProps = {
   title: string;
+  subtitle?: string;
   children: React.ReactNode;
 };
 
-const ChartContainer = ({ title, children }: ChartContainerProps) => {
+const ChartContainer = ({ title, subtitle, children }: ChartContainerProps) => {
   return (
-    <div className="flex flex-col w-full p-8 bg-red-600 rounded dark:bg-dark-500 drop-shadow-sm">
-      <h3 className="">{title}</h3>
-      <div className="flex-1 mt-8">{children}</div>
+    <div className="flex flex-col w-full rounded dark:bg-dark-500 drop-shadow-sm">
+      <div className="flex items-center w-full h-16 px-8 rounded-t dark:bg-dark-400">
+        <h3 className="">{title}</h3>
+        {subtitle && <p>{subtitle}</p>}
+      </div>
+
+      <div className="w-full p-8 min-h-fit">{children}</div>
     </div>
   );
 };

@@ -53,7 +53,7 @@ const PlayersTdcLinearChart = ({
 
   if (!players) return null;
   return (
-    <ResponsiveContainer aspect={16.0 / 9.0} height="56.25%">
+    <ResponsiveContainer aspect={16.0 / 8.0} height="50%">
       <LineChart margin={{ top: 0, right: 32, left: -32, bottom: 32 }}>
         <XAxis
           dataKey={(x) => {

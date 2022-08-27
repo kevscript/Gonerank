@@ -13,7 +13,7 @@ type Crumb = {
 
 const Breadcrumbs = ({ crumbs }: BreadcrumbsProps) => {
   return (
-    <div className="items-center hidden w-full md:flex flex-nowrap md:px-4 md:py-8 lg:px-8 2xl:px-16">
+    <div className="flex items-center w-full flex-nowrap">
       {crumbs &&
         crumbs.map((crumb, i) => (
           <Fragment key={crumb.label + i}>
