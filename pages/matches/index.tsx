@@ -18,6 +18,7 @@ import {
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import { LocationFilterOptions } from "@/components/filters/LocationFilter";
 
 const MatchesPage = () => {
   const { data: session, status } = useSession();
@@ -60,6 +61,16 @@ const MatchesPage = () => {
     useState<VisualFilterOptions>("table");
   const toggleVisual = (newVisual: VisualFilterOptions) => {
     if (newVisual !== visualFilter) setVisualFilter(newVisual);
+  };
+
+  const [locationFilter, setLocationFilter] =
+    useState<LocationFilterOptions>("all");
+  const toggleLocation = (newLocation: LocationFilterOptions) => {
+    if (newLocation === locationFilter) {
+      setLocationFilter("all");
+    } else {
+      setLocationFilter(newLocation);
+    }
   };
 
   const [currentSeasonId, setCurrentSeasonId] = useState("");
@@ -119,10 +130,19 @@ const MatchesPage = () => {
 
   useEffect(() => {
     if (matches && seasonRatings) {
-      const filteredMatches =
-        currentCompetitionId === "all"
-          ? matches
-          : matches.filter((m) => m.competitionId === currentCompetitionId);
+      let filteredMatches = [...matches];
+
+      if (currentCompetitionId !== "all") {
+        filteredMatches = filteredMatches.filter(
+          (m) => m.competitionId === currentCompetitionId
+        );
+      }
+
+      if (locationFilter !== "all") {
+        filteredMatches = filteredMatches.filter(
+          (m) => (m.home ? "home" : "away") === locationFilter
+        );
+      }
 
       const formattedStats = formatMatchesSeasonStats({
         players: players || [],
@@ -142,6 +162,7 @@ const MatchesPage = () => {
     clubs,
     competitions,
     currentCompetitionId,
+    locationFilter,
     matches,
     players,
     seasonRatings,
@@ -149,10 +170,19 @@ const MatchesPage = () => {
 
   useEffect(() => {
     if (matches && seasonUserRatings) {
-      const filteredMatches =
-        currentCompetitionId === "all"
-          ? matches
-          : matches.filter((m) => m.competitionId === currentCompetitionId);
+      let filteredMatches = [...matches];
+
+      if (currentCompetitionId !== "all") {
+        filteredMatches = filteredMatches.filter(
+          (m) => m.competitionId === currentCompetitionId
+        );
+      }
+
+      if (locationFilter !== "all") {
+        filteredMatches = filteredMatches.filter(
+          (m) => (m.home ? "home" : "away") === locationFilter
+        );
+      }
 
       const formattedStats = formatMatchesSeasonStats({
         players: players || [],
@@ -172,6 +202,7 @@ const MatchesPage = () => {
     clubs,
     competitions,
     currentCompetitionId,
+    locationFilter,
     matches,
     players,
     seasonUserRatings,
@@ -219,6 +250,8 @@ const MatchesPage = () => {
           toggleWho={toggleWho}
           visual={visualFilter}
           toggleVisual={toggleVisual}
+          location={locationFilter}
+          toggleLocation={toggleLocation}
           competitions={competitions}
           seasons={seasons}
           currentCompetitionId={currentCompetitionId}
@@ -229,7 +262,7 @@ const MatchesPage = () => {
       </div>
 
       {visualFilter === "table" && (
-        <div className="flex justify-center w-full md:py-8">
+        <div className="flex flex-col justify-center w-full md:py-8">
           <Draggable>
             <MatchesTable
               data={
@@ -238,12 +271,10 @@ const MatchesPage = () => {
             />
           </Draggable>
 
-          {matches && matches.length === 0 && (
+          {communityStats.length === 0 && (
             <div className="flex items-center justify-center mt-4">
               <div className="flex flex-col items-center justify-center w-full p-4 text-center border rounded bg-marine-100 border-marine-200 text-marine-400 md:p-8 dark:bg-marine-900/10 dark:border-marine-400">
-                <p>
-                  Aucun match n&apos;est encore disponible pour cette saison.
-                </p>
+                <p>Aucun match disponible avec ces critères.</p>
               </div>
             </div>
           )}

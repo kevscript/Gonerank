@@ -55,6 +55,10 @@ export const formatMatchesSeasonStats = ({
 
   let matchesStats: { [key: string]: FormattedMatchStats } = {};
 
+  if (matches.length < 1) {
+    return Object.values(matchesStats);
+  }
+
   matches.forEach((m) => {
     if (!matchesStats[m.id]) {
       matchesStats[m.id] = {
