@@ -16,6 +16,7 @@ type PlayersAvgProgressChartProps = {
   idsToShow: string[];
   highlightPlayer: (id: string | null) => void;
   highlightedPlayer: string | null;
+  theme: string;
 };
 
 const PlayersAvgProgressChart = ({
@@ -23,6 +24,7 @@ const PlayersAvgProgressChart = ({
   idsToShow,
   highlightPlayer,
   highlightedPlayer,
+  theme,
 }: PlayersAvgProgressChartProps) => {
   const getDomain = () => {
     let highestAvg = 0;
@@ -52,7 +54,7 @@ const PlayersAvgProgressChart = ({
             });
           }}
           allowDuplicatedCategory={false}
-          stroke="white"
+          stroke={theme === "dark" ? "white" : "black"}
           tickMargin={16}
           tickLine={false}
           padding={{ left: 4, right: 4 }}
@@ -65,7 +67,7 @@ const PlayersAvgProgressChart = ({
           dataKey="avgProgress"
           domain={[0, 10]}
           ticks={[1, 3, 5, 7, 9]}
-          stroke="white"
+          stroke={theme === "dark" ? "white" : "black"}
           tickMargin={8}
           tickLine={false}
           fontSize={14}
@@ -75,7 +77,7 @@ const PlayersAvgProgressChart = ({
           stroke="#666666"
           strokeDasharray="1 2"
           strokeOpacity="1"
-          fill="#1b1b1b"
+          fill={theme === "dark" ? "#1b1b1b" : "#f3f4f6"}
         />
         <ReferenceLine
           y={5}

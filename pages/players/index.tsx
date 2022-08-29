@@ -28,9 +28,12 @@ import PlayersAvgProgressChart from "@/components/charts/PlayersAvgProgressChart
 import PlayersTdcLinearChart from "@/components/charts/PlayersTdcLinearChart";
 import PlayersTdcProgressChart from "@/components/charts/PlayersTdcProgressChart";
 import ChartContainer from "@/components/charts/ChartContainer";
+import { useTheme } from "next-themes";
 
 const PlayersPage = () => {
   const { data: session, status } = useSession();
+
+  const { theme, setTheme } = useTheme();
 
   const { data: { seasons } = {} } = useGetSeasonsQuery();
   const [
@@ -316,6 +319,7 @@ const PlayersPage = () => {
                   idsToShow={idsToShow}
                   highlightPlayer={highlightPlayer}
                   highlightedPlayer={highlightedPlayer}
+                  theme={theme || "dark"}
                 />
               </ChartContainer>
 
@@ -329,6 +333,7 @@ const PlayersPage = () => {
                   idsToShow={idsToShow}
                   highlightPlayer={highlightPlayer}
                   highlightedPlayer={highlightedPlayer}
+                  theme={theme || "dark"}
                 />
               </ChartContainer>
 
@@ -342,11 +347,12 @@ const PlayersPage = () => {
                   idsToShow={idsToShow}
                   highlightPlayer={highlightPlayer}
                   highlightedPlayer={highlightedPlayer}
+                  theme={theme || "dark"}
                 />
               </ChartContainer>
 
               <ChartContainer title="Tendance Progressive">
-                <PlayersTdcLinearChart
+                <PlayersTdcProgressChart
                   players={
                     userChartStats && whoFilter === "user"
                       ? userChartStats
@@ -355,6 +361,7 @@ const PlayersPage = () => {
                   idsToShow={idsToShow}
                   highlightPlayer={highlightPlayer}
                   highlightedPlayer={highlightedPlayer}
+                  theme={theme || "dark"}
                 />
               </ChartContainer>
             </div>

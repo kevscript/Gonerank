@@ -16,7 +16,7 @@ const ChartPlayersList = ({
   highlightedPlayer,
 }: ChartPlayersListProps) => {
   return (
-    <div className="flex flex-col h-full p-4 rounded w-72 dark:bg-dark-500 drop-shadow-sm">
+    <div className="flex flex-col h-full p-4 bg-gray-100 rounded w-72 dark:bg-dark-500 drop-shadow-sm">
       <ul className="flex flex-col flex-1 w-full overflow-scroll rounded scroll-hide">
         {players
           .filter((p) => p.matches.length > 0)
@@ -31,10 +31,10 @@ const ChartPlayersList = ({
           .map((player, i) => (
             <li
               key={player.id}
-              className={`h-10 flex flex-shrink-0 items-center px-4 cursor-pointer group border-b-2 border-dark-600 ${
+              className={`h-10 flex flex-shrink-0 items-center px-4 cursor-pointer group border-b-2 border-gray-100 dark:border-dark-600 ${
                 idsToShow.includes(player.id)
-                  ? "bg-black/25 hover:bg-black/50"
-                  : "bg-dark-400"
+                  ? "bg-gray-200 hover:bg-gray-300 dark:bg-black/25 dark:hover:bg-black/50"
+                  : "dark:bg-dark-400"
               } `}
               onClick={() => togglePlayerLine(player.id)}
               onMouseEnter={() =>
@@ -53,10 +53,7 @@ const ChartPlayersList = ({
                 readOnly
               />
               <div
-                className={`w-2 h-2 rounded-full ${
-                  !idsToShow.includes(player.id) &&
-                  "border border-dark-300 group-hover:border-gray-300"
-                }`}
+                className={`w-2 h-2 rounded-full`}
                 style={{
                   background: idsToShow.includes(player.id)
                     ? `hsla(${
@@ -64,15 +61,15 @@ const ChartPlayersList = ({
                           idsToShow.indexOf(player.id) +
                         1
                       }, 100%, 50%, 90%)`
-                    : "transparent",
+                    : "#333",
                 }}
               ></div>
               <label
                 htmlFor={`p-${player.id}`}
                 className={`text-sm ml-4 pointer-events-none ${
                   idsToShow.includes(player.id)
-                    ? `text-white`
-                    : "text-gray-300 group-hover:text-white"
+                    ? `dark:text-white text-black`
+                    : "dark:text-gray-300 text-gray-600 group-hover:text-black dark:group-hover:text-white"
                 }`}
               >
                 {player.firstName} {player.lastName}

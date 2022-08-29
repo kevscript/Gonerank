@@ -6,8 +6,8 @@ export type ChartContainerProps = {
 
 const ChartContainer = ({ title, subtitle, children }: ChartContainerProps) => {
   return (
-    <div className="flex flex-col w-full rounded dark:bg-dark-500 drop-shadow-sm">
-      <div className="flex items-center w-full h-16 px-8 rounded-t dark:bg-dark-400">
+    <div className="flex flex-col w-full bg-gray-100 rounded dark:bg-dark-500 drop-shadow-sm">
+      <div className="flex items-center w-full h-16 px-8 bg-gray-200 rounded-t dark:bg-dark-400">
         <h3 className="">{title}</h3>
         {subtitle && <p>{subtitle}</p>}
       </div>
