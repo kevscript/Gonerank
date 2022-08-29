@@ -22,11 +22,23 @@ import Head from "next/head";
 import OptionsFilter from "@/components/filters/OptionsFilter";
 import { VisualFilterOptions } from "@/components/filters/VisualFilter";
 import { LocationFilterOptions } from "@/components/filters/LocationFilter";
+import {
+  formatPlayerChartData,
+  FormattedPlayerChartData,
+} from "@/utils/charts/formatPlayerChartData";
+import PlayerAvgLinearChart from "@/components/charts/PlayerAvgLinearChart";
+import { useTheme } from "next-themes";
+import ChartContainer from "@/components/charts/ChartContainer";
+import PlayerAvgProgressChart from "@/components/charts/PlayerAvgProgressChart";
+import PlayerTdcLinearChart from "@/components/charts/PlayerTdcLinearChart";
+import PlayerTdcProgressChart from "@/components/charts/PlayerTdcProgressChart";
 
 const PlayerPage = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const { playerId } = router.query;
+
+  const { theme } = useTheme();
 
   const [seasonsPlayed, setSeasonsPlayed] = useState<
     GetSeasonsQuery["seasons"] | null
@@ -56,6 +68,12 @@ const PlayerPage = () => {
   >(null);
   const [userStats, setUserStats] = useState<
     FormattedPlayerSeasonStats[] | null
+  >(null);
+  const [communityChartStats, setCommunityChartStats] = useState<
+    FormattedPlayerChartData[] | null
+  >(null);
+  const [userChartStats, setUserChartStats] = useState<
+    FormattedPlayerChartData[] | null
   >(null);
 
   const [whoFilter, setWhoFilter] = useState<WhoFilterOptions>("community");
@@ -160,7 +178,10 @@ const PlayerPage = () => {
                 filteredMatches.some((m) => m.id === r.matchId)
               ),
       });
+
       formattedStats && setCommunityStats(formattedStats);
+      formattedStats &&
+        setCommunityChartStats(formatPlayerChartData(formattedStats));
     }
   }, [
     playerSeasonRatings,
@@ -204,7 +225,10 @@ const PlayerPage = () => {
               ),
       });
 
-      currentUserRatings && setUserStats(formattedStats);
+      currentUserRatings && formattedStats && setUserStats(formattedStats);
+      currentUserRatings &&
+        formattedStats &&
+        setUserChartStats(formatPlayerChartData(formattedStats));
     }
   }, [
     playerSeasonRatings,
@@ -330,8 +354,55 @@ const PlayerPage = () => {
         </>
       )}
 
-      {visualFilter === "chart" && (
-        <div className="flex-1 w-full overflow-hidden scroll-hide">Charts</div>
+      {visualFilter === "chart" && communityChartStats && (
+        <div className="flex-1 w-full pb-8 mt-8 overflow-scroll scroll-hide">
+          <div className="grid w-full grid-cols-2 gap-4">
+            <ChartContainer title="Moyenne Linéaire">
+              <PlayerAvgLinearChart
+                highlighted={true}
+                theme={theme || "dark"}
+                matches={
+                  userChartStats && whoFilter === "user"
+                    ? userChartStats
+                    : communityChartStats
+                }
+              />
+            </ChartContainer>
+            <ChartContainer title="Moyenne Progressive">
+              <PlayerAvgProgressChart
+                highlighted={true}
+                theme={theme || "dark"}
+                matches={
+                  userChartStats && whoFilter === "user"
+                    ? userChartStats
+                    : communityChartStats
+                }
+              />
+            </ChartContainer>
+            <ChartContainer title="Tendance Linéaire">
+              <PlayerTdcLinearChart
+                highlighted={true}
+                theme={theme || "dark"}
+                matches={
+                  userChartStats && whoFilter === "user"
+                    ? userChartStats
+                    : communityChartStats
+                }
+              />
+            </ChartContainer>
+            <ChartContainer title="Tendance Progressive">
+              <PlayerTdcProgressChart
+                highlighted={true}
+                theme={theme || "dark"}
+                matches={
+                  userChartStats && whoFilter === "user"
+                    ? userChartStats
+                    : communityChartStats
+                }
+              />
+            </ChartContainer>
+          </div>
+        </div>
       )}
     </div>
   );

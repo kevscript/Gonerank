@@ -129,7 +129,7 @@ const PlayersTdcLinearChart = ({
                     return (
                       <foreignObject
                         x={Number(x) - 24}
-                        y={value! > 5 ? Number(y) + 10 : Number(y) - 36}
+                        y={value! > 0 ? Number(y) + 10 : Number(y) - 36}
                         width={48}
                         height={32}
                       >
