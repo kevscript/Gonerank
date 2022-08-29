@@ -47,6 +47,10 @@ export const formatPlayerSeasonStats = ({
 
   let playerMatchesStats: PlayerMatchStats = {};
 
+  if (matches.length < 1) {
+    return Object.values(playerMatchesStats);
+  }
+
   matches.forEach((m) => {
     if (!playerMatchesStats[m.id]) {
       playerMatchesStats[m.id] = {

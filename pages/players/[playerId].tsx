@@ -21,6 +21,7 @@ import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import Head from "next/head";
 import OptionsFilter from "@/components/filters/OptionsFilter";
 import { VisualFilterOptions } from "@/components/filters/VisualFilter";
+import { LocationFilterOptions } from "@/components/filters/LocationFilter";
 
 const PlayerPage = () => {
   const { data: session, status } = useSession();
@@ -66,6 +67,16 @@ const PlayerPage = () => {
     useState<VisualFilterOptions>("table");
   const toggleVisual = (newVisual: VisualFilterOptions) => {
     if (newVisual !== visualFilter) setVisualFilter(newVisual);
+  };
+
+  const [locationFilter, setLocationFilter] =
+    useState<LocationFilterOptions>("all");
+  const toggleLocation = (newLocation: LocationFilterOptions) => {
+    if (newLocation === locationFilter) {
+      setLocationFilter("all");
+    } else {
+      setLocationFilter(newLocation);
+    }
   };
 
   const [currentSeasonId, setCurrentSeasonId] = useState("");
@@ -124,10 +135,19 @@ const PlayerPage = () => {
 
   useEffect(() => {
     if (matches && playerSeasonRatings) {
-      const filteredMatches =
-        currentCompetitionId === "all"
-          ? matches
-          : matches.filter((m) => m.competitionId === currentCompetitionId);
+      let filteredMatches = [...matches];
+
+      if (currentCompetitionId !== "all") {
+        filteredMatches = filteredMatches.filter(
+          (m) => m.competitionId === currentCompetitionId
+        );
+      }
+
+      if (locationFilter !== "all") {
+        filteredMatches = filteredMatches.filter(
+          (m) => (m.home ? "home" : "away") === locationFilter
+        );
+      }
 
       const formattedStats = formatPlayerSeasonStats({
         matches: filteredMatches || [],
@@ -142,7 +162,14 @@ const PlayerPage = () => {
       });
       formattedStats && setCommunityStats(formattedStats);
     }
-  }, [playerSeasonRatings, matches, competitions, clubs, currentCompetitionId]);
+  }, [
+    playerSeasonRatings,
+    matches,
+    competitions,
+    clubs,
+    currentCompetitionId,
+    locationFilter,
+  ]);
 
   // if the ratings are here and a user is authenticated, filter his ratings
   useEffect(() => {
@@ -151,10 +178,19 @@ const PlayerPage = () => {
         (r) => r.userId === session.user.id
       );
 
-      const filteredMatches =
-        currentCompetitionId === "all"
-          ? matches
-          : matches.filter((m) => m.competitionId === currentCompetitionId);
+      let filteredMatches = [...matches];
+
+      if (currentCompetitionId !== "all") {
+        filteredMatches = filteredMatches.filter(
+          (m) => m.competitionId === currentCompetitionId
+        );
+      }
+
+      if (locationFilter !== "all") {
+        filteredMatches = filteredMatches.filter(
+          (m) => (m.home ? "home" : "away") === locationFilter
+        );
+      }
 
       const formattedStats = formatPlayerSeasonStats({
         matches: filteredMatches || [],
@@ -178,6 +214,7 @@ const PlayerPage = () => {
     competitions,
     clubs,
     currentCompetitionId,
+    locationFilter,
   ]);
 
   if (!communityStats) {
@@ -262,6 +299,8 @@ const PlayerPage = () => {
         toggleWho={toggleWho}
         visual={visualFilter}
         toggleVisual={toggleVisual}
+        location={locationFilter}
+        toggleLocation={toggleLocation}
         competitions={competitions}
         seasons={seasons}
         currentCompetitionId={currentCompetitionId}
@@ -272,7 +311,7 @@ const PlayerPage = () => {
 
       {visualFilter === "table" && (
         <>
-          <div className="flex justify-center w-full py-8">
+          <div className="flex flex-col justify-center w-full py-8">
             <Draggable>
               <PlayerTable
                 data={
@@ -283,9 +322,7 @@ const PlayerPage = () => {
             {communityStats.length === 0 && (
               <div className="flex items-center justify-center mt-4">
                 <div className="flex flex-col items-center justify-center w-full p-4 text-center border rounded bg-marine-100 border-marine-200 text-marine-400 md:p-8 dark:bg-marine-900/10 dark:border-marine-400">
-                  <p>
-                    Aucun match n&apos;est encore disponible pour cette saison.
-                  </p>
+                  <p>Aucun match disponible avec ces critères.</p>
                 </div>
               </div>
             )}
