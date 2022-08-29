@@ -29,6 +29,7 @@ import PlayersTdcLinearChart from "@/components/charts/PlayersTdcLinearChart";
 import PlayersTdcProgressChart from "@/components/charts/PlayersTdcProgressChart";
 import ChartContainer from "@/components/charts/ChartContainer";
 import { useTheme } from "next-themes";
+import { LocationFilterOptions } from "@/components/filters/LocationFilter";
 
 const PlayersPage = () => {
   const { data: session, status } = useSession();
@@ -91,9 +92,20 @@ const PlayersPage = () => {
     if (newWho !== whoFilter) setWhoFilter(newWho);
   };
 
-  const [visualFilter, setVisual] = useState<VisualFilterOptions>("table");
+  const [visualFilter, setVisualFilter] =
+    useState<VisualFilterOptions>("table");
   const toggleVisual = (newVisual: VisualFilterOptions) => {
-    if (newVisual !== visualFilter) setVisual(newVisual);
+    if (newVisual !== visualFilter) setVisualFilter(newVisual);
+  };
+
+  const [locationFilter, setLocationFilter] =
+    useState<LocationFilterOptions>("all");
+  const toggleLocation = (newLocation: LocationFilterOptions) => {
+    if (newLocation === locationFilter) {
+      setLocationFilter("all");
+    } else {
+      setLocationFilter(newLocation);
+    }
   };
 
   const [idsToShow, setIdsToShow] = useState<string[]>([]);
@@ -163,10 +175,19 @@ const PlayersPage = () => {
   // format community stats
   useEffect(() => {
     if (matches && seasonRatings) {
-      const filteredMatches =
-        currentCompetitionId === "all"
-          ? matches
-          : matches.filter((m) => m.competitionId === currentCompetitionId);
+      let filteredMatches = [...matches];
+
+      if (currentCompetitionId !== "all") {
+        filteredMatches = filteredMatches.filter(
+          (m) => m.competitionId === currentCompetitionId
+        );
+      }
+
+      if (locationFilter !== "all") {
+        filteredMatches = filteredMatches.filter(
+          (m) => (m.home ? "home" : "away") === locationFilter
+        );
+      }
 
       const formattedStats = formatPlayersSeasonStats({
         players: players || [],
@@ -193,15 +214,25 @@ const PlayersPage = () => {
     players,
     competitions,
     clubs,
+    locationFilter,
   ]);
 
   // format user stats
   useEffect(() => {
     if (matches && seasonUserRatings) {
-      const filteredMatches =
-        currentCompetitionId === "all"
-          ? matches
-          : matches.filter((m) => m.competitionId === currentCompetitionId);
+      let filteredMatches = [...matches];
+
+      if (currentCompetitionId !== "all") {
+        filteredMatches = filteredMatches.filter(
+          (m) => m.competitionId === currentCompetitionId
+        );
+      }
+
+      if (locationFilter !== "all") {
+        filteredMatches = filteredMatches.filter(
+          (m) => (m.home ? "home" : "away") === locationFilter
+        );
+      }
 
       const formattedStats = formatPlayersSeasonStats({
         players: players || [],
@@ -228,6 +259,7 @@ const PlayersPage = () => {
     players,
     competitions,
     clubs,
+    locationFilter,
   ]);
 
   // init player IDS to show in chart
@@ -284,6 +316,8 @@ const PlayersPage = () => {
           toggleWho={toggleWho}
           visual={visualFilter}
           toggleVisual={toggleVisual}
+          location={locationFilter}
+          toggleLocation={toggleLocation}
           competitions={competitions}
           seasons={seasons}
           currentCompetitionId={currentCompetitionId}
