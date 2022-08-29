@@ -16,11 +16,11 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { getAgeFromDate } from "@/utils/getAgeFromDate";
 import Spinner from "@/components/shared/Spinner";
-import { WhoFilterOptions } from "@/components/shared/WhoFilter";
+import { WhoFilterOptions } from "@/components/filters/WhoFilter";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import Head from "next/head";
-import OptionsFilter from "@/components/OptionsFilter";
-import { VisualFilterOptions } from "@/components/shared/VisualFilter";
+import OptionsFilter from "@/components/filters/OptionsFilter";
+import { VisualFilterOptions } from "@/components/filters/VisualFilter";
 
 const PlayerPage = () => {
   const { data: session, status } = useSession();

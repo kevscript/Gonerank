@@ -3,7 +3,7 @@ import Image from "next/image";
 import { ColumnDef } from "@tanstack/react-table";
 import UserIcon from "../Icons/User";
 import TableCell from "../shared/TableCell";
-import PublicTable from "../shared/PublicTable";
+import PublicTable from "./PublicTable";
 import Link from "next/link";
 import MatchIcon from "../Icons/Match";
 import HomeIcon from "../Icons/HomeIcon";

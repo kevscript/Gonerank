@@ -2,7 +2,7 @@ import ClubIcon from "@/components/Icons/Club";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import Draggable from "@/components/shared/Draggable";
 import Spinner from "@/components/shared/Spinner";
-import WhoFilter, { WhoFilterOptions } from "@/components/shared/WhoFilter";
+import WhoFilter, { WhoFilterOptions } from "@/components/filters/WhoFilter";
 import MatchTable from "@/components/tables/MatchTable";
 import {
   formatMatchStats,
@@ -16,9 +16,9 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import MatchHeader from "@/components/shared/MatchHeader";
-import { VisualFilterOptions } from "@/components/shared/VisualFilter";
-import OptionsFilter from "@/components/OptionsFilter";
+import MatchHeader from "@/components/MatchHeader";
+import { VisualFilterOptions } from "@/components/filters/VisualFilter";
+import OptionsFilter from "@/components/filters/OptionsFilter";
 
 const MatchPage = () => {
   const { data: session, status } = useSession();

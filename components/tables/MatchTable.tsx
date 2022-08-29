@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import UserIcon from "../Icons/User";
 import TableCell from "../shared/TableCell";
-import PublicTable from "../shared/PublicTable";
+import PublicTable from "./PublicTable";
 import RatingIcon from "../Icons/Rating";
 import MotmIcon from "../Icons/Motm";
 import BotmIcon from "../Icons/Botm";

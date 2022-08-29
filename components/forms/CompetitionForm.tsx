@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../shared/Button";
-import Input from "../shared/Input";
+import Input from "../inputs/Input";
 
 export type CompetitionFormProps = {
   onSubmit: (x: CompetitionFormInput) => unknown;

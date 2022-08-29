@@ -1,6 +1,6 @@
-import { InputProps } from "@/components/shared/Input";
+import { InputProps } from "@/components/inputs/Input";
 import { render, screen } from "@testing-library/react";
-import Input from "@/components/shared/Input";
+import Input from "@/components/inputs/Input";
 
 jest.mock("react-hook-form", () => ({
   ...jest.requireActual("react-hook-form"),

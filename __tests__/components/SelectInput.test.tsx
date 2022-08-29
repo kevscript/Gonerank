@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import SelectInput, { SelectInputProps } from "@/components/shared/SelectInput";
+import SelectInput, { SelectInputProps } from "@/components/inputs/SelectInput";
 
 jest.mock("react-hook-form", () => ({
   ...jest.requireActual("react-hook-form"),

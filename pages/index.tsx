@@ -171,7 +171,7 @@ const HomePage: NextCustomPage = () => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col w-full min-h-screen lg:h-screen lg:overflow-hidden">
       <Head>
         <title>Gonerank - Accueil</title>
         <meta
@@ -179,35 +179,33 @@ const HomePage: NextCustomPage = () => {
           content="Page d'accueil et d'évaluation de l'application Gonerank"
         />
       </Head>
-      <div className="flex flex-col w-full min-h-screen lg:h-screen lg:overflow-hidden">
-        <Breadcrumbs crumbs={[{ label: "Accueil", path: "/" }]} />
-        <div className="flex justify-between flex-1 w-full p-4 overflow-hidden gap-x-8 2xl:gap-x-16 md:pt-0 md:pb-8 lg:px-8 2xl:px-16">
-          {matchData && matchData.displayMatch ? (
-            <div className="flex flex-col flex-1 overflow-scroll min-h-fit scroll-hide">
-              {status === "authenticated" ? (
-                <MatchDisplay
-                  match={matchData.displayMatch}
-                  userRatings={userMatchRatingsData?.ratings}
-                  handleVote={handleVote}
-                  twitterText={twitterText}
-                />
-              ) : (
-                <MatchDisplayNoUser match={matchData.displayMatch} />
-              )}
-            </div>
-          ) : (
-            <MatchDisplaySkeleton />
-          )}
-          {latestSeasonData && latestSeasonData.latestSeason ? (
-            <LatestSeasonRanking
-              rankingType={rankingType}
-              season={latestSeasonData.latestSeason}
-              handleRankingType={handleRankingType}
-            />
-          ) : (
-            <LatestSeasonRankingSkeleton />
-          )}
-        </div>
+
+      <div className="flex justify-between flex-1 py-8 overflow-hidden gap-x-8 2xl:gap-x-16 responsive-px">
+        {matchData && matchData.displayMatch ? (
+          <div className="flex flex-col flex-1 overflow-scroll min-h-fit scroll-hide">
+            {status === "authenticated" ? (
+              <MatchDisplay
+                match={matchData.displayMatch}
+                userRatings={userMatchRatingsData?.ratings}
+                handleVote={handleVote}
+                twitterText={twitterText}
+              />
+            ) : (
+              <MatchDisplayNoUser match={matchData.displayMatch} />
+            )}
+          </div>
+        ) : (
+          <MatchDisplaySkeleton />
+        )}
+        {latestSeasonData && latestSeasonData.latestSeason ? (
+          <LatestSeasonRanking
+            rankingType={rankingType}
+            season={latestSeasonData.latestSeason}
+            handleRankingType={handleRankingType}
+          />
+        ) : (
+          <LatestSeasonRankingSkeleton />
+        )}
       </div>
     </div>
   );

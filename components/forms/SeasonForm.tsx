@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../shared/Button";
-import DateInput from "../shared/DateInput";
+import DateInput from "../inputs/DateInput";
 
 export type SeasonFormProps = {
   onSubmit: (x: SeasonFormInput) => unknown;

@@ -2,11 +2,11 @@ import Link from "next/link";
 import React, { useEffect, useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../shared/Button";
-import DateInput from "../shared/DateInput";
-import Input from "../shared/Input";
+import DateInput from "../inputs/DateInput";
+import Input from "../inputs/Input";
 import PhotoIcon from "../Icons/Photo";
 import useStorage from "@/hooks/useStorage";
-import SelectInput from "../shared/SelectInput";
+import SelectInput from "../inputs/SelectInput";
 
 export type PlayerFormProps = {
   onSubmit: (x: PlayerFormInput) => unknown;

@@ -15,7 +15,7 @@ import NavLink from "./NavLink";
 import GonerankLogo from "../shared/GonerankLogo";
 import Spinner from "../shared/Spinner";
 import Switcher from "../shared/Switcher";
-import ThemeSwitcher from "../shared/ThemeSwitcher";
+import ThemeSwitcher from "../ThemeSwitcher";
 
 export type NavigationType = "user" | "admin";
 

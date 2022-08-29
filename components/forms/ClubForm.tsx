@@ -2,8 +2,8 @@ import Link from "next/link";
 import React, { useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../shared/Button";
-import ColorInput from "../shared/ColorInput";
-import Input from "../shared/Input";
+import ColorInput from "../inputs/ColorInput";
+import Input from "../inputs/Input";
 
 export type ClubFormProps = {
   onSubmit: (x: ClubFormInput) => unknown;

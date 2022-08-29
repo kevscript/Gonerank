@@ -8,7 +8,7 @@ import HomeIcon from "../Icons/HomeIcon";
 import LocationIcon from "../Icons/Location";
 import PlaneIcon from "../Icons/PlaneIcon";
 import TrophyIcon from "../Icons/Trophy";
-import PublicTable from "../shared/PublicTable";
+import PublicTable from "./PublicTable";
 import TableCell from "../shared/TableCell";
 import { numericalSort } from "@/utils/numericalSort";
 import { useMemo } from "react";

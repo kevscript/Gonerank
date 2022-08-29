@@ -6,7 +6,7 @@ import LocationIcon from "@/components/Icons/Location";
 import PlaneIcon from "@/components/Icons/PlaneIcon";
 import PlayerIcon from "@/components/Icons/Player";
 import TrophyIcon from "@/components/Icons/Trophy";
-import AdminTable from "@/components/shared/AdminTable";
+import AdminTable from "@/components/tables/AdminTable";
 import Button from "@/components/shared/Button";
 import Draggable from "@/components/shared/Draggable";
 import Spinner from "@/components/shared/Spinner";

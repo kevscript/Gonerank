@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import ColorInput, { ColorInputProps } from "@/components/shared/ColorInput";
+import ColorInput, { ColorInputProps } from "@/components/inputs/ColorInput";
 
 jest.mock("react-hook-form", () => ({
   ...jest.requireActual("react-hook-form"),

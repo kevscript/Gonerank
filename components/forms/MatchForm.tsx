@@ -8,9 +8,9 @@ import Link from "next/link";
 import { useEffect, useMemo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../shared/Button";
-import DateInput from "../shared/DateInput";
-import Input from "../shared/Input";
-import SelectInput from "../shared/SelectInput";
+import DateInput from "../inputs/DateInput";
+import Input from "../inputs/Input";
+import SelectInput from "../inputs/SelectInput";
 
 export type MatchFormProps = {
   seasons: GetSeasonsQuery["seasons"] | undefined;

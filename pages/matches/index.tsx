@@ -1,9 +1,9 @@
-import OptionsFilter from "@/components/OptionsFilter";
+import OptionsFilter from "@/components/filters/OptionsFilter";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import Draggable from "@/components/shared/Draggable";
 import Spinner from "@/components/shared/Spinner";
-import { VisualFilterOptions } from "@/components/shared/VisualFilter";
-import { WhoFilterOptions } from "@/components/shared/WhoFilter";
+import { VisualFilterOptions } from "@/components/filters/VisualFilter";
+import { WhoFilterOptions } from "@/components/filters/WhoFilter";
 import MatchesTable from "@/components/tables/MatchesTable";
 import {
   formatMatchesSeasonStats,

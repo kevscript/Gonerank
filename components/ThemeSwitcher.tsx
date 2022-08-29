@@ -1,6 +1,6 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import Switcher from "./Switcher";
+import Switcher from "./shared/Switcher";
 
 const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);

@@ -2,7 +2,7 @@ import {
   GetDisplayMatchQuery,
   GetRatingsQuery,
 } from "graphql/generated/queryTypes";
-import MatchHeader from "../shared/MatchHeader";
+import MatchHeader from "../MatchHeader";
 import MatchInfo from "./MatchInfo";
 import MatchInfoBar from "./MatchInfoBar";
 import MatchVoter, { MatchFormInput } from "./MatchVoter";

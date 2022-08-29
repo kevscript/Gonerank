@@ -2,8 +2,8 @@ import {
   GetDisplayMatchQuery,
   MatchDataQuery,
 } from "graphql/generated/queryTypes";
-import ClubIcon from "../Icons/Club";
-import LyonIcon from "../Icons/Lyon";
+import ClubIcon from "./Icons/Club";
+import LyonIcon from "./Icons/Lyon";
 
 export type MatchHeaderProps = {
   match: GetDisplayMatchQuery["displayMatch"] | MatchDataQuery["match"];
@@ -19,8 +19,8 @@ const MatchHeader = ({ match }: MatchHeaderProps) => {
       <div
         className={`flex flex-col items-center justify-center xl:flex-nowrap xl:gap-4 xl:flex-1 ${
           match?.home
-            ? "xl:flex-row xl:justify-start"
-            : "xl:flex-row-reverse xl:justify-end"
+            ? "xl:flex-row xl:justify-end"
+            : "xl:flex-row-reverse xl:justify-start"
         }`}
       >
         <LyonIcon className="w-12 h-12" />
@@ -55,8 +55,8 @@ const MatchHeader = ({ match }: MatchHeaderProps) => {
       <div
         className={`flex flex-col items-center justify-center xl:flex-nowrap xl:gap-4 xl:flex-1 ${
           match?.home
-            ? "xl:flex-row-reverse xl:justify-start"
-            : "xl:flex-row xl:justify-end"
+            ? "xl:flex-row-reverse xl:justify-end"
+            : "xl:flex-row xl:justify-start"
         }`}
         title={match?.opponent.name}
       >

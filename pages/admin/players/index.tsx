@@ -1,6 +1,6 @@
 import EditIcon from "@/components/Icons/Edit";
 import UserIcon from "@/components/Icons/User";
-import AdminTable from "@/components/shared/AdminTable";
+import AdminTable from "@/components/tables/AdminTable";
 import Button from "@/components/shared/Button";
 import Draggable from "@/components/shared/Draggable";
 import Spinner from "@/components/shared/Spinner";

@@ -20,9 +20,9 @@ import {
   formatPlayersChartData,
   FormattedPlayersChartData,
 } from "@/utils/charts/formatPlayersChartData";
-import OptionsFilter from "@/components/OptionsFilter";
-import { VisualFilterOptions } from "@/components/shared/VisualFilter";
-import { WhoFilterOptions } from "@/components/shared/WhoFilter";
+import OptionsFilter from "@/components/filters/OptionsFilter";
+import { VisualFilterOptions } from "@/components/filters/VisualFilter";
+import { WhoFilterOptions } from "@/components/filters/WhoFilter";
 import ChartPlayersList from "@/components/charts/ChartPlayersList";
 import PlayersAvgProgressChart from "@/components/charts/PlayersAvgProgressChart";
 import PlayersTdcLinearChart from "@/components/charts/PlayersTdcLinearChart";
@@ -34,7 +34,7 @@ import { LocationFilterOptions } from "@/components/filters/LocationFilter";
 const PlayersPage = () => {
   const { data: session, status } = useSession();
 
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
 
   const { data: { seasons } = {} } = useGetSeasonsQuery();
   const [

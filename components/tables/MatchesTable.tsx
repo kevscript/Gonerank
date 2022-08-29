@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import ClubIcon from "@/components/Icons/Club";
 import TableCell from "../shared/TableCell";
 import Link from "next/link";
-import PublicTable from "../shared/PublicTable";
+import PublicTable from "./PublicTable";
 import CalendarIcon from "../Icons/Calendar";
 import { numericalSort } from "@/utils/numericalSort";
 import LocationIcon from "../Icons/Location";
