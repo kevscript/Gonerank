@@ -95,6 +95,9 @@ export const formatPlayersSeasonStats = ({
     }
   });
 
+  if (matches.length < 1) {
+    return Object.values(playersMatchStats);
+  }
   // compute averages
   ratings.forEach((r) => {
     // if player doesnt exist yet, create
