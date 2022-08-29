@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
-import Sidebar from "@/components/Sidebar";
+import Sidebar from "@/components/sidebar/Sidebar";
 import { NextPage } from "next";
 import AdminGuard from "@/components/AdminGuard";
 import { ApolloProvider } from "@apollo/client";

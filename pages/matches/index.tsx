@@ -193,7 +193,7 @@ const MatchesPage = () => {
   }
 
   return (
-    <div className="flex flex-col w-full h-screen">
+    <div className="flex flex-col w-full h-screen responsive-px">
       <Head>
         <title>Gonerank - Matchs</title>
         <meta
@@ -203,14 +203,16 @@ const MatchesPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Breadcrumbs
-        crumbs={[
-          { label: "Accueil", path: "/" },
-          { label: "Matchs", path: "/matches" },
-        ]}
-      />
+      <div className="hidden w-full my-8 md:flex">
+        <Breadcrumbs
+          crumbs={[
+            { label: "Accueil", path: "/" },
+            { label: "Matchs", path: "/matches" },
+          ]}
+        />
+      </div>
 
-      <div className={`w-full p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16`}>
+      <div className="my-8 md:my-0">
         <OptionsFilter
           isAuth={status === "authenticated" && userStats ? true : false}
           who={whoFilter}
@@ -227,37 +229,29 @@ const MatchesPage = () => {
       </div>
 
       {visualFilter === "table" && (
-        <div className="flex justify-center flex-1 w-full p-4 md:py-8 md:px-4 lg:px-8 2xl:px-16">
-          <>
-            <div>
-              <Draggable>
-                <MatchesTable
-                  data={
-                    userStats && whoFilter === "user"
-                      ? userStats
-                      : communityStats
-                  }
-                />
-              </Draggable>
-            </div>
+        <div className="flex justify-center w-full md:py-8">
+          <Draggable>
+            <MatchesTable
+              data={
+                userStats && whoFilter === "user" ? userStats : communityStats
+              }
+            />
+          </Draggable>
 
-            {matches && matches.length === 0 && (
-              <div className="flex items-center justify-center mt-4">
-                <div className="flex flex-col items-center justify-center w-full p-4 text-center border rounded bg-marine-100 border-marine-200 text-marine-400 md:p-8 dark:bg-marine-900/10 dark:border-marine-400">
-                  <p>
-                    Aucun match n&apos;est encore disponible pour cette saison.
-                  </p>
-                </div>
+          {matches && matches.length === 0 && (
+            <div className="flex items-center justify-center mt-4">
+              <div className="flex flex-col items-center justify-center w-full p-4 text-center border rounded bg-marine-100 border-marine-200 text-marine-400 md:p-8 dark:bg-marine-900/10 dark:border-marine-400">
+                <p>
+                  Aucun match n&apos;est encore disponible pour cette saison.
+                </p>
               </div>
-            )}
-          </>
+            </div>
+          )}
         </div>
       )}
 
       {visualFilter === "chart" && (
-        <div
-          className={`w-full p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16 flex-1 overflow-hidden scroll-hide`}
-        >
+        <div className="flex-1 w-full overflow-hidden scroll-hide">
           <h1>Charts</h1>
         </div>
       )}

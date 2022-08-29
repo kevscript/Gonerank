@@ -1,8 +1,8 @@
 import { signIn } from "next-auth/react";
 import { useRef, useState } from "react";
-import useOutsideClick from "../hooks/useOutsideClick";
-import TwitterIcon from "./Icons/Twitter";
-import UserIcon from "./Icons/User";
+import useOutsideClick from "../../hooks/useOutsideClick";
+import TwitterIcon from "../Icons/Twitter";
+import UserIcon from "../Icons/User";
 
 const LoggedOutNavigation = () => {
   const [isOpen, setIsOpen] = useState(false);

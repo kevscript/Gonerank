@@ -37,12 +37,12 @@ const OptionsFilter = ({
   isAuth,
 }: OptionsFilterProps) => {
   return (
-    <div className="flex flex-row flex-wrap justify-between gap-2 lg:gap-y-0">
+    <div className="flex flex-col flex-wrap justify-between gap-2 sm:flex-row lg:gap-y-0">
       <div className="flex flex-row">
         <VisualFilter toggleVisual={toggleVisual} visual={visual} />
       </div>
 
-      <div className="flex flex-row gap-x-2">
+      <div className="flex flex-col flex-wrap gap-2 sm:flex-row">
         {isAuth && <WhoFilter toggleWho={toggleWho} who={who} />}
 
         {competitions && (

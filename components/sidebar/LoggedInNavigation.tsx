@@ -2,9 +2,9 @@ import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import { useRef, useState } from "react";
 import Image from "next/image";
-import useOutsideClick from "../hooks/useOutsideClick";
-import SignOutIcon from "./Icons/SignOut";
-import UserIcon from "./Icons/User";
+import useOutsideClick from "../../hooks/useOutsideClick";
+import SignOutIcon from "../Icons/SignOut";
+import UserIcon from "../Icons/User";
 
 export type LoggedInNavigationProps = {
   user: Session["user"];

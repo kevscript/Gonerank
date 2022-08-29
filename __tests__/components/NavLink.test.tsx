@@ -1,6 +1,6 @@
 import { screen, render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import NavLink, { NavLinkProps } from "@/components/NavLink";
+import NavLink, { NavLinkProps } from "@/components/sidebar/NavLink";
 import React from "react";
 import MatchIcon from "@/components/Icons/Match";
 

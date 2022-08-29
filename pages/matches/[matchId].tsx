@@ -99,7 +99,7 @@ const MatchPage = () => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col w-full h-screen responsive-px">
       <Head>
         <title>
           Gonerank -{" "}
@@ -118,45 +118,43 @@ const MatchPage = () => {
           }`}
         />
       </Head>
-      <Breadcrumbs
-        crumbs={[
-          { label: "Accueil", path: "/" },
-          { label: "Matchs", path: "/matches" },
-          {
-            label: match
-              ? `${match.competition.abbreviation} - ${
-                  match.opponent.abbreviation
-                } ${new Date(match.date).toLocaleDateString("fr-FR", {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "2-digit",
-                })} ${match.home ? "[Dom]" : "[Ext]"} `
-              : "",
-            path: `/matches/${matchId}`,
-          },
-        ]}
-      />
+      <div className="hidden w-full my-8 md:flex">
+        <Breadcrumbs
+          crumbs={[
+            { label: "Accueil", path: "/" },
+            { label: "Matchs", path: "/matches" },
+            {
+              label: match
+                ? `${match.competition.abbreviation} - ${
+                    match.opponent.abbreviation
+                  } ${new Date(match.date).toLocaleDateString("fr-FR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "2-digit",
+                  })} ${match.home ? "[Dom]" : "[Ext]"} `
+                : "",
+              path: `/matches/${matchId}`,
+            },
+          ]}
+        />
+      </div>
 
       {match && (
-        <div className="w-full p-4 md:px-4 lg:px-8 2xl:px-16">
+        <div className="flex justify-center w-full my-8 md:py-8 md:my-0">
           <MatchHeader match={match} />
         </div>
       )}
 
-      <div className="w-full p-4 md:py-8 md:px-4 lg:px-8 2xl:px-16">
-        <OptionsFilter
-          isAuth={status === "authenticated" && userStats ? true : false}
-          who={whoFilter}
-          toggleWho={toggleWho}
-          visual={visualFilter}
-          toggleVisual={toggleVisual}
-        />
-      </div>
+      <OptionsFilter
+        isAuth={status === "authenticated" && userStats ? true : false}
+        who={whoFilter}
+        toggleWho={toggleWho}
+        visual={visualFilter}
+        toggleVisual={toggleVisual}
+      />
 
       {visualFilter === "table" && (
-        <div
-          className={`flex flex-col w-full p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16 flex-1 justify-center`}
-        >
+        <div className="flex justify-center w-full py-8">
           <Draggable>
             <MatchTable
               data={

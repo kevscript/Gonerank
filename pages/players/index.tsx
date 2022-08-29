@@ -274,22 +274,24 @@ const PlayersPage = () => {
         />
       </div>
 
-      <OptionsFilter
-        isAuth={status === "authenticated" && userStats ? true : false}
-        who={whoFilter}
-        toggleWho={toggleWho}
-        visual={visualFilter}
-        toggleVisual={toggleVisual}
-        competitions={competitions}
-        seasons={seasons}
-        currentCompetitionId={currentCompetitionId}
-        currentSeasonId={currentSeasonId}
-        handleCompetitionChange={handleCompetitionChange}
-        handleSeasonChange={handleSeasonChange}
-      />
+      <div className="my-8 md:my-0">
+        <OptionsFilter
+          isAuth={status === "authenticated" && userStats ? true : false}
+          who={whoFilter}
+          toggleWho={toggleWho}
+          visual={visualFilter}
+          toggleVisual={toggleVisual}
+          competitions={competitions}
+          seasons={seasons}
+          currentCompetitionId={currentCompetitionId}
+          currentSeasonId={currentSeasonId}
+          handleCompetitionChange={handleCompetitionChange}
+          handleSeasonChange={handleSeasonChange}
+        />
+      </div>
 
       {visualFilter === "table" && (
-        <div className="flex justify-center flex-1 w-full md:py-8">
+        <div className="flex justify-center w-full md:py-8">
           <Draggable>
             <PlayersTable
               data={

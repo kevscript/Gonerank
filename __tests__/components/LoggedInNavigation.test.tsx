@@ -7,7 +7,7 @@ import {
 import userEvent from "@testing-library/user-event";
 import LoggedInNavigation, {
   LoggedInNavigationProps,
-} from "@/components/LoggedInNavigation";
+} from "@/components/sidebar/LoggedInNavigation";
 import { signOut } from "next-auth/react";
 
 jest.mock("next-auth/react", () => ({

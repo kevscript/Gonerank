@@ -199,7 +199,7 @@ const PlayerPage = () => {
   }
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full h-screen responsive-px">
       <Head>
         <title>
           Gonerank -{" "}
@@ -212,19 +212,21 @@ const PlayerPage = () => {
           }`}
         />
       </Head>
-      <Breadcrumbs
-        crumbs={[
-          { label: "Accueil", path: "/" },
-          { label: "Joueurs", path: "/players" },
-          {
-            label: player ? `${player.firstName} ${player.lastName}` : "",
-            path: `/players/${playerId}`,
-          },
-        ]}
-      />
+      <div className="hidden w-full my-8 md:flex">
+        <Breadcrumbs
+          crumbs={[
+            { label: "Accueil", path: "/" },
+            { label: "Joueurs", path: "/players" },
+            {
+              label: player ? `${player.firstName} ${player.lastName}` : "",
+              path: `/players/${playerId}`,
+            },
+          ]}
+        />
+      </div>
 
       {player && (
-        <div className="w-full p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16">
+        <div className="flex justify-center w-full my-8 md:py-8 md:my-0">
           <div className="flex flex-row items-center w-full px-4 py-4 overflow-hidden bg-white rounded dark:bg-dark-500 lg:px-8 flex-nowrap drop-shadow-sm">
             <div className="relative flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-100 rounded-full shadow-inner dark:bg-dark-300 lg:h-16 lg:w-16 shrink-0">
               <Image
@@ -254,27 +256,23 @@ const PlayerPage = () => {
         </div>
       )}
 
-      <div className={`w-full p-4 md:py-8 md:px-4 lg:px-8 2xl:px-16`}>
-        <OptionsFilter
-          isAuth={status === "authenticated" && userStats ? true : false}
-          who={whoFilter}
-          toggleWho={toggleWho}
-          visual={visualFilter}
-          toggleVisual={toggleVisual}
-          competitions={competitions}
-          seasons={seasons}
-          currentCompetitionId={currentCompetitionId}
-          currentSeasonId={currentSeasonId}
-          handleCompetitionChange={handleCompetitionChange}
-          handleSeasonChange={handleSeasonChange}
-        />
-      </div>
+      <OptionsFilter
+        isAuth={status === "authenticated" && userStats ? true : false}
+        who={whoFilter}
+        toggleWho={toggleWho}
+        visual={visualFilter}
+        toggleVisual={toggleVisual}
+        competitions={competitions}
+        seasons={seasons}
+        currentCompetitionId={currentCompetitionId}
+        currentSeasonId={currentSeasonId}
+        handleCompetitionChange={handleCompetitionChange}
+        handleSeasonChange={handleSeasonChange}
+      />
 
       {visualFilter === "table" && (
         <>
-          <div
-            className={`flex flex-col w-full p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16 flex-1 justify-center`}
-          >
+          <div className="flex justify-center w-full py-8">
             <Draggable>
               <PlayerTable
                 data={
@@ -296,11 +294,7 @@ const PlayerPage = () => {
       )}
 
       {visualFilter === "chart" && (
-        <div
-          className={`w-full p-4 md:py-0 md:px-4 lg:px-8 2xl:px-16 flex-1 overflow-hidden scroll-hide`}
-        >
-          Charts
-        </div>
+        <div className="flex-1 w-full overflow-hidden scroll-hide">Charts</div>
       )}
     </div>
   );
