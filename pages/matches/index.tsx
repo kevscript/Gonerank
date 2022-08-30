@@ -19,9 +19,21 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { LocationFilterOptions } from "@/components/filters/LocationFilter";
+import {
+  formatMatchesChartData,
+  FormattedMatchesChartData,
+} from "@/utils/charts/formatMatchesChartData";
+import ChartContainer from "@/components/charts/ChartContainer";
+import MatchesAvgLinearChart from "@/components/charts/MatchesAvgLinearChart";
+import { useTheme } from "next-themes";
+import MatchesAvgProgressChart from "@/components/charts/MatchesAvgProgressChart";
+import MatchesTdcLinearChart from "@/components/charts/MatchesTdcLinearChart";
+import MatchesTdcProgressChart from "@/components/charts/MatchesTdcProgressChart";
 
 const MatchesPage = () => {
   const { data: session, status } = useSession();
+
+  const { theme } = useTheme();
 
   const { data: { seasons } = {} } = useGetSeasonsQuery();
   const [
@@ -51,6 +63,13 @@ const MatchesPage = () => {
   const [userStats, setUserStats] = useState<FormattedMatchStats[] | null>(
     null
   );
+
+  const [communityChartStats, setCommunityChartStats] = useState<
+    FormattedMatchesChartData[] | null
+  >(null);
+  const [userChartStats, setUserChartStats] = useState<
+    FormattedMatchesChartData[] | null
+  >(null);
 
   const [whoFilter, setWhoFilter] = useState<WhoFilterOptions>("community");
   const toggleWho = (newWho: WhoFilterOptions) => {
@@ -156,7 +175,11 @@ const MatchesPage = () => {
                 filteredMatches.some((m) => m.id === r.matchId)
               ),
       });
-      formattedStats && setCommunityStats(formattedStats);
+
+      if (formattedStats) {
+        setCommunityStats(formattedStats);
+        setCommunityChartStats(formatMatchesChartData(formattedStats));
+      }
     }
   }, [
     clubs,
@@ -196,7 +219,11 @@ const MatchesPage = () => {
                 filteredMatches.some((m) => m.id === r.matchId)
               ),
       });
-      formattedStats && setUserStats(formattedStats);
+
+      if (formattedStats) {
+        setUserStats(formattedStats);
+        setUserChartStats(formatMatchesChartData(formattedStats));
+      }
     }
   }, [
     clubs,
@@ -281,9 +308,54 @@ const MatchesPage = () => {
         </div>
       )}
 
-      {visualFilter === "chart" && (
-        <div className="flex-1 w-full overflow-hidden scroll-hide">
-          <h1>Charts</h1>
+      {visualFilter === "chart" && communityChartStats && (
+        <div className="flex-1 w-full pb-8 mt-8 overflow-scroll scroll-hide">
+          <div className="grid w-full grid-cols-2 gap-4">
+            <ChartContainer title="Moyenne Linéaire">
+              <MatchesAvgLinearChart
+                matches={
+                  userChartStats && whoFilter === "user"
+                    ? userChartStats
+                    : communityChartStats
+                }
+                theme={theme || "dark"}
+                highlighted={true}
+              />
+            </ChartContainer>
+            <ChartContainer title="Moyenne Progressive">
+              <MatchesAvgProgressChart
+                matches={
+                  userChartStats && whoFilter === "user"
+                    ? userChartStats
+                    : communityChartStats
+                }
+                theme={theme || "dark"}
+                highlighted={true}
+              />
+            </ChartContainer>
+            <ChartContainer title="Tendance Linéaire">
+              <MatchesTdcLinearChart
+                matches={
+                  userChartStats && whoFilter === "user"
+                    ? userChartStats
+                    : communityChartStats
+                }
+                theme={theme || "dark"}
+                highlighted={true}
+              />
+            </ChartContainer>
+            <ChartContainer title="Tendance Progressive">
+              <MatchesTdcProgressChart
+                matches={
+                  userChartStats && whoFilter === "user"
+                    ? userChartStats
+                    : communityChartStats
+                }
+                theme={theme || "dark"}
+                highlighted={true}
+              />
+            </ChartContainer>
+          </div>
         </div>
       )}
     </div>
