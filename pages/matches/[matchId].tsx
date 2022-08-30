@@ -43,12 +43,6 @@ const MatchPage = () => {
     if (newWho !== whoFilter) setWhoFilter(newWho);
   };
 
-  const [visualFilter, setVisualFilter] =
-    useState<VisualFilterOptions>("table");
-  const toggleVisual = (newVisual: VisualFilterOptions) => {
-    if (newVisual !== visualFilter) setVisualFilter(newVisual);
-  };
-
   // fetch all the data and ratings for the match
   useEffect(() => {
     if (matchId) {
@@ -149,23 +143,17 @@ const MatchPage = () => {
         isAuth={status === "authenticated" && userStats ? true : false}
         who={whoFilter}
         toggleWho={toggleWho}
-        visual={visualFilter}
-        toggleVisual={toggleVisual}
       />
 
-      {visualFilter === "table" && (
-        <div className="flex justify-center w-full py-8">
-          <Draggable>
-            <MatchTable
-              data={
-                userStats && whoFilter === "user" ? userStats : communityStats
-              }
-            />
-          </Draggable>
-        </div>
-      )}
-
-      {visualFilter === "chart" && <h1>Chart</h1>}
+      <div className="flex justify-center w-full py-8">
+        <Draggable>
+          <MatchTable
+            data={
+              userStats && whoFilter === "user" ? userStats : communityStats
+            }
+          />
+        </Draggable>
+      </div>
     </div>
   );
 };
