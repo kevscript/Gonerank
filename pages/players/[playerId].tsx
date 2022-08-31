@@ -171,12 +171,9 @@ const PlayerPage = () => {
         matches: filteredMatches || [],
         competitions: competitions || [],
         clubs: clubs || [],
-        ratings:
-          currentCompetitionId === "all"
-            ? playerSeasonRatings
-            : playerSeasonRatings.filter((r) =>
-                filteredMatches.some((m) => m.id === r.matchId)
-              ),
+        ratings: playerSeasonRatings.filter((r) =>
+          filteredMatches.some((m) => m.id === r.matchId)
+        ),
       });
 
       formattedStats && setCommunityStats(formattedStats);
@@ -217,12 +214,9 @@ const PlayerPage = () => {
         matches: filteredMatches || [],
         competitions: competitions || [],
         clubs: clubs || [],
-        ratings:
-          currentCompetitionId === "all"
-            ? currentUserRatings
-            : currentUserRatings.filter((r) =>
-                filteredMatches.some((m) => m.id === r.matchId)
-              ),
+        ratings: currentUserRatings.filter((r) =>
+          filteredMatches.some((m) => m.id === r.matchId)
+        ),
       });
 
       currentUserRatings && formattedStats && setUserStats(formattedStats);

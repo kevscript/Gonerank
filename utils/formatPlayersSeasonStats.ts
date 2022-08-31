@@ -95,9 +95,10 @@ export const formatPlayersSeasonStats = ({
     }
   });
 
-  if (matches.length < 1) {
+  if (matches.length === 0 || Object.entries(matchesById).length === 0) {
     return Object.values(playersMatchStats);
   }
+
   // compute averages
   ratings.forEach((r) => {
     // if player doesnt exist yet, create

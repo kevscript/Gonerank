@@ -194,12 +194,9 @@ const PlayersPage = () => {
         matches: filteredMatches || [],
         competitions: competitions || [],
         clubs: clubs || [],
-        ratings:
-          currentCompetitionId === "all"
-            ? seasonRatings
-            : seasonRatings.filter((r) =>
-                filteredMatches.some((m) => m.id === r.matchId)
-              ),
+        ratings: seasonRatings.filter((r) =>
+          filteredMatches.some((m) => m.id === r.matchId)
+        ),
       });
 
       if (formattedStats) {
@@ -239,12 +236,9 @@ const PlayersPage = () => {
         matches: filteredMatches || [],
         competitions: competitions || [],
         clubs: clubs || [],
-        ratings:
-          currentCompetitionId === "all"
-            ? seasonUserRatings
-            : seasonUserRatings.filter((r) =>
-                filteredMatches.some((m) => m.id === r.matchId)
-              ),
+        ratings: seasonUserRatings.filter((r) =>
+          filteredMatches.some((m) => m.id === r.matchId)
+        ),
       });
 
       if (formattedStats) {
