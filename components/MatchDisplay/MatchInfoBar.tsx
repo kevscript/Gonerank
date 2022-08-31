@@ -29,7 +29,7 @@ const MatchInfoBar = ({
       ) : (
         <>
           {archived && (
-            <div className="flex items-center justify-center w-full h-10 mt-4 rounded bg-red-50 dark:bg-red-600/10 lg:mt-8">
+            <div className="flex items-center justify-center flex-shrink-0 w-full h-10 mt-4 rounded bg-red-50 dark:bg-red-600/10 lg:mt-8">
               <span className="text-xs font-bold text-red-500 dark:text-white first-line:uppercase">
                 Les votes sont finis.
               </span>
