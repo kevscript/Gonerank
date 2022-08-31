@@ -26,7 +26,7 @@ const HomePage: NextCustomPage = () => {
   const { data: session, status } = useSession();
 
   const [twitterText, setTwitterText] = useState<string>("");
-  const [rankingType, setRankingType] = useState<RankingType>("average");
+  const [rankingType, setRankingType] = useState<RankingType>("tendency");
 
   const {
     data: matchData,
