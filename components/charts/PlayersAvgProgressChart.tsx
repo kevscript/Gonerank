@@ -141,7 +141,7 @@ const PlayersAvgProgressChart = ({
                             }, 50%, 50%, 100%)`,
                           }}
                         >
-                          {value}
+                          {Number(value).toFixed(2)}
                         </div>
                       </foreignObject>
                     );

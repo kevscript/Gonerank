@@ -112,7 +112,7 @@ const PlayerAvgLinearChart = ({
                         background: "rgba(72, 52, 247, 50%)",
                       }}
                     >
-                      {value}
+                      {Number(value).toFixed(2)}
                     </div>
                   </foreignObject>
                 );
