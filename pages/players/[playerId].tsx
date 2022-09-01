@@ -350,7 +350,7 @@ const PlayerPage = () => {
 
       {visualFilter === "chart" && communityChartStats && (
         <div className="flex-1 w-full pb-8 mt-8 overflow-scroll scroll-hide">
-          <div className="grid w-full grid-cols-2 gap-4">
+          <div className="flex flex-col w-full grid-cols-2 gap-4 lg:grid">
             <ChartContainer title="Moyenne Linéaire">
               <PlayerAvgLinearChart
                 highlighted={true}
