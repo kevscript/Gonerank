@@ -97,6 +97,7 @@ const PlayersTdcLinearChart = ({
           .sort((a, b) => (a.globalAverage > b.globalAverage ? 1 : -1))
           .map((player, i) => (
             <Line
+              connectNulls
               key={player.id}
               data={player.matches}
               type="monotone"
@@ -116,7 +117,22 @@ const PlayersTdcLinearChart = ({
               className={`${!idsToShow.includes(player.id) && "hidden"}`}
               dot={
                 highlightedPlayer === null || highlightedPlayer === player.id
-                  ? true
+                  ? {
+                      strokeWidth: 2,
+                      r: 2,
+                      strokeDasharray: "",
+                      stroke: `hsla(${
+                        (360 / idsToShow.length) *
+                          idsToShow.indexOf(player.id) +
+                        1
+                      }, 100%, 50%, ${
+                        highlightedPlayer === null
+                          ? "90%"
+                          : highlightedPlayer === player.id
+                          ? "100%"
+                          : "10%"
+                      })`,
+                    }
                   : false
               }
             >

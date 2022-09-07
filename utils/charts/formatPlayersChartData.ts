@@ -30,15 +30,18 @@ export type FormattedPlayersChartData = {
       tdcProgress: number;
     }
   >;
+  numberOfMatchesPlayed: number;
 };
 
 export const formatPlayersChartData = ({
   stats,
   matches,
 }: FormatPlayersChartDataParams) => {
-  const sMatches = [...matches].sort((a, b) =>
+  // sort all the matches
+  const sortedMatches = [...matches].sort((a, b) =>
     new Date(a.date) < new Date(b.date) ? -1 : 1
   );
+
   const players = stats.map((player) => {
     return {
       ...player,
@@ -49,7 +52,8 @@ export const formatPlayersChartData = ({
   const formatted: FormattedPlayersChartData[] = players
     .sort((a, b) => (a.lastName > b.lastName ? 1 : -1))
     .map((player, i) => {
-      const sortedMatches = player.matches.sort((a, b) =>
+      // sort matches played by player
+      const playerMatches = player.matches.sort((a, b) =>
         new Date(a.date) < new Date(b.date) ? -1 : 1
       );
 
@@ -57,17 +61,23 @@ export const formatPlayersChartData = ({
       let currAvgProgressQuantity: number = 0;
       let currTdcProgress: number = 0;
 
-      const matches = sMatches.map((match, i) => {
-        const mIndex = sortedMatches.findIndex((x) => x.id === match.id);
+      // loop all matches of the team
+      const formattedMatches = sortedMatches.map((match, i) => {
+        // check if player played this match
+        const mIndex = playerMatches.findIndex((x) => x.id === match.id);
+
         let m: any = {};
+
         if (mIndex !== -1) {
-          m = { ...sortedMatches[mIndex] };
+          // if he played in the match increment global stats
+          m = { ...playerMatches[mIndex] };
           if (m.averageQuantity) {
             currAvgProgress += m.averageSum / m.averageQuantity;
             currAvgProgressQuantity++;
             currTdcProgress += m.averageSum - 5 * m.averageQuantity;
           }
         } else {
+          // if he didn't play this match set his stats for that match to undefined
           m.date = match.date;
           m.averageQuantity = undefined;
           m.averageSum = undefined;
@@ -75,14 +85,18 @@ export const formatPlayersChartData = ({
 
         return {
           ...m,
-          avgProgress: currAvgProgress / currAvgProgressQuantity,
-          tdcProgress: currTdcProgress,
+          avgProgress:
+            mIndex !== -1
+              ? currAvgProgress / currAvgProgressQuantity
+              : undefined,
+          tdcProgress: mIndex !== -1 ? currTdcProgress : undefined,
         };
       });
 
       return {
         ...player,
-        matches: matches,
+        matches: formattedMatches,
+        numberOfMatchesPlayed: playerMatches.length,
       };
     });
 
