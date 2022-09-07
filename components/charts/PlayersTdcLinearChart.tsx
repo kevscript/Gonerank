@@ -124,8 +124,11 @@ const PlayersTdcLinearChart = ({
                 valueAccessor={(x: any) => x.value}
                 position="top"
                 content={(props) => {
-                  const { x, y, stroke, value } = props;
-                  if (highlightedPlayer === player.id) {
+                  if (
+                    highlightedPlayer === player.id &&
+                    !isNaN(Number(props.value))
+                  ) {
+                    const { x, y, stroke, value } = props;
                     return (
                       <foreignObject
                         x={Number(x) - 24}

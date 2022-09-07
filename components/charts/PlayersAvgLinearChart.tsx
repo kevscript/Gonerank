@@ -49,15 +49,16 @@ const PlayersAvgLinearChart = ({
     <ResponsiveContainer aspect={16.0 / 8.0} height="50%">
       <LineChart margin={{ top: 0, right: 32, left: -32, bottom: 32 }}>
         <XAxis
-          dataKey={(x) => {
-            return new Date(x.date).toLocaleDateString("fr-FR", {
-              day: "2-digit",
-              month: "2-digit",
-            });
-          }}
+          dataKey={(x) => new Date(x.date).getTime()}
           allowDuplicatedCategory={false}
           stroke={theme === "dark" ? "white" : "black"}
           tickMargin={16}
+          tickFormatter={(x) =>
+            new Date(x).toLocaleDateString(undefined, {
+              day: "2-digit",
+              month: "2-digit",
+            })
+          }
           tickLine={false}
           padding={{ left: 4, right: 4 }}
           minTickGap={32}
@@ -66,7 +67,6 @@ const PlayersAvgLinearChart = ({
         />
         <YAxis
           type="number"
-          dataKey={(x) => x.averageSum / x.averageQuantity}
           domain={[0, 10]}
           ticks={[1, 3, 5, 7, 9]}
           stroke={theme === "dark" ? "white" : "black"}
@@ -81,12 +81,7 @@ const PlayersAvgLinearChart = ({
           strokeOpacity="1"
           fill={theme === "dark" ? "#1b1b1b" : "#f3f4f6"}
         />
-        <ReferenceLine
-          y={5}
-          // strokeDasharray="1 1"
-          strokeOpacity="1"
-          stroke="#666666"
-        />
+        <ReferenceLine y={5} strokeOpacity="1" stroke="#666666" />
         {players
           .filter((p) => p.matches.length > 0)
           .sort((a, b) => (a.globalAverage > b.globalAverage ? 1 : -1))
@@ -119,8 +114,11 @@ const PlayersAvgLinearChart = ({
                 valueAccessor={(x: any) => x.value}
                 position="top"
                 content={(props) => {
-                  const { x, y, stroke, value } = props;
-                  if (highlightedPlayer === player.id) {
+                  if (
+                    highlightedPlayer === player.id &&
+                    !isNaN(Number(props.value))
+                  ) {
+                    const { x, y, stroke, value } = props;
                     return (
                       <foreignObject
                         x={Number(x) - 24}

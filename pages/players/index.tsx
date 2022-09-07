@@ -201,7 +201,9 @@ const PlayersPage = () => {
 
       if (formattedStats) {
         setCommunityStats(formattedStats);
-        setCommunityChartStats(formatPlayersChartData(formattedStats));
+        setCommunityChartStats(
+          formatPlayersChartData({ stats: formattedStats, matches: matches })
+        );
       }
     }
   }, [
@@ -243,7 +245,9 @@ const PlayersPage = () => {
 
       if (formattedStats) {
         setUserStats(formattedStats);
-        setUserChartStats(formatPlayersChartData(formattedStats));
+        setUserChartStats(
+          formatPlayersChartData({ stats: formattedStats, matches: matches })
+        );
       }
     }
   }, [
