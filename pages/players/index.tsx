@@ -266,7 +266,7 @@ const PlayersPage = () => {
       let ids: string[] = [];
 
       communityChartStats.forEach((player, i) => {
-        player.matches.length > 1 && ids.push(player.id);
+        player.numberOfMatchesPlayed > 0 && ids.push(player.id);
       });
 
       setIdsToShow(ids);
