@@ -146,7 +146,7 @@ const PlayersAvgProgressChart = ({
                         height={32}
                       >
                         <div
-                          className="flex items-center justify-center text-white border rounded"
+                          className="flex items-center justify-center text-sm text-white border rounded"
                           style={{
                             borderColor: `hsla(${
                               (360 / idsToShow.length) *

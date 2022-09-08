@@ -23,8 +23,8 @@ const MatchesTdcLinearChart = ({
   theme,
 }: MatchesTdcLinearChartProps) => {
   const getDomain = () => {
-    let highestTdc = -999999999;
-    let lowestTdc = 999999999;
+    let highestTdc = 0;
+    let lowestTdc = 0;
 
     matches.forEach((m) => {
       if (typeof m.averageQuantity === "number") {
@@ -33,6 +33,8 @@ const MatchesTdcLinearChart = ({
         if (tdc < lowestTdc) lowestTdc = tdc;
       }
     });
+
+    if (matches.length === 0) return [-10, 10];
 
     if (Math.abs(highestTdc) > Math.abs(lowestTdc)) {
       return [Math.floor(-Math.abs(highestTdc)), Math.ceil(highestTdc)];
@@ -108,7 +110,7 @@ const MatchesTdcLinearChart = ({
                     height={32}
                   >
                     <div
-                      className="flex items-center justify-center text-white border rounded"
+                      className="flex items-center justify-center text-sm text-white border rounded"
                       style={{
                         borderColor: "#4834f7",
                         background: "rgba(72, 52, 247, 50%)",

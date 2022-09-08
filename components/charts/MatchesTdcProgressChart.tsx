@@ -23,8 +23,8 @@ const MatchesTdcProgressChart = ({
   theme,
 }: MatchesTdcProgressChartProps) => {
   const getDomain = () => {
-    let highestTdc = -999999999;
-    let lowestTdc = 999999999;
+    let highestTdc = 0;
+    let lowestTdc = 0;
 
     matches.forEach((m) => {
       if (typeof m.tdcProgress === "number") {
@@ -107,7 +107,7 @@ const MatchesTdcProgressChart = ({
                     height={32}
                   >
                     <div
-                      className="flex items-center justify-center text-white border rounded"
+                      className="flex items-center justify-center text-sm text-white border rounded"
                       style={{
                         borderColor: "#4834f7",
                         background: "rgba(72, 52, 247, 50%)",

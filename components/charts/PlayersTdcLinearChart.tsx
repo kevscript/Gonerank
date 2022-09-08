@@ -29,8 +29,8 @@ const PlayersTdcLinearChart = ({
   const getTicks = () => {};
 
   const getDomain = () => {
-    let highestTdc = -999999999;
-    let lowestTdc = 999999999;
+    let highestTdc = 0;
+    let lowestTdc = 0;
 
     players.forEach((player) => {
       player.matches.forEach((m) => {
@@ -153,7 +153,7 @@ const PlayersTdcLinearChart = ({
                         height={32}
                       >
                         <div
-                          className="flex items-center justify-center text-white border rounded"
+                          className="flex items-center justify-center text-sm text-white border rounded"
                           style={{
                             borderColor: `hsla(${
                               (360 / idsToShow.length) *

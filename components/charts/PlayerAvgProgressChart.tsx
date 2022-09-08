@@ -104,7 +104,7 @@ const PlayerAvgProgressChart = ({
                     height={32}
                   >
                     <div
-                      className="flex items-center justify-center text-white border rounded"
+                      className="flex items-center justify-center text-sm text-white border rounded"
                       style={{
                         borderColor: "#4834f7",
                         background: "rgba(72, 52, 247, 50%)",
