@@ -63,7 +63,14 @@ const DeleteWidget = ({
             onClick={() => setIsOpen(false)}
             variety="secondary"
           />
-          <Button label="Supprimer" onClick={handleDelete} />
+          <Button
+            label="Supprimer"
+            onClick={handleDelete}
+            disabled={
+              !!validation &&
+              validationInput.trim().toLowerCase() !== validation.toLowerCase()
+            }
+          />
         </div>
       </Modal>
     </>
