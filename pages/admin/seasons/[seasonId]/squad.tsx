@@ -162,7 +162,11 @@ const AdminSeasonSquadPage: NextCustomPage = () => {
             label="Annuler"
             onClick={() => router.push("/admin/seasons")}
           />
-          <Button label="Soumettre" onClick={() => setModalIsOpen(true)} />
+          <Button
+            label="Soumettre"
+            onClick={() => setModalIsOpen(true)}
+            disabled={JSON.stringify(initialSquad) === JSON.stringify(squad)}
+          />
         </div>
         <Modal isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)}>
           <>
@@ -181,7 +185,7 @@ const AdminSeasonSquadPage: NextCustomPage = () => {
                       return (
                         <li
                           key={p.id}
-                          className="flex w-48 p-1 border border-gray-200 bg-gray-50 flex-nowrap"
+                          className="flex w-48 p-1 border border-gray-200 bg-gray-50 dark:bg-dark-500 dark:border-dark-300 flex-nowrap"
                         >
                           <div className="flex items-center justify-center w-4 h-full">
                             =
@@ -228,7 +232,13 @@ const AdminSeasonSquadPage: NextCustomPage = () => {
             </div>
             <div className="flex justify-end w-full mt-4 flex-nowrap gap-x-2">
               <Button label="Annuler" onClick={() => setModalIsOpen(false)} />
-              <Button label="Confirmer" onClick={handleConfirm} />
+              <Button
+                label="Confirmer"
+                onClick={handleConfirm}
+                disabled={
+                  JSON.stringify(initialSquad) === JSON.stringify(squad)
+                }
+              />
             </div>
           </>
         </Modal>

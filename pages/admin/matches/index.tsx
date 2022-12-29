@@ -289,7 +289,7 @@ const AdminMatchesPage: NextCustomPage = () => {
         return archived ? (
           <TableCell padding="px-0">
             <div
-              className="flex items-center justify-center w-full h-full bg-gray-100 cursor-pointer"
+              className="flex items-center justify-center w-full h-full bg-gray-100 cursor-pointer dark:bg-gray-700"
               onClick={() => alert("Can't activate an archived match")}
             >
               <span className="text-xs font-bold text-gray-300">ARCHIVED</span>
