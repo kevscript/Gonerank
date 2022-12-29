@@ -181,7 +181,11 @@ const MatchForm = ({
             <Button label="Annuler" />
           </div>
         </Link>
-        <Button type="submit" label="Créer" />
+        <Button
+          type="submit"
+          label={defaultValues ? "Editer" : "Créer"}
+          data-testid="form-submit"
+        />
       </div>
     </form>
   );

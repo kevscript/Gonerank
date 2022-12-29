@@ -60,7 +60,7 @@ describe("MatchForm", () => {
     expect(
       screen.getByRole("spinbutton", { name: /conceed/i })
     ).toBeInTheDocument();
-    expect(screen.getByText(/créer/i)).toBeInTheDocument();
+    expect(screen.getByTestId("form-submit")).toBeInTheDocument();
     expect(screen.getByText(/annuler/i)).toBeInTheDocument();
   });
 
@@ -75,7 +75,7 @@ describe("MatchForm", () => {
 
     render(<MatchForm {...props} />);
 
-    const submitButton = screen.getByText(/créer/i);
+    const submitButton = screen.getByTestId("form-submit");
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -122,7 +122,7 @@ describe("MatchForm", () => {
     const conceeded = screen.getByRole("spinbutton", { name: /conceed/i });
     fireEvent.change(conceeded, { target: { value: 1 } });
 
-    const submitButton = screen.getByText(/créer/i);
+    const submitButton = screen.getByTestId("form-submit");
     fireEvent.click(submitButton);
 
     await waitFor(() => {
