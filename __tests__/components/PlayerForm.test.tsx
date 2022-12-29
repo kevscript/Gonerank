@@ -16,7 +16,8 @@ describe("PlayerForm", () => {
     expect(
       screen.getByRole("combobox", { name: /image/i })
     ).toBeInTheDocument();
-    expect(screen.getByText(/créer/i)).toBeInTheDocument();
+
+    expect(screen.getByTestId("form-submit")).toBeInTheDocument();
     expect(screen.getByText(/annuler/i)).toBeInTheDocument();
   });
 
@@ -35,7 +36,7 @@ describe("PlayerForm", () => {
     const code = screen.getByRole("textbox", { name: /code/i });
     fireEvent.change(code, { target: { value: "A" } });
 
-    const submitButton = screen.getByText(/créer/i);
+    const submitButton = screen.getByTestId("form-submit");
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -69,7 +70,7 @@ describe("PlayerForm", () => {
     const birthDate = screen.getByRole("textbox", { name: /birth/i });
     fireEvent.change(birthDate, { target: { value: "20/05/1998" } });
 
-    const submitButton = screen.getByText(/créer/i);
+    const submitButton = screen.getByTestId("form-submit");
     fireEvent.click(submitButton);
 
     await waitFor(() => {

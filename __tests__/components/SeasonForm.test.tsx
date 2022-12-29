@@ -7,14 +7,14 @@ describe("SeasonForm", () => {
     render(<SeasonForm onSubmit={jest.fn()} />);
 
     expect(screen.getByRole("textbox", { name: /date/i })).toBeInTheDocument();
-    expect(screen.getByText(/créer/i)).toBeInTheDocument();
+    expect(screen.getByTestId("form-submit")).toBeInTheDocument();
     expect(screen.getByText(/annuler/i)).toBeInTheDocument();
   });
 
   it("renders errors", async () => {
     render(<SeasonForm onSubmit={jest.fn()} />);
 
-    const submitButton = screen.getByText(/créer/i);
+    const submitButton = screen.getByTestId("form-submit");
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -30,7 +30,7 @@ describe("SeasonForm", () => {
     const startDate = screen.getByRole("textbox", { name: /date/i });
     fireEvent.change(startDate, { target: { value: "20/05/1998" } });
 
-    const submitButton = screen.getByText(/créer/i);
+    const submitButton = screen.getByTestId("form-submit");
     fireEvent.click(submitButton);
 
     await waitFor(() => {

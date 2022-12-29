@@ -161,7 +161,11 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
             <Button label="Annuler" />
           </div>
         </Link>
-        <Button type="submit" label="Créer" />
+        <Button
+          type="submit"
+          label={defaultValues ? "Editer" : "Creer"}
+          data-testid="form-submit"
+        />
       </div>
     </form>
   );
