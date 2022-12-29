@@ -14,6 +14,7 @@ const Button = ({
   type = "button",
   disabled,
   variety = "primary",
+  ...restProps
 }: ButtonProps) => {
   const primaryStyles =
     "bg-marine-600 text-white hover:bg-marine-700 dark:hover:bg-marine-500";
@@ -24,10 +25,15 @@ const Button = ({
 
   return (
     <button
+      {...restProps}
       type={type}
-      className={`min-w-[80px] px-4 py-1.5 drop-shadow rounded  ${styles} ${
+      className={`min-w-[80px] px-4 py-1.5 drop-shadow rounded  ${
         className || ""
-      } ${disabled && "bg-gray-100 border-none text-gray-600"}`}
+      } ${
+        disabled
+          ? "bg-gray-100 dark:bg-dark-300 border-none dark:text-gray-400 text-gray-600"
+          : `${styles}`
+      }`}
       onClick={onClick}
       disabled={disabled}
       name={label}
