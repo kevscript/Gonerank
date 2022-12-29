@@ -5,8 +5,8 @@ describe("getAgeFromDate", () => {
     const age = getAgeFromDate("2011-10-05T14:00:00");
     const age2 = getAgeFromDate("1998-10-05T14:00:00");
 
-    expect(age).toBe(10);
-    expect(age2).toBe(23);
+    expect(age).toBe(11);
+    expect(age2).toBe(24);
   });
 
   it("should throw error on invalid string param", () => {
