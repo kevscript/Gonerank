@@ -1,12 +1,30 @@
 import { LatestSeasonPlayerStats } from "@/utils/latestSeasonRanking";
+import { percentageToColor } from "@/utils/percentageToColor";
+import { useTheme } from "next-themes";
+import { useState } from "react";
 
 export type LatestSeasonAvgRankingProps = {
   stats: LatestSeasonPlayerStats[];
 };
 
 const LatestSeasonAvgRanking = ({ stats }: LatestSeasonAvgRankingProps) => {
+  const [minMax] = useState(() => {
+    const avgs = stats
+      .filter((x) => x.globalAvgQuantity > 0)
+      .map((x) => x.globalAvgSum / x.globalAvgQuantity);
+    return {
+      min: Math.min(...avgs),
+      max: Math.max(...avgs),
+    };
+  });
+
+  const { theme, setTheme } = useTheme();
+
   return (
-    <ul className="flex flex-col w-full h-full gap-y-[2px]" data-testid="avgRanking">
+    <ul
+      className="flex flex-col w-full h-full gap-y-[2px]"
+      data-testid="avgRanking"
+    >
       {stats &&
         stats
           .sort((a, b) => {
@@ -31,8 +49,22 @@ const LatestSeasonAvgRanking = ({ stats }: LatestSeasonAvgRankingProps) => {
                 <span className="px-2">
                   {p.firstName[0] + ". " + p.lastName}
                 </span>
-                <div className="flex items-center justify-center w-12 h-full bg-marine-100 dark:bg-dark-400 text-marine-600 dark:text-marine-400 font-num">
-                  {p.globalAvgSum
+                <div
+                  className="flex items-center justify-center w-12 h-full bg-marine-100 dark:bg-dark-400 text-marine-600 dark:text-marine-400 font-num"
+                  style={{
+                    color: `${
+                      p.globalAvgQuantity
+                        ? percentageToColor(
+                            (p.globalAvgSum / p.globalAvgQuantity -
+                              minMax.min) /
+                              (minMax.max - minMax.min),
+                            theme as any
+                          )
+                        : "#666666"
+                    }`,
+                  }}
+                >
+                  {p.globalAvgQuantity
                     ? (p.globalAvgSum / p.globalAvgQuantity).toFixed(2)
                     : "-"}
                 </div>
