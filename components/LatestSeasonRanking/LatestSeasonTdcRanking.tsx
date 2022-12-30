@@ -1,11 +1,26 @@
 import { LatestSeasonPlayerStats } from "@/utils/latestSeasonRanking";
 import { rankingTendencySort } from "@/utils/numericalSort";
+import { percentageToColor } from "@/utils/percentageToColor";
+import { useTheme } from "next-themes";
+import { useState } from "react";
 
 export type LatestSeasonTdcRankingProps = {
   stats: LatestSeasonPlayerStats[];
 };
 
 const LatestSeasonTdcRanking = ({ stats }: LatestSeasonTdcRankingProps) => {
+  const [minMax] = useState(() => {
+    const tdcs = stats
+      .filter((x) => x.globalAvgQuantity > 0)
+      .map((x) => x.globalTendency);
+    return {
+      min: Math.min(...tdcs),
+      max: Math.max(...tdcs),
+    };
+  });
+
+  const { theme, setTheme } = useTheme();
+
   return (
     <ul
       className="flex flex-col w-full h-full gap-y-[2px]"
@@ -26,8 +41,21 @@ const LatestSeasonTdcRanking = ({ stats }: LatestSeasonTdcRankingProps) => {
                 <span className="px-2">
                   {p.firstName[0] + ". " + p.lastName}
                 </span>
-                <div className="flex items-center justify-center w-12 h-full bg-marine-100 dark:bg-dark-400 text-marine-600 dark:text-marine-400 font-num">
-                  {p.globalAvgSum ? p.globalTendency.toFixed(1) : "-"}
+                <div
+                  className="flex items-center justify-center w-12 h-full bg-marine-100 dark:bg-dark-400 text-marine-600 dark:text-marine-400 font-num"
+                  style={{
+                    color: `${
+                      p.globalAvgQuantity
+                        ? percentageToColor(
+                            (p.globalTendency - minMax.min) /
+                              (minMax.max - minMax.min),
+                            theme as any
+                          )
+                        : "#666666"
+                    }`,
+                  }}
+                >
+                  {p.globalAvgQuantity ? p.globalTendency.toFixed(1) : "-"}
                 </div>
               </div>
             </li>
