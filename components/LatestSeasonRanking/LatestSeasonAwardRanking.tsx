@@ -2,6 +2,7 @@ import { LatestSeasonPlayerStats } from "@/utils/latestSeasonRanking";
 import { rankingAwardSort } from "@/utils/numericalSort";
 import { percentageToColor } from "@/utils/percentageToColor";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 import { useState } from "react";
 
 export type LatestSeasonAwardRankingProps = {
@@ -38,9 +39,11 @@ const LatestSeasonAwardRanking = ({ stats }: LatestSeasonAwardRankingProps) => {
                 {i + 1}
               </div>
               <div className="flex items-center justify-between flex-1 ml-1 overflow-hidden bg-white border border-gray-100 rounded dark:bg-dark-500 dark:border-dark-300">
-                <span className="px-2">
-                  {p.firstName[0] + ". " + p.lastName}
-                </span>
+                <Link href={`/players/${p.id}`}>
+                  <span className="px-2">
+                    {p.firstName[0] + ". " + p.lastName}
+                  </span>
+                </Link>
                 <div
                   className="flex items-center justify-center w-12 h-full bg-marine-100 dark:bg-dark-400 text-marine-600 dark:text-marine-400 font-num"
                   style={{
