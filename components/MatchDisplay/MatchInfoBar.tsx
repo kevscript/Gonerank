@@ -36,7 +36,7 @@ const MatchInfoBar = ({
             </div>
           )}
           {voted && (
-            <div className="flex flex-row items-center w-full mt-4 flex-nowrap gap-x-2 lg:gap-x-4 lg:mt-8">
+            <div className="flex flex-row items-center flex-shrink-0 w-full mt-4 flex-nowrap gap-x-2 lg:gap-x-4 lg:mt-8">
               <div className="flex items-center justify-center flex-1 h-10 rounded bg-marine-50 dark:bg-dark-300">
                 <span className="text-xs font-bold uppercase text-marine-600 dark:text-white">
                   Vous avez déjà voté.
@@ -53,7 +53,7 @@ const MatchInfoBar = ({
             </div>
           )}
           {voted === false && (
-            <div className="flex items-center justify-center w-full h-10 mt-4 rounded bg-marine-50 dark:bg-dark-300">
+            <div className="flex items-center justify-center flex-shrink-0 w-full h-10 mt-4 rounded bg-marine-50 dark:bg-dark-300">
               <span className="text-xs font-bold uppercase text-marine-600 dark:text-white">
                 Les votes sont ouverts!
               </span>
