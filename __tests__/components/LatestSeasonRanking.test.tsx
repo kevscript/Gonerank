@@ -77,11 +77,11 @@ describe("LatestSeasonRanking", () => {
 
     render(<LatestSeasonRanking {...props} />);
 
-    const avgButton = screen.getByRole("button", { name: /avg/i });
+    const avgButton = screen.getByRole("button", { name: /moy/i });
     expect(avgButton).toBeInTheDocument();
     const tdcButton = screen.getByRole("button", { name: /tdc/i });
     expect(tdcButton).toBeInTheDocument();
-    const awrButton = screen.getByRole("button", { name: /awr/i });
+    const awrButton = screen.getByRole("button", { name: /hdm/i });
     expect(awrButton).toBeInTheDocument();
 
     // expect tendency ranking on initial render based on props

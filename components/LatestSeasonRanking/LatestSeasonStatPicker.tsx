@@ -20,8 +20,8 @@ const LatestSeasonStatPicker = ({
           }`}
           onClick={() => handleRankingType("average")}
         >
-          <span className="sr-only">Averages</span>
-          Avg
+          <span className="sr-only">Moyennes</span>
+          Moy
         </button>
       </li>
       <li className="flex-1">
@@ -33,7 +33,7 @@ const LatestSeasonStatPicker = ({
           }`}
           onClick={() => handleRankingType("tendency")}
         >
-          <span className="sr-only">Tendencies</span>
+          <span className="sr-only">Tendances</span>
           Tdc
         </button>
       </li>
@@ -46,8 +46,8 @@ const LatestSeasonStatPicker = ({
           }`}
           onClick={() => handleRankingType("award")}
         >
-          <span className="sr-only">Awards</span>
-          Awr
+          <span className="sr-only">Récompoenses</span>
+          Hdm
         </button>
       </li>
     </ul>
