@@ -4,7 +4,7 @@ const { Runtime } = require('nexus-prisma/dist-cjs/generator/runtime/settingsSin
 
 const gentimeSettings = {
   "output": {
-    "directory": "C:\\Users\\Kevin\\dev\\gone\\graphql\\generated\\nexusTypes",
+    "directory": "C:\\Users\\Kevin\\dev\\gonerank\\graphql\\generated\\nexusTypes",
     "name": "index"
   },
   "projectIdIntToGraphQL": "Int",

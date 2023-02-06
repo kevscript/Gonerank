@@ -2,6 +2,9 @@
 .env
 .env.local
 
+# generated file by prisma generate
+/graphql/generated/nexusTypes/
+
 # dependencies
 /node_modules
 /.pnp
