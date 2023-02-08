@@ -18,7 +18,7 @@ const NavLink = ({ label, path, Icon, isActive }: NavLinkProps) => {
             <Icon
               className={`w-[18px] h-[18px] ${
                 isActive
-                  ? "fill-marine-600 stroke-marine-600 dark:fill-marine-400 dark:stroke-marine-400"
+                  ? "fill-marine-600 stroke-marine-600 dark:fill-marine-500 dark:stroke-marine-500"
                   : "fill-gray-600 stroke-gray-600 dark:fill-slate-300 dark:stroke-slate-300"
               }`}
             />

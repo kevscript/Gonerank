@@ -12,12 +12,12 @@ export type MatchHeaderProps = {
 const MatchHeader = ({ match }: MatchHeaderProps) => {
   return (
     <div
-      className={`w-full lg:border-none lg:drop-shadow-sm rounded flex justify-between gap-x-4 ${
+      className={`w-full lg:border-none lg:drop-shadow-sm rounded flex justify-between md:gap-x-4 ${
         !match?.home && "flex-row-reverse"
       }`}
     >
       <div
-        className={`flex flex-col items-center justify-center xl:justify-start xl:flex-nowrap xl:gap-4 xl:flex-1 bg-white dark:bg-dark-500 px-8 flex-1 ${
+        className={`flex flex-col items-center justify-center xl:justify-start xl:flex-nowrap xl:gap-4 xl:flex-1 bg-white dark:bg-dark-500 md:px-8 flex-1 ${
           match?.home ? "xl:flex-row" : "xl:flex-row-reverse"
         }`}
       >
@@ -27,7 +27,7 @@ const MatchHeader = ({ match }: MatchHeaderProps) => {
           Olympique Lyonnais
         </span>
       </div>
-      <div className="flex flex-col items-center justify-center px-8 bg-white h-28 dark:bg-dark-500">
+      <div className="flex flex-col items-center justify-center bg-white md:px-8 h-28 dark:bg-dark-500">
         <span className="text-xs">{match?.competition.name}</span>
         <div
           className={`flex items-center text-xl lg:text-3xl font-num font-black py-1 ${
@@ -57,7 +57,7 @@ const MatchHeader = ({ match }: MatchHeaderProps) => {
         </span>
       </div>
       <div
-        className={`flex flex-col items-center justify-center xl:justify-start xl:flex-nowrap xl:gap-4 xl:flex-1 bg-white dark:bg-dark-500 px-8 flex-1 ${
+        className={`flex flex-col items-center justify-center xl:justify-start xl:flex-nowrap xl:gap-4 xl:flex-1 bg-white dark:bg-dark-500 md:px-8 flex-1 ${
           match?.home ? "xl:flex-row-reverse" : "xl:flex-row"
         }`}
         title={match?.opponent.name}

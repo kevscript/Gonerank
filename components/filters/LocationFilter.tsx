@@ -14,7 +14,7 @@ const LocationFilter = ({ location, toggleLocation }: LocationFilterProps) => {
       <button
         title="Domicile"
         onClick={() => toggleLocation("home")}
-        className={`w-9 flex justify-center items-center rounded-l h-9 text-sm ${
+        className={`w-9 flex justify-center items-center rounded-l-sm h-9 text-sm ${
           location === "home"
             ? "bg-white dark:bg-marine-600 text-marine-600 dark:text-white"
             : "bg-gray-100 hover:bg-gray-50 hover:text-marine-600 dark:bg-dark-400 dark:hover:bg-dark-300 dark:hover:text-white"
@@ -31,7 +31,7 @@ const LocationFilter = ({ location, toggleLocation }: LocationFilterProps) => {
       <button
         title="Exterieur"
         onClick={() => toggleLocation("away")}
-        className={`group w-9 flex justify-center items-center rounded-r h-9 text-sm ${
+        className={`group w-9 flex justify-center items-center rounded-r-sm h-9 text-sm ${
           location === "away"
             ? "bg-white dark:bg-marine-600 text-marine-600 dark:text-white"
             : "bg-gray-100 hover:bg-gray-50 hover:text-marine-600 dark:bg-dark-400 dark:hover:bg-dark-300 dark:hover:text-white"
