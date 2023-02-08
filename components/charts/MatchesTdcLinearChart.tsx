@@ -5,11 +5,14 @@ import {
   LineChart,
   ReferenceLine,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 
 import { FormattedMatchesChartData } from "@/utils/charts/formatMatchesChartData";
+import CustomTooltip from "./CustomTooltip";
+import { useRouter } from "next/router";
 
 type MatchesTdcLinearChartProps = {
   matches: FormattedMatchesChartData[];
@@ -22,6 +25,8 @@ const MatchesTdcLinearChart = ({
   highlighted,
   theme,
 }: MatchesTdcLinearChartProps) => {
+  const router = useRouter();
+
   const getDomain = () => {
     let highestTdc = 0;
     let lowestTdc = 0;
@@ -50,7 +55,12 @@ const MatchesTdcLinearChart = ({
   if (!matches) return null;
   return (
     <ResponsiveContainer aspect={16.0 / 8.0} height="50%">
-      <LineChart margin={{ top: 0, right: 32, left: -32, bottom: 32 }}>
+      <LineChart
+        margin={{ top: 0, right: 32, left: -32, bottom: 32 }}
+        onClick={(e) =>
+          router.push(`/matches/${e.activePayload![0].payload.id}`)
+        }
+      >
         <XAxis
           dataKey={(x) => {
             return new Date(x.date).toLocaleDateString("fr-FR", {
@@ -86,7 +96,7 @@ const MatchesTdcLinearChart = ({
           fill={theme === "dark" ? "#1b1b1b" : "#f3f4f6"}
         />
         <ReferenceLine y={0} strokeOpacity="1" stroke="#666666" />
-
+        <Tooltip content={(props) => <CustomTooltip {...props} />} />
         <Line
           data={matches}
           type="monotone"
@@ -96,7 +106,7 @@ const MatchesTdcLinearChart = ({
           isAnimationActive={false}
           dot={highlighted}
         >
-          <LabelList
+          {/* <LabelList
             valueAccessor={(x: any) => x.value}
             position="top"
             content={(props) => {
@@ -124,7 +134,7 @@ const MatchesTdcLinearChart = ({
                 return null;
               }
             }}
-          />
+          /> */}
         </Line>
       </LineChart>
     </ResponsiveContainer>

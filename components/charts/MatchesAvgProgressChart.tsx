@@ -1,4 +1,5 @@
 import { FormattedMatchesChartData } from "@/utils/charts/formatMatchesChartData";
+import { useRouter } from "next/router";
 import {
   CartesianGrid,
   LabelList,
@@ -6,9 +7,11 @@ import {
   LineChart,
   ReferenceLine,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
+import CustomTooltip from "./CustomTooltip";
 
 type MatchesAvgProgressChartProps = {
   matches: FormattedMatchesChartData[];
@@ -21,6 +24,8 @@ const MatchesAvgProgressChart = ({
   theme,
   highlighted,
 }: MatchesAvgProgressChartProps) => {
+  const router = useRouter();
+
   const getDomain = () => {
     let highestAvg = 0;
     let lowestAvg = 10;
@@ -38,7 +43,12 @@ const MatchesAvgProgressChart = ({
   if (!matches) return null;
   return (
     <ResponsiveContainer aspect={16.0 / 8.0} height="50%">
-      <LineChart margin={{ top: 0, right: 32, left: -32, bottom: 32 }}>
+      <LineChart
+        margin={{ top: 0, right: 32, left: -32, bottom: 32 }}
+        onClick={(e) =>
+          router.push(`/matches/${e.activePayload![0].payload.id}`)
+        }
+      >
         <XAxis
           dataKey={(x) => {
             return new Date(x.date).toLocaleDateString("fr-FR", {
@@ -78,7 +88,7 @@ const MatchesAvgProgressChart = ({
           strokeOpacity="1"
           stroke="#666666"
         />
-
+        <Tooltip content={(props) => <CustomTooltip {...props} />} />
         <Line
           data={matches}
           type="monotone"
@@ -88,7 +98,7 @@ const MatchesAvgProgressChart = ({
           isAnimationActive={false}
           dot={highlighted}
         >
-          <LabelList
+          {/* <LabelList
             valueAccessor={(x: any) => x.value}
             position="top"
             content={(props) => {
@@ -116,7 +126,7 @@ const MatchesAvgProgressChart = ({
                 return null;
               }
             }}
-          />
+          /> */}
         </Line>
       </LineChart>
     </ResponsiveContainer>
