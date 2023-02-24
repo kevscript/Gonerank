@@ -4,20 +4,18 @@ export type ChartPlayersListProps = {
   players: FormattedPlayersChartData[];
   idsToShow: string[];
   togglePlayerLine: (id: string) => void;
-  highlightPlayer: (id: string | null) => void;
-  highlightedPlayer: string | null;
+  theme: string | undefined;
 };
 
 const ChartPlayersList = ({
   players,
   idsToShow,
   togglePlayerLine,
-  highlightPlayer,
-  highlightedPlayer,
+  theme,
 }: ChartPlayersListProps) => {
   return (
-    <div className="flex flex-col h-full p-4 bg-gray-100 rounded w-72 dark:bg-dark-500 drop-shadow-sm">
-      <ul className="flex flex-col flex-1 w-full overflow-scroll rounded scroll-hide">
+    <div className="relative flex p-[1px] overflow-hidden bg-gray-200 rounded-sm w-72 dark:bg-dark-300">
+      <ul className="flex flex-col w-full overflow-y-scroll rounded-sm">
         {players
           .filter((p) => p.matches.length > 0)
           .sort((a, b) => {
@@ -31,18 +29,12 @@ const ChartPlayersList = ({
           .map((player, i) => (
             <li
               key={player.id}
-              className={`h-10 flex flex-shrink-0 items-center px-4 cursor-pointer group border-b-2 border-gray-100 dark:border-dark-600 ${
+              className={`h-10 flex flex-shrink-0 items-center px-4 cursor-pointer group border-b-2 border-gray-100 dark:border-dark-300 ${
                 idsToShow.includes(player.id)
-                  ? "bg-gray-200 hover:bg-gray-300 dark:bg-black/25 dark:hover:bg-black/50"
-                  : "dark:bg-dark-400"
+                  ? "bg-white hover:bg-gray-100 dark:bg-dark-400  dark:hover:bg-black/25"
+                  : "bg-gray-100 hover:bg-white dark:bg-dark-600 dark:hover:bg-dark-400"
               } `}
               onClick={() => togglePlayerLine(player.id)}
-              onMouseEnter={() =>
-                idsToShow.includes(player.id) && highlightPlayer(player.id)
-              }
-              onMouseLeave={() =>
-                highlightedPlayer === player.id && highlightPlayer(null)
-              }
             >
               <input
                 type="checkbox"
@@ -60,7 +52,7 @@ const ChartPlayersList = ({
                         (360 / idsToShow.length) *
                           idsToShow.indexOf(player.id) +
                         1
-                      }, 100%, 50%, 90%)`
+                      }, 100%, ${theme === "dark" ? "70%" : "50%"}, 100%)`
                     : "#333",
                 }}
               ></div>

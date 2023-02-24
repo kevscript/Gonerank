@@ -8,11 +8,11 @@ import { useTooltip, TooltipWithBounds } from "@visx/tooltip";
 
 import { FormattedPlayersChartData } from "@/utils/charts/formatPlayersChartData";
 
-type VisxPlayersAvgLinearChartProps = {
+type VisxPlayersTdcLinearChartProps = {
   players: FormattedPlayersChartData[];
   idsToShow: string[];
   theme: string;
-  dimensions?: { width: number; height: number };
+  dimensions: { width: number; height: number };
 };
 
 type TooltipData = {
@@ -23,12 +23,12 @@ type TooltipData = {
 
 const defaultDimensions = { width: 600, height: 400 };
 
-const VisxPlayersAvgLinearChart = ({
+const VisxPlayersTdcLinearChart = ({
   players,
   idsToShow,
   dimensions = defaultDimensions,
   theme,
-}: VisxPlayersAvgLinearChartProps) => {
+}: VisxPlayersTdcLinearChartProps) => {
   const { width, height } = dimensions;
 
   const margin = { top: 32, right: 32, bottom: 48, left: 32 };
@@ -46,8 +46,35 @@ const VisxPlayersAvgLinearChart = ({
     range: [0, xMax],
   });
 
+  const getTdcDomain = () => {
+    let highestTdc = 0;
+    let lowestTdc = 0;
+
+    players.forEach((player) => {
+      player.matches.forEach((m) => {
+        if (typeof m.averageQuantity === "number") {
+          const tdc = m.averageSum - 5 * m.averageQuantity;
+          if (tdc > highestTdc) highestTdc = tdc;
+          if (tdc < lowestTdc) lowestTdc = tdc;
+        }
+      });
+    });
+
+    if (Math.abs(highestTdc) > Math.abs(lowestTdc)) {
+      return [Math.floor(-Math.abs(highestTdc)), Math.ceil(highestTdc)];
+    }
+
+    if (Math.abs(highestTdc) < Math.abs(lowestTdc)) {
+      return [Math.floor(lowestTdc), Math.ceil(Math.abs(lowestTdc))];
+    }
+
+    console.log("aaa", [Math.floor(lowestTdc), Math.ceil(highestTdc)]);
+
+    return [Math.floor(lowestTdc), Math.ceil(highestTdc)];
+  };
+
   const yScale = scaleLinear<number>({
-    domain: [0, 10],
+    domain: getTdcDomain(),
     nice: true,
     range: [yMax, 0],
   });
@@ -91,18 +118,15 @@ const VisxPlayersAvgLinearChart = ({
         <Group left={margin.left} top={margin.top}>
           <AxisLeft
             scale={yScale}
-            tickValues={[1, 3, 5, 7, 9]}
+            numTicks={5}
             tickLength={4}
             stroke={theme === "dark" ? "#eeeeee" : "#111111"}
             tickStroke={theme === "dark" ? "#eeeeee" : "#111111"}
             tickLabelProps={() => ({
-              style: {
-                fontSize: 12,
-                fill: theme === "dark" ? "#eeeeee" : "#111111",
-                textAnchor: "end",
-              },
               dy: 4,
-              dx: -4,
+              dx: -16,
+              fontSize: 12,
+              fill: theme === "dark" ? "#eeeeee" : "#111111",
             })}
           />
           <AxisBottom
@@ -131,18 +155,17 @@ const VisxPlayersAvgLinearChart = ({
             yScale={yScale}
             width={xMax}
             height={yMax}
-            rowTickValues={[1, 3, 5, 7, 9]}
             numTicksColumns={players[0].matches.length}
             stroke={theme === "dark" ? "#eeeeee" : "#111111"}
             strokeWidth={0.5}
             strokeOpacity={theme === "dark" ? 0.25 : 0.1}
-            numTicksRows={0}
+            numTicksRows={5}
           />
           <Group>
             <LinePath
               data={players[0].matches}
               x={(d) => refScale(d.date)!}
-              y={yScale(5)}
+              y={yScale(0)}
               stroke={theme === "dark" ? "#eeeeee" : "#111111"}
               strokeWidth={0.5}
               strokeOpacity={theme === "dark" ? 1 : 0.5}
@@ -160,7 +183,7 @@ const VisxPlayersAvgLinearChart = ({
                   x={(d) => xScale(d.date)!}
                   y={(d) =>
                     d.averageQuantity
-                      ? yScale(d.averageSum / d.averageQuantity)
+                      ? yScale(d.averageSum - 5 * d.averageQuantity)
                       : 0
                   }
                   stroke={`hsla(${
@@ -186,7 +209,7 @@ const VisxPlayersAvgLinearChart = ({
                         key={`${p.id}__${m.id}`}
                         r={3}
                         cx={xScale(m.date)!}
-                        cy={yScale(m.averageSum / m.averageQuantity)}
+                        cy={yScale(m.averageSum - 5 * m.averageQuantity)}
                         fill={`hsla(${
                           (360 / idsToShow.length) * idsToShow.indexOf(p.id) + 1
                         }, 100%, ${theme === "dark" ? "70%" : "50%"}, ${
@@ -231,12 +254,12 @@ const VisxPlayersAvgLinearChart = ({
 
       {tooltipOpen && (
         <TooltipWithBounds
-          className="!p-0 border border-gray-400 !rounded-sm !bg-gray-400"
+          className="!p-0 border border-gray-400 !rounded-sm !overflow-hidden !bg-gray-400"
           key={tooltipData ? tooltipData.player.id : Math.random()}
           top={tooltipTop}
           left={tooltipLeft}
         >
-          <div className="flex flex-col flex-nowrap gap-y-[1px] z-30 rounded-sm">
+          <div className="flex flex-col flex-nowrap gap-y-[1px]">
             <div className="relative flex items-center justify-between w-full p-2 font-medium text-black bg-white flex-nowrap gap-x-2">
               <div
                 className="absolute top-0 left-0 w-full h-full"
@@ -285,10 +308,8 @@ const VisxPlayersAvgLinearChart = ({
               <div className="flex items-center justify-center min-w-[48px] flex-1 text-base font-bold bg-gray-200 font-num text-black">
                 <span>
                   {tooltipData?.match.averageQuantity &&
-                    (
-                      tooltipData?.match.averageSum /
-                      tooltipData?.match.averageQuantity
-                    ).toFixed(2)}
+                    tooltipData?.match.averageSum -
+                      5 * tooltipData?.match.averageQuantity}
                 </span>
               </div>
             </div>
@@ -299,4 +320,4 @@ const VisxPlayersAvgLinearChart = ({
   );
 };
 
-export default VisxPlayersAvgLinearChart;
+export default VisxPlayersTdcLinearChart;

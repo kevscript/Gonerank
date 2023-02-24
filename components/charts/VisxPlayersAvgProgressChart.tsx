@@ -8,11 +8,11 @@ import { useTooltip, TooltipWithBounds } from "@visx/tooltip";
 
 import { FormattedPlayersChartData } from "@/utils/charts/formatPlayersChartData";
 
-type VisxPlayersAvgLinearChartProps = {
+type VisxPlayersAvgProgressChartProps = {
   players: FormattedPlayersChartData[];
   idsToShow: string[];
   theme: string;
-  dimensions?: { width: number; height: number };
+  dimensions: { width: number; height: number };
 };
 
 type TooltipData = {
@@ -23,12 +23,12 @@ type TooltipData = {
 
 const defaultDimensions = { width: 600, height: 400 };
 
-const VisxPlayersAvgLinearChart = ({
+const VisxPlayersAvgProgressChart = ({
   players,
   idsToShow,
   dimensions = defaultDimensions,
   theme,
-}: VisxPlayersAvgLinearChartProps) => {
+}: VisxPlayersAvgProgressChartProps) => {
   const { width, height } = dimensions;
 
   const margin = { top: 32, right: 32, bottom: 48, left: 32 };
@@ -45,6 +45,22 @@ const VisxPlayersAvgLinearChart = ({
     domain: [...players[0].matches.map((match) => match.date)],
     range: [0, xMax],
   });
+
+  const getDomain = () => {
+    let highestAvg = 0;
+    let lowestAvg = 10;
+
+    players.forEach((player) => {
+      player.matches.forEach((m) => {
+        if (typeof m.avgProgress === "number") {
+          if (m.avgProgress > highestAvg) highestAvg = m.avgProgress;
+          if (m.avgProgress < lowestAvg) lowestAvg = m.avgProgress;
+        }
+      });
+    });
+
+    return [Math.floor(lowestAvg), Math.ceil(highestAvg)];
+  };
 
   const yScale = scaleLinear<number>({
     domain: [0, 10],
@@ -95,7 +111,7 @@ const VisxPlayersAvgLinearChart = ({
             tickLength={4}
             stroke={theme === "dark" ? "#eeeeee" : "#111111"}
             tickStroke={theme === "dark" ? "#eeeeee" : "#111111"}
-            tickLabelProps={() => ({
+            tickLabelProps={(x) => ({
               style: {
                 fontSize: 12,
                 fill: theme === "dark" ? "#eeeeee" : "#111111",
@@ -158,11 +174,7 @@ const VisxPlayersAvgLinearChart = ({
                   curve={curves["curveMonotoneX"]}
                   data={p.matches.filter((m) => m.averageQuantity)}
                   x={(d) => xScale(d.date)!}
-                  y={(d) =>
-                    d.averageQuantity
-                      ? yScale(d.averageSum / d.averageQuantity)
-                      : 0
-                  }
+                  y={(d) => yScale(d.avgProgress)}
                   stroke={`hsla(${
                     (360 / idsToShow.length) * idsToShow.indexOf(p.id) + 1
                   }, 100%, ${theme === "dark" ? "70%" : "50%"}, ${
@@ -186,7 +198,7 @@ const VisxPlayersAvgLinearChart = ({
                         key={`${p.id}__${m.id}`}
                         r={3}
                         cx={xScale(m.date)!}
-                        cy={yScale(m.averageSum / m.averageQuantity)}
+                        cy={yScale(m.avgProgress)}
                         fill={`hsla(${
                           (360 / idsToShow.length) * idsToShow.indexOf(p.id) + 1
                         }, 100%, ${theme === "dark" ? "70%" : "50%"}, ${
@@ -231,12 +243,12 @@ const VisxPlayersAvgLinearChart = ({
 
       {tooltipOpen && (
         <TooltipWithBounds
-          className="!p-0 border border-gray-400 !rounded-sm !bg-gray-400"
+          className="!p-0 border border-gray-400 !rounded-sm !overflow-hidden !bg-gray-400"
           key={tooltipData ? tooltipData.player.id : Math.random()}
           top={tooltipTop}
           left={tooltipLeft}
         >
-          <div className="flex flex-col flex-nowrap gap-y-[1px] z-30 rounded-sm">
+          <div className="flex flex-col flex-nowrap gap-y-[1px]">
             <div className="relative flex items-center justify-between w-full p-2 font-medium text-black bg-white flex-nowrap gap-x-2">
               <div
                 className="absolute top-0 left-0 w-full h-full"
@@ -283,13 +295,7 @@ const VisxPlayersAvgLinearChart = ({
                 </div>
               </div>
               <div className="flex items-center justify-center min-w-[48px] flex-1 text-base font-bold bg-gray-200 font-num text-black">
-                <span>
-                  {tooltipData?.match.averageQuantity &&
-                    (
-                      tooltipData?.match.averageSum /
-                      tooltipData?.match.averageQuantity
-                    ).toFixed(2)}
-                </span>
+                <span>{tooltipData?.match.avgProgress.toFixed(2)}</span>
               </div>
             </div>
           </div>
@@ -299,4 +305,4 @@ const VisxPlayersAvgLinearChart = ({
   );
 };
 
-export default VisxPlayersAvgLinearChart;
+export default VisxPlayersAvgProgressChart;

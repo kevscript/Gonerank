@@ -1,35 +1,36 @@
+import React, { useEffect, useState } from "react";
+import Head from "next/head";
+import { useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
+import Draggable from "@/components/shared/Draggable";
+import PlayersTable from "@/components/tables/PlayersTable";
+import Spinner from "@/components/shared/Spinner";
+import Breadcrumbs from "@/components/shared/Breadcrumbs";
+import OptionsFilter from "@/components/filters/OptionsFilter";
+import { VisualFilterOptions } from "@/components/filters/VisualFilter";
+import { WhoFilterOptions } from "@/components/filters/WhoFilter";
+import ChartPlayersList from "@/components/charts/ChartPlayersList";
+import { LocationFilterOptions } from "@/components/filters/LocationFilter";
+import VisxPlayersAvgLinearChart from "@/components/charts/VisxPlayersAvgLinearChart";
+import VisxPlayersTdcLinearChart from "@/components/charts/VisxPlayersTdcLinearChart";
+import VisxPlayersAvgProgressChart from "@/components/charts/VisxPlayersAvgProgressChart";
+import VisxPlayersTdcProgressChart from "@/components/charts/VisxPlayersTdcProgressChart";
+import VisxChartContainer from "@/components/charts/VisxChartContainer";
+import { ParentSize } from "@visx/responsive";
 import {
   useGetSeasonRatingsLazyQuery,
   useGetSeasonsQuery,
   useGetSeasonUserRatingsLazyQuery,
   useGlobalSeasonDataLazyQuery,
 } from "graphql/generated/queryTypes";
-import React, { useEffect, useState } from "react";
 import {
   formatPlayersSeasonStats,
   FormattedPlayerSeasonStats,
 } from "@/utils/formatPlayersSeasonStats";
-import Draggable from "@/components/shared/Draggable";
-import { useSession } from "next-auth/react";
-import PlayersTable from "@/components/tables/PlayersTable";
-import Spinner from "@/components/shared/Spinner";
-import Breadcrumbs from "@/components/shared/Breadcrumbs";
-import Head from "next/head";
-import PlayersAvgLinearChart from "@/components/charts/PlayersAvgLinearChart";
 import {
   formatPlayersChartData,
   FormattedPlayersChartData,
 } from "@/utils/charts/formatPlayersChartData";
-import OptionsFilter from "@/components/filters/OptionsFilter";
-import { VisualFilterOptions } from "@/components/filters/VisualFilter";
-import { WhoFilterOptions } from "@/components/filters/WhoFilter";
-import ChartPlayersList from "@/components/charts/ChartPlayersList";
-import PlayersAvgProgressChart from "@/components/charts/PlayersAvgProgressChart";
-import PlayersTdcLinearChart from "@/components/charts/PlayersTdcLinearChart";
-import PlayersTdcProgressChart from "@/components/charts/PlayersTdcProgressChart";
-import ChartContainer from "@/components/charts/ChartContainer";
-import { useTheme } from "next-themes";
-import { LocationFilterOptions } from "@/components/filters/LocationFilter";
 
 const PlayersPage = () => {
   const { data: session, status } = useSession();
@@ -109,14 +110,6 @@ const PlayersPage = () => {
   };
 
   const [idsToShow, setIdsToShow] = useState<string[]>([]);
-  const [highlightedPlayer, setHighlightedPlayer] = useState<string | null>(
-    null
-  );
-
-  const highlightPlayer = (pId: string | null) => {
-    if (pId === null) setHighlightedPlayer(null);
-    if (typeof pId === "string") setHighlightedPlayer(pId);
-  };
 
   const togglePlayerLine = (pId: string) => {
     let newIds = [...idsToShow];
@@ -263,13 +256,13 @@ const PlayersPage = () => {
   // init player IDS to show in chart
   useEffect(() => {
     if (communityChartStats && idsToShow.length === 0) {
-      let ids: string[] = [];
-
-      communityChartStats.forEach((player, i) => {
-        player.numberOfMatchesPlayed > 0 && ids.push(player.id);
-      });
-
-      setIdsToShow(ids);
+      const sortedPlayersByNumberOfMatches = communityChartStats.sort((a, b) =>
+        a.numberOfMatchesPlayed > b.numberOfMatchesPlayed ? -1 : 1
+      );
+      const initIdsToShow = sortedPlayersByNumberOfMatches
+        .slice(0, 5)
+        .map((x) => x.id);
+      setIdsToShow(initIdsToShow);
     }
   }, [communityChartStats, idsToShow]);
 
@@ -289,7 +282,7 @@ const PlayersPage = () => {
   }
 
   return (
-    <div className="flex flex-col w-full h-screen responsive-px">
+    <div className="flex flex-col h-screen responsive-px">
       <Head>
         <title>Gonerank - Joueurs</title>
         <meta
@@ -338,80 +331,96 @@ const PlayersPage = () => {
       )}
 
       {visualFilter === "chart" && communityChartStats && (
-        <div className="flex-1 w-full overflow-hidden scroll-hide">
-          <div className="relative flex flex-1 h-full py-8 gap-x-8">
-            <div className="flex flex-col flex-1 overflow-scroll scroll-hide gap-y-8">
-              <ChartContainer title="Moyenne Linéaire">
-                <PlayersAvgLinearChart
-                  players={
-                    userChartStats && whoFilter === "user"
-                      ? userChartStats
-                      : communityChartStats
-                  }
-                  idsToShow={idsToShow}
-                  highlightPlayer={highlightPlayer}
-                  highlightedPlayer={highlightedPlayer}
-                  theme={theme || "dark"}
-                />
-              </ChartContainer>
-
-              <ChartContainer title="Moyenne Progressive">
-                <PlayersAvgProgressChart
-                  players={
-                    userChartStats && whoFilter === "user"
-                      ? userChartStats
-                      : communityChartStats
-                  }
-                  idsToShow={idsToShow}
-                  highlightPlayer={highlightPlayer}
-                  highlightedPlayer={highlightedPlayer}
-                  theme={theme || "dark"}
-                />
-              </ChartContainer>
-
-              <ChartContainer title="Tendance Linéaire">
-                <PlayersTdcLinearChart
-                  players={
-                    userChartStats && whoFilter === "user"
-                      ? userChartStats
-                      : communityChartStats
-                  }
-                  idsToShow={idsToShow}
-                  highlightPlayer={highlightPlayer}
-                  highlightedPlayer={highlightedPlayer}
-                  theme={theme || "dark"}
-                />
-              </ChartContainer>
-
-              <ChartContainer title="Tendance Progressive">
-                <PlayersTdcProgressChart
-                  players={
-                    userChartStats && whoFilter === "user"
-                      ? userChartStats
-                      : communityChartStats
-                  }
-                  idsToShow={idsToShow}
-                  highlightPlayer={highlightPlayer}
-                  highlightedPlayer={highlightedPlayer}
-                  theme={theme || "dark"}
-                />
-              </ChartContainer>
-            </div>
-
-            <div className="h-full">
-              <ChartPlayersList
-                players={
-                  userChartStats && whoFilter === "user"
-                    ? userChartStats
-                    : communityChartStats
-                }
-                idsToShow={idsToShow}
-                togglePlayerLine={togglePlayerLine}
-                highlightedPlayer={highlightedPlayer}
-                highlightPlayer={highlightPlayer}
-              />
-            </div>
+        <div className="flex py-8 overflow-hidden scroll-hide gap-x-8">
+          <div className="flex flex-col flex-grow overflow-x-hidden overflow-y-scroll gap-y-8">
+            <VisxChartContainer title="Moyenne des joueurs pour chaque match de la saison.">
+              <ParentSize debounceTime={10}>
+                {(parent) => (
+                  <VisxPlayersAvgLinearChart
+                    players={
+                      userChartStats && whoFilter === "user"
+                        ? userChartStats
+                        : communityChartStats
+                    }
+                    idsToShow={idsToShow}
+                    theme={theme || "dark"}
+                    dimensions={{
+                      width: parent.width,
+                      height: parent.width * (9 / 16),
+                    }}
+                  />
+                )}
+              </ParentSize>
+            </VisxChartContainer>
+            <VisxChartContainer title="Evolution de la moyenne générale des joueurs sur la saison.">
+              <ParentSize>
+                {(parent) => (
+                  <VisxPlayersAvgProgressChart
+                    players={
+                      userChartStats && whoFilter === "user"
+                        ? userChartStats
+                        : communityChartStats
+                    }
+                    idsToShow={idsToShow}
+                    theme={theme || "dark"}
+                    dimensions={{
+                      width: parent.width,
+                      height: parent.width * (9 / 16),
+                    }}
+                  />
+                )}
+              </ParentSize>
+            </VisxChartContainer>
+            <VisxChartContainer title="Tendance des joueurs pour chaque match de la saison.">
+              <ParentSize>
+                {(parent) => (
+                  <VisxPlayersTdcLinearChart
+                    players={
+                      userChartStats && whoFilter === "user"
+                        ? userChartStats
+                        : communityChartStats
+                    }
+                    idsToShow={idsToShow}
+                    theme={theme || "dark"}
+                    dimensions={{
+                      width: parent.width,
+                      height: parent.width * (9 / 16),
+                    }}
+                  />
+                )}
+              </ParentSize>
+            </VisxChartContainer>
+            <VisxChartContainer title="Evolution de la tendance générale des joueurs sur la saison.">
+              <ParentSize>
+                {(parent) => (
+                  <VisxPlayersTdcProgressChart
+                    players={
+                      userChartStats && whoFilter === "user"
+                        ? userChartStats
+                        : communityChartStats
+                    }
+                    idsToShow={idsToShow}
+                    theme={theme || "dark"}
+                    dimensions={{
+                      width: parent.width,
+                      height: parent.width * (9 / 16),
+                    }}
+                  />
+                )}
+              </ParentSize>
+            </VisxChartContainer>
           </div>
+
+          <ChartPlayersList
+            players={
+              userChartStats && whoFilter === "user"
+                ? userChartStats
+                : communityChartStats
+            }
+            idsToShow={idsToShow}
+            togglePlayerLine={togglePlayerLine}
+            theme={theme}
+          />
         </div>
       )}
     </div>
