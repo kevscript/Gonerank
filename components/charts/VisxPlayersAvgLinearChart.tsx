@@ -7,6 +7,7 @@ import { Grid } from "@visx/grid";
 import { useTooltip, TooltipWithBounds } from "@visx/tooltip";
 
 import { FormattedPlayersChartData } from "@/utils/charts/formatPlayersChartData";
+import { getContrastColor } from "@/utils/getContrastColor";
 
 type VisxPlayersAvgLinearChartProps = {
   players: FormattedPlayersChartData[];
@@ -256,9 +257,12 @@ const VisxPlayersAvgLinearChart = ({
               <div className="flex flex-col flex-nowrap gap-y-[1px]">
                 <div className="flex justify-between w-full gap-x-[1px]">
                   <div
-                    className="justify-center flex-1 px-2 py-1 text-xs font-bold text-white"
+                    className="flex items-center justify-center flex-1 px-2 py-1 text-xs font-bold text-white"
                     style={{
                       backgroundColor: tooltipData?.match.opponent?.primary,
+                      color: tooltipData
+                        ? getContrastColor(tooltipData.match.opponent.primary)
+                        : "white",
                     }}
                   >
                     {tooltipData?.match.opponent?.abbreviation}
