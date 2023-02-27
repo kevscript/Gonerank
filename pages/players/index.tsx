@@ -18,6 +18,8 @@ import VisxPlayersTdcProgressChart from "@/components/charts/VisxPlayersTdcProgr
 import VisxChartContainer from "@/components/charts/VisxChartContainer";
 import { ParentSize } from "@visx/responsive";
 import {
+  GetSeasonsQuery,
+  GlobalSeasonDataQuery,
   useGetSeasonRatingsLazyQuery,
   useGetSeasonsQuery,
   useGetSeasonUserRatingsLazyQuery,
@@ -31,13 +33,19 @@ import {
   formatPlayersChartData,
   FormattedPlayersChartData,
 } from "@/utils/charts/formatPlayersChartData";
+import { useRouter } from "next/router";
 
 const PlayersPage = () => {
   const { data: session, status } = useSession();
-
   const { theme } = useTheme();
+  const router = useRouter();
 
   const { data: { seasons } = {} } = useGetSeasonsQuery();
+
+  const [currentSeason, setCurrentSeason] = useState<
+    GetSeasonsQuery["seasons"][0] | null
+  >(null);
+
   const [
     getGlobalSeasonData,
     {
@@ -59,6 +67,10 @@ const PlayersPage = () => {
     { data: { ratings: seasonUserRatings } = { ratings: undefined } },
   ] = useGetSeasonUserRatingsLazyQuery();
 
+  const [filteredMatches, setFilteredMatches] = useState<
+    GlobalSeasonDataQuery["matches"] | null
+  >(null);
+
   const [communityStats, setCommunityStats] = useState<
     FormattedPlayerSeasonStats[] | null
   >(null);
@@ -71,43 +83,6 @@ const PlayersPage = () => {
   const [userChartStats, setUserChartStats] = useState<
     FormattedPlayersChartData[] | null
   >(null);
-
-  const [currentSeasonId, setCurrentSeasonId] = useState("");
-  const handleSeasonChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedSeasonId = e.target.value;
-    if (selectedSeasonId !== currentSeasonId) {
-      setCurrentSeasonId(selectedSeasonId);
-    }
-  };
-
-  const [currentCompetitionId, setCurrentCompetitionId] = useState("all");
-  const handleCompetitionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedCompetitionId = e.target.value;
-    if (selectedCompetitionId !== currentCompetitionId) {
-      setCurrentCompetitionId(selectedCompetitionId);
-    }
-  };
-
-  const [whoFilter, setWhoFilter] = useState<WhoFilterOptions>("community");
-  const toggleWho = (newWho: WhoFilterOptions) => {
-    if (newWho !== whoFilter) setWhoFilter(newWho);
-  };
-
-  const [visualFilter, setVisualFilter] =
-    useState<VisualFilterOptions>("table");
-  const toggleVisual = (newVisual: VisualFilterOptions) => {
-    if (newVisual !== visualFilter) setVisualFilter(newVisual);
-  };
-
-  const [locationFilter, setLocationFilter] =
-    useState<LocationFilterOptions>("all");
-  const toggleLocation = (newLocation: LocationFilterOptions) => {
-    if (newLocation === locationFilter) {
-      setLocationFilter("all");
-    } else {
-      setLocationFilter(newLocation);
-    }
-  };
 
   const [idsToShow, setIdsToShow] = useState<string[]>([]);
 
@@ -125,31 +100,129 @@ const PlayersPage = () => {
     setIdsToShow(newIds);
   };
 
-  // setting the initial season
-  useEffect(() => {
-    if (seasons && !currentSeasonId) {
-      const latestSeason = seasons.sort((a, b) =>
-        new Date(a.startDate) < new Date(b.startDate) ? 1 : -1
-      )[0];
+  const handleSeasonChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedSeasonId = e.target.value;
+    const newSeason = seasons?.find((s) => s.id === selectedSeasonId);
+    newSeason && setCurrentSeason(newSeason);
+  };
 
-      latestSeason && setCurrentSeasonId(latestSeason.id);
+  const handleCompetitionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCompetitionId = e.target.value;
+    if (selectedCompetitionId === "all") {
+      const queries = { ...router.query };
+      delete queries.competition;
+      router.replace({ query: { ...queries } }, undefined, { shallow: true });
+    } else {
+      const compExists = competitions?.find(
+        (c) => c.id === selectedCompetitionId
+      );
+      if (compExists && compExists.abbreviation !== router.query.competition) {
+        router.replace(
+          { query: { ...router.query, competition: compExists.abbreviation } },
+          undefined,
+          { shallow: true }
+        );
+      }
     }
-  }, [seasons, currentSeasonId]);
+  };
+
+  const toggleWho = (newWho: WhoFilterOptions) => {
+    if (status === "authenticated") {
+      if (newWho === "user") {
+        router.replace({ query: { ...router.query, for: "user" } }, undefined, {
+          shallow: true,
+        });
+      }
+      if (newWho === "community") {
+        const queries = { ...router.query };
+        delete queries.for;
+        router.replace({ query: { ...queries } }, undefined, { shallow: true });
+      }
+    } else {
+      const queries = { ...router.query };
+      delete queries.for;
+      router.replace({ query: { ...queries } }, undefined, { shallow: true });
+    }
+  };
+
+  const toggleVisual = (newVisual: VisualFilterOptions) => {
+    if (newVisual === "chart" && newVisual !== router.query.shape) {
+      router.replace(
+        { query: { ...router.query, shape: "chart" } },
+        undefined,
+        { shallow: true }
+      );
+    }
+    if (newVisual === "table" && router.query.shape) {
+      const queries = { ...router.query };
+      delete queries.shape;
+      router.replace({ query: { ...queries } }, undefined, { shallow: true });
+    }
+  };
+
+  const toggleLocation = (newLocation: LocationFilterOptions) => {
+    if (newLocation === router.query.location) {
+      const queries = { ...router.query };
+      delete queries.location;
+      router.replace({ query: { ...queries } }, undefined, { shallow: true });
+    } else {
+      router.replace(
+        { query: { ...router.query, location: newLocation } },
+        undefined,
+        { shallow: true }
+      );
+    }
+  };
+
+  // intializing selected season
+  useEffect(() => {
+    if (seasons && !currentSeason) {
+      let selectedSeason = null;
+
+      if (router.query.season) {
+        const querySeasonYear = parseFloat(router.query.season as string);
+        const queriedSeason = seasons.find(
+          (s) => new Date(s.startDate).getFullYear() === querySeasonYear
+        );
+        if (queriedSeason) {
+          selectedSeason = queriedSeason;
+        }
+      }
+
+      if (!selectedSeason) {
+        const latestSeason = seasons.sort((a, b) =>
+          new Date(a.startDate) < new Date(b.startDate) ? 1 : -1
+        )[0];
+
+        selectedSeason = latestSeason;
+      }
+
+      // const selectedSeasonYear = new Date(
+      //   selectedSeason.startDate
+      // ).getFullYear();
+
+      // router.push({ query: { season: selectedSeasonYear } }, undefined, {
+      //   shallow: true,
+      // });
+
+      setCurrentSeason(selectedSeason);
+    }
+  }, [seasons, router, currentSeason]);
 
   // fetching season data whenever season changes
   useEffect(() => {
-    if (currentSeasonId) {
+    if (currentSeason) {
       getGlobalSeasonData({
-        variables: { seasonId: currentSeasonId, archived: true },
+        variables: { seasonId: currentSeason.id, archived: true },
       });
       getSeasonRatings({
-        variables: { seasonId: currentSeasonId, archived: true },
+        variables: { seasonId: currentSeason.id, archived: true },
       });
 
       if (status === "authenticated" && session) {
         getSeasonUserRatings({
           variables: {
-            seasonId: currentSeasonId,
+            seasonId: currentSeason.id,
             userId: session.user.id!,
             archived: true,
           },
@@ -157,7 +230,7 @@ const PlayersPage = () => {
       }
     }
   }, [
-    currentSeasonId,
+    currentSeason,
     getGlobalSeasonData,
     getSeasonRatings,
     getSeasonUserRatings,
@@ -165,23 +238,44 @@ const PlayersPage = () => {
     status,
   ]);
 
+  useEffect(() => {
+    if (matches && router.isReady) {
+      let newFilteredMatches = [...matches];
+
+      // competition filter
+      if (router.query.competition) {
+        const compExists = competitions?.find(
+          (c) => c.abbreviation === router.query.competition
+        );
+        if (compExists !== undefined) {
+          newFilteredMatches = newFilteredMatches.filter(
+            (m) => m.competitionId === compExists.id
+          );
+        }
+      }
+
+      // location filter
+      if (router.query.location === "home") {
+        newFilteredMatches = newFilteredMatches.filter((m) => m.home === true);
+      }
+      if (router.query.location === "away") {
+        newFilteredMatches = newFilteredMatches.filter((m) => m.home === false);
+      }
+
+      // for filter
+      if (router.query.for === "user" && status === "authenticated") {
+        newFilteredMatches = newFilteredMatches.filter((m) =>
+          seasonUserRatings?.some((r) => r.matchId === m.id)
+        );
+      }
+
+      setFilteredMatches(newFilteredMatches);
+    }
+  }, [competitions, matches, router, seasonUserRatings, status]);
+
   // format community stats
   useEffect(() => {
-    if (matches && seasonRatings) {
-      let filteredMatches = [...matches];
-
-      if (currentCompetitionId !== "all") {
-        filteredMatches = filteredMatches.filter(
-          (m) => m.competitionId === currentCompetitionId
-        );
-      }
-
-      if (locationFilter !== "all") {
-        filteredMatches = filteredMatches.filter(
-          (m) => (m.home ? "home" : "away") === locationFilter
-        );
-      }
-
+    if (matches && filteredMatches && seasonRatings) {
       const formattedStats = formatPlayersSeasonStats({
         players: players || [],
         matches: filteredMatches || [],
@@ -199,33 +293,11 @@ const PlayersPage = () => {
         );
       }
     }
-  }, [
-    matches,
-    seasonRatings,
-    currentCompetitionId,
-    players,
-    competitions,
-    clubs,
-    locationFilter,
-  ]);
+  }, [clubs, competitions, filteredMatches, matches, players, seasonRatings]);
 
   // format user stats
   useEffect(() => {
-    if (matches && seasonUserRatings) {
-      let filteredMatches = [...matches];
-
-      if (currentCompetitionId !== "all") {
-        filteredMatches = filteredMatches.filter(
-          (m) => m.competitionId === currentCompetitionId
-        );
-      }
-
-      if (locationFilter !== "all") {
-        filteredMatches = filteredMatches.filter(
-          (m) => (m.home ? "home" : "away") === locationFilter
-        );
-      }
-
+    if (matches && filteredMatches && seasonUserRatings) {
       const formattedStats = formatPlayersSeasonStats({
         players: players || [],
         matches: filteredMatches || [],
@@ -244,13 +316,12 @@ const PlayersPage = () => {
       }
     }
   }, [
-    matches,
-    seasonUserRatings,
-    currentCompetitionId,
-    players,
-    competitions,
     clubs,
-    locationFilter,
+    competitions,
+    filteredMatches,
+    matches,
+    players,
+    seasonUserRatings,
   ]);
 
   // init player IDS to show in chart
@@ -303,34 +374,32 @@ const PlayersPage = () => {
       <div className="my-8 md:my-0">
         <OptionsFilter
           isAuth={status === "authenticated" && userStats ? true : false}
-          who={whoFilter}
+          who={router.query.for === "user" ? "user" : "community"}
           toggleWho={toggleWho}
-          visual={visualFilter}
+          visual={router.query.shape === "chart" ? "chart" : "table"}
           toggleVisual={toggleVisual}
-          location={locationFilter}
+          location={
+            router.query.location === "home"
+              ? "home"
+              : router.query.location === "away"
+              ? "away"
+              : "all"
+          }
           toggleLocation={toggleLocation}
           competitions={competitions}
           seasons={seasons}
-          currentCompetitionId={currentCompetitionId}
-          currentSeasonId={currentSeasonId}
+          currentCompetitionId={
+            competitions?.find(
+              (c) => router.query.competition === c.abbreviation
+            )?.id || "all"
+          }
+          currentSeasonId={currentSeason?.id}
           handleCompetitionChange={handleCompetitionChange}
           handleSeasonChange={handleSeasonChange}
         />
       </div>
 
-      {visualFilter === "table" && (
-        <div className="flex justify-center w-full md:py-8">
-          <Draggable>
-            <PlayersTable
-              data={
-                userStats && whoFilter === "user" ? userStats : communityStats
-              }
-            />
-          </Draggable>
-        </div>
-      )}
-
-      {visualFilter === "chart" && communityChartStats && (
+      {router.query.shape === "chart" && communityChartStats ? (
         <div className="flex py-8 overflow-hidden scroll-hide gap-x-8">
           <div className="flex flex-col flex-grow overflow-x-hidden overflow-y-scroll gap-y-8">
             <VisxChartContainer title="Moyenne des joueurs pour chaque match de la saison.">
@@ -338,7 +407,7 @@ const PlayersPage = () => {
                 {(parent) => (
                   <VisxPlayersAvgLinearChart
                     players={
-                      userChartStats && whoFilter === "user"
+                      userChartStats && router.query.for === "user"
                         ? userChartStats
                         : communityChartStats
                     }
@@ -357,7 +426,7 @@ const PlayersPage = () => {
                 {(parent) => (
                   <VisxPlayersAvgProgressChart
                     players={
-                      userChartStats && whoFilter === "user"
+                      userChartStats && router.query.for === "user"
                         ? userChartStats
                         : communityChartStats
                     }
@@ -376,7 +445,7 @@ const PlayersPage = () => {
                 {(parent) => (
                   <VisxPlayersTdcLinearChart
                     players={
-                      userChartStats && whoFilter === "user"
+                      userChartStats && router.query.for === "user"
                         ? userChartStats
                         : communityChartStats
                     }
@@ -395,7 +464,7 @@ const PlayersPage = () => {
                 {(parent) => (
                   <VisxPlayersTdcProgressChart
                     players={
-                      userChartStats && whoFilter === "user"
+                      userChartStats && router.query.for === "user"
                         ? userChartStats
                         : communityChartStats
                     }
@@ -413,7 +482,7 @@ const PlayersPage = () => {
 
           <ChartPlayersList
             players={
-              userChartStats && whoFilter === "user"
+              userChartStats && router.query.for === "user"
                 ? userChartStats
                 : communityChartStats
             }
@@ -421,6 +490,18 @@ const PlayersPage = () => {
             togglePlayerLine={togglePlayerLine}
             theme={theme}
           />
+        </div>
+      ) : (
+        <div className="flex justify-center w-full md:py-8">
+          <Draggable>
+            <PlayersTable
+              data={
+                userStats && router.query.for === "user"
+                  ? userStats
+                  : communityStats
+              }
+            />
+          </Draggable>
         </div>
       )}
     </div>
