@@ -32,25 +32,33 @@ export const formatPlayerSeasonStats = ({
   competitions,
   ratings,
 }: FormatPlayerSeasonStatsParams) => {
+  let playerMatchesStats: PlayerMatchStats = {};
+
+  // if there is no matches
+  if (matches.length < 1) {
+    return Object.values(playerMatchesStats);
+  }
+
+  // creating object containing all matches by their ids
+  // { [matchId]: matchData }
   let matchesById: {
     [key: string]: PlayerSeasonDataQuery["matches"][0];
   } = {};
   matches.forEach((match) => (matchesById[match.id] = match));
 
+  // creating object containing all clubs by their ids
+  // { [clubId]: clubData }
   let clubsById: { [key: string]: PlayerSeasonDataQuery["clubs"][0] } = {};
   clubs.forEach((club) => (clubsById[club.id] = club));
 
+  // creating object containing all competitions by their ids
+  // { [compId]: compData }
   let competitionsById: {
     [key: string]: PlayerSeasonDataQuery["competitions"][0];
   } = {};
   competitions.forEach((comp) => (competitionsById[comp.id] = comp));
 
-  let playerMatchesStats: PlayerMatchStats = {};
-
-  if (matches.length < 1) {
-    return Object.values(playerMatchesStats);
-  }
-
+  // for each match initialize a detailed object with all the corresponding data
   matches.forEach((m) => {
     if (!playerMatchesStats[m.id]) {
       playerMatchesStats[m.id] = {
@@ -65,8 +73,12 @@ export const formatPlayerSeasonStats = ({
     }
   });
 
+  // add up each ratings to their corresponding match
   ratings.forEach((r) => {
-    if (!playerMatchesStats[r.matchId]) {
+    if (playerMatchesStats[r.matchId]) {
+      playerMatchesStats[r.matchId].averageSum += r.rating || 0;
+      playerMatchesStats[r.matchId].averageQuantity += r.rating ? 1 : 0;
+    } else {
       playerMatchesStats[r.matchId] = {
         ...matchesById[r.matchId],
         competition: {
@@ -76,13 +88,11 @@ export const formatPlayerSeasonStats = ({
         averageSum: r.rating || 0,
         averageQuantity: r.rating ? 1 : 0,
       };
-    } else {
-      playerMatchesStats[r.matchId].averageSum += r.rating || 0;
-      playerMatchesStats[r.matchId].averageQuantity += r.rating ? 1 : 0;
     }
   });
 
   const formattedMatches: FormattedPlayerSeasonStats[] =
     Object.values(playerMatchesStats);
+
   return formattedMatches;
 };

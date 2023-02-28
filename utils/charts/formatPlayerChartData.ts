@@ -5,12 +5,18 @@ export type FormattedPlayerChartData = FormattedPlayerSeasonStats & {
   tdcProgress: number;
 };
 
-export const formatPlayerChartData = (data: FormattedPlayerSeasonStats[]) => {
+export type FormatPlayerChartDataParams = {
+  stats: FormattedPlayerSeasonStats[];
+};
+
+export const formatPlayerChartData = ({
+  stats,
+}: FormatPlayerChartDataParams) => {
   let currAvgProgress: number = 0;
   let currAvgProgressQuantity: number = 0;
   let currTdcProgress: number = 0;
 
-  const formatted = data
+  const formatted = stats
     .sort((a, b) => (new Date(a.date) < new Date(b.date) ? -1 : 1))
     .map((m, i) => {
       if (m.averageQuantity) {
