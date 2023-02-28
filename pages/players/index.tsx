@@ -262,13 +262,6 @@ const PlayersPage = () => {
         newFilteredMatches = newFilteredMatches.filter((m) => m.home === false);
       }
 
-      // for filter
-      if (router.query.for === "user" && status === "authenticated") {
-        newFilteredMatches = newFilteredMatches.filter((m) =>
-          seasonUserRatings?.some((r) => r.matchId === m.id)
-        );
-      }
-
       setFilteredMatches(newFilteredMatches);
     }
   }, [competitions, matches, router, seasonUserRatings, status]);
@@ -288,9 +281,11 @@ const PlayersPage = () => {
 
       if (formattedStats) {
         setCommunityStats(formattedStats);
-        setCommunityChartStats(
-          formatPlayersChartData({ stats: formattedStats, matches: matches })
-        );
+        const formattedPlayersChartData = formatPlayersChartData({
+          stats: formattedStats,
+          matches: matches,
+        });
+        setCommunityChartStats(formattedPlayersChartData);
       }
     }
   }, [clubs, competitions, filteredMatches, matches, players, seasonRatings]);
@@ -310,9 +305,11 @@ const PlayersPage = () => {
 
       if (formattedStats) {
         setUserStats(formattedStats);
-        setUserChartStats(
-          formatPlayersChartData({ stats: formattedStats, matches: matches })
-        );
+        const formattedPlayersChartData = formatPlayersChartData({
+          stats: formattedStats,
+          matches: matches,
+        });
+        setUserChartStats(formattedPlayersChartData);
       }
     }
   }, [
