@@ -138,6 +138,7 @@ const VisxMatchesTdcProgressChart = ({
               },
               dy: 4,
             })}
+            numTicks={8}
           />
           <Grid
             xScale={xScale}

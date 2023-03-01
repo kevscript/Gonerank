@@ -42,22 +42,8 @@ const VisxMatchesAvgProgressChart = ({
     range: [0, xMax],
   });
 
-  const getDomain = () => {
-    let highestAvg = 0;
-    let lowestAvg = 10;
-
-    matches.forEach((m) => {
-      if (typeof m.avgProgress === "number") {
-        if (m.avgProgress > highestAvg) highestAvg = m.avgProgress;
-        if (m.avgProgress < lowestAvg) lowestAvg = m.avgProgress;
-      }
-    });
-
-    return [Math.floor(lowestAvg), Math.ceil(highestAvg)];
-  };
-
   const yScale = scaleLinear<number>({
-    domain: getDomain(),
+    domain: [0, 10],
     nice: true,
     range: [yMax, 0],
   });
@@ -95,7 +81,7 @@ const VisxMatchesAvgProgressChart = ({
         <Group left={margin.left} top={margin.top}>
           <AxisLeft
             scale={yScale}
-            numTicks={3}
+            tickValues={[1, 3, 5, 7, 9]}
             tickLength={4}
             stroke={theme === "dark" ? "#eeeeee" : "#111111"}
             tickStroke={theme === "dark" ? "#eeeeee" : "#111111"}
@@ -129,17 +115,19 @@ const VisxMatchesAvgProgressChart = ({
               },
               dy: 4,
             })}
+            numTicks={8}
           />
           <Grid
             xScale={xScale}
             yScale={yScale}
             width={xMax}
             height={yMax}
+            rowTickValues={[1, 3, 5, 7, 9]}
             numTicksColumns={matches.length}
             stroke={theme === "dark" ? "#eeeeee" : "#111111"}
             strokeWidth={0.5}
             strokeOpacity={theme === "dark" ? 0.25 : 0.1}
-            numTicksRows={4}
+            numTicksRows={0}
           />
           <Group>
             <LinePath
