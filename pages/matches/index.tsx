@@ -1,34 +1,35 @@
+import { useEffect, useState } from "react";
+import Head from "next/head";
+import { useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
 import OptionsFilter from "@/components/filters/OptionsFilter";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import Draggable from "@/components/shared/Draggable";
 import Spinner from "@/components/shared/Spinner";
+import MatchesTable from "@/components/tables/MatchesTable";
 import { VisualFilterOptions } from "@/components/filters/VisualFilter";
 import { WhoFilterOptions } from "@/components/filters/WhoFilter";
-import MatchesTable from "@/components/tables/MatchesTable";
-import {
-  formatMatchesSeasonStats,
-  FormattedMatchStats,
-} from "@/utils/formatMatchesSeasonStats";
+import { LocationFilterOptions } from "@/components/filters/LocationFilter";
 import {
   useGetSeasonRatingsLazyQuery,
   useGetSeasonsQuery,
   useGetSeasonUserRatingsLazyQuery,
   useGlobalSeasonDataLazyQuery,
 } from "graphql/generated/queryTypes";
-import { useSession } from "next-auth/react";
-import Head from "next/head";
-import { useEffect, useState } from "react";
-import { LocationFilterOptions } from "@/components/filters/LocationFilter";
+import {
+  formatMatchesSeasonStats,
+  FormattedMatchStats,
+} from "@/utils/formatMatchesSeasonStats";
 import {
   formatMatchesChartData,
   FormattedMatchesChartData,
 } from "@/utils/charts/formatMatchesChartData";
-import ChartContainer from "@/components/charts/ChartContainer";
-import MatchesAvgLinearChart from "@/components/charts/MatchesAvgLinearChart";
-import { useTheme } from "next-themes";
-import MatchesAvgProgressChart from "@/components/charts/MatchesAvgProgressChart";
-import MatchesTdcLinearChart from "@/components/charts/MatchesTdcLinearChart";
-import MatchesTdcProgressChart from "@/components/charts/MatchesTdcProgressChart";
+import { ParentSize } from "@visx/responsive";
+import VisxChartContainer from "@/components/charts/VisxChartContainer";
+import VisxMatchesAvgLinearChart from "@/components/charts/VisxMatchesAvgLinearChart";
+import VisxMatchesTdcLinearChart from "@/components/charts/VisxMatchesTdcLinearChart";
+import VisxMatchesAvgProgressChart from "@/components/charts/VisxMatchesAvgProgressChart";
+import VisxMatchesTdcProgressChart from "@/components/charts/VisxMatchesTdcProgressChart";
 
 const MatchesPage = () => {
   const { data: session, status } = useSession();
@@ -305,50 +306,80 @@ const MatchesPage = () => {
       {visualFilter === "chart" && communityChartStats && (
         <div className="flex-1 w-full pb-8 mt-8 overflow-scroll scroll-hide">
           <div className="flex flex-col w-full grid-cols-2 gap-4 lg:grid">
-            <ChartContainer title="Moyenne Linéaire">
-              <MatchesAvgLinearChart
-                matches={
-                  userChartStats && whoFilter === "user"
-                    ? userChartStats
-                    : communityChartStats
-                }
-                theme={theme || "dark"}
-                highlighted={true}
-              />
-            </ChartContainer>
-            <ChartContainer title="Moyenne Progressive">
-              <MatchesAvgProgressChart
-                matches={
-                  userChartStats && whoFilter === "user"
-                    ? userChartStats
-                    : communityChartStats
-                }
-                theme={theme || "dark"}
-                highlighted={true}
-              />
-            </ChartContainer>
-            <ChartContainer title="Tendance Linéaire">
-              <MatchesTdcLinearChart
-                matches={
-                  userChartStats && whoFilter === "user"
-                    ? userChartStats
-                    : communityChartStats
-                }
-                theme={theme || "dark"}
-                highlighted={true}
-              />
-            </ChartContainer>
-            <ChartContainer title="Tendance Progressive">
-              <MatchesTdcProgressChart
-                matches={
-                  userChartStats && whoFilter === "user"
-                    ? userChartStats
-                    : communityChartStats
-                }
-                theme={theme || "dark"}
-                highlighted={true}
-              />
-            </ChartContainer>
+            <VisxChartContainer title="Moyenne de chaque match de la saison">
+              <ParentSize debounceTime={10}>
+                {(parent) => (
+                  <VisxMatchesAvgLinearChart
+                    matches={
+                      userChartStats && whoFilter === "user"
+                        ? userChartStats
+                        : communityChartStats
+                    }
+                    theme={theme || "dark"}
+                    dimensions={{
+                      width: parent.width,
+                      height: parent.width * (9 / 16),
+                    }}
+                  />
+                )}
+              </ParentSize>
+            </VisxChartContainer>
+            <VisxChartContainer title="Tendance de chaque match de la saison">
+              <ParentSize debounceTime={10}>
+                {(parent) => (
+                  <VisxMatchesTdcLinearChart
+                    matches={
+                      userChartStats && whoFilter === "user"
+                        ? userChartStats
+                        : communityChartStats
+                    }
+                    theme={theme || "dark"}
+                    dimensions={{
+                      width: parent.width,
+                      height: parent.width * (9 / 16),
+                    }}
+                  />
+                )}
+              </ParentSize>
+            </VisxChartContainer>
+
+            <VisxChartContainer title="Evolution des moyennes de match sur la saison">
+              <ParentSize debounceTime={10}>
+                {(parent) => (
+                  <VisxMatchesAvgProgressChart
+                    matches={
+                      userChartStats && whoFilter === "user"
+                        ? userChartStats
+                        : communityChartStats
+                    }
+                    theme={theme || "dark"}
+                    dimensions={{
+                      width: parent.width,
+                      height: parent.width * (9 / 16),
+                    }}
+                  />
+                )}
+              </ParentSize>
+            </VisxChartContainer>
+
+            <VisxChartContainer title="Evolution de la tendance de match sur la saison">
+              <ParentSize debounceTime={10}>
+                {(parent) => (
+                  <VisxMatchesTdcProgressChart
+                    matches={
+                      userChartStats && whoFilter === "user"
+                        ? userChartStats
+                        : communityChartStats
+                    }
+                    theme={theme || "dark"}
+                    dimensions={{
+                      width: parent.width,
+                      height: parent.width * (9 / 16),
+                    }}
+                  />
+                )}
+              </ParentSize>
+            </VisxChartContainer>
           </div>
         </div>
       )}
