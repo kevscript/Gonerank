@@ -17,10 +17,6 @@ type VisxPlayerAvgProgressChartProps = {
   dimensions: ChartDimensions;
 };
 
-type TooltipData = {
-  match: FormattedPlayerChartData;
-};
-
 const VisxPlayerAvgProgressChart = ({
   matches,
   dimensions = chartDefaults.dimensions,

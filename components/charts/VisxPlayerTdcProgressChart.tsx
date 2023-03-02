@@ -17,10 +17,6 @@ type VisxPlayerTdcProgressChartProps = {
   dimensions: ChartDimensions;
 };
 
-type TooltipData = {
-  match: FormattedPlayerChartData;
-};
-
 const VisxPlayerTdcProgressChart = ({
   matches,
   dimensions = chartDefaults.dimensions,
@@ -86,10 +82,6 @@ const VisxPlayerTdcProgressChart = ({
   ) => {
     const hoveredMatch = matches.find((m) => m.id === data.matchId);
     if (hoveredMatch) {
-      const info: TooltipData = {
-        match: hoveredMatch,
-      };
-
       showTooltip({
         tooltipLeft: e.clientX,
         tooltipTop: e.clientY,

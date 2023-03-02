@@ -17,10 +17,6 @@ type VisxPlayerAvgLinearChartProps = {
   dimensions?: ChartDimensions;
 };
 
-type TooltipData = {
-  match: FormattedPlayerChartData;
-};
-
 const VisxPlayerAvgLinearChart = ({
   matches,
   dimensions = chartDefaults.dimensions,

@@ -17,10 +17,6 @@ type VisxPlayerTdcLinearChartProps = {
   dimensions: ChartDimensions;
 };
 
-type TooltipData = {
-  match: FormattedPlayerChartData;
-};
-
 const VisxPlayerTdcLinearChart = ({
   matches,
   dimensions = chartDefaults.dimensions,
