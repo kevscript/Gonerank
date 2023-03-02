@@ -180,7 +180,7 @@ const VisxPlayerTdcProgressChart = ({
                   <circle
                     className={`cursor-pointer  hover:stroke-2 ${
                       theme === "dark"
-                        ? "hover:stroke-white fill-marine-400"
+                        ? "hover:stroke-white fill-marine-200"
                         : "hover:stroke-black fill-marine-600"
                     }`}
                     key={`${m.id}`}
