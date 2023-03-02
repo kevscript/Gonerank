@@ -5,15 +5,15 @@ import { LinePath } from "@visx/shape";
 import * as curves from "@visx/curve";
 import { Grid } from "@visx/grid";
 import { useTooltip, TooltipWithBounds } from "@visx/tooltip";
-
 import { FormattedPlayersChartData } from "@/utils/charts/formatPlayersChartData";
 import { getContrastColor } from "@/utils/getContrastColor";
+import { chartDefaults, ChartDimensions } from "@/utils/charts/chartDefaults";
 
 type VisxPlayersAvgProgressChartProps = {
   players: FormattedPlayersChartData[];
   idsToShow: string[];
   theme: string;
-  dimensions: { width: number; height: number };
+  dimensions: ChartDimensions;
 };
 
 type TooltipData = {
@@ -22,19 +22,17 @@ type TooltipData = {
   color: string;
 };
 
-const defaultDimensions = { width: 600, height: 400 };
-
 const VisxPlayersAvgProgressChart = ({
   players,
   idsToShow,
-  dimensions = defaultDimensions,
+  dimensions = chartDefaults.dimensions,
   theme,
 }: VisxPlayersAvgProgressChartProps) => {
   const { width, height } = dimensions;
-
-  const margin = { top: 32, right: 32, bottom: 48, left: 32 };
-  const xMax = width - margin.left - margin.right;
-  const yMax = height - margin.top - margin.bottom;
+  const baseColor = chartDefaults.baseColor(theme);
+  const margins = chartDefaults.margins;
+  const xMax = chartDefaults.xMax({ dimensions, margins });
+  const yMax = chartDefaults.yMax({ dimensions, margins });
 
   const xScale = scalePoint({
     domain: [...players[0].matches.map((match) => match.date)],
@@ -105,17 +103,17 @@ const VisxPlayersAvgProgressChart = ({
   return (
     <>
       <svg width={width} height={height}>
-        <Group left={margin.left} top={margin.top}>
+        <Group left={margins.left} top={margins.top}>
           <AxisLeft
             scale={yScale}
             tickValues={[1, 3, 5, 7, 9]}
             tickLength={4}
-            stroke={theme === "dark" ? "#eeeeee" : "#111111"}
-            tickStroke={theme === "dark" ? "#eeeeee" : "#111111"}
+            stroke={baseColor}
+            tickStroke={baseColor}
             tickLabelProps={(x) => ({
               style: {
                 fontSize: 12,
-                fill: theme === "dark" ? "#eeeeee" : "#111111",
+                fill: baseColor,
                 textAnchor: "end",
               },
               dy: 4,
@@ -132,11 +130,11 @@ const VisxPlayersAvgProgressChart = ({
                 day: "numeric",
               })
             }
-            stroke={theme === "dark" ? "#eeeeee" : "#111111"}
-            tickStroke={theme === "dark" ? "#eeeeee" : "#111111"}
+            stroke={baseColor}
+            tickStroke={baseColor}
             tickLabelProps={() => ({
               style: {
-                fill: theme === "dark" ? "#eeeeee" : "#111111",
+                fill: baseColor,
                 fontSize: 12,
                 textAnchor: "middle",
               },
@@ -150,7 +148,7 @@ const VisxPlayersAvgProgressChart = ({
             height={yMax}
             rowTickValues={[1, 3, 5, 7, 9]}
             numTicksColumns={players[0].matches.length}
-            stroke={theme === "dark" ? "#eeeeee" : "#111111"}
+            stroke={baseColor}
             strokeWidth={0.5}
             strokeOpacity={theme === "dark" ? 0.25 : 0.1}
             numTicksRows={0}
@@ -160,7 +158,7 @@ const VisxPlayersAvgProgressChart = ({
               data={players[0].matches}
               x={(d) => refScale(d.date)!}
               y={yScale(5)}
-              stroke={theme === "dark" ? "#eeeeee" : "#111111"}
+              stroke={baseColor}
               strokeWidth={0.5}
               strokeOpacity={theme === "dark" ? 1 : 0.5}
               strokeDasharray={4}

@@ -9,25 +9,24 @@ import { useTooltip } from "@visx/tooltip";
 import VisxMatchesTooltip, {
   VisxMatchesTooltipData,
 } from "./tooltips/VisxMatchesTooltip";
+import { chartDefaults, ChartDimensions } from "@/utils/charts/chartDefaults";
 
 type VisxMatchesAvgLinearChartProps = {
   matches: FormattedMatchesChartData[];
   theme: string;
-  dimensions?: { width: number; height: number };
+  dimensions?: ChartDimensions;
 };
-
-const defaultDimensions = { width: 600, height: 400 };
 
 const VisxMatchesAvgLinearChart = ({
   matches,
   theme,
-  dimensions = defaultDimensions,
+  dimensions = chartDefaults.dimensions,
 }: VisxMatchesAvgLinearChartProps) => {
   const { width, height } = dimensions;
-
-  const margin = { top: 32, right: 32, bottom: 48, left: 32 };
-  const xMax = width - margin.left - margin.right;
-  const yMax = height - margin.top - margin.bottom;
+  const baseColor = chartDefaults.baseColor(theme);
+  const margins = chartDefaults.margins;
+  const xMax = chartDefaults.xMax({ dimensions, margins });
+  const yMax = chartDefaults.yMax({ dimensions, margins });
 
   const xScale = scalePoint({
     domain: [...matches.map((match) => match.date)],
@@ -61,14 +60,10 @@ const VisxMatchesAvgLinearChart = ({
   ) => {
     const hoveredMatch = matches.find((m) => m.id === data.matchId);
     if (hoveredMatch) {
-      const info: VisxMatchesTooltipData = {
-        match: hoveredMatch,
-      };
-
       showTooltip({
         tooltipLeft: e.clientX,
         tooltipTop: e.clientY,
-        tooltipData: info,
+        tooltipData: { match: hoveredMatch },
       });
     }
   };
@@ -76,17 +71,17 @@ const VisxMatchesAvgLinearChart = ({
   return (
     <>
       <svg width={width} height={height}>
-        <Group left={margin.left} top={margin.top}>
+        <Group left={margins.left} top={margins.top}>
           <AxisLeft
             scale={yScale}
             numTicks={4}
             tickLength={4}
-            stroke={theme === "dark" ? "#eeeeee" : "#111111"}
-            tickStroke={theme === "dark" ? "#eeeeee" : "#111111"}
+            stroke={baseColor}
+            tickStroke={baseColor}
             tickLabelProps={() => ({
               style: {
                 fontSize: 12,
-                fill: theme === "dark" ? "#eeeeee" : "#111111",
+                fill: baseColor,
                 textAnchor: "end",
               },
               dy: 4,
@@ -103,11 +98,11 @@ const VisxMatchesAvgLinearChart = ({
                 day: "numeric",
               })
             }
-            stroke={theme === "dark" ? "#eeeeee" : "#111111"}
-            tickStroke={theme === "dark" ? "#eeeeee" : "#111111"}
+            stroke={baseColor}
+            tickStroke={baseColor}
             tickLabelProps={() => ({
               style: {
-                fill: theme === "dark" ? "#eeeeee" : "#111111",
+                fill: baseColor,
                 fontSize: 12,
                 textAnchor: "middle",
               },
@@ -121,7 +116,7 @@ const VisxMatchesAvgLinearChart = ({
             width={xMax}
             height={yMax}
             numTicksColumns={matches.length}
-            stroke={theme === "dark" ? "#eeeeee" : "#111111"}
+            stroke={baseColor}
             strokeWidth={0.5}
             strokeOpacity={theme === "dark" ? 0.25 : 0.1}
             numTicksRows={4}
@@ -131,7 +126,7 @@ const VisxMatchesAvgLinearChart = ({
               data={matches}
               x={(d) => refScale(d.date)!}
               y={yScale(5)}
-              stroke={theme === "dark" ? "#eeeeee" : "#111111"}
+              stroke={baseColor}
               strokeWidth={0.5}
               strokeOpacity={theme === "dark" ? 1 : 0.5}
               strokeDasharray={4}
