@@ -4,10 +4,12 @@ import { scaleLinear, scalePoint } from "@visx/scale";
 import { LinePath } from "@visx/shape";
 import * as curves from "@visx/curve";
 import { Grid } from "@visx/grid";
-import { useTooltip, TooltipWithBounds } from "@visx/tooltip";
-import { getContrastColor } from "@/utils/getContrastColor";
+import { useTooltip } from "@visx/tooltip";
 import { FormattedPlayerChartData } from "@/utils/charts/formatPlayerChartData";
 import { chartDefaults, ChartDimensions } from "@/utils/charts/chartDefaults";
+import VisxPlayerTooltip, {
+  VisxPlayerTooltipData,
+} from "./tooltips/VisxPlayerTooltip";
 
 type VisxPlayerAvgProgressChartProps = {
   matches: FormattedPlayerChartData[];
@@ -68,7 +70,7 @@ const VisxPlayerAvgProgressChart = ({
     tooltipOpen,
     showTooltip,
     hideTooltip,
-  } = useTooltip({ tooltipData: {} as TooltipData });
+  } = useTooltip({ tooltipData: {} as VisxPlayerTooltipData });
 
   const handlePointHover = (
     e: React.MouseEvent<SVGCircleElement>,
@@ -76,14 +78,10 @@ const VisxPlayerAvgProgressChart = ({
   ) => {
     const hoveredMatch = matches.find((m) => m.id === data.matchId);
     if (hoveredMatch) {
-      const info: TooltipData = {
-        match: hoveredMatch,
-      };
-
       showTooltip({
         tooltipLeft: e.clientX,
         tooltipTop: e.clientY,
-        tooltipData: info,
+        tooltipData: { match: hoveredMatch },
       });
     }
   };
@@ -188,53 +186,14 @@ const VisxPlayerAvgProgressChart = ({
         </Group>
       </svg>
 
-      {tooltipOpen && (
-        <TooltipWithBounds
-          className="!p-0 border border-gray-400 !rounded-sm !overflow-hidden !bg-gray-400"
-          key={Math.random()}
+      {tooltipOpen && tooltipData && (
+        <VisxPlayerTooltip
           top={tooltipTop}
           left={tooltipLeft}
+          data={tooltipData}
         >
-          <div className="flex flex-col flex-nowrap gap-y-[1px]">
-            <div className="flex w-full flex-nowrap gap-x-[1px]">
-              <div className="flex flex-col flex-nowrap gap-y-[1px]">
-                <div className="flex justify-between w-full gap-x-[1px]">
-                  <div
-                    className="flex items-center justify-center flex-1 px-2 py-1 text-xs font-bold text-white"
-                    style={{
-                      backgroundColor: tooltipData?.match.opponent?.primary,
-                      color: tooltipData
-                        ? getContrastColor(tooltipData.match.opponent.primary)
-                        : "white",
-                    }}
-                  >
-                    {tooltipData?.match.opponent?.abbreviation}
-                  </div>
-                  <div className="justify-center px-2 py-1 text-xs bg-gray-100">
-                    {tooltipData?.match.home ? "H" : "A"}
-                  </div>
-                </div>
-                <div className="flex justify-between w-full gap-x-[1px]">
-                  <div className="justify-center flex-1 px-2 py-1 text-xs bg-gray-100">
-                    {tooltipData?.match.competition?.abbreviation}
-                  </div>
-                  <div className="justify-center px-2 py-1 text-xs bg-gray-100">
-                    {new Date(tooltipData!.match.date).toLocaleDateString(
-                      undefined,
-                      {
-                        month: "numeric",
-                        day: "numeric",
-                      }
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center min-w-[48px] flex-1 text-base font-bold bg-gray-200 font-num text-black">
-                <span>{tooltipData?.match.avgProgress.toFixed(2)}</span>
-              </div>
-            </div>
-          </div>
-        </TooltipWithBounds>
+          {tooltipData.match.avgProgress.toFixed(2)}
+        </VisxPlayerTooltip>
       )}
     </>
   );
