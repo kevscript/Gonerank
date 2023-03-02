@@ -4,22 +4,18 @@ import { scaleLinear, scalePoint } from "@visx/scale";
 import { LinePath } from "@visx/shape";
 import * as curves from "@visx/curve";
 import { Grid } from "@visx/grid";
-import { useTooltip, TooltipWithBounds } from "@visx/tooltip";
+import { useTooltip } from "@visx/tooltip";
 import { FormattedPlayersChartData } from "@/utils/charts/formatPlayersChartData";
-import { getContrastColor } from "@/utils/getContrastColor";
 import { chartDefaults, ChartDimensions } from "@/utils/charts/chartDefaults";
+import VisxPlayersTooltip, {
+  VisxPlayersTooltipData,
+} from "./tooltips/VisxPlayersTooltip";
 
 type VisxPlayersTdcProgressChartProps = {
   players: FormattedPlayersChartData[];
   idsToShow: string[];
   theme: string;
   dimensions: ChartDimensions;
-};
-
-type TooltipData = {
-  player: Omit<FormattedPlayersChartData, "matches">;
-  match: FormattedPlayersChartData["matches"][0];
-  color: string;
 };
 
 const VisxPlayersTdcProgressChart = ({
@@ -82,7 +78,7 @@ const VisxPlayersTdcProgressChart = ({
     tooltipOpen,
     showTooltip,
     hideTooltip,
-  } = useTooltip({ tooltipData: {} as TooltipData });
+  } = useTooltip({ tooltipData: {} as VisxPlayersTooltipData });
 
   const handlePointHover = (
     e: React.MouseEvent<SVGCircleElement>,
@@ -94,16 +90,14 @@ const VisxPlayersTdcProgressChart = ({
     );
     if (hoveredPlayer && hoveredMatch) {
       const { matches, ...playerInfo } = hoveredPlayer;
-      const info: TooltipData = {
-        player: playerInfo,
-        match: hoveredMatch,
-        color: data.color,
-      };
-
       showTooltip({
         tooltipLeft: e.clientX,
         tooltipTop: e.clientY,
-        tooltipData: info,
+        tooltipData: {
+          player: playerInfo,
+          match: hoveredMatch,
+          color: data.color,
+        },
       });
     }
   };
@@ -247,68 +241,14 @@ const VisxPlayersTdcProgressChart = ({
         </Group>
       </svg>
 
-      {tooltipOpen && (
-        <TooltipWithBounds
-          className="!p-0 border border-gray-400 !rounded-sm !overflow-hidden !bg-gray-400"
-          key={tooltipData ? tooltipData.player.id : Math.random()}
+      {tooltipOpen && tooltipData && (
+        <VisxPlayersTooltip
           top={tooltipTop}
           left={tooltipLeft}
+          data={tooltipData}
         >
-          <div className="flex flex-col flex-nowrap gap-y-[1px]">
-            <div className="relative flex items-center justify-between w-full p-2 font-medium text-black bg-white flex-nowrap gap-x-2">
-              <div
-                className="absolute top-0 left-0 w-full h-full"
-                style={{ backgroundColor: tooltipData?.color, opacity: 0.2 }}
-              ></div>
-              <span>
-                {tooltipData?.player.firstName[0] +
-                  ". " +
-                  tooltipData?.player.lastName}
-              </span>
-              <div
-                className="w-2 h-2 rounded-full"
-                style={{ backgroundColor: tooltipData?.color }}
-              ></div>
-            </div>
-            <div className="flex w-full flex-nowrap gap-x-[1px]">
-              <div className="flex flex-col flex-nowrap gap-y-[1px]">
-                <div className="flex justify-between w-full gap-x-[1px]">
-                  <div
-                    className="flex items-center justify-center flex-1 px-2 py-1 text-xs font-bold text-white"
-                    style={{
-                      backgroundColor: tooltipData?.match.opponent?.primary,
-                      color: tooltipData
-                        ? getContrastColor(tooltipData.match.opponent.primary)
-                        : "white",
-                    }}
-                  >
-                    {tooltipData?.match.opponent?.abbreviation}
-                  </div>
-                  <div className="justify-center px-2 py-1 text-xs bg-gray-100">
-                    {tooltipData?.match.home ? "H" : "A"}
-                  </div>
-                </div>
-                <div className="flex justify-between w-full gap-x-[1px]">
-                  <div className="justify-center flex-1 px-2 py-1 text-xs bg-gray-100">
-                    {tooltipData?.match.competition?.abbreviation}
-                  </div>
-                  <div className="justify-center px-2 py-1 text-xs bg-gray-100">
-                    {new Date(tooltipData!.match.date).toLocaleDateString(
-                      undefined,
-                      {
-                        month: "numeric",
-                        day: "numeric",
-                      }
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center min-w-[48px] flex-1 text-base font-bold bg-gray-200 font-num text-black">
-                <span>{tooltipData?.match.tdcProgress}</span>
-              </div>
-            </div>
-          </div>
-        </TooltipWithBounds>
+          {tooltipData.match.tdcProgress}
+        </VisxPlayersTooltip>
       )}
     </>
   );
