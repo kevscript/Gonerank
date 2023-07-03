@@ -8,18 +8,8 @@ const SunIcon = ({ className }: SvgIconProps) => {
       viewBox="0 0 473.931 473.931"
       className={className}
     >
-      <circle
-        cx="236.966"
-        cy="236.966"
-        r="236.966"
-        style={{ fill: "#f2be3e" }}
-      />
-      <circle
-        cx="236.966"
-        cy="236.966"
-        r="117.154"
-        style={{ fill: "#f1eb75" }}
-      />
+      <circle cx="236.966" cy="236.966" r="236.966" />
+      <circle cx="236.966" cy="236.966" r="117.154" />
     </svg>
   );
 };
