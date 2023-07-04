@@ -8,6 +8,8 @@ export type LatestSeasonPlayerStats = {
   globalAvgSum: number;
   globalAvgQuantity: number;
   globalTendency: number;
+  globalNegativeTendency: number;
+  globalPositiveTendency: number;
   globalAward: number;
 };
 
@@ -23,6 +25,8 @@ export const latestSeasonRanking = (
       globalAvgSum: 0,
       globalAvgQuantity: 0,
       globalTendency: 0,
+      globalPositiveTendency: 0,
+      globalNegativeTendency: 0,
       globalAward: 0,
     };
 
@@ -32,6 +36,8 @@ export const latestSeasonRanking = (
         : 0;
       player.globalAvgQuantity += m.averageSum ? 1 : 0;
       player.globalTendency += m.tendency;
+      player.globalNegativeTendency += m.negativeTendency;
+      player.globalPositiveTendency += m.positiveTendency;
       player.globalAward += m.motm ? 1 : m.botm ? -1 : 0;
     });
 

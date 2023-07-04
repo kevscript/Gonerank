@@ -50,6 +50,7 @@
     "react-datepicker": "^4.8.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.33.1",
+    "react-tooltip": "4.5.1",
     "react-use-draggable-scroll": "^0.4.4",
     "recharts": "2.1.12"
   },

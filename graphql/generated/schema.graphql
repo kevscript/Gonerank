@@ -150,8 +150,10 @@ type MatchStats {
   firstName: String!
   image: String!
   lastName: String!
+  negativeTendency: Float!
   numOfAvg: Float!
   playerId: String!
+  positiveTendency: Float!
   tendency: Float!
 }
 
@@ -289,6 +291,8 @@ type SeasonPlayerMatchStats {
   botm: Boolean!
   matchId: String!
   motm: Boolean!
+  negativeTendency: Float!
+  positiveTendency: Float!
   tendency: Float!
 }
 

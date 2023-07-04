@@ -178,6 +178,8 @@ export const GET_DISPLAY_MATCH = gql`
         avgSum
         numOfAvg
         tendency
+        negativeTendency
+        positiveTendency
       }
     }
   }

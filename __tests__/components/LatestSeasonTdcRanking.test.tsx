@@ -20,7 +20,12 @@ describe("LatestSeasonTdcRanking", () => {
         expect(displayName).toBeInTheDocument();
       });
 
-    const tendencies = screen.getAllByText("2.0");
-    expect(tendencies).toHaveLength(3);
+    const statItems = screen.getAllByTestId("stat");
+
+    expect(statItems).toHaveLength(3);
+
+    statItems.forEach((statItem) => {
+      expect(statItem).toHaveTextContent("+2.0");
+    });
   });
 });

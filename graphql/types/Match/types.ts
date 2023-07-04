@@ -56,5 +56,7 @@ export const MatchStats = objectType({
     t.float("avgSum");
     t.float("numOfAvg");
     t.float("tendency");
+    t.float("negativeTendency");
+    t.float("positiveTendency");
   },
 });

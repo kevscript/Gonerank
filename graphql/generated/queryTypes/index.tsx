@@ -152,8 +152,10 @@ export type MatchStats = {
   firstName: Scalars['String'];
   image: Scalars['String'];
   lastName: Scalars['String'];
+  negativeTendency: Scalars['Float'];
   numOfAvg: Scalars['Float'];
   playerId: Scalars['String'];
+  positiveTendency: Scalars['Float'];
   tendency: Scalars['Float'];
 };
 
@@ -507,6 +509,8 @@ export type SeasonPlayerMatchStats = {
   botm: Scalars['Boolean'];
   matchId: Scalars['String'];
   motm: Scalars['Boolean'];
+  negativeTendency: Scalars['Float'];
+  positiveTendency: Scalars['Float'];
   tendency: Scalars['Float'];
 };
 
@@ -742,7 +746,7 @@ export type UpdateMatchPlayersMutation = { __typename?: 'Mutation', updateMatchP
 export type GetDisplayMatchQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetDisplayMatchQuery = { __typename?: 'Query', displayMatch?: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competition: { __typename?: 'Competition', id: string, name: string, abbreviation: string }, season: { __typename?: 'Season', id: string, startDate: any }, opponent: { __typename?: 'Club', name: string, abbreviation: string, primary: string, secondary: string }, stats: Array<{ __typename?: 'MatchStats', playerId: string, firstName: string, lastName: string, image: string, avgSum: number, numOfAvg: number, tendency: number }> } | null };
+export type GetDisplayMatchQuery = { __typename?: 'Query', displayMatch?: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competition: { __typename?: 'Competition', id: string, name: string, abbreviation: string }, season: { __typename?: 'Season', id: string, startDate: any }, opponent: { __typename?: 'Club', name: string, abbreviation: string, primary: string, secondary: string }, stats: Array<{ __typename?: 'MatchStats', playerId: string, firstName: string, lastName: string, image: string, avgSum: number, numOfAvg: number, tendency: number, negativeTendency: number, positiveTendency: number }> } | null };
 
 export type MatchRatingsQueryVariables = Exact<{
   matchId: Scalars['String'];
@@ -862,7 +866,7 @@ export type GetSeasonsQuery = { __typename?: 'Query', seasons: Array<{ __typenam
 export type GetLatestSeasonQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetLatestSeasonQuery = { __typename?: 'Query', latestSeason: { __typename?: 'Season', id: string, startDate: any, playerStats?: Array<{ __typename?: 'SeasonPlayerStats', playerId: string, firstName: string, lastName: string, image: string, matches: Array<{ __typename?: 'SeasonPlayerMatchStats', matchId: string, averageSum: number, averageQuantity: number, tendency: number, motm: boolean, botm: boolean }> }> | null } };
+export type GetLatestSeasonQuery = { __typename?: 'Query', latestSeason: { __typename?: 'Season', id: string, startDate: any, playerStats?: Array<{ __typename?: 'SeasonPlayerStats', playerId: string, firstName: string, lastName: string, image: string, matches: Array<{ __typename?: 'SeasonPlayerMatchStats', matchId: string, averageSum: number, averageQuantity: number, tendency: number, negativeTendency: number, positiveTendency: number, motm: boolean, botm: boolean }> }> | null } };
 
 export type CreateSeasonMutationVariables = Exact<{
   data: CreateSeasonInput;
@@ -1724,6 +1728,8 @@ export const GetDisplayMatchDocument = gql`
       avgSum
       numOfAvg
       tendency
+      negativeTendency
+      positiveTendency
     }
   }
 }
@@ -2429,6 +2435,8 @@ export const GetLatestSeasonDocument = gql`
         averageSum
         averageQuantity
         tendency
+        negativeTendency
+        positiveTendency
         motm
         botm
       }

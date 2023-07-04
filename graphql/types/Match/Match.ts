@@ -36,6 +36,8 @@ export const MatchType = objectType({
               avgSum: number;
               numOfAvg: number;
               tendency: number;
+              negativeTendency: number;
+              positiveTendency: number;
             };
           } = {};
 
@@ -65,12 +67,18 @@ export const MatchType = objectType({
               avgSum: 0,
               numOfAvg: 0,
               tendency: 0,
+              negativeTendency: 0,
+              positiveTendency: 0,
             };
 
             mp.player.ratings.forEach((r) => {
               stats[mp.playerId].avgSum += r.rating ? r.rating : 0;
               stats[mp.playerId].numOfAvg += r.rating ? 1 : 0;
               stats[mp.playerId].tendency += r.rating ? r.rating - 5 : 0;
+              stats[mp.playerId].negativeTendency +=
+                r.rating && r.rating < 5 ? 5 - r.rating : 0;
+              stats[mp.playerId].positiveTendency +=
+                r.rating && r.rating > 5 ? r.rating - 5 : 0;
             });
           });
 

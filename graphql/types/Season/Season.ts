@@ -9,6 +9,8 @@ type PlayerMatchStats = {
   averageSum: number;
   averageQuantity: number;
   tendency: number;
+  negativeTendency: number;
+  positiveTendency: number;
   motm: boolean;
   botm: boolean;
 };
@@ -62,6 +64,8 @@ export const SeasonType = objectType({
                   averageSum: r.rating || 0,
                   averageQuantity: r.rating ? 1 : 0,
                   tendency: r.rating ? r.rating - 5 : 0,
+                  negativeTendency: r.rating && r.rating < 5 ? 5 - r.rating : 0,
+                  positiveTendency: r.rating && r.rating > 5 ? r.rating - 5 : 0,
                   motm: false,
                   botm: false,
                 };
@@ -71,6 +75,10 @@ export const SeasonType = objectType({
                 playerMatches[r.matchId].tendency += r.rating
                   ? r.rating - 5
                   : 0;
+                playerMatches[r.matchId].negativeTendency +=
+                  r.rating && r.rating < 5 ? 5 - r.rating : 0;
+                playerMatches[r.matchId].positiveTendency +=
+                  r.rating && r.rating > 5 ? r.rating - 5 : 0;
               }
             });
 

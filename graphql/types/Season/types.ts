@@ -29,6 +29,8 @@ export const SeasonPlayerMatchStats = objectType({
     t.nonNull.float("averageSum");
     t.nonNull.int("averageQuantity");
     t.nonNull.float("tendency");
+    t.nonNull.float("negativeTendency");
+    t.nonNull.float("positiveTendency");
     t.nonNull.boolean("motm");
     t.nonNull.boolean("botm");
   },

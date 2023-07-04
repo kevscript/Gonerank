@@ -41,6 +41,8 @@ export const GET_LATEST_SEASON = gql`
           averageSum
           averageQuantity
           tendency
+          negativeTendency
+          positiveTendency
           motm
           botm
         }

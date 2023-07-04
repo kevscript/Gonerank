@@ -2,7 +2,9 @@ import { LatestSeasonPlayerStats } from "@/utils/latestSeasonRanking";
 import { percentageToColor } from "@/utils/percentageToColor";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { useState } from "react";
+import { Fragment, useState } from "react";
+import LatestSeasonPlayerItem from "./LatestSeasonPlayerItem";
+import LatestSeasonTooltipWrapper from "./LatestSeasonTooltipWrapper";
 
 export type LatestSeasonAvgRankingProps = {
   stats: LatestSeasonPlayerStats[];
@@ -38,41 +40,46 @@ const LatestSeasonAvgRanking = ({ stats }: LatestSeasonAvgRankingProps) => {
 
             return aRating > bRating ? -1 : 1;
           })
-          .map((p, i) => (
-            <li
-              key={p.id}
-              className="flex flex-row flex-shrink-0 w-full h-8 text-sm"
-            >
-              <div className="flex items-center justify-center w-8 h-full bg-white border border-gray-100 rounded dark:bg-dark-500 dark:border-dark-300 font-num">
-                {i + 1}
-              </div>
-              <Link href={`/players/${p.id}`}>
-                <div className="flex items-center justify-between flex-1 ml-1 overflow-hidden bg-white border border-gray-100 rounded cursor-pointer  dark:bg-dark-500 dark:border-dark-300">
-                  <span className="px-2">
-                    {p.firstName[0] + ". " + p.lastName}
-                  </span>
-                  <div
-                    className="flex items-center justify-center w-12 h-full bg-marine-100 dark:bg-dark-400 text-marine-600 dark:text-marine-400 font-num"
-                    style={{
-                      color: `${
-                        p.globalAvgQuantity
-                          ? percentageToColor(
-                              (p.globalAvgSum / p.globalAvgQuantity -
-                                minMax.min) /
-                                (minMax.max - minMax.min),
-                              theme as any
-                            )
-                          : "#666666"
-                      }`,
-                    }}
-                  >
-                    {p.globalAvgQuantity
-                      ? (p.globalAvgSum / p.globalAvgQuantity).toFixed(2)
-                      : "-"}
+          .map((player, i) => (
+            <Fragment key={player.id}>
+              <LatestSeasonPlayerItem
+                player={player}
+                rank={i + 1}
+                rankColorPercentage={
+                  (player.globalAvgSum / player.globalAvgQuantity -
+                    minMax.min) /
+                  (minMax.max - minMax.min)
+                }
+                stat={
+                  player.globalAvgQuantity
+                    ? (player.globalAvgSum / player.globalAvgQuantity).toFixed(
+                        2
+                      )
+                    : undefined
+                }
+                theme={theme as any}
+                tooltipId={`tooltip-${player.id}`}
+              />
+              <LatestSeasonTooltipWrapper
+                id={`tooltip-${player.id}`}
+                theme={theme as any}
+              >
+                {player.globalAvgQuantity ? (
+                  <div className="flex items-center justify-center w-full h-full gap-1 text-xs">
+                    <span className="italic text-marine-600 dark:text-marine-300">
+                      {player.globalAvgQuantity}
+                    </span>
+                    <span className="italic">
+                      {player.globalAvgQuantity > 1 ? " matchs" : " match"}
+                    </span>
                   </div>
-                </div>
-              </Link>
-            </li>
+                ) : (
+                  <span className="text-xs italic text-marine-600 dark:text-marine-300">
+                    0 match
+                  </span>
+                )}
+              </LatestSeasonTooltipWrapper>
+            </Fragment>
           ))}
     </ul>
   );
