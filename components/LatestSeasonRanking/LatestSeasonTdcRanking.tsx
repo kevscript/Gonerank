@@ -57,12 +57,12 @@ const LatestSeasonTdcRanking = ({ stats }: LatestSeasonTdcRankingProps) => {
                 {player.globalAvgQuantity ? (
                   <div className="flex items-center justify-center w-full h-full gap-1 text-xs">
                     <div className="flex flex-col items-end">
-                      <span className="text-marine-500 dark:text-marine-300">
+                      <span className="text-marine-300">
                         {player.globalAvgQuantity
                           ? `+${player.globalPositiveTendency.toFixed(1)}`
                           : "-"}
                       </span>
-                      <span className="text-red-500 dark:text-red-300">
+                      <span className="text-red-300">
                         {player.globalAvgQuantity
                           ? `-${player.globalNegativeTendency.toFixed(1)}`
                           : "-"}
@@ -78,7 +78,7 @@ const LatestSeasonTdcRanking = ({ stats }: LatestSeasonTdcRankingProps) => {
                     </div>
                   </div>
                 ) : (
-                  <span className="text-xs italic text-marine-600 dark:text-marine-300">
+                  <span className="text-xs italic text-marine-300">
                     0 match
                   </span>
                 )}

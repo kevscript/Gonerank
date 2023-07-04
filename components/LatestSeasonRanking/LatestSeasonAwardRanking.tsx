@@ -5,7 +5,6 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 import { Fragment, useState } from "react";
 import ChevronIcon from "../Icons/Chevron";
-import { Tooltip } from "react-tooltip";
 import LatestSeasonPlayerItem from "./LatestSeasonPlayerItem";
 import LatestSeasonTooltipWrapper from "./LatestSeasonTooltipWrapper";
 
@@ -52,7 +51,7 @@ const LatestSeasonAwardRanking = ({ stats }: LatestSeasonAwardRankingProps) => {
               >
                 {player.globalAvgQuantity ? (
                   <div className="flex items-center justify-center w-full h-full gap-1 text-xs">
-                    <span className="italic text-marine-600 dark:text-marine-300">
+                    <span className="italic text-marine-300">
                       {player.globalAvgQuantity}
                     </span>
                     <span className="italic">
@@ -60,7 +59,7 @@ const LatestSeasonAwardRanking = ({ stats }: LatestSeasonAwardRankingProps) => {
                     </span>
                   </div>
                 ) : (
-                  <span className="text-xs italic text-marine-600 dark:text-marine-300">
+                  <span className="text-xs italic text-marine-300">
                     0 match
                   </span>
                 )}

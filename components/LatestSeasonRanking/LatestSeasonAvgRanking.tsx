@@ -1,7 +1,5 @@
 import { LatestSeasonPlayerStats } from "@/utils/latestSeasonRanking";
-import { percentageToColor } from "@/utils/percentageToColor";
 import { useTheme } from "next-themes";
-import Link from "next/link";
 import { Fragment, useState } from "react";
 import LatestSeasonPlayerItem from "./LatestSeasonPlayerItem";
 import LatestSeasonTooltipWrapper from "./LatestSeasonTooltipWrapper";
@@ -66,7 +64,7 @@ const LatestSeasonAvgRanking = ({ stats }: LatestSeasonAvgRankingProps) => {
               >
                 {player.globalAvgQuantity ? (
                   <div className="flex items-center justify-center w-full h-full gap-1 text-xs">
-                    <span className="italic text-marine-600 dark:text-marine-300">
+                    <span className="italic text-marine-300">
                       {player.globalAvgQuantity}
                     </span>
                     <span className="italic">
@@ -74,7 +72,7 @@ const LatestSeasonAvgRanking = ({ stats }: LatestSeasonAvgRankingProps) => {
                     </span>
                   </div>
                 ) : (
-                  <span className="text-xs italic text-marine-600 dark:text-marine-300">
+                  <span className="text-xs italic text-marine-300">
                     0 match
                   </span>
                 )}
