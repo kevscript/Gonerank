@@ -147,7 +147,10 @@ const MatchVoter = ({ match, onSubmit }: MatchVoterProps) => {
                   <span
                     className="flex items-center justify-center w-10 h-full font-bold text-white font-num"
                     style={{
-                      backgroundColor: `${percentageToColor(item[1] / 10)}`,
+                      backgroundColor: `${percentageToColor({
+                        percentage: item[1] / 10,
+                        theme: "dark",
+                      })}`,
                     }}
                   >
                     {item[1]}
