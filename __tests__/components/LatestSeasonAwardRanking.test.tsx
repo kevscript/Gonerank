@@ -20,7 +20,12 @@ describe("LatestSeasonAwardRanking", () => {
         expect(displayName).toBeInTheDocument();
       });
 
-    const awards = screen.getAllByText("5");
-    expect(awards).toHaveLength(3);
+    const statItems = screen.getAllByTestId("stat");
+
+    expect(statItems).toHaveLength(3);
+
+    statItems.forEach((statItem) => {
+      expect(statItem).toHaveTextContent("5");
+    });
   });
 });

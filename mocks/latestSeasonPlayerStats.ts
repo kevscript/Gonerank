@@ -12,6 +12,8 @@ export const latestSeasonPlayerStatsMockReturnValue = {
       globalTendency: 2,
       globalPositiveTendency: 2,
       globalNegativeTendency: 0,
+      globalMotm: 6,
+      globalBotm: 1,
       image: "A.png",
     },
     {
@@ -24,6 +26,8 @@ export const latestSeasonPlayerStatsMockReturnValue = {
       globalTendency: 2,
       globalPositiveTendency: 2,
       globalNegativeTendency: 0,
+      globalMotm: 6,
+      globalBotm: 1,
       image: "B.png",
     },
     {
@@ -36,6 +40,8 @@ export const latestSeasonPlayerStatsMockReturnValue = {
       globalTendency: 2,
       globalPositiveTendency: 2,
       globalNegativeTendency: 0,
+      globalMotm: 6,
+      globalBotm: 1,
       image: "C.png",
     },
   ] as LatestSeasonPlayerStats[],
