@@ -58,12 +58,12 @@ const LatestSeasonTdcRanking = ({ stats }: LatestSeasonTdcRankingProps) => {
                   <div className="flex items-center justify-center w-full h-full gap-1 text-xs">
                     <div className="flex flex-col items-end">
                       <span className="text-marine-300">
-                        {player.globalAvgQuantity
+                        {player.globalPositiveTendency
                           ? `+${player.globalPositiveTendency.toFixed(1)}`
                           : "-"}
                       </span>
                       <span className="text-red-300">
-                        {player.globalAvgQuantity
+                        {player.globalNegativeTendency
                           ? `-${player.globalNegativeTendency.toFixed(1)}`
                           : "-"}
                       </span>

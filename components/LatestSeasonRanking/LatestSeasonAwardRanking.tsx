@@ -51,12 +51,22 @@ const LatestSeasonAwardRanking = ({ stats }: LatestSeasonAwardRankingProps) => {
               >
                 {player.globalAvgQuantity ? (
                   <div className="flex items-center justify-center w-full h-full gap-1 text-xs">
-                    <span className="italic text-marine-300">
-                      {player.globalAvgQuantity}
-                    </span>
-                    <span className="italic">
-                      {player.globalAvgQuantity > 1 ? " matchs" : " match"}
-                    </span>
+                    <div className="flex flex-col items-end">
+                      <span className="text-marine-300">
+                        {player.globalMotm ? `${player.globalMotm}` : "-"}
+                      </span>
+                      <span className="text-red-300">
+                        {player.globalBotm ? `${player.globalBotm}` : "-"}
+                      </span>
+                    </div>
+                    <div className="flex flex-col ">
+                      <div className="w-3 h-full rotate-180 translate-y-[2px]">
+                        <ChevronIcon className="fill-marine-400" />
+                      </div>
+                      <div className="w-3 h-full -translate-y-[2px]">
+                        <ChevronIcon className="fill-red-400 " />
+                      </div>
+                    </div>
                   </div>
                 ) : (
                   <span className="text-xs italic text-marine-300">

@@ -11,6 +11,8 @@ export type LatestSeasonPlayerStats = {
   globalNegativeTendency: number;
   globalPositiveTendency: number;
   globalAward: number;
+  globalMotm: number;
+  globalBotm: number;
 };
 
 export const latestSeasonRanking = (
@@ -28,6 +30,8 @@ export const latestSeasonRanking = (
       globalPositiveTendency: 0,
       globalNegativeTendency: 0,
       globalAward: 0,
+      globalMotm: 0,
+      globalBotm: 0,
     };
 
     p.matches.forEach((m) => {
@@ -39,6 +43,8 @@ export const latestSeasonRanking = (
       player.globalNegativeTendency += m.negativeTendency;
       player.globalPositiveTendency += m.positiveTendency;
       player.globalAward += m.motm ? 1 : m.botm ? -1 : 0;
+      m.motm && player.globalMotm++;
+      m.botm && player.globalBotm++;
     });
 
     return player;
