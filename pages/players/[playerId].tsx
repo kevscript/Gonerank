@@ -422,7 +422,13 @@ const PlayerPage = () => {
         }
         toggleLocation={toggleLocation}
         competitions={competitions}
-        seasons={seasons}
+        seasons={
+          seasons
+            ? seasons.filter((s) =>
+                s.players.some((p) => p.playerId === playerId)
+              )
+            : undefined
+        }
         currentCompetitionId={
           competitions?.find((c) => router.query.competition === c.abbreviation)
             ?.id || "all"
