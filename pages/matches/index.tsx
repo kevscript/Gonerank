@@ -174,7 +174,7 @@ const MatchesPage = () => {
       }
 
       if (!selectedSeason) {
-        const latestSeason = seasons.sort((a, b) =>
+        const latestSeason = [...seasons].sort((a, b) =>
           new Date(a.startDate) < new Date(b.startDate) ? 1 : -1
         )[0];
 
@@ -360,7 +360,7 @@ const MatchesPage = () => {
         />
       </div>
 
-      {router.query.shape === "chart" && communityChartStats ? (
+      {router.query.shape === "chart" && communityChartStats?.length ? (
         <div className="flex-1 w-full pb-8 mt-8 overflow-scroll scroll-hide">
           <div className="flex flex-col w-full grid-cols-2 gap-4 lg:grid">
             <VisxChartContainer title="Moyenne de chaque match de la saison">
@@ -455,7 +455,7 @@ const MatchesPage = () => {
           {communityStats.length === 0 && (
             <div className="flex items-center justify-center mt-4">
               <div className="flex flex-col items-center justify-center w-full p-4 text-center border rounded bg-marine-100 border-marine-200 text-marine-400 md:p-8 dark:bg-marine-900/10 dark:border-marine-400">
-                <p>Aucun match disponible avec ces critères.</p>
+                <p>Aucune statistique ne correspond à ces critères.</p>
               </div>
             </div>
           )}

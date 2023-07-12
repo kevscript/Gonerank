@@ -190,7 +190,7 @@ const PlayersPage = () => {
       }
 
       if (!selectedSeason) {
-        const latestSeason = seasons.sort((a, b) =>
+        const latestSeason = [...seasons].sort((a, b) =>
           new Date(a.startDate) < new Date(b.startDate) ? 1 : -1
         )[0];
 
@@ -323,7 +323,7 @@ const PlayersPage = () => {
 
   // init player IDS to show in chart
   useEffect(() => {
-    if (communityChartStats && idsToShow.length === 0) {
+    if (communityChartStats?.length && idsToShow.length === 0) {
       const sortedPlayersByNumberOfMatches = communityChartStats.sort((a, b) =>
         a.numberOfMatchesPlayed > b.numberOfMatchesPlayed ? -1 : 1
       );
@@ -396,7 +396,7 @@ const PlayersPage = () => {
         />
       </div>
 
-      {router.query.shape === "chart" && communityChartStats ? (
+      {router.query.shape === "chart" && communityChartStats?.length ? (
         <div className="flex py-8 overflow-hidden scroll-hide gap-x-8">
           <div className="flex flex-col flex-grow overflow-x-hidden overflow-y-scroll gap-y-8">
             <VisxChartContainer title="Moyenne des joueurs pour chaque match de la saison.">
@@ -489,7 +489,7 @@ const PlayersPage = () => {
           />
         </div>
       ) : (
-        <div className="flex justify-center w-full md:py-8">
+        <div className="flex flex-col justify-center w-full md:py-8">
           <Draggable>
             <PlayersTable
               data={
@@ -499,6 +499,14 @@ const PlayersPage = () => {
               }
             />
           </Draggable>
+
+          {communityStats.length === 0 && (
+            <div className="flex items-center justify-center mt-4">
+              <div className="flex flex-col items-center justify-center w-full p-4 text-center border rounded bg-marine-100 border-marine-200 text-marine-400 md:p-8 dark:bg-marine-900/10 dark:border-marine-400">
+                <p>Aucune statistique ne correspond à ces critères.</p>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
