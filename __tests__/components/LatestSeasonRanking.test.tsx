@@ -8,13 +8,35 @@ import userEvent from "@testing-library/user-event";
 import LatestSeasonRanking, {
   LatestSeasonRankingProps,
 } from "@/components/LatestSeasonRanking";
+import { GetLatestSeasonQuery } from "graphql/generated/queryTypes";
+
+const mockSeasonObject: GetLatestSeasonQuery["latestSeason"] = {
+  id: "1",
+  startDate: "2022-05-15T12:00:00Z",
+  playerStats: [
+    {
+      __typename: "SeasonPlayerStats",
+      playerId: "1",
+      firstName: "John",
+      lastName: "Doe",
+      image: "www.image.com",
+      matches: [],
+    },
+  ],
+};
+
+const mockNoStatSeasonObject: GetLatestSeasonQuery["latestSeason"] = {
+  id: "1",
+  startDate: "2022-05-15T12:00:00Z",
+  playerStats: [],
+};
 
 describe("LatestSeasonRanking", () => {
   it("displays tendency ranking when rankType = tendency", () => {
     const props: LatestSeasonRankingProps = {
       handleRankingType: jest.fn(),
       rankingType: "tendency",
-      season: { id: "1", startDate: "2022-05-15T12:00:00Z", playerStats: [] },
+      season: mockSeasonObject,
     };
 
     render(<LatestSeasonRanking {...props} />);
@@ -33,7 +55,7 @@ describe("LatestSeasonRanking", () => {
     const props: LatestSeasonRankingProps = {
       handleRankingType: jest.fn(),
       rankingType: "average",
-      season: { id: "1", startDate: "2022-05-15T12:00:00Z", playerStats: [] },
+      season: mockSeasonObject,
     };
 
     render(<LatestSeasonRanking {...props} />);
@@ -52,7 +74,7 @@ describe("LatestSeasonRanking", () => {
     const props: LatestSeasonRankingProps = {
       handleRankingType: jest.fn(),
       rankingType: "award",
-      season: { id: "1", startDate: "2022-05-15T12:00:00Z", playerStats: [] },
+      season: mockSeasonObject,
     };
 
     render(<LatestSeasonRanking {...props} />);
@@ -72,7 +94,7 @@ describe("LatestSeasonRanking", () => {
     const props: LatestSeasonRankingProps = {
       handleRankingType: mockHandler,
       rankingType: "tendency",
-      season: { id: "1", startDate: "2022-05-15T12:00:00Z", playerStats: [] },
+      season: mockSeasonObject,
     };
 
     render(<LatestSeasonRanking {...props} />);
@@ -104,5 +126,17 @@ describe("LatestSeasonRanking", () => {
       expect(mockHandler).toHaveBeenCalledTimes(3);
       expect(mockHandler).toHaveBeenCalledWith("award");
     });
+  });
+
+  it("renders a message when season has no stats", async () => {
+    const mockHandler = jest.fn();
+    const props: LatestSeasonRankingProps = {
+      handleRankingType: mockHandler,
+      rankingType: "tendency",
+      season: mockNoStatSeasonObject,
+    };
+
+    render(<LatestSeasonRanking {...props} />);
+    expect(screen.getByTestId("no-stats")).toBeInTheDocument();
   });
 });
