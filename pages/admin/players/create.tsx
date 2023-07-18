@@ -28,7 +28,7 @@ const AdminPlayerCreatePage: NextCustomPage = () => {
       </div>
       <div className="p-4">
         {/* <PlayerForm onSubmit={handlePlayerCreate} /> */}
-        <PlayerForm />
+        <PlayerForm onSubmit={handlePlayerCreate} />
       </div>
     </>
   );
