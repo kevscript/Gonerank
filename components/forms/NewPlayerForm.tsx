@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import SelectInput from "../inputs/SelectInput";
 import Link from "next/link";
 import Input from "../inputs/Input";
-import DateInput from "../inputs/DateInput";
+import DateInput from "../inputs/NewDateInput";
 import Button from "../shared/Button";
 import countries from "@/utils/countries";
 
@@ -102,156 +102,274 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
   }, [imgSource, uploadedFile, selectedDbFileName, files, setValue]);
 
   return (
-    <form onSubmit={handleSubmit(submitHandler)}>
-      <div className="flex flex-wrap gap-2">
-        <div className="relative flex items-center justify-center flex-shrink-0 h-40 border rounded-sm bg-dark-400 w-36 border-neutral-700">
-          <div className="h-[90%] w-[90%] relative flex justify-center items-center">
+    <div>
+      <form onSubmit={handleSubmit(submitHandler)} className="max-w-4xl">
+        <div className="flex gap-12 p-12 border rounded border-neutral-600">
+          <div className="relative flex items-center justify-center flex-shrink-0 border rounded w-36 h-36 border-neutral-600 bg-neutral-800">
             {imgPreview && (
               <Image
                 src={imgPreview}
                 alt="avatar preview"
                 layout="fill"
                 objectFit="contain"
-                objectPosition="center"
+                objectPosition="bottom"
               />
             )}
           </div>
-        </div>
-        <div className="flex flex-col justify-between flex-1 h-40 p-4 border rounded-sm bg-dark-400 border-neutral-700">
-          <div className="flex gap-4">
-            <label
-              className={`text-sm flex gap-2 select-none px-4 py-2 items-center rounded-sm cursor-pointer bg-dark-300 border ${
-                imgSource === "local"
-                  ? "border-marine-400 text-marine-300"
-                  : "border-neutral-600"
-              }`}
-            >
-              <input
-                type="checkbox"
-                value={"local"}
-                checked={imgSource === "local"}
-                onChange={() => handleImgSource("local")}
-              />
-              New avatar
-            </label>
-            <label
-              className={`text-sm flex gap-4 select-none px-4 py-2 items-center rounded-sm cursor-pointer bg-dark-300 border ${
-                imgSource === "database"
-                  ? "border-marine-300 text-marine-300"
-                  : "border-neutral-600"
-              }`}
-            >
-              <input
-                type="checkbox"
-                value={"database"}
-                checked={imgSource === "database"}
-                onChange={() => handleImgSource("database")}
-              />
-              From database
-            </label>
-          </div>
-          <div>
-            <label className={`${imgSource !== "local" && "hidden"}`}>
-              <input
-                type="file"
-                id="single"
-                accept="image/*"
-                onChange={handleUploadedFile}
-                disabled={loading}
-              />
-            </label>
-
-            <div className={`${imgSource !== "database" && "hidden"}`}>
-              <SelectInput
-                register={register}
-                name="image"
-                label="Image url"
-                value={getValues("image")}
-                error={errors.image}
-                options={{ required: false, onChange: handleSelectedFile }}
+          <div className="flex flex-col flex-1">
+            <div className="flex gap-4">
+              <label
+                className={`border px-3 py-1.5 rounded-sm text-sm cursor-pointer ${
+                  imgSource === "local"
+                    ? "text-marine-300 border-marine-400 bg-marine-900/50"
+                    : "text-neutral-300 border-neutral-600 bg-neutral-800"
+                }`}
               >
-                {files?.map((file) => (
-                  <option key={file.name} value={file.name}>
-                    {file.name}
+                <input
+                  type="checkbox"
+                  value={"local"}
+                  checked={imgSource === "local"}
+                  onChange={() => handleImgSource("local")}
+                  className="hidden"
+                />
+                New avatar
+              </label>
+              <label
+                className={`border px-3 py-1.5 rounded-sm text-sm cursor-pointer ${
+                  imgSource === "database"
+                    ? "text-marine-300 border-marine-400 bg-marine-900/50"
+                    : "text-neutral-300 border-neutral-600 bg-neutral-800"
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  value={"local"}
+                  checked={imgSource === "local"}
+                  onChange={() => handleImgSource("database")}
+                  className="hidden"
+                />
+                From database
+              </label>
+            </div>
+            {imgSource === "local" && (
+              <>
+                <span className="mt-2 text-sm text-neutral-400">
+                  Upload a new player image. Supported formats: JPEG, PNG and
+                  GIF.
+                </span>
+                <label
+                  className={`${
+                    imgSource !== "local" && "hidden"
+                  } border flex-1 mt-4 rounded border-neutral-600 bg-black/50 flex justify-center items-center max-w-sm cursor-pointer`}
+                >
+                  <input
+                    type="file"
+                    id="single"
+                    accept="image/*"
+                    onChange={handleUploadedFile}
+                    disabled={loading}
+                    className="sr-only"
+                  />
+                  <span className="text-sm text-neutral-300">
+                    {uploadedFile
+                      ? uploadedFile.name
+                      : "Click to upload an image"}
+                  </span>
+                </label>
+              </>
+            )}
+
+            {imgSource === "database" && (
+              <>
+                <span className="mt-2 text-sm text-neutral-400">
+                  Pick an avatar already uploaded to the database.
+                </span>
+                <div
+                  className={`${imgSource !== "database" && "hidden"} mt-auto`}
+                >
+                  <label className="flex items-center h-12">
+                    <div className="px-4 min-w-[128px] border-l border-t border-b border-neutral-600 h-full flex items-center rounded-l-sm">
+                      <span className="text-sm text-neutral-300">
+                        File name
+                      </span>
+                    </div>
+                    <div
+                      className={`flex items-center flex-1 h-full border rounded-r-sm ${
+                        errors.image
+                          ? "border-red-600/70"
+                          : "border-neutral-600"
+                      }`}
+                    >
+                      <select
+                        className="flex-1 h-full px-4 rounded-r-sm outline-none appearance-none cursor-pointer bg-black/50"
+                        {...register("image", {
+                          required: false,
+                          onChange: handleSelectedFile,
+                        })}
+                      >
+                        {files?.map((file) => (
+                          <option
+                            key={file.name}
+                            value={file.name}
+                            className="bg-neutral-800 text-neutral-300"
+                          >
+                            {file.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </label>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-6 mt-12">
+          <label className="flex items-center h-12">
+            <div className="px-4 min-w-[128px] rounded-l-sm border-l border-t border-b border-neutral-600 h-full flex items-center">
+              <span className="text-sm text-neutral-300">First name</span>
+            </div>
+            <div
+              className={`flex items-center flex-1 h-full border rounded-r-sm ${
+                errors.firstName ? "border-red-600/70" : "border-neutral-600"
+              }`}
+            >
+              <input
+                className="flex-1 h-full px-4 rounded-r-sm outline-none cursor-pointer bg-black/50"
+                {...register("firstName", {
+                  required: "First name is required",
+                  minLength: { value: 2, message: "2 characters minimum" },
+                })}
+              />
+            </div>
+          </label>
+
+          <label className="flex items-center h-12 rounded-sm">
+            <div className="px-4 min-w-[128px] rounded-l-sm border-l border-t border-b border-neutral-600 h-full flex items-center">
+              <span className="text-sm text-neutral-300">Last name</span>
+            </div>
+            <div
+              className={`flex items-center flex-1 h-full border rounded-r-sm ${
+                errors.lastName ? "border-red-600/70" : "border-neutral-600"
+              }`}
+            >
+              <input
+                className="flex-1 h-full px-4 rounded-r-sm outline-none cursor-pointer bg-black/50"
+                {...register("lastName", {
+                  required: "Last name is required",
+                  minLength: { value: 2, message: "2 characters minimum" },
+                })}
+              />
+            </div>
+          </label>
+        </div>
+
+        <div className="flex w-full gap-4 mt-6">
+          <DateInput
+            control={control}
+            name="birthDate"
+            label="Birth date"
+            value={getValues("birthDate")}
+            error={errors.birthDate}
+            rules={{ required: "Required" }}
+            containerStyle="w-full"
+          />
+
+          <label className="flex items-center flex-1 h-12">
+            <div className="px-4 min-w-[128px] rounded-l-sm border-l border-t border-b border-neutral-600 h-full flex items-center">
+              <span className="text-sm text-neutral-300">Country</span>
+            </div>
+            <div className="flex items-center justify-center w-20 h-full border-t border-b border-l border-neutral-600">
+              {watch("countryCode") && (
+                <Image
+                  src={`https://flagcdn.com/h20/${getValues(
+                    "countryCode"
+                  ).toLowerCase()}.png`}
+                  width={24}
+                  height={16}
+                  alt={getValues("country")}
+                  title={getValues("country")}
+                />
+              )}
+            </div>
+            <div
+              className={`relative flex flex-nowrap items-center w-full h-full border rounded-r-sm ${
+                errors.countryCode ? "border-red-600/70" : "border-neutral-600"
+              }`}
+            >
+              <select
+                className="w-full h-full px-4 rounded-r-sm outline-none appearance-none cursor-pointer bg-black/50"
+                {...register("countryCode", {
+                  required: true,
+                  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
+                    if (e.currentTarget.value === "") {
+                      setValue("country", "");
+                      setValue("countryCode", "");
+                      return;
+                    }
+
+                    const code =
+                      e.currentTarget.value.toLowerCase() as keyof typeof countries;
+                    setValue("country", countries[code]);
+                  },
+                })}
+              >
+                <option value={""} disabled>
+                  Country
+                </option>
+                {Object.entries(countries)?.map(([code, name]) => (
+                  <option key={code} value={code.toUpperCase()}>
+                    {name}
                   </option>
                 ))}
-              </SelectInput>
+              </select>
+              <div className="absolute right-0 flex items-center justify-center w-16 h-full">
+                <span className="italic uppercase text-neutral-300">
+                  {getValues("countryCode")}
+                </span>
+              </div>
             </div>
-          </div>
+          </label>
+
+          {/* <SelectInput
+            register={register}
+            name="countryCode"
+            label="Country"
+            value={getValues("countryCode")}
+            error={errors.countryCode}
+            options={{
+              required: true,
+              onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
+                const code =
+                  e.currentTarget.value.toLowerCase() as keyof typeof countries;
+                setValue("country", countries[code]);
+              },
+            }}
+          >
+            <option value={""} disabled />
+            {Object.entries(countries)?.map(([code, name]) => (
+              <option key={code} value={code.toUpperCase()}>
+                {name}
+              </option>
+            ))}
+          </SelectInput> */}
         </div>
-      </div>
 
-      <Input
-        register={register}
-        name="firstName"
-        label="First Name"
-        value={getValues("firstName")}
-        error={errors.firstName}
-        options={{
-          required: "First name is required",
-          minLength: { value: 2, message: "2 characters minimum" },
-        }}
-      />
-
-      <Input
-        register={register}
-        name="lastName"
-        label="Last Name"
-        value={getValues("lastName")}
-        error={errors.lastName}
-        options={{
-          required: "Last name is required",
-          minLength: { value: 2, message: "2 characters minimum" },
-        }}
-      />
-
-      <div className="flex items-end w-full gap-x-4">
-        <DateInput
-          control={control}
-          name="birthDate"
-          label="Birth date"
-          value={getValues("birthDate")}
-          error={errors.birthDate}
-          rules={{ required: "Required" }}
-        />
-
-        <SelectInput
-          register={register}
-          name="countryCode"
-          label="Country"
-          value={getValues("countryCode")}
-          error={errors.countryCode}
-          options={{
-            required: true,
-            onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
-              const code =
-                e.currentTarget.value.toLowerCase() as keyof typeof countries;
-              setValue("country", countries[code]);
-            },
-          }}
-        >
-          <option value={""} disabled />
-          {Object.entries(countries)?.map(([code, name]) => (
-            <option key={code} value={code.toUpperCase()}>
-              {name}
-            </option>
-          ))}
-        </SelectInput>
-      </div>
-
-      <div className="flex w-full mt-8 gap-x-4">
-        <Link href="/admin/players" passHref>
-          <div>
-            <Button label="Annuler" />
-          </div>
-        </Link>
-        <Button
-          type="submit"
-          label={defaultValues ? "Editer" : "Creer"}
-          data-testid="form-submit"
-        />
-      </div>
-    </form>
+        <div className="flex w-full mt-16 gap-x-4">
+          <Button
+            type="submit"
+            label={defaultValues ? "Editer" : "Creer"}
+            data-testid="form-submit"
+          />
+          <Link href="/admin/players" passHref>
+            <div>
+              <Button label="Annuler" variety="secondary" />
+            </div>
+          </Link>
+        </div>
+      </form>
+    </div>
   );
 };
 
