@@ -3,6 +3,11 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import SelectInput from "../inputs/SelectInput";
+import Link from "next/link";
+import Input from "../inputs/Input";
+import DateInput from "../inputs/DateInput";
+import Button from "../shared/Button";
+import countries from "@/utils/countries";
 
 export type PlayerFormProps = {
   onSubmit: (x: PlayerFormInput) => unknown;
@@ -32,7 +37,7 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
     defaultValues: useMemo(() => defaultValues, [defaultValues]),
   });
 
-  const { files } = useStorage("avatars");
+  const { files, loading, handleUpload, error } = useStorage("avatars");
 
   const [imgSource, setImgSource] = useState<"local" | "database">("local");
   const [imgPreview, setImgPreview] = useState<string | null>(null);
@@ -43,6 +48,7 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
 
   const submitHandler: SubmitHandler<PlayerFormInput> = (data) => {
     // onSubmit(data);
+    console.log("data", data);
   };
 
   const handleImgSource = (newSource: "local" | "database") => {
@@ -55,13 +61,21 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
     }
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUploadedFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) {
       setUploadedFile(null);
       return;
     }
     setUploadedFile(e.target.files[0]);
   };
+
+  useEffect(() => {
+    // if default image is provided set accurate image state
+    if (defaultValues && defaultValues.image) {
+      setImgSource("database");
+      setSelectedDbFileName(defaultValues.image);
+    }
+  }, [defaultValues]);
 
   useEffect(() => {
     if (imgSource === "local" && uploadedFile) {
@@ -142,9 +156,8 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
                 type="file"
                 id="single"
                 accept="image/*"
-                onChange={handleFileUpload}
-                // onChange={handleUpload}
-                // disabled={loading}
+                onChange={handleUploadedFile}
+                disabled={loading}
               />
             </label>
 
@@ -164,19 +177,79 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
                 ))}
               </SelectInput>
             </div>
-
-            {/* <select
-              className={`${imgSource !== "database" && "hidden"}`}
-              onChange={handleSelectedFile}
-            >
-              {files?.map((file) => (
-                <option key={file.name} value={file.name}>
-                  {file.name}
-                </option>
-              ))}
-            </select> */}
           </div>
         </div>
+      </div>
+
+      <Input
+        register={register}
+        name="firstName"
+        label="First Name"
+        value={getValues("firstName")}
+        error={errors.firstName}
+        options={{
+          required: "First name is required",
+          minLength: { value: 2, message: "2 characters minimum" },
+        }}
+      />
+
+      <Input
+        register={register}
+        name="lastName"
+        label="Last Name"
+        value={getValues("lastName")}
+        error={errors.lastName}
+        options={{
+          required: "Last name is required",
+          minLength: { value: 2, message: "2 characters minimum" },
+        }}
+      />
+
+      <div className="flex items-end w-full gap-x-4">
+        <DateInput
+          control={control}
+          name="birthDate"
+          label="Birth date"
+          value={getValues("birthDate")}
+          error={errors.birthDate}
+          rules={{ required: "Required" }}
+        />
+
+        <SelectInput
+          register={register}
+          name="countryCode"
+          label="Country"
+          value={getValues("countryCode")}
+          error={errors.countryCode}
+          options={{
+            required: true,
+            onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
+              const code =
+                e.currentTarget.value.toLowerCase() as keyof typeof countries;
+              setValue("country", countries[code]);
+            },
+          }}
+        >
+          <option value={""} disabled />
+          {Object.entries(countries)?.map(([code, name]) => (
+            <option key={code} value={code.toUpperCase()}>
+              {name}
+            </option>
+          ))}
+        </SelectInput>
+      </div>
+
+      <div className="flex w-full mt-8 gap-x-4">
+        <Link href="/admin/players" passHref>
+          <div>
+            <Button label="Annuler" />
+          </div>
+        </Link>
+        <Button
+          type="submit"
+          label={defaultValues ? "Editer" : "Creer"}
+          data-testid="form-submit"
+        />
       </div>
     </form>
   );

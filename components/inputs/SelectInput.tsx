@@ -35,6 +35,7 @@ const SelectInput = <T,>({
     >
       <span className="ml-2 text-sm">{label}</span>
       <select
+        defaultValue={""}
         {...register(name, options)}
         className={`h-10 px-2 cursor-pointer bg-white dark:bg-dark-400 border text-base rounded mt-1 ${
           error
