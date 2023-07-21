@@ -120,13 +120,15 @@ const AdminPlayersPage: NextCustomPage = () => {
         const { country, countryCode } = row.original || {};
         return (
           <TableCell className="justify-center">
-            <Image
-              src={`https://countryflagsapi.com/png/${countryCode}`}
-              width={20}
-              height={12}
-              alt={country}
-              title={country}
-            />
+            {countryCode && (
+              <Image
+                src={`https://flagcdn.com/h20/${countryCode.toLowerCase()}.png`}
+                width={20}
+                height={12}
+                alt={country}
+                title={country}
+              />
+            )}
           </TableCell>
         );
       },
