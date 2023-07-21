@@ -19,16 +19,14 @@ const useStorage = (id: string) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<FileError | null>(null);
 
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUpload = async (file: File) => {
     try {
       setLoading(true);
 
-      const image = e.target.files ? e.target.files[0] : null;
-
-      if (image) {
+      if (file) {
         const { error: uploadError } = await supabase.storage
           .from("avatars")
-          .upload(`${image.name}`, image);
+          .upload(`${file.name}`, file);
 
         if (uploadError) {
           throw uploadError;
