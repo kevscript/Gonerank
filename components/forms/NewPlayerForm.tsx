@@ -47,8 +47,13 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
   );
 
   const submitHandler: SubmitHandler<PlayerFormInput> = (data) => {
-    // onSubmit(data);
-    console.log("data", data);
+    // console.log("data", data);
+    onSubmit(data);
+
+    if (imgSource === "local" && uploadedFile) {
+      // console.log("uploading new image", uploadedFile.name);
+      handleUpload(uploadedFile);
+    }
   };
 
   const handleImgSource = (newSource: "local" | "database") => {
@@ -333,29 +338,6 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
               </div>
             </div>
           </label>
-
-          {/* <SelectInput
-            register={register}
-            name="countryCode"
-            label="Country"
-            value={getValues("countryCode")}
-            error={errors.countryCode}
-            options={{
-              required: true,
-              onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
-                const code =
-                  e.currentTarget.value.toLowerCase() as keyof typeof countries;
-                setValue("country", countries[code]);
-              },
-            }}
-          >
-            <option value={""} disabled />
-            {Object.entries(countries)?.map(([code, name]) => (
-              <option key={code} value={code.toUpperCase()}>
-                {name}
-              </option>
-            ))}
-          </SelectInput> */}
         </div>
 
         <div className="flex w-full mt-16 gap-x-4">
