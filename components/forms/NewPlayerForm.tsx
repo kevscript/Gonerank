@@ -225,7 +225,7 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-6 mt-12">
+        <div className="flex flex-col gap-8 mt-16">
           <label className="flex items-center h-12">
             <div className="px-4 min-w-[128px] rounded-l-sm border-l border-t border-b border-neutral-600 h-full flex items-center">
               <span className="text-sm text-neutral-300">First name</span>
@@ -281,7 +281,7 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
               <span className="text-sm text-neutral-300">Country</span>
             </div>
             <div className="flex items-center justify-center w-20 h-full border-t border-b border-l border-neutral-600">
-              {watch("countryCode") && (
+              {watch("countryCode") ? (
                 <Image
                   src={`https://flagcdn.com/h20/${getValues(
                     "countryCode"
@@ -291,6 +291,10 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
                   alt={getValues("country")}
                   title={getValues("country")}
                 />
+              ) : (
+                <div className="flex items-center justify-center w-6 h-4 bg-neutral-600">
+                  <span className="text-xs text-white">?</span>
+                </div>
               )}
             </div>
             <div
@@ -315,9 +319,7 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
                   },
                 })}
               >
-                <option value={""} disabled>
-                  Country
-                </option>
+                <option value={""} />
                 {Object.entries(countries)?.map(([code, name]) => (
                   <option key={code} value={code.toUpperCase()}>
                     {name}

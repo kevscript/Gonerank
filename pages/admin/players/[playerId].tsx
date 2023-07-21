@@ -29,15 +29,12 @@ const AdminPlayerEditPage: NextCustomPage = () => {
   }, [data, playerId]);
 
   return (
-    <div>
-      <div className="flex items-end h-16 p-4 bg-gray-100 dark:bg-dark-400">
-        <div className="flex items-end justify-center w-6 h-6 mr-2 overflow-hidden bg-gray-200 rounded-full">
-          <UserIcon className="w-5 h-5 fill-marine-600" />
-        </div>
-        <h3>Editer Joueur</h3>
-      </div>
+    <div className="px-8 py-16 lg:px-16">
+      <h3 className="text-xl">
+        {player?.firstName} {player?.lastName}
+      </h3>
 
-      <div className="p-4">
+      <div className="mt-12">
         {loading && <div>Loading...</div>}
         {error && <div>{error.message}</div>}
         {player && (
