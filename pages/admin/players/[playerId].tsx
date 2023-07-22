@@ -7,7 +7,7 @@ import {
 } from "graphql/generated/queryTypes";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import PlayerForm, { PlayerFormInput } from "@/components/forms/NewPlayerForm";
+import PlayerForm, { PlayerFormInput } from "@/components/forms/PlayerForm";
 
 const AdminPlayerEditPage: NextCustomPage = () => {
   const { data, loading, error } = useGetPlayersQuery();

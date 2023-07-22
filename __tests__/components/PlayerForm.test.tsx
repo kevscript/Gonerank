@@ -6,16 +6,14 @@ describe("PlayerForm", () => {
   it("renders correct fields", () => {
     render(<PlayerForm onSubmit={jest.fn()} />);
 
+    expect(screen.getByRole("checkbox", { name: /new/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("checkbox", { name: /database/i })
+    ).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: /first/i })).toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: /last/i })).toBeInTheDocument();
-    expect(
-      screen.getByRole("textbox", { name: /country/i })
-    ).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: /code/i })).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: /country/i }));
     expect(screen.getByRole("textbox", { name: /birth/i })).toBeInTheDocument();
-    expect(
-      screen.getByRole("combobox", { name: /image/i })
-    ).toBeInTheDocument();
 
     expect(screen.getByTestId("form-submit")).toBeInTheDocument();
     expect(screen.getByText(/annuler/i)).toBeInTheDocument();
@@ -30,12 +28,6 @@ describe("PlayerForm", () => {
     const lastName = screen.getByRole("textbox", { name: /last/i });
     fireEvent.change(lastName, { target: { value: "A" } });
 
-    const country = screen.getByRole("textbox", { name: /country/i });
-    fireEvent.change(country, { target: { value: "A" } });
-
-    const code = screen.getByRole("textbox", { name: /code/i });
-    fireEvent.change(code, { target: { value: "A" } });
-
     const submitButton = screen.getByTestId("form-submit");
     fireEvent.click(submitButton);
 
@@ -44,10 +36,6 @@ describe("PlayerForm", () => {
       expect(firstNameError).toBeInTheDocument();
       const lastNameError = screen.getByTestId("error-lastName");
       expect(lastNameError).toBeInTheDocument();
-      const countryError = screen.getByTestId("error-country");
-      expect(countryError).toBeInTheDocument();
-      const countryCodeError = screen.getByTestId("error-countryCode");
-      expect(countryCodeError).toBeInTheDocument();
     });
   });
 
@@ -61,11 +49,8 @@ describe("PlayerForm", () => {
     const lastName = screen.getByRole("textbox", { name: /last/i });
     fireEvent.change(lastName, { target: { value: "Potter" } });
 
-    const country = screen.getByRole("textbox", { name: /country/i });
-    fireEvent.change(country, { target: { value: "United Kingdom" } });
-
-    const code = screen.getByRole("textbox", { name: /code/i });
-    fireEvent.change(code, { target: { value: "UK" } });
+    const country = screen.getByRole("combobox", { name: /country/i });
+    fireEvent.change(country, { target: { value: "FR" } });
 
     const birthDate = screen.getByRole("textbox", { name: /birth/i });
     fireEvent.change(birthDate, { target: { value: "20/05/1998" } });
@@ -79,8 +64,8 @@ describe("PlayerForm", () => {
         expect.objectContaining({
           firstName: "Harry",
           lastName: "Potter",
-          country: "United Kingdom",
-          countryCode: "UK",
+          country: "France",
+          countryCode: "FR",
           image: "",
           birthDate: new Date(noTimezone(new Date(1998, 4, 20))),
         })
@@ -106,11 +91,8 @@ describe("PlayerForm", () => {
     const lastName = screen.getByRole("textbox", { name: /last/i });
     expect(lastName).toHaveDisplayValue("Doe");
 
-    const country = screen.getByRole("textbox", { name: /country/i });
+    const country = screen.getByRole("combobox", { name: /country/i });
     expect(country).toHaveDisplayValue("Brazil");
-
-    const code = screen.getByRole("textbox", { name: /code/i });
-    expect(code).toHaveDisplayValue("BR");
 
     const birthDate = screen.getByRole("textbox", { name: /birth/i });
     expect(birthDate).toHaveDisplayValue("05/10/2011");

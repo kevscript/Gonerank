@@ -1,8 +1,7 @@
 import { NextCustomPage } from "@/pages/_app";
 import { useCreatePlayerMutation } from "graphql/generated/queryTypes";
 import { useRouter } from "next/router";
-import { PlayerFormInput } from "@/components/forms/PlayerForm";
-import PlayerForm from "@/components/forms/NewPlayerForm";
+import PlayerForm, { PlayerFormInput } from "@/components/forms/PlayerForm";
 
 const AdminPlayerCreatePage: NextCustomPage = () => {
   const router = useRouter();

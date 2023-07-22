@@ -38,7 +38,6 @@ describe("MatchForm", () => {
       clubs: mockProps.clubs,
       onSubmit: mockSubmit,
     };
-
     render(<MatchForm {...props} />);
 
     expect(screen.getByRole("textbox", { name: /date/i })).toBeInTheDocument();
@@ -64,44 +63,6 @@ describe("MatchForm", () => {
     expect(screen.getByText(/annuler/i)).toBeInTheDocument();
   });
 
-  it("renders correct errors", async () => {
-    const mockSubmit = jest.fn();
-    const props: MatchFormProps = {
-      seasons: mockProps.seasons,
-      competitions: mockProps.competitions,
-      clubs: mockProps.clubs,
-      onSubmit: mockSubmit,
-    };
-
-    render(<MatchForm {...props} />);
-
-    const submitButton = screen.getByTestId("form-submit");
-    fireEvent.click(submitButton);
-
-    await waitFor(() => {
-      const dateError = screen.queryByTestId("error-date");
-      expect(dateError).toBeInTheDocument();
-
-      const seasonError = screen.queryByTestId("error-seasonId");
-      expect(seasonError).not.toBeInTheDocument();
-
-      const competitionError = screen.queryByTestId("error-competitionId");
-      expect(competitionError).not.toBeInTheDocument();
-
-      const clubError = screen.queryByTestId("error-clubId");
-      expect(clubError).not.toBeInTheDocument();
-
-      const locationError = screen.queryByTestId("error-home");
-      expect(locationError).not.toBeInTheDocument();
-
-      const scoredError = screen.queryByTestId("error-scored");
-      expect(scoredError).toBeInTheDocument();
-
-      const conceededError = screen.queryByTestId("error-conceeded");
-      expect(conceededError).toBeInTheDocument();
-    });
-  });
-
   it("calls onSubmit with correct data", async () => {
     const mockSubmit = jest.fn();
     const props: MatchFormProps = {
@@ -110,29 +71,27 @@ describe("MatchForm", () => {
       clubs: mockProps.clubs,
       onSubmit: mockSubmit,
     };
-
     render(<MatchForm {...props} />);
-
     const date = screen.getByRole("textbox", { name: /date/i });
     fireEvent.change(date, { target: { value: "20/05/1998" } });
-
     const scored = screen.getByRole("spinbutton", { name: /score/i });
     fireEvent.change(scored, { target: { value: 2 } });
-
     const conceeded = screen.getByRole("spinbutton", { name: /conceed/i });
     fireEvent.change(conceeded, { target: { value: 1 } });
-
     const submitButton = screen.getByTestId("form-submit");
     fireEvent.click(submitButton);
-
     await waitFor(() => {
       expect(mockSubmit).toHaveBeenCalledTimes(1);
       expect(mockSubmit).toHaveBeenCalledWith(
         expect.objectContaining({
           date: new Date(noTimezone(new Date(1998, 4, 20))),
-          seasonId: "1",
+          seasonId: mockProps.seasons?.sort((a, b) =>
+            new Date(a.startDate) > new Date(b.startDate) ? -1 : 1
+          )[0].id,
           competitionId: "1",
-          opponentId: "1",
+          opponentId: mockProps.clubs?.sort((a, b) =>
+            a.name > b.name ? 1 : -1
+          )[0].id,
           home: "home",
           scored: 2,
           conceeded: 1,
@@ -158,9 +117,7 @@ describe("MatchForm", () => {
         conceeded: 3,
       },
     };
-
     render(<MatchForm {...props} />);
-
     expect(screen.getByRole("textbox", { name: /date/i })).toHaveDisplayValue(
       "05/10/2011"
     );

@@ -15,7 +15,7 @@ import { noTimezone } from "@/utils/noTimezone";
 export type DateInputProps<FieldValues> = {
   control: Control<FieldValues, object>;
   error: Merge<FieldError, FieldErrorsImpl<DeepRequired<Date>>> | undefined;
-  value: string | Date | number;
+  value?: string | Date | number;
   rules?: RegisterOptions;
   name: Path<FieldValues>;
   containerStyle?: string;
@@ -25,10 +25,10 @@ export type DateInputProps<FieldValues> = {
 const DateInput = <T,>({
   control,
   error,
-  value,
   rules,
   name,
   label,
+  value,
   containerStyle,
 }: DateInputProps<T>) => {
   return (
@@ -38,34 +38,36 @@ const DateInput = <T,>({
       rules={rules}
       render={({ field }) => (
         <label
-          className={`flex flex-col mt-4 ${
-            containerStyle ? containerStyle : "w-32"
+          className={`flex flex-col min-w-fit ${
+            containerStyle ? "w-fit" : "flex-1"
           }`}
         >
-          <span className="ml-2 text-sm">{label}</span>
-          <DatePicker
-            onChange={(date) => date && field.onChange(noTimezone(date))}
-            selected={field.value as Date}
-            dateFormat="dd/MM/yyyy"
-            className={`h-10 px-2 bg-white dark:bg-dark-400 border text-base rounded mt-1 w-full font-num ${
-              error
-                ? "border-red-400 outline-red-600 bg-red-50"
-                : value
-                ? "border-marine-400 outline-marine-600 bg-marine-50"
-                : "border-gray-200 outline-marine-600"
-            }`}
-            popperPlacement="bottom-start"
-            showPopperArrow={false}
-          />
-          {error && (
-            <div className="w-full">
-              <span
-                className="block ml-2 text-sm text-red-500"
-                data-testid={`error-${name}`}
-              >
-                {error.message}
-              </span>
+          <div className="flex flex-1">
+            <div className="flex items-center h-12 px-4 border-t border-b border-l rounded-l-sm min-w-[128px] border-neutral-600">
+              <span className="text-sm text-neutral-300">{label}</span>
             </div>
+            <div
+              className={`flex items-center h-12 border rounded-r-sm outline-none overflow-hidden ${
+                error ? "border-red-600/70" : "border-neutral-600"
+              } ${containerStyle ? containerStyle : "flex-1"}`}
+            >
+              <DatePicker
+                onChange={(date) => date && field.onChange(noTimezone(date))}
+                selected={field.value as Date}
+                dateFormat="dd/MM/yyyy"
+                className="flex-1 w-full h-12 px-4 rounded-r-sm outline-none cursor-pointer bg-black/50 font-num"
+                popperPlacement="bottom-start"
+                showPopperArrow={false}
+              />
+            </div>
+          </div>
+          {error && (
+            <span
+              className="block mt-2 ml-32 text-xs text-red-500"
+              data-testid={`error-${name}`}
+            >
+              {error.message}
+            </span>
           )}
         </label>
       )}
