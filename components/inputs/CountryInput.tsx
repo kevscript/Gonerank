@@ -40,10 +40,10 @@ const CountryInput = ({
       }`}
     >
       <div className="flex flex-1">
-        <div className="flex items-center h-12 px-4 border-t border-b border-l rounded-l-sm min-w-[128px] border-neutral-600">
-          <span className="text-sm text-neutral-300"> {label}</span>
+        <div className="flex items-center h-12 px-4 border-t border-b border-l rounded-l-sm min-w-[128px] border-neutral-300 dark:border-neutral-600">
+          <span className="text-sm dark:text-neutral-300"> {label}</span>
         </div>
-        <div className="flex items-center justify-center w-20 h-12 border-t border-b border-l border-neutral-600">
+        <div className="flex items-center justify-center w-20 h-12 border-t border-b border-l border-neutral-300 dark:border-neutral-600">
           {countryCode ? (
             <Image
               src={`https://flagcdn.com/h20/${countryCode.toLowerCase()}.png`}
@@ -62,18 +62,20 @@ const CountryInput = ({
         </div>
         <div
           className={`relative flex overflow-hidden h-12 border rounded-r-sm ${
-            error ? "border-red-600/70" : "border-neutral-600"
+            error
+              ? "border-red-600/70"
+              : "border-neutral-300 dark:border-neutral-600"
           } ${containerStyle ? containerStyle : "flex-1"}`}
         >
           <select
-            className="w-full h-12 px-4 rounded-r-sm outline-none appearance-none cursor-pointer bg-black/50"
+            className="w-full h-12 px-4 rounded-r-sm outline-none appearance-none cursor-pointer dark:bg-black/50"
             {...register(name, options)}
             {...selectProps}
           >
             {children}
           </select>
           <div className="absolute right-0 flex items-center justify-center w-16 h-full">
-            <span className="italic uppercase text-neutral-300">
+            <span className="italic uppercase dark:text-neutral-300 text-neutral-600">
               {countryCode}
             </span>
           </div>

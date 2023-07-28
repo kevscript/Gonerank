@@ -109,8 +109,8 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
   return (
     <div>
       <form onSubmit={handleSubmit(submitHandler)} className="max-w-4xl">
-        <div className="flex gap-12 p-12 border rounded border-neutral-600">
-          <div className="relative flex items-center justify-center flex-shrink-0 border rounded w-36 h-36 border-neutral-600 bg-neutral-800">
+        <div className="flex gap-12 p-12 border rounded border-neutral-300 dark:border-neutral-600">
+          <div className="relative flex items-center justify-center flex-shrink-0 border rounded w-36 h-36 border-neutral-300 dark:border-neutral-600 bg-neutral-100 dark:bg-neutral-800">
             {imgPreview && (
               <Image
                 src={imgPreview}
@@ -126,8 +126,8 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
               <label
                 className={`border px-3 py-1.5 rounded-sm text-sm cursor-pointer ${
                   imgSource === "local"
-                    ? "text-marine-300 border-marine-400 bg-marine-900/50"
-                    : "text-neutral-300 border-neutral-600 bg-neutral-800"
+                    ? "text-marine-100 dark:text-marine-300 border-marine-900 dark:border-marine-400 dark:bg-marine-900/50 bg-marine-500"
+                    : "hover:text-neutral-600 text-neutral-400 dark:text-neutral-300 border-neutral-300 dark:border-neutral-600 bg-neutral-200 dark:bg-neutral-800"
                 }`}
               >
                 <input
@@ -142,8 +142,8 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
               <label
                 className={`border px-3 py-1.5 rounded-sm text-sm cursor-pointer ${
                   imgSource === "database"
-                    ? "text-marine-300 border-marine-400 bg-marine-900/50"
-                    : "text-neutral-300 border-neutral-600 bg-neutral-800"
+                    ? "text-marine-100 dark:text-marine-300 border-marine-900 dark:border-marine-400 dark:bg-marine-900/50 bg-marine-500"
+                    : "hover:text-neutral-600 text-neutral-400 dark:text-neutral-300 border-neutral-300 dark:border-neutral-600 bg-neutral-200 dark:bg-neutral-800"
                 }`}
               >
                 <input
@@ -158,14 +158,14 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
             </div>
             {imgSource === "local" && (
               <>
-                <span className="mt-2 text-sm text-neutral-400">
+                <span className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
                   Upload a new player image. Supported formats: JPEG, PNG and
                   GIF.
                 </span>
                 <label
                   className={`${
                     imgSource !== "local" && "hidden"
-                  } border flex-1 mt-4 rounded border-neutral-600 bg-black/50 flex justify-center items-center max-w-sm cursor-pointer`}
+                  } group border flex-1 mt-4 rounded border-neutral-300 bg-neutral-200 dark:border-neutral-600 dark:bg-black/50 flex justify-center items-center max-w-sm cursor-pointer`}
                 >
                   <input
                     type="file"
@@ -175,7 +175,7 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
                     disabled={loading}
                     className="sr-only"
                   />
-                  <span className="text-sm text-neutral-300">
+                  <span className="text-sm group-hover:text-neutral-600 text-neutral-500 dark:text-neutral-300 dark:group-hover:text-neutral-400">
                     {uploadedFile
                       ? uploadedFile.name
                       : "Click to upload an image"}
@@ -186,7 +186,7 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
 
             {imgSource === "database" && (
               <>
-                <span className="mt-2 text-sm text-neutral-400">
+                <span className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
                   Pick an avatar already uploaded to the database.
                 </span>
                 <div
@@ -203,7 +203,7 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
                       <option
                         key={file.name}
                         value={file.name}
-                        className="bg-neutral-800 text-neutral-300"
+                        className="dark:bg-neutral-800 dark:text-neutral-300 text-neutral-600"
                       >
                         {file.name}
                       </option>

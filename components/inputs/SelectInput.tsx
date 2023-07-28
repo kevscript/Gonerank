@@ -33,16 +33,18 @@ const SelectInput = <T,>({
       }`}
     >
       <div className="flex flex-1">
-        <div className="flex items-center h-12 px-4 border-t border-b border-l rounded-l-sm min-w-[128px] border-neutral-600">
-          <span className="text-sm text-neutral-300"> {label}</span>
+        <div className="flex items-center h-12 px-4 border-t border-b border-l rounded-l-sm min-w-[128px] border-neutral-300 dark:border-neutral-600">
+          <span className="text-sm dark:text-neutral-300"> {label}</span>
         </div>
         <div
           className={`flex items-center h-12 border rounded-r-sm ${
-            error ? "border-red-600/70" : "border-neutral-600"
+            error
+              ? "border-red-600/70"
+              : "border-neutral-300 dark:border-neutral-600"
           } ${containerStyle ? containerStyle : "flex-1"}`}
         >
           <select
-            className="w-full h-full px-4 rounded-r-sm outline-none appearance-none cursor-pointer bg-black/50"
+            className="w-full h-full px-4 rounded-r-sm outline-none appearance-none cursor-pointer dark:bg-black/50"
             {...register(name, options)}
           >
             {children}
