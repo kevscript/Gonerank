@@ -128,19 +128,19 @@ const AdminMatchSquadPage: NextCustomPage = () => {
   if (matchError) return <span>{matchError.message}</span>;
 
   return (
-    <>
-      <div className="flex items-end h-16 p-4 bg-gray-100 gap-x-2 dark:bg-dark-400">
+    <div className="px-8 py-16 lg:px-16">
+      <div className="flex gap-2 text-xl">
         <div className="flex items-center justify-center w-6 h-6 mr-2 overflow-hidden bg-gray-200 rounded-full">
           <PlayerIcon className="w-3 h-3 fill-marine-600" />
         </div>
-        {opponent && <span>{opponent.abbreviation}</span>}
-        {competition && <span>{competition.abbreviation}</span>}
+        {opponent && <span>{opponent.abbreviation}</span>} /
+        {competition && <span>{competition.abbreviation}</span>} /
         {matchData && (
           <span>{new Date(matchData.match.date).toLocaleDateString()}</span>
         )}
       </div>
-      <div className="p-4">
-        <div className="mt-4">
+      <div className="mt-16">
+        <div>
           <label>
             <select
               onChange={handleSelect}
@@ -162,7 +162,7 @@ const AdminMatchSquadPage: NextCustomPage = () => {
             </select>
           </label>
         </div>
-        <ul className="flex flex-col mt-4 flex-nowrap gap-y-1 lg:flex-row lg:flex-wrap lg:gap-2">
+        <ul className="flex flex-col mt-8 flex-nowrap gap-y-1 lg:flex-row lg:flex-wrap lg:gap-2">
           {squad &&
             squad.map((p) => (
               <li
@@ -180,7 +180,7 @@ const AdminMatchSquadPage: NextCustomPage = () => {
             ))}
         </ul>
 
-        <div className="flex justify-end w-full mt-4 gap-x-2">
+        <div className="flex justify-start w-full mt-16 gap-x-2">
           <Button
             label="Annuler"
             onClick={() => router.push("/admin/matches")}
@@ -253,7 +253,7 @@ const AdminMatchSquadPage: NextCustomPage = () => {
                     ))}
               </ul>
             </div>
-            <div className="flex justify-end w-full mt-4 flex-nowrap gap-x-2">
+            <div className="flex justify-end w-full mt-8 flex-nowrap gap-x-2">
               <Button label="Annuler" onClick={() => setModalIsOpen(false)} />
               <Button
                 label="Confirm"
@@ -266,7 +266,7 @@ const AdminMatchSquadPage: NextCustomPage = () => {
           </>
         </Modal>
       </div>
-    </>
+    </div>
   );
 };
 
