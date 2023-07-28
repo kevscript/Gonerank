@@ -46,33 +46,22 @@ const MatchForm = ({
     formState: { errors },
   } = useForm<MatchFormInput>({
     mode: "onSubmit",
-    defaultValues: useMemo(() => defaultValues, [defaultValues]),
+    defaultValues: useMemo(
+      () => defaultValues || { scored: 0, conceeded: 0 },
+      [defaultValues]
+    ),
   });
 
   const submitHandler: SubmitHandler<MatchFormInput> = (data) => {
     onSubmit(data);
   };
 
-  useEffect(() => {
-    if (!defaultValues && seasons && competitions && clubs) {
-      setValue("seasonId", seasons[0].id);
-      setValue("competitionId", competitions[0].id);
-      setValue("opponentId", clubs[0].id);
-    }
-  }, [clubs, competitions, defaultValues, seasons, setValue]);
-
   return (
-    <form className="w-full max-w-5xl" onSubmit={handleSubmit(submitHandler)}>
-      <div className="flex w-full gap-x-4">
-        <DateInput<MatchFormInput>
-          label="Date"
-          control={control}
-          error={errors.date}
-          name="date"
-          value={getValues("date")}
-          rules={{ required: "Date is required" }}
-        />
-
+    <form
+      className="flex flex-col w-full max-w-5xl gap-4"
+      onSubmit={handleSubmit(submitHandler)}
+    >
+      <div className="flex flex-wrap w-full gap-4">
         <SelectInput<MatchFormInput>
           label="Season"
           name="seasonId"
@@ -80,57 +69,71 @@ const MatchForm = ({
           options={{ required: "requis" }}
           register={register}
           value={getValues("seasonId")}
+          containerStyle="w-32"
         >
           <>
-            {seasons?.map((s) => (
-              <option key={s.id} value={s.id}>
-                {new Date(s.startDate).getFullYear() +
-                  "/" +
-                  (new Date(s.startDate).getFullYear() + 1)}
-              </option>
-            ))}
+            {seasons &&
+              [...seasons]
+                ?.sort((a, b) =>
+                  new Date(a.startDate) > new Date(b.startDate) ? -1 : 1
+                )
+                .map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {new Date(s.startDate).getFullYear() +
+                      "/" +
+                      (new Date(s.startDate).getFullYear() + 1)}
+                  </option>
+                ))}
+          </>
+        </SelectInput>
+        <DateInput<MatchFormInput>
+          label="Date"
+          control={control}
+          error={errors.date}
+          name="date"
+          rules={{
+            required: "Date is required",
+          }}
+          containerStyle="w-32"
+        />
+
+        <SelectInput<MatchFormInput>
+          label="Opponent"
+          name="opponentId"
+          error={errors.opponentId}
+          options={{ required: "Opponent is required" }}
+          register={register}
+        >
+          <>
+            {clubs &&
+              [...clubs]
+                .sort((a, b) => (a.name > b.name ? 1 : -1))
+                .map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
           </>
         </SelectInput>
       </div>
 
-      <SelectInput<MatchFormInput>
-        label="Competition"
-        name="competitionId"
-        error={errors.competitionId}
-        options={{ required: "Season is required" }}
-        register={register}
-        value={getValues("competitionId")}
-      >
-        <>
-          {competitions?.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </>
-      </SelectInput>
-
-      <SelectInput<MatchFormInput>
-        label="Opponent"
-        name="opponentId"
-        error={errors.opponentId}
-        options={{ required: "Opponent is required" }}
-        register={register}
-        value={getValues("opponentId")}
-      >
-        <>
-          {clubs &&
-            [...clubs]
-              .sort((a, b) => (a.name > b.name ? 1 : -1))
-              .map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-        </>
-      </SelectInput>
-
-      <div className="flex w-full gap-x-4">
+      <div className="flex flex-wrap w-full gap-4">
+        <SelectInput<MatchFormInput>
+          label="Competition"
+          name="competitionId"
+          error={errors.competitionId}
+          options={{ required: "Season is required" }}
+          register={register}
+          value={getValues("competitionId")}
+        >
+          <>
+            {competitions?.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </>
+        </SelectInput>
         <SelectInput<MatchFormInput>
           label="Location"
           name="home"
@@ -138,7 +141,7 @@ const MatchForm = ({
           register={register}
           options={{ required: "Location is required" }}
           value={getValues("home")}
-          containerStyle="flex-1"
+          containerStyle="w-24"
         >
           <option value={"home"}>Home</option>
           <option value={"away"}>Away</option>
@@ -155,7 +158,6 @@ const MatchForm = ({
             valueAsNumber: true,
             min: { value: 0, message: "min: 0" },
           }}
-          value={getValues("scored")}
           containerStyle="w-20"
         />
 
@@ -170,12 +172,11 @@ const MatchForm = ({
             valueAsNumber: true,
             min: { value: 0, message: "min: 0" },
           }}
-          value={getValues("conceeded")}
           containerStyle="w-20"
         />
       </div>
 
-      <div className="flex w-full mt-8 gap-x-4">
+      <div className="flex w-full gap-4 mt-8">
         <Link href="/admin/matches" passHref>
           <div>
             <Button label="Annuler" />

@@ -26,15 +26,18 @@ const AdminPlayersPage: NextCustomPage = () => {
 
   const [deletePlayer] = useDeletePlayerMutation({
     update: (cache, { data }) => {
-      const { players } = cache.readQuery({ query: GET_PLAYERS }) || {};
-      cache.writeQuery({
-        query: GET_PLAYERS,
-        data: {
-          players: players.filter(
-            (s: GetPlayersQuery["players"][0]) => s.id !== data?.deletePlayer.id
-          ),
-        },
-      });
+      const { players } =
+        cache.readQuery<GetPlayersQuery>({ query: GET_PLAYERS }) || {};
+      players &&
+        cache.writeQuery({
+          query: GET_PLAYERS,
+          data: {
+            players: players.filter(
+              (s: GetPlayersQuery["players"][0]) =>
+                s.id !== data?.deletePlayer.id
+            ),
+          },
+        });
     },
   });
 
@@ -61,7 +64,7 @@ const AdminPlayersPage: NextCustomPage = () => {
       cell: ({ row }) => {
         const { firstName, lastName, image } = row.original || {};
         return (
-          <TableCell className="flex px-2 flex-nowrap" opaque>
+          <TableCell className="flex pl-2 pr-2 md:pr-16 flex-nowrap" opaque>
             <div className="relative flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-200 rounded-full dark:bg-dark-300">
               {image ? (
                 <Image
@@ -74,8 +77,11 @@ const AdminPlayersPage: NextCustomPage = () => {
                 <UserIcon />
               )}
             </div>
-            <span className="ml-2 whitespace-nowrap">
+            <span className="ml-2 whitespace-nowrap md:hidden">
               {firstName![0] + ". " + lastName}
+            </span>
+            <span className="hidden ml-2 whitespace-nowrap md:inline-block">
+              {firstName + " " + lastName}
             </span>
           </TableCell>
         );
@@ -120,13 +126,15 @@ const AdminPlayersPage: NextCustomPage = () => {
         const { country, countryCode } = row.original || {};
         return (
           <TableCell className="justify-center">
-            <Image
-              src={`https://countryflagsapi.com/png/${countryCode}`}
-              width={20}
-              height={12}
-              alt={country}
-              title={country}
-            />
+            {countryCode && (
+              <Image
+                src={`https://flagcdn.com/h20/${countryCode.toLowerCase()}.png`}
+                width={20}
+                height={12}
+                alt={country}
+                title={country}
+              />
+            )}
           </TableCell>
         );
       },

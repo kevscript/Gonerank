@@ -11,7 +11,7 @@ export type SelectInputProps<FieldValues> = {
   name: Path<FieldValues>;
   register: UseFormRegister<FieldValues>;
   error: FieldError | undefined;
-  value: string | Date | number | boolean;
+  value?: string | Date | number | boolean;
   options?: RegisterOptions;
   children: ReactNode;
   containerStyle?: string;
@@ -21,7 +21,6 @@ const SelectInput = <T,>({
   register,
   label,
   error,
-  value,
   options,
   name,
   children,
@@ -29,32 +28,36 @@ const SelectInput = <T,>({
 }: SelectInputProps<T>) => {
   return (
     <label
-      className={`flex flex-col min-w-0 mt-4 ${
-        containerStyle ? containerStyle : "w-full flex-1"
+      className={`flex flex-col min-w-fit ${
+        containerStyle ? "w-fit" : "flex-1"
       }`}
     >
-      <span className="ml-2 text-sm">{label}</span>
-      <select
-        {...register(name, options)}
-        className={`h-10 px-2 cursor-pointer bg-white dark:bg-dark-400 border text-base rounded mt-1 ${
-          error
-            ? "border-red-400 outline-red-600 bg-red-50"
-            : value
-            ? "border-marine-400 outline-marine-600 bg-marine-50"
-            : "border-gray-200 outline-marine-600"
-        }`}
-      >
-        {children}
-      </select>
-      {error && (
-        <div className="w-full">
-          <span
-            className="block ml-2 text-sm text-red-500"
-            data-testid={`error-${name}`}
-          >
-            {error.message}
-          </span>
+      <div className="flex flex-1">
+        <div className="flex items-center h-12 px-4 border-t border-b border-l rounded-l-sm min-w-[128px] border-neutral-300 dark:border-neutral-600">
+          <span className="text-sm dark:text-neutral-300"> {label}</span>
         </div>
+        <div
+          className={`flex items-center h-12 border rounded-r-sm ${
+            error
+              ? "border-red-600/70"
+              : "border-neutral-300 dark:border-neutral-600"
+          } ${containerStyle ? containerStyle : "flex-1"}`}
+        >
+          <select
+            className="w-full h-full px-4 rounded-r-sm outline-none appearance-none cursor-pointer dark:bg-black/50"
+            {...register(name, options)}
+          >
+            {children}
+          </select>
+        </div>
+      </div>
+      {error && (
+        <span
+          className="block mt-2 ml-32 text-xs text-red-500"
+          data-testid={`error-${name}`}
+        >
+          {error.message}
+        </span>
       )}
     </label>
   );

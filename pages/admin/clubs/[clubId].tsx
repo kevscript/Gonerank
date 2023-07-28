@@ -36,28 +36,25 @@ const AdminClubEditPage: NextCustomPage = () => {
   }, [data, clubId]);
 
   return (
-    <div>
-      <div className="flex items-end h-16 p-4 bg-gray-100 dark:bg-dark-400">
-        <div className="flex items-center justify-center w-6 h-6 mr-2 overflow-hidden bg-gray-200 rounded-full">
-          <ShieldIcon className="w-3 h-3 fill-marine-600" />
-        </div>
-        <h3>Editer Club</h3>
+    <div className="px-8 py-16 lg:px-16">
+      <h3 className="text-xl">Edit club : {club?.name}</h3>
+      <div className="mt-12">
+        {loading && <div>Loading...</div>}
+        {error && <div>{error.message}</div>}
+        {club && (
+          <div className="p-4">
+            <ClubForm
+              onSubmit={handleUpdateClub}
+              defaultValues={{
+                name: club.name,
+                abbreviation: club.abbreviation,
+                primary: club.primary,
+                secondary: club.secondary,
+              }}
+            />
+          </div>
+        )}
       </div>
-      {loading && <div>Loading...</div>}
-      {error && <div>{error.message}</div>}
-      {club && (
-        <div className="p-4">
-          <ClubForm
-            onSubmit={handleUpdateClub}
-            defaultValues={{
-              name: club.name,
-              abbreviation: club.abbreviation,
-              primary: club.primary,
-              secondary: club.secondary,
-            }}
-          />
-        </div>
-      )}
     </div>
   );
 };

@@ -78,7 +78,7 @@ describe("SelectInput", () => {
     expect(select).toHaveDisplayValue("Red");
   });
 
-  it("displays the right value", () => {
+  it("displays the right error", () => {
     const props: SelectInputProps<{ color: "red" }> = {
       label: "Color",
       name: "color",

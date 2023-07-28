@@ -39,26 +39,23 @@ const AdminCompetitionEditPage: NextCustomPage = () => {
   }, [data, competitionId]);
 
   return (
-    <div>
-      <div className="flex items-end h-16 p-4 bg-gray-100 dark:bg-dark-400">
-        <div className="flex items-center justify-center w-6 h-6 mr-2 overflow-hidden bg-gray-200 rounded-full">
-          <TrophyIcon className="w-3 h-3 stroke-marine-600" />
-        </div>
-        <h3>Editer Competition</h3>
+    <div className="px-8 py-16 lg:px-16">
+      <h3 className="text-xl">Edit competition : {competition?.name}</h3>
+      <div className="mt-12">
+        {loading && <div>Loading...</div>}
+        {error && <div>{error.message}</div>}
+        {competition && (
+          <div className="p-4">
+            <CompetitionForm
+              onSubmit={handleUpdateCompetition}
+              defaultValues={{
+                name: competition.name,
+                abbreviation: competition.abbreviation,
+              }}
+            />
+          </div>
+        )}
       </div>
-      {loading && <div>Loading...</div>}
-      {error && <div>{error.message}</div>}
-      {competition && (
-        <div className="p-4">
-          <CompetitionForm
-            onSubmit={handleUpdateCompetition}
-            defaultValues={{
-              name: competition.name,
-              abbreviation: competition.abbreviation,
-            }}
-          />
-        </div>
-      )}
     </div>
   );
 };

@@ -6,6 +6,7 @@ const nextConfig = {
       "pbs.twimg.com",
       "obiidvredbcigmtiepbg.supabase.co",
       "countryflagsapi.com",
+      "flagcdn.com",
     ],
   },
 };

@@ -20,17 +20,12 @@ const AdminCreateCompetitionPage: NextCustomPage = () => {
   });
 
   return (
-    <>
-      <div className="flex items-end h-16 p-4 bg-gray-100 dark:bg-dark-400">
-        <div className="flex items-center justify-center w-6 h-6 mr-2 overflow-hidden bg-gray-200 rounded-full">
-          <TrophyIcon className="w-3 h-3 fill-marine-600 stroke-marine-600" />
-        </div>
-        <h3>Nouvelle Compétition</h3>
-      </div>
-      <div className="p-4">
+    <div className="px-8 py-16 lg:px-16">
+      <h3 className="text-xl">Create competition</h3>
+      <div className="mt-12">
         <CompetitionForm onSubmit={handleCompetitionCreate} />
       </div>
-    </>
+    </div>
   );
 };
 
