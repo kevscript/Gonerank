@@ -2716,6 +2716,58 @@ export interface Club {
     resolve: NexusCore.FieldResolver<'Club', 'secondary'>
   }
   /**
+    * Generated Nexus `t.field` configuration based on your Prisma schema's model-field `Club.logo`.
+    *
+    * ### ️⚠️ You have not writen documentation for model Club
+    *
+    * Replace this default advisory JSDoc with your own documentation about model Club
+    * by documenting it in your Prisma schema. For example:
+    * ```prisma
+    * model Club {
+    *   /// Lorem ipsum dolor sit amet.
+    *   logo  String
+    * }
+    * ```
+    *
+    * Learn more about documentation comments in Prisma schema files [here](https://www.prisma.io/docs/concepts/components/prisma-schema#comments).
+    *
+    * @example
+    *
+    * import { objectType } from 'nexus'
+    * import { Club } from 'nexus-prisma'
+    *
+    * objectType({
+    *   name: Club.$name
+    *   description: Club.$description
+    *   definition(t) {
+    *     t.field(Club.logo)
+    *   }
+    * })
+    */
+  logo: {
+    /**
+     * The name of this field.
+     */
+    name: 'logo'
+  
+    /**
+     * The type of this field.
+     */
+    type: 'String' extends NexusCore.GetGen<'allNamedTypes', string>
+    ? NexusCore.NexusNonNullDef<'String'>
+    : 'Warning/Error: The type \'String\' is not amoung the union of GetGen<\'allNamedTypes\', string>. This means that either: 1) You need to run nexus typegen reflection. 2) You need to add the type \'String\' to your GraphQL API.'
+  
+    /**
+     * The documentation of this field.
+     */
+    description: undefined
+  
+    /**
+     * The resolver of this field
+     */
+    resolve: NexusCore.FieldResolver<'Club', 'logo'>
+  }
+  /**
     * Generated Nexus `t.field` configuration based on your Prisma schema's model-field `Club.matches`.
     *
     * ### ️⚠️ You have not writen documentation for model Club

@@ -9,6 +9,7 @@ export const ClubType = objectType({
     t.field(Club.abbreviation);
     t.field(Club.primary);
     t.field(Club.secondary);
+    t.field(Club.logo);
     t.field(Club.matches);
   },
 });

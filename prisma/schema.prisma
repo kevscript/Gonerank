@@ -11,8 +11,8 @@ datasource db {
 }
 
 generator nexusPrisma {
-   provider = "nexus-prisma"
-   output = "../graphql/generated/nexusTypes"
+  provider = "nexus-prisma"
+  output = "../graphql/generated/nexusTypes"
 }
 
 
@@ -92,6 +92,7 @@ model Club {
   abbreviation String 
   primary String
   secondary String
+  logo String @default("")
   matches Match[]
 }
 

@@ -33,13 +33,14 @@ export const ClubQuery = extendType({
           if (!args.where) {
             clubs = await prisma.club.findMany();
           } else {
-            const { name, abbreviation, primary, secondary } = args.where;
+            const { name, abbreviation, primary, secondary, logo } = args.where;
             clubs = await prisma.club.findMany({
               where: {
                 name: name ? name : undefined,
                 abbreviation: abbreviation ? abbreviation : undefined,
                 primary: primary ? primary : undefined,
                 secondary: secondary ? secondary : undefined,
+                logo: logo ? logo : undefined,
               },
             });
           }
