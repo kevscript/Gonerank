@@ -14,6 +14,7 @@ export type EditClubFormInput = {
   abbreviation: string;
   primary: string;
   secondary: string;
+  logo: string;
 };
 
 const AdminClubEditPage: NextCustomPage = () => {
@@ -50,6 +51,7 @@ const AdminClubEditPage: NextCustomPage = () => {
                 abbreviation: club.abbreviation,
                 primary: club.primary,
                 secondary: club.secondary,
+                logo: club.logo,
               }}
             />
           </div>

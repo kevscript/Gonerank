@@ -1,5 +1,6 @@
 import { FormattedMatchStats } from "@/utils/formatMatchesSeasonStats";
 import { ColumnDef } from "@tanstack/react-table";
+import Image from "next/image";
 import ClubIcon from "@/components/Icons/Club";
 import TableCell from "../shared/TableCell";
 import Link from "next/link";
@@ -41,10 +42,11 @@ const MatchesTable = ({ data }: MatchesTableProps) => {
               <Link href={`/matches/${id}`}>
                 <a className="flex items-center justify-start w-full h-full px-2">
                   <div className="relative flex items-center justify-center w-4 h-4 overflow-hidden">
-                    {opponent ? (
-                      <ClubIcon
-                        primary={opponent?.primary}
-                        secondary={opponent?.secondary}
+                    {opponent && opponent.logo ? (
+                      <Image
+                        src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/logos/${opponent.logo}`}
+                        alt={`logo of ${opponent.name}`}
+                        layout="fill"
                       />
                     ) : (
                       <ClubIcon primary="#999" secondary="#666" />

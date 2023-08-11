@@ -25,7 +25,7 @@ const useStorage = (id: string) => {
 
       if (file) {
         const { error: uploadError } = await supabase.storage
-          .from("avatars")
+          .from(id)
           .upload(`${file.name}`, file);
 
         if (uploadError) {
@@ -50,7 +50,7 @@ const useStorage = (id: string) => {
           .list();
         if (listError) throw listError;
         if (list) {
-          const [x, ...validFiles] = list;
+          const [...validFiles] = list;
           setFiles(validFiles);
         }
       } catch (err: any) {

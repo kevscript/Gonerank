@@ -7,6 +7,7 @@ export const CreateClubInput = inputObjectType({
     t.nonNull.string("abbreviation");
     t.nonNull.string("primary");
     t.nonNull.string("secondary");
+    t.string("logo");
   },
 });
 
@@ -17,6 +18,7 @@ export const UpdateClubInput = inputObjectType({
     t.string("abbreviation");
     t.string("primary");
     t.string("secondary");
+    t.string("logo");
   },
 });
 
@@ -27,5 +29,6 @@ export const ClubsWhereInput = inputObjectType({
     t.string("abbreviation");
     t.string("primary");
     t.string("secondary");
+    t.string("logo");
   },
 });

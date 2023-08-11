@@ -20,7 +20,17 @@ export const ClubMutation = extendType({
           throw new ForbiddenError(`Forbidden Action`);
         }
         try {
-          const createdClub = await prisma.club.create({ data: args.data });
+          const { abbreviation, name, primary, secondary, logo } =
+            args.data || {};
+          const createdClub = await prisma.club.create({
+            data: {
+              abbreviation,
+              name,
+              primary,
+              secondary,
+              logo: logo ? logo : undefined,
+            },
+          });
 
           if (createdClub) {
             return createdClub;
@@ -45,7 +55,8 @@ export const ClubMutation = extendType({
           throw new ForbiddenError(`Forbidden Action`);
         }
         try {
-          const { name, abbreviation, primary, secondary } = args.data || {};
+          const { name, abbreviation, primary, secondary, logo } =
+            args.data || {};
           const updatedClub = await prisma.club.update({
             where: { id: args.id },
             data: {
@@ -53,6 +64,7 @@ export const ClubMutation = extendType({
               abbreviation: abbreviation ? abbreviation : undefined,
               primary: primary ? primary : undefined,
               secondary: secondary ? secondary : undefined,
+              logo: logo ? logo : undefined,
             },
           });
 

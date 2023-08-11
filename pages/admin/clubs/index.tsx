@@ -1,5 +1,6 @@
 import EditIcon from "@/components/Icons/Edit";
 import AdminTable from "@/components/tables/AdminTable";
+import Image from "next/image";
 import Button from "@/components/shared/Button";
 import Draggable from "@/components/shared/Draggable";
 import Spinner from "@/components/shared/Spinner";
@@ -16,39 +17,68 @@ import {
 } from "graphql/generated/queryTypes";
 import { GET_CLUBS } from "graphql/queries/club";
 import Link from "next/link";
+import ClubIcon from "@/components/Icons/Club";
 
 const AdminClubsPage: NextCustomPage = () => {
   const { data, loading, error } = useGetClubsQuery();
 
   const [deleteClub] = useDeleteClubMutation({
     update: (cache, { data }) => {
-      const { clubs } = cache.readQuery({ query: GET_CLUBS }) || {};
-      cache.writeQuery({
-        query: GET_CLUBS,
-        data: {
-          clubs: clubs.filter(
-            (s: GetClubsQuery["clubs"][0]) => s.id !== data?.deleteClub.id
-          ),
-        },
-      });
+      const { clubs } =
+        cache.readQuery<GetClubsQuery>({ query: GET_CLUBS }) || {};
+      clubs &&
+        cache.writeQuery({
+          query: GET_CLUBS,
+          data: {
+            clubs: clubs.filter(
+              (s: GetClubsQuery["clubs"][0]) => s.id !== data?.deleteClub.id
+            ),
+          },
+        });
     },
   });
 
   const clubColumns: ColumnDef<Club>[] = [
     {
-      header: () => (
-        <TableCell className="text-sm" opaque header>
-          <span>abbr</span>
-        </TableCell>
-      ),
-      id: "abbr",
-      accessorKey: "abbreviation",
-      cell: (info) => (
-        <TableCell opaque>
-          <span>{info.getValue()}</span>
-        </TableCell>
-      ),
-      size: 100,
+      header: () => {
+        return (
+          <TableCell header opaque>
+            <div className="relative flex items-center justify-center w-4 h-4 ml-2 overflow-hidden bg-gray-200 rounded-full dark:bg-dark-300">
+              <ClubIcon
+                className="dark:bg-gray-300"
+                primary="#fff"
+                secondary="#000"
+              />
+            </div>
+          </TableCell>
+        );
+      },
+      id: "club",
+      accessorFn: (club) => club.logo,
+      cell: ({ row }) => {
+        const { logo, primary, secondary } = row.original || {};
+        return (
+          <TableCell className="flex justify-center flex-nowrap" opaque>
+            <div className="relative flex items-center justify-center w-6 h-6 overflow-hidden rounded-full">
+              {logo ? (
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/logos/${logo}`}
+                  layout="fill"
+                  objectFit="cover"
+                  alt="player"
+                />
+              ) : (
+                <ClubIcon
+                  className="dark:bg-gray-300"
+                  primary={primary || "#000"}
+                  secondary={secondary || "#fff"}
+                />
+              )}
+            </div>
+          </TableCell>
+        );
+      },
+      size: 50,
     },
     {
       header: () => (
@@ -63,6 +93,21 @@ const AdminClubsPage: NextCustomPage = () => {
         </TableCell>
       ),
       size: 250,
+    },
+    {
+      header: () => (
+        <TableCell className="flex justify-center text-sm" opaque header>
+          <span>abbr</span>
+        </TableCell>
+      ),
+      id: "abbr",
+      accessorKey: "abbreviation",
+      cell: (info) => (
+        <TableCell opaque className="flex justify-center">
+          <span>{info.getValue()}</span>
+        </TableCell>
+      ),
+      size: 100,
     },
     {
       header: () => (

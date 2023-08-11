@@ -31,6 +31,7 @@ scalar Bytes
 type Club {
   abbreviation: String!
   id: ID!
+  logo: String!
   matches: [Match!]!
   name: String!
   primary: String!
@@ -39,6 +40,7 @@ type Club {
 
 input ClubsWhereInput {
   abbreviation: String
+  logo: String
   name: String
   primary: String
   secondary: String
@@ -58,6 +60,7 @@ input CompetitionsWhereInput {
 
 input CreateClubInput {
   abbreviation: String!
+  logo: String
   name: String!
   primary: String!
   secondary: String!
@@ -323,6 +326,7 @@ type Session {
 
 input UpdateClubInput {
   abbreviation: String
+  logo: String
   name: String
   primary: String
   secondary: String

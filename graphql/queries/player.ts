@@ -139,6 +139,7 @@ export const PLAYER_SEASON_DATA = gql`
       abbreviation
       primary
       secondary
+      logo
     }
   }
 `;

@@ -1,4 +1,3 @@
-import ClubIcon from "@/components/Icons/Club";
 import Breadcrumbs from "@/components/shared/Breadcrumbs";
 import Draggable from "@/components/shared/Draggable";
 import Spinner from "@/components/shared/Spinner";

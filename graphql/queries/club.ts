@@ -8,6 +8,7 @@ export const GET_CLUB = gql`
       abbreviation
       primary
       secondary
+      logo
     }
   }
 `;
@@ -20,6 +21,7 @@ export const GET_CLUBS = gql`
       abbreviation
       primary
       secondary
+      logo
     }
   }
 `;
@@ -32,6 +34,7 @@ export const CREATE_CLUB = gql`
       abbreviation
       primary
       secondary
+      logo
     }
   }
 `;
@@ -44,6 +47,7 @@ export const UPDATE_CLUB = gql`
       abbreviation
       primary
       secondary
+      logo
     }
   }
 `;
@@ -56,6 +60,7 @@ export const DELETE_CLUB = gql`
       abbreviation
       primary
       secondary
+      logo
     }
   }
 `;
