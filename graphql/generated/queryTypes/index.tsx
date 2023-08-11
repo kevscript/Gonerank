@@ -687,7 +687,7 @@ export type GlobalSeasonDataQueryVariables = Exact<{
 }>;
 
 
-export type GlobalSeasonDataQuery = { __typename?: 'Query', players: Array<{ __typename?: 'Player', id: string, lastName: string, country: string, firstName: string, countryCode: string, birthDate: any, image: string, active: boolean }>, matches: Array<{ __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string }>, competitions: Array<{ __typename?: 'Competition', id: string, abbreviation: string, name: string }>, clubs: Array<{ __typename?: 'Club', id: string, name: string, abbreviation: string, primary: string, secondary: string }> };
+export type GlobalSeasonDataQuery = { __typename?: 'Query', players: Array<{ __typename?: 'Player', id: string, lastName: string, country: string, firstName: string, countryCode: string, birthDate: any, image: string, active: boolean }>, matches: Array<{ __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string }>, competitions: Array<{ __typename?: 'Competition', id: string, abbreviation: string, name: string }>, clubs: Array<{ __typename?: 'Club', id: string, name: string, abbreviation: string, primary: string, secondary: string, logo: string }> };
 
 export type GetMatchQueryVariables = Exact<{
   id: Scalars['String'];
@@ -750,7 +750,7 @@ export type UpdateMatchPlayersMutation = { __typename?: 'Mutation', updateMatchP
 export type GetDisplayMatchQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetDisplayMatchQuery = { __typename?: 'Query', displayMatch?: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competition: { __typename?: 'Competition', id: string, name: string, abbreviation: string }, season: { __typename?: 'Season', id: string, startDate: any }, opponent: { __typename?: 'Club', name: string, abbreviation: string, primary: string, secondary: string }, stats: Array<{ __typename?: 'MatchStats', playerId: string, firstName: string, lastName: string, image: string, avgSum: number, numOfAvg: number, tendency: number, negativeTendency: number, positiveTendency: number }> } | null };
+export type GetDisplayMatchQuery = { __typename?: 'Query', displayMatch?: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competition: { __typename?: 'Competition', id: string, name: string, abbreviation: string }, season: { __typename?: 'Season', id: string, startDate: any }, opponent: { __typename?: 'Club', name: string, abbreviation: string, primary: string, secondary: string, logo: string }, stats: Array<{ __typename?: 'MatchStats', playerId: string, firstName: string, lastName: string, image: string, avgSum: number, numOfAvg: number, tendency: number, negativeTendency: number, positiveTendency: number }> } | null };
 
 export type MatchRatingsQueryVariables = Exact<{
   matchId: Scalars['String'];
@@ -764,7 +764,7 @@ export type MatchDataQueryVariables = Exact<{
 }>;
 
 
-export type MatchDataQuery = { __typename?: 'Query', match: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string, competition: { __typename?: 'Competition', id: string, name: string, abbreviation: string }, season: { __typename?: 'Season', id: string, startDate: any }, opponent: { __typename?: 'Club', id: string, name: string, abbreviation: string, primary: string, secondary: string } }, players: Array<{ __typename?: 'Player', id: string, lastName: string, country: string, firstName: string, countryCode: string, birthDate: any, image: string, active: boolean }> };
+export type MatchDataQuery = { __typename?: 'Query', match: { __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string, competition: { __typename?: 'Competition', id: string, name: string, abbreviation: string }, season: { __typename?: 'Season', id: string, startDate: any }, opponent: { __typename?: 'Club', id: string, name: string, abbreviation: string, primary: string, secondary: string, logo: string } }, players: Array<{ __typename?: 'Player', id: string, lastName: string, country: string, firstName: string, countryCode: string, birthDate: any, image: string, active: boolean }> };
 
 export type GetPlayerQueryVariables = Exact<{
   id: Scalars['String'];
@@ -818,7 +818,7 @@ export type PlayerSeasonDataQueryVariables = Exact<{
 }>;
 
 
-export type PlayerSeasonDataQuery = { __typename?: 'Query', player: { __typename?: 'Player', id: string, lastName: string, country: string, firstName: string, countryCode: string, birthDate: any, image: string, active: boolean, seasons: Array<{ __typename?: 'SeasonPlayer', seasonId: string }> }, matches: Array<{ __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string }>, competitions: Array<{ __typename?: 'Competition', id: string, abbreviation: string, name: string }>, clubs: Array<{ __typename?: 'Club', id: string, name: string, abbreviation: string, primary: string, secondary: string }> };
+export type PlayerSeasonDataQuery = { __typename?: 'Query', player: { __typename?: 'Player', id: string, lastName: string, country: string, firstName: string, countryCode: string, birthDate: any, image: string, active: boolean, seasons: Array<{ __typename?: 'SeasonPlayer', seasonId: string }> }, matches: Array<{ __typename?: 'Match', id: string, date: any, home: boolean, scored: number, conceeded: number, active: boolean, archived: boolean, competitionId: string, seasonId: string, opponentId: string }>, competitions: Array<{ __typename?: 'Competition', id: string, abbreviation: string, name: string }>, clubs: Array<{ __typename?: 'Club', id: string, name: string, abbreviation: string, primary: string, secondary: string, logo: string }> };
 
 export type GetRatingsQueryVariables = Exact<{
   where?: InputMaybe<RatingsWhereInput>;
@@ -1325,6 +1325,7 @@ export const GlobalSeasonDataDocument = gql`
     abbreviation
     primary
     secondary
+    logo
   }
 }
     `;
@@ -1728,6 +1729,7 @@ export const GetDisplayMatchDocument = gql`
       abbreviation
       primary
       secondary
+      logo
     }
     stats {
       playerId
@@ -1836,6 +1838,7 @@ export const MatchDataDocument = gql`
       abbreviation
       primary
       secondary
+      logo
     }
   }
   players(where: {match: {matchId: $matchId}}) {
@@ -2161,6 +2164,7 @@ export const PlayerSeasonDataDocument = gql`
     abbreviation
     primary
     secondary
+    logo
   }
 }
     `;

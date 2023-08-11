@@ -9,6 +9,7 @@ export type CreateClubFormInput = {
   abbreviation: string;
   primary: string;
   secondary: string;
+  logo: string;
 };
 
 const AdminCreateClubPage: NextCustomPage = () => {

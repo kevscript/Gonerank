@@ -38,6 +38,7 @@ export const GLOBAL_SEASON_DATA = gql`
       abbreviation
       primary
       secondary
+      logo
     }
   }
 `;

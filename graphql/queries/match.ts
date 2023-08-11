@@ -168,6 +168,7 @@ export const GET_DISPLAY_MATCH = gql`
         abbreviation
         primary
         secondary
+        logo
       }
 
       stats {
@@ -224,6 +225,7 @@ export const MATCH_DATA = gql`
         abbreviation
         primary
         secondary
+        logo
       }
     }
 

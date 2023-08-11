@@ -2,8 +2,8 @@ import {
   GetDisplayMatchQuery,
   MatchDataQuery,
 } from "graphql/generated/queryTypes";
-import ClubIcon from "./Icons/Club";
 import LyonIcon from "./Icons/Lyon";
+import Image from "next/image";
 
 export type MatchHeaderProps = {
   match: GetDisplayMatchQuery["displayMatch"] | MatchDataQuery["match"];
@@ -62,11 +62,13 @@ const MatchHeader = ({ match }: MatchHeaderProps) => {
         }`}
         title={match?.opponent.name}
       >
-        <ClubIcon
-          className="w-8 h-8"
-          primary={match?.opponent.primary || "#333"}
-          secondary={match?.opponent.secondary || "#444"}
-        />
+        <div className="relative flex items-center justify-center w-8 h-8">
+          <Image
+            src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/logos/${match?.opponent.logo}`}
+            alt={`logo of ${match?.opponent.name}`}
+            layout="fill"
+          />
+        </div>
         <span className="mt-1 font-bold xl:hidden" title={match?.opponent.name}>
           {match?.opponent.abbreviation}
         </span>
