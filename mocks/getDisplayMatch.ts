@@ -15,6 +15,7 @@ export const getDisplayMatchMockReturnValue: GetDisplayMatchQuery = {
       name: "Paris",
       primary: "#ffffff",
       secondary: "#000000",
+      logo: "psg",
     },
     season: {
       id: "1",
