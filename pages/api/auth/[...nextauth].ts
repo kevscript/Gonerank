@@ -17,18 +17,20 @@ export default NextAuth({
   },
   callbacks: {
     async signIn({ user, account, profile }) {
-      if (user) {
-        if (user.image !== profile.profile_image_url_https) {
-          const updatedUser = await prisma.user.update({
-            where: { id: user.id },
-            data: {
-              image: profile.profile_image_url_https as string,
-              email: profile.email,
-            },
-          });
-          user.image = updatedUser.image;
-        }
+      // if the user already exists in the DB, update his twitter name and profile picture
+      const userExistsInDb = await prisma.user.findFirst({
+        where: { id: user.id },
+      });
+      if (!userExistsInDb) {
+        return true;
       }
+      const updateExistingUser = await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          name: profile.name,
+          image: profile.profile_image_url_https as string,
+        },
+      });
 
       return true;
     },
@@ -36,6 +38,7 @@ export default NextAuth({
       if (user) {
         token.role = user.role;
       }
+
       return token;
     },
     async session({ session, token }) {
