@@ -11,6 +11,7 @@ const cors = Cors();
 
 const apolloServer = new ApolloServer({
   schema: schema,
+  cache: "bounded",
   context: async ({ req }): Promise<Context> => {
     const auth = await getToken({ req, secret });
     return { auth: auth, prisma: prisma };
