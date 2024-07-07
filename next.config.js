@@ -5,7 +5,7 @@ const nextConfig = {
     domains: [
       "pbs.twimg.com",
       "obiidvredbcigmtiepbg.supabase.co",
-      "countryflagsapi.com",
+      "flagsapi.com",
       "flagcdn.com",
     ],
   },

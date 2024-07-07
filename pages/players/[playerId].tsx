@@ -395,7 +395,8 @@ const PlayerPage = () => {
                 </span>
                 <Image
                   className="drop-shadow-sm"
-                  src={`https://countryflagsapi.com/png/${player.countryCode}`}
+                  // src={`https://flagsapi.com/png/${player.countryCode}`}
+                  src={`https://flagsapi.com/${player.countryCode}/flat/64.png`}
                   height={12}
                   width={18}
                   alt={player.country}

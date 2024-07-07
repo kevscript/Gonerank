@@ -41,7 +41,7 @@ const PublicTable = ({
   });
 
   return (
-    <table className="">
+    <table className="w-full">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id} className="">
