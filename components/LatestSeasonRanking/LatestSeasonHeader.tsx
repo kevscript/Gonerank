@@ -1,4 +1,4 @@
-import { RankingType } from "./index";
+import { RankingType } from "./LatestSeasonRanking";
 
 type LatestSeasonHeaderProps = {
   seasonStartYear: number;

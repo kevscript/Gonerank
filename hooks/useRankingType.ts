@@ -1,7 +1,7 @@
-import { RankingType } from "@/components/LatestSeasonRanking";
+import { RankingType } from "@/components/LatestSeasonRanking/LatestSeasonRanking";
 import { useState } from "react";
 
-const defaultRankingType: RankingType = "tendency";
+export const defaultRankingType: RankingType = "tendency";
 
 export const useRankingType = () => {
   const [rankingType, setRankingType] =
