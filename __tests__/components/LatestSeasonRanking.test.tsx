@@ -7,8 +7,9 @@ import {
 import userEvent from "@testing-library/user-event";
 import LatestSeasonRanking, {
   LatestSeasonRankingProps,
-} from "@/components/LatestSeasonRanking";
+} from "@/components/LatestSeasonRanking/LatestSeasonRanking";
 import { GetLatestSeasonQuery } from "graphql/generated/queryTypes";
+import { defaultRankingType } from "@/hooks/useRankingType";
 
 const mockSeasonObject: GetLatestSeasonQuery["latestSeason"] = {
   id: "1",
@@ -32,10 +33,8 @@ const mockNoStatSeasonObject: GetLatestSeasonQuery["latestSeason"] = {
 };
 
 describe("LatestSeasonRanking", () => {
-  it("displays tendency ranking when rankType = tendency", () => {
+  it(`init with default ranking type as tendency`, () => {
     const props: LatestSeasonRankingProps = {
-      handleRankingType: jest.fn(),
-      rankingType: "tendency",
       season: mockSeasonObject,
     };
 
@@ -51,88 +50,74 @@ describe("LatestSeasonRanking", () => {
     expect(awardRanking).not.toBeInTheDocument();
   });
 
-  it("displays average ranking when rankType = average", () => {
+  it("displays average ranking when clicking average button", async () => {
     const props: LatestSeasonRankingProps = {
-      handleRankingType: jest.fn(),
-      rankingType: "average",
-      season: mockSeasonObject,
-    };
-
-    render(<LatestSeasonRanking {...props} />);
-
-    const tendencyRanking = screen.queryByTestId("tdcRanking");
-    expect(tendencyRanking).not.toBeInTheDocument();
-
-    const averageRanking = screen.queryByTestId("avgRanking");
-    expect(averageRanking).toBeInTheDocument();
-
-    const awardRanking = screen.queryByTestId("awrRanking");
-    expect(awardRanking).not.toBeInTheDocument();
-  });
-
-  it("displays award ranking when rankType = award", () => {
-    const props: LatestSeasonRankingProps = {
-      handleRankingType: jest.fn(),
-      rankingType: "award",
-      season: mockSeasonObject,
-    };
-
-    render(<LatestSeasonRanking {...props} />);
-
-    const tendencyRanking = screen.queryByTestId("tdcRanking");
-    expect(tendencyRanking).not.toBeInTheDocument();
-
-    const averageRanking = screen.queryByTestId("avgRanking");
-    expect(averageRanking).not.toBeInTheDocument();
-
-    const awardRanking = screen.queryByTestId("awrRanking");
-    expect(awardRanking).toBeInTheDocument();
-  });
-
-  it("calls handleRankingType with correct input", async () => {
-    const mockHandler = jest.fn();
-    const props: LatestSeasonRankingProps = {
-      handleRankingType: mockHandler,
-      rankingType: "tendency",
       season: mockSeasonObject,
     };
 
     render(<LatestSeasonRanking {...props} />);
 
     const avgButton = screen.getByRole("button", { name: /moy/i });
-    expect(avgButton).toBeInTheDocument();
-    const tdcButton = screen.getByRole("button", { name: /tdc/i });
-    expect(tdcButton).toBeInTheDocument();
-    const awrButton = screen.getByRole("button", { name: /hdm/i });
-    expect(awrButton).toBeInTheDocument();
-
-    // expect tendency ranking on initial render based on props
-    expect(screen.getByTestId("tdcRanking")).toBeInTheDocument();
-
     userEvent.click(avgButton);
-    await waitFor(() => {
-      expect(mockHandler).toHaveBeenCalledTimes(1);
-      expect(mockHandler).toHaveBeenCalledWith("average");
-    });
 
+    await waitFor(() => {
+      const tendencyRanking = screen.queryByTestId("tdcRanking");
+      expect(tendencyRanking).not.toBeInTheDocument();
+
+      const averageRanking = screen.queryByTestId("avgRanking");
+      expect(averageRanking).toBeInTheDocument();
+
+      const awardRanking = screen.queryByTestId("awrRanking");
+      expect(awardRanking).not.toBeInTheDocument();
+    });
+  });
+
+  it("displays tendency ranking when clicking tendency button", async () => {
+    const props: LatestSeasonRankingProps = {
+      season: mockSeasonObject,
+    };
+
+    render(<LatestSeasonRanking {...props} />);
+
+    const tdcButton = screen.getByRole("button", { name: /tdc/i });
     userEvent.click(tdcButton);
-    await waitFor(() => {
-      expect(mockHandler).toHaveBeenCalledTimes(2);
-      expect(mockHandler).toHaveBeenCalledWith("tendency");
-    });
 
-    userEvent.click(awrButton);
     await waitFor(() => {
-      expect(mockHandler).toHaveBeenCalledTimes(3);
-      expect(mockHandler).toHaveBeenCalledWith("award");
+      const tendencyRanking = screen.queryByTestId("tdcRanking");
+      expect(tendencyRanking).toBeInTheDocument();
+
+      const averageRanking = screen.queryByTestId("avgRanking");
+      expect(averageRanking).not.toBeInTheDocument();
+
+      const awardRanking = screen.queryByTestId("awrRanking");
+      expect(awardRanking).not.toBeInTheDocument();
+    });
+  });
+
+  it("displays award ranking when clicking award button", async () => {
+    const props: LatestSeasonRankingProps = {
+      season: mockSeasonObject,
+    };
+
+    render(<LatestSeasonRanking {...props} />);
+
+    const awrButton = screen.getByRole("button", { name: /hdm/i });
+    userEvent.click(awrButton);
+
+    await waitFor(() => {
+      const tendencyRanking = screen.queryByTestId("tdcRanking");
+      expect(tendencyRanking).not.toBeInTheDocument();
+
+      const averageRanking = screen.queryByTestId("avgRanking");
+      expect(averageRanking).not.toBeInTheDocument();
+
+      const awardRanking = screen.queryByTestId("awrRanking");
+      expect(awardRanking).toBeInTheDocument();
     });
   });
 
   it("renders a message when season has no stats", async () => {
-    const mockHandler = jest.fn();
     const props: LatestSeasonRankingProps = {
-      handleRankingType: mockHandler,
-      rankingType: "tendency",
       season: mockNoStatSeasonObject,
     };
 

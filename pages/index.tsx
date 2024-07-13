@@ -6,7 +6,7 @@ import {
 } from "graphql/generated/queryTypes";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
-import LatestSeasonRanking from "@/components/LatestSeasonRanking";
+import LatestSeasonRanking from "@/components/LatestSeasonRanking/LatestSeasonRanking";
 import LatestSeasonRankingSkeleton from "@/components/LatestSeasonRanking/LatestSeasonRankingSkeleton";
 import MatchDisplay from "@/components/MatchDisplay/MatchDisplay";
 import MatchDisplayEmpty from "@/components/MatchDisplay/MatchDisplayEmpty";
@@ -14,11 +14,9 @@ import MatchDisplayError from "@/components/MatchDisplay/MatchDisplayError";
 import MatchDisplayNoUser from "@/components/MatchDisplay/MatchDisplayNoUser";
 import MatchDisplaySkeleton from "@/components/MatchDisplay/MatchDisplaySkeleton";
 import { HomePageHead } from "@/components/meta/HomePageHead";
-import { useRankingType } from "@/hooks/useRankingType";
 
 const HomePage: NextCustomPage = () => {
   const { data: session, status } = useSession();
-  const { rankingType, handleRankingType } = useRankingType();
 
   const {
     data: matchData,
@@ -86,11 +84,7 @@ const HomePage: NextCustomPage = () => {
             <MatchDisplaySkeleton />
           )}
           {latestSeasonData?.latestSeason ? (
-            <LatestSeasonRanking
-              rankingType={rankingType}
-              season={latestSeasonData.latestSeason}
-              handleRankingType={handleRankingType}
-            />
+            <LatestSeasonRanking season={latestSeasonData.latestSeason} />
           ) : (
             <LatestSeasonRankingSkeleton />
           )}
