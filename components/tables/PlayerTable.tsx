@@ -13,6 +13,7 @@ import PublicTable from "./PublicTable";
 import TableCell from "../shared/TableCell";
 import { numericalSort } from "@/utils/numericalSort";
 import { useMemo } from "react";
+import { SUPABASE } from "@/utils/constants";
 
 export type PlayerTableProps = {
   data: FormattedPlayerSeasonStats[];
@@ -48,7 +49,7 @@ const PlayerTable = ({ data }: PlayerTableProps) => {
                   <div className="relative flex items-center justify-center w-4 h-4 overflow-hidden">
                     {opponent && opponent.logo ? (
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/logos/${opponent.logo}`}
+                        src={`${SUPABASE.FULL_LOGOS_BUCKET_PATH}/${opponent.logo}`}
                         alt={`logo of ${opponent.name}`}
                         layout="fill"
                       />

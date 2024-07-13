@@ -1,3 +1,4 @@
+import { SUPABASE } from "@/utils/constants";
 import { percentageToColor } from "@/utils/percentageToColor";
 import {
   GetDisplayMatchQuery,
@@ -26,7 +27,7 @@ const MatchInfo = ({ match, userRatings }: MatchInfoProps) => {
                   <div className="relative flex items-center justify-center w-6 h-6 ml-2 overflow-hidden bg-gray-300 rounded-full dark:bg-dark-600 md:w-8 md:h-8 xl:w-12 xl:h-12">
                     {player.image ? (
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${player.image}`}
+                        src={`${SUPABASE.FULL_AVATARS_BUCKET_PATH}/${player.image}`}
                         layout="fill"
                         objectFit="cover"
                         alt={`${player.firstName} ${player.lastName}`}

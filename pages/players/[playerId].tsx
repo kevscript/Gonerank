@@ -35,6 +35,7 @@ import VisxPlayerAvgLinearChart from "@/components/charts/VisxPlayerAvgLinearCha
 import VisxPlayerAvgProgressChart from "@/components/charts/VisxPlayerAvgProgressChart";
 import VisxPlayerTdcProgressChart from "@/components/charts/VisxPlayerTdcProgressChart";
 import VisxPlayerTdcLinearChart from "@/components/charts/VisxPlayerTdcLinearChart";
+import { SUPABASE } from "@/utils/constants";
 
 const PlayerPage = () => {
   const { data: session, status } = useSession();
@@ -381,7 +382,7 @@ const PlayerPage = () => {
           <div className="flex flex-row items-center w-full px-4 py-4 overflow-hidden bg-white rounded dark:bg-dark-500 lg:px-8 flex-nowrap drop-shadow-sm">
             <div className="relative flex items-center justify-center w-12 h-12 overflow-hidden bg-gray-100 rounded-full shadow-inner dark:bg-dark-300 lg:h-16 lg:w-16 shrink-0">
               <Image
-                src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${player.image}`}
+                src={`${SUPABASE.FULL_AVATARS_BUCKET_PATH}/${player.image}`}
                 alt="player avatar"
                 layout="fill"
                 objectFit="cover"

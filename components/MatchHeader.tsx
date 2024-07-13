@@ -4,6 +4,7 @@ import {
 } from "graphql/generated/queryTypes";
 import LyonIcon from "./Icons/Lyon";
 import Image from "next/image";
+import { SUPABASE } from "@/utils/constants";
 
 export type MatchHeaderProps = {
   match: GetDisplayMatchQuery["displayMatch"] | MatchDataQuery["match"];
@@ -64,7 +65,7 @@ const MatchHeader = ({ match }: MatchHeaderProps) => {
       >
         <div className="relative flex items-center justify-center w-8 h-8">
           <Image
-            src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/logos/${match?.opponent.logo}`}
+            src={`${SUPABASE.FULL_LOGOS_BUCKET_PATH}/${match?.opponent.logo}`}
             alt={`logo of ${match?.opponent.name}`}
             layout="fill"
           />

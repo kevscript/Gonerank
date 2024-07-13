@@ -20,6 +20,7 @@ import { GET_PLAYERS } from "graphql/queries/player";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { SUPABASE } from "@/utils/constants";
 
 const AdminPlayersPage: NextCustomPage = () => {
   const { data: playersData, loading, error } = useGetPlayersQuery();
@@ -68,7 +69,7 @@ const AdminPlayersPage: NextCustomPage = () => {
             <div className="relative flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-200 rounded-full dark:bg-dark-300">
               {image ? (
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${image}`}
+                  src={`${SUPABASE.FULL_AVATARS_BUCKET_PATH}/${image}`}
                   layout="fill"
                   objectFit="cover"
                   alt="player"

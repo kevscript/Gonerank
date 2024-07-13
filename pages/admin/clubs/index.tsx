@@ -18,6 +18,7 @@ import {
 import { GET_CLUBS } from "graphql/queries/club";
 import Link from "next/link";
 import ClubIcon from "@/components/Icons/Club";
+import { SUPABASE } from "@/utils/constants";
 
 const AdminClubsPage: NextCustomPage = () => {
   const { data, loading, error } = useGetClubsQuery();
@@ -62,7 +63,7 @@ const AdminClubsPage: NextCustomPage = () => {
             <div className="relative flex items-center justify-center w-6 h-6 overflow-hidden rounded-full">
               {logo ? (
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/logos/${logo}`}
+                  src={`${SUPABASE.FULL_LOGOS_BUCKET_PATH}/${logo}`}
                   layout="fill"
                   objectFit="cover"
                   alt="player"
