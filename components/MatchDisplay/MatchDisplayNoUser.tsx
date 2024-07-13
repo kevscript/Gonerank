@@ -7,7 +7,7 @@ export type MatchDisplayNoUserProps = {
   match: GetDisplayMatchQuery["displayMatch"];
 };
 
-const MatchDisplayNoUser = ({ match }: MatchDisplayNoUserProps) => {
+export const MatchDisplayNoUser = ({ match }: MatchDisplayNoUserProps) => {
   return (
     <>
       <MatchHeader match={match} />
