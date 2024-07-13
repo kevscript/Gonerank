@@ -15,7 +15,7 @@ import NavLink from "./NavLink";
 import GonerankLogo from "../shared/GonerankLogo";
 import Spinner from "../shared/Spinner";
 import Switcher from "../shared/Switcher";
-import ThemeSwitcher from "../ThemeSwitcher";
+import ThemeToggler from "../ThemeToggler";
 
 export type NavigationType = "user" | "admin";
 
@@ -26,7 +26,7 @@ export type NavRoute = {
   type: NavigationType;
 };
 
-const navRoutes: NavRoute[] = [
+export const navRoutes: NavRoute[] = [
   { label: "Evaluation", path: "/", Icon: RatingIcon, type: "user" },
   { label: "Joueurs", path: "/players", Icon: PlayerIcon, type: "user" },
   { label: "Matchs", path: "/matches", Icon: MatchIcon, type: "user" },
@@ -53,6 +53,10 @@ const Sidebar = () => {
   const router = useRouter();
   const [navigationType, setNavigationType] = useState<NavigationType>("user");
 
+  function toggleNavigationType() {
+    setNavigationType((nav) => (nav === "user" ? "admin" : "user"));
+  }
+
   const isPathActive = (path: string) => {
     const currentPath = router.pathname;
     if (path === "/" || path === "/admin") {
@@ -76,7 +80,7 @@ const Sidebar = () => {
   }, [session, router]);
 
   return (
-    <div className="fixed top-0 bottom-0 left-0 z-50 flex flex-col w-16 pt-8 pb-8 bg-white drop-shadow-sm items-cen xl:pb-0 xl:w-64 dark:bg-dark-500">
+    <div className="fixed top-0 bottom-0 left-0 z-50 flex-col hidden w-16 pt-8 pb-8 bg-white lg:flex drop-shadow-sm items-cen xl:pb-0 xl:w-64 dark:bg-dark-500">
       {/* Sidebar Header */}
       <div className="flex flex-col items-center w-full xl:flex-row xl:justify-between xl:px-4">
         <div>
@@ -95,17 +99,9 @@ const Sidebar = () => {
           </Link>
         </div>
         <div className="px-4 my-4 xl:px-0 xl:my-0 xl:mr-2">
-          <ThemeSwitcher />
+          <ThemeToggler />
         </div>
       </div>
-
-      {/* Search bar */}
-      {/* <div className="mt-8 p-2 flex justify-center items-center bg-gray-100 rounded-[10px] xl:self-stretch xl:mx-4 xl:justify-start cursor-pointer hover:bg-gray-200">
-        <SearchIcon className="w-4 h-4 stroke-gray-600" />
-        <div className="hidden ml-4 xl:block">
-          <span>Search</span>
-        </div>
-      </div> */}
 
       {/* Sidebar Navigation */}
       <ul className="flex flex-col items-center flex-1 w-full mt-16">
@@ -121,26 +117,25 @@ const Sidebar = () => {
       </ul>
 
       <div className="flex flex-col items-center justify-center xl:w-full xl:flex-row-reverse xl:justify-start xl:p-4">
-        {/* Admin Routes Switch */}
+        {/* Admin Routes Toggler */}
         {session && session.user.role === "ADMIN" && (
-          <div className="px-4 my-4 xl:px-0 xl:my-0 xl:mr-2">
-            <Switcher
-              checked={navigationType === "admin" ? true : false}
-              id="navSwitcher"
-              handleToggle={() =>
-                setNavigationType((x) => (x === "user" ? "admin" : "user"))
-              }
-            />
+          <div className="flex justify-center w-full my-4 xl:p-2 xl:justify-start">
+            <div
+              className="w-8 h-8 p-1.5 overflow-hidden flex justify-center items-center rounded-full cursor-pointer dark:bg-dark-600 bg-neutral-100"
+              onClick={toggleNavigationType}
+            >
+              {navigationType === "user" ? (
+                <ShieldIcon className="fill-black dark:fill-white" />
+              ) : (
+                <UserIcon className="fill-black dark:fill-white" />
+              )}
+            </div>
           </div>
         )}
       </div>
 
       {/* User Navigation */}
-      {status === "loading" ? (
-        <div className="px-4 xl:w-full xl:py-4">
-          <Spinner />
-        </div>
-      ) : status === "authenticated" ? (
+      {status === "authenticated" ? (
         <LoggedInNavigation user={session.user} />
       ) : (
         <LoggedOutNavigation />
