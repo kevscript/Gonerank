@@ -12,6 +12,7 @@ import MotmIcon from "../Icons/Motm";
 import BotmIcon from "../Icons/Botm";
 import { numericalSort } from "@/utils/numericalSort";
 import { useMemo } from "react";
+import { SUPABASE } from "@/utils/constants";
 
 export type PlayersTableProps = {
   data: FormattedPlayerSeasonStats[];
@@ -42,7 +43,7 @@ const PlayersTable = ({ data }: PlayersTableProps) => {
                   <div className="relative flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-200 rounded-full">
                     {image ? (
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${image}`}
+                        src={`${SUPABASE.FULL_AVATARS_BUCKET_PATH}/${image}`}
                         layout="fill"
                         objectFit="cover"
                         alt="player"

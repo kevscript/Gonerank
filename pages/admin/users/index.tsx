@@ -6,7 +6,6 @@ import TableCell from "@/components/shared/TableCell";
 import { NextCustomPage } from "@/pages/_app";
 import { User } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
-import { info } from "console";
 import { useGetUsersQuery } from "graphql/generated/queryTypes";
 import Image from "next/image";
 

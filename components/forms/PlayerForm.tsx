@@ -9,6 +9,7 @@ import DateInput from "../inputs/DateInput";
 import Button from "../shared/Button";
 import countries from "@/utils/countries";
 import CountryInput from "../inputs/CountryInput";
+import { SUPABASE } from "@/utils/constants";
 
 export type PlayerFormProps = {
   onSubmit: (x: PlayerFormInput) => unknown;
@@ -92,7 +93,7 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
 
     if (imgSource === "database" && files) {
       if (selectedDbFileName) {
-        const imgUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/${process.env.NEXT_PUBLIC_SUPABASE_AVATARS_BUCKET_PATH}/${selectedDbFileName}`;
+        const imgUrl = `${SUPABASE.FULL_AVATARS_BUCKET_PATH}/${selectedDbFileName}`;
         setImgPreview(imgUrl);
         setValue("image", selectedDbFileName);
       } else {
@@ -199,15 +200,18 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
                     register={register}
                     options={{ required: false, onChange: handleSelectedFile }}
                   >
-                    {files?.map((file) => (
-                      <option
-                        key={file.name}
-                        value={file.name}
-                        className="dark:bg-neutral-800 dark:text-neutral-300 text-neutral-600"
-                      >
-                        {file.name}
-                      </option>
-                    ))}
+                    {files &&
+                      files
+                        .filter((f) => !f.name.startsWith("."))
+                        .map((file) => (
+                          <option
+                            key={file.name}
+                            value={file.name}
+                            className="dark:bg-neutral-800 dark:text-neutral-300 text-neutral-600"
+                          >
+                            {file.name}
+                          </option>
+                        ))}
                   </SelectInput>
                 </div>
               </>

@@ -21,6 +21,7 @@ import LatestSeasonRanking, {
 } from "@/components/LatestSeasonRanking";
 import MatchDisplaySkeleton from "@/components/MatchDisplay/MatchDisplaySkeleton";
 import LatestSeasonRankingSkeleton from "@/components/LatestSeasonRanking/LatestSeasonRankingSkeleton";
+import { SUPABASE } from "@/utils/constants";
 
 const HomePage: NextCustomPage = () => {
   const { data: session, status } = useSession();
@@ -150,7 +151,7 @@ const HomePage: NextCustomPage = () => {
         <div className="flex flex-col w-11/12 h-full mx-auto md:justify-center lg:items-center lg:w-3/5">
           <div className="relative flex items-center justify-center w-full overflow-hidden border rounded border-marine-300">
             <Image
-              src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/misc/pleurer`}
+              src={`${SUPABASE.BASE_URL}/storage/v1/object/public/misc/pleurer`}
               width={1200}
               height={795}
               alt="pleurer"

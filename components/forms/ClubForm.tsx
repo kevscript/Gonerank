@@ -7,6 +7,7 @@ import ColorInput from "../inputs/ColorInput";
 import Input from "../inputs/Input";
 import useStorage from "@/hooks/useNewStorage";
 import SelectInput from "../inputs/SelectInput";
+import { SUPABASE } from "@/utils/constants";
 
 export type ClubFormProps = {
   onSubmit: (x: ClubFormInput) => unknown;
@@ -94,7 +95,7 @@ const ClubForm = ({ onSubmit, defaultValues }: ClubFormProps) => {
 
     if (imgSource === "database" && files) {
       if (selectedDbFileName) {
-        const imgUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/${process.env.NEXT_PUBLIC_SUPABASE_LOGOS_BUCKET_PATH}/${selectedDbFileName}`;
+        const imgUrl = `${SUPABASE.FULL_LOGOS_BUCKET_PATH}/${selectedDbFileName}`;
         setImgPreview(imgUrl);
         setValue("logo", selectedDbFileName);
       } else {
