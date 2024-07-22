@@ -182,49 +182,72 @@ const VisxPlayersAvgProgressChart = ({
                 {p.matches.map((m, j) => {
                   return (
                     m.averageQuantity && (
-                      <circle
-                        className={`cursor-pointer  hover:stroke-2 ${
-                          theme === "dark"
-                            ? "hover:stroke-white"
-                            : "hover:stroke-black"
-                        }`}
-                        key={`${p.id}__${m.id}`}
-                        r={3}
-                        cx={xScale(m.date)!}
-                        cy={yScale(m.avgProgress)}
-                        fill={`hsla(${
-                          (360 / idsToShow.length) * idsToShow.indexOf(p.id) + 1
-                        }, 100%, ${theme === "dark" ? "70%" : "50%"}, ${
-                          idsToShow.length === 0 ||
-                          idsToShow.some((id) => id === p.id)
-                            ? "100%"
-                            : "0%"
-                        })`}
-                        style={{
-                          display:
-                            idsToShow.length === 0 ||
-                            idsToShow.some((id) => id === p.id)
-                              ? "block"
-                              : "none",
-                        }}
-                        onMouseOver={(e) =>
-                          handlePointHover(e, {
-                            playerId: p.id,
-                            matchId: m.id,
-                            color: `hsla(${
-                              (360 / idsToShow.length) *
-                                idsToShow.indexOf(p.id) +
-                              1
-                            },  ${theme === "dark" ? "70%" : "50%"}, ${
+                      <>
+                        <circle
+                          className={`cursor-pointer hover:stroke-2 ${
+                            theme === "dark"
+                              ? "hover:stroke-white"
+                              : "hover:stroke-black"
+                          }`}
+                          key={`${p.id}__${m.id}__hoverable`}
+                          r={9}
+                          cx={xScale(m.date)!}
+                          cy={yScale(m.avgProgress)}
+                          fill="transparent"
+                          style={{
+                            display:
                               idsToShow.length === 0 ||
                               idsToShow.some((id) => id === p.id)
-                                ? "60%"
-                                : "0%"
-                            })`,
-                          })
-                        }
-                        onMouseOut={hideTooltip}
-                      />
+                                ? "block"
+                                : "none",
+                          }}
+                          onMouseOver={(e) =>
+                            handlePointHover(e, {
+                              playerId: p.id,
+                              matchId: m.id,
+                              color: `hsla(${
+                                (360 / idsToShow.length) *
+                                  idsToShow.indexOf(p.id) +
+                                1
+                              },  ${theme === "dark" ? "70%" : "50%"}, ${
+                                idsToShow.length === 0 ||
+                                idsToShow.some((id) => id === p.id)
+                                  ? "60%"
+                                  : "0%"
+                              })`,
+                            })
+                          }
+                          onMouseOut={hideTooltip}
+                        />
+
+                        <circle
+                          className={`pointer-events-none ${
+                            theme === "dark"
+                              ? "hover:stroke-white"
+                              : "hover:stroke-black"
+                          }`}
+                          key={`${p.id}__${m.id}`}
+                          r={3}
+                          cx={xScale(m.date)!}
+                          cy={yScale(m.avgProgress)}
+                          fill={`hsla(${
+                            (360 / idsToShow.length) * idsToShow.indexOf(p.id) +
+                            1
+                          }, 100%, ${theme === "dark" ? "70%" : "50%"}, ${
+                            idsToShow.length === 0 ||
+                            idsToShow.some((id) => id === p.id)
+                              ? "100%"
+                              : "0%"
+                          })`}
+                          style={{
+                            display:
+                              idsToShow.length === 0 ||
+                              idsToShow.some((id) => id === p.id)
+                                ? "block"
+                                : "none",
+                          }}
+                        />
+                      </>
                     )
                   );
                 })}

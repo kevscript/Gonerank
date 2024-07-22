@@ -178,19 +178,34 @@ const VisxMatchesTdcLinearChart = ({
             {matches.map((m, i) => {
               return (
                 m.averageQuantity && (
-                  <circle
-                    className={`cursor-pointer  hover:stroke-2 ${
-                      theme === "dark"
-                        ? "hover:stroke-white fill-marine-200"
-                        : "hover:stroke-black fill-marine-600"
-                    }`}
-                    key={`${m.id}`}
-                    r={3}
-                    cx={xScale(m.date)!}
-                    cy={yScale(m.averageSum - 5 * m.averageQuantity)}
-                    onMouseOver={(e) => handlePointHover(e, { matchId: m.id })}
-                    onMouseOut={hideTooltip}
-                  />
+                  <>
+                    <circle
+                      className={`cursor-pointer hover:stroke-2 fill-transparent ${
+                        theme === "dark"
+                          ? "hover:stroke-white"
+                          : "hover:stroke-black"
+                      }`}
+                      key={`${m.id}`}
+                      r={9}
+                      cx={xScale(m.date)!}
+                      cy={yScale(m.averageSum - 5 * m.averageQuantity)}
+                      onMouseOver={(e) =>
+                        handlePointHover(e, { matchId: m.id })
+                      }
+                      onMouseOut={hideTooltip}
+                    />
+                    <circle
+                      className={`cursor-pointer hover:stroke-2 ${
+                        theme === "dark"
+                          ? "hover:stroke-white fill-marine-200"
+                          : "hover:stroke-black fill-marine-600"
+                      }`}
+                      key={`${m.id}`}
+                      r={3}
+                      cx={xScale(m.date)!}
+                      cy={yScale(m.averageSum - 5 * m.averageQuantity)}
+                    />
+                  </>
                 )
               );
             })}
