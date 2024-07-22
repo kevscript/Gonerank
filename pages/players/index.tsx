@@ -25,7 +25,6 @@ import { useGetSeasonsQuery } from "@/graphql/generated/queryTypes";
 import { PlayersPageHead } from "@/components/meta/PlayersPageHead";
 
 const PlayersPage = () => {
-  const { status } = useSession();
   const { theme } = useTheme();
   const router = useRouter();
 
