@@ -29,6 +29,11 @@ const VisxPlayersAvgLinearChart = ({
   const margins = chartDefaults.margins;
   const xMax = chartDefaults.xMax({ dimensions, margins });
   const yMax = chartDefaults.yMax({ dimensions, margins });
+  const gridNumTicksColumns =
+    players[0].matches.length > 16
+      ? players[0].matches.length / 2
+      : players[0].matches.length;
+
   const xScale = scalePoint({
     domain: [...players[0].matches.map((match) => match.date)],
     range: [0, xMax],
@@ -124,7 +129,7 @@ const VisxPlayersAvgLinearChart = ({
             width={xMax}
             height={yMax}
             rowTickValues={[1, 3, 5, 7, 9]}
-            numTicksColumns={players[0].matches.length}
+            numTicksColumns={gridNumTicksColumns}
             stroke={baseColor}
             strokeWidth={0.5}
             strokeOpacity={theme === "dark" ? 0.25 : 0.1}
