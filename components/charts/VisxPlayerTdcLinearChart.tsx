@@ -27,6 +27,8 @@ const VisxPlayerTdcLinearChart = ({
   const margins = chartDefaults.margins;
   const xMax = chartDefaults.xMax({ dimensions, margins });
   const yMax = chartDefaults.yMax({ dimensions, margins });
+  const gridNumTicksColumns =
+    matches.length > 16 ? matches.length / 2 : matches.length;
 
   const xScale = scalePoint({
     domain: [...matches.map((match) => match.date)],
@@ -137,7 +139,7 @@ const VisxPlayerTdcLinearChart = ({
             yScale={yScale}
             width={xMax}
             height={yMax}
-            numTicksColumns={matches.length}
+            numTicksColumns={gridNumTicksColumns}
             stroke={baseColor}
             strokeWidth={0.5}
             strokeOpacity={theme === "dark" ? 0.25 : 0.1}
