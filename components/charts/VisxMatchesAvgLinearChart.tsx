@@ -151,19 +151,34 @@ const VisxMatchesAvgLinearChart = ({
             {matches.map((m, i) => {
               return (
                 m.averageQuantity && (
-                  <circle
-                    className={`cursor-pointer  hover:stroke-2 ${
-                      theme === "dark"
-                        ? "hover:stroke-white fill-marine-200"
-                        : "hover:stroke-black fill-marine-600"
-                    }`}
-                    key={`${m.id}`}
-                    r={3}
-                    cx={xScale(m.date)!}
-                    cy={yScale(m.averageSum / m.averageQuantity)}
-                    onMouseOver={(e) => handlePointHover(e, { matchId: m.id })}
-                    onMouseOut={hideTooltip}
-                  />
+                  <>
+                    <circle
+                      className={`cursor-pointer hover:stroke-2 fill-transparent ${
+                        theme === "dark"
+                          ? "hover:stroke-white"
+                          : "hover:stroke-black"
+                      }`}
+                      key={`${m.id}__hoverable`}
+                      r={9}
+                      cx={xScale(m.date)!}
+                      cy={yScale(m.averageSum / m.averageQuantity)}
+                      onMouseOver={(e) =>
+                        handlePointHover(e, { matchId: m.id })
+                      }
+                      onMouseOut={hideTooltip}
+                    />
+                    <circle
+                      className={`pointer-events-none ${
+                        theme === "dark"
+                          ? "hover:stroke-white fill-marine-200"
+                          : "hover:stroke-black fill-marine-600"
+                      }`}
+                      key={`${m.id}`}
+                      r={3}
+                      cx={xScale(m.date)!}
+                      cy={yScale(m.averageSum / m.averageQuantity)}
+                    />
+                  </>
                 )
               );
             })}
