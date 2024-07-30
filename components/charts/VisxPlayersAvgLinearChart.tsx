@@ -10,6 +10,7 @@ import { chartDefaults, ChartDimensions } from "@/utils/charts/chartDefaults";
 import VisxPlayersTooltip, {
   VisxPlayersTooltipData,
 } from "./tooltips/VisxPlayersTooltip";
+import { Fragment } from "react";
 
 type VisxPlayersAvgLinearChartProps = {
   players: FormattedPlayersChartData[];
@@ -174,14 +175,14 @@ const VisxPlayersAvgLinearChart = ({
                 {p.matches.map((m, j) => {
                   return (
                     m.averageQuantity && (
-                      <>
+                      <Fragment key={`${m.id}-fragment`}>
                         <circle
                           className={`cursor-pointer hover:stroke-2 ${
                             theme === "dark"
                               ? "hover:stroke-white"
                               : "hover:stroke-black"
                           }`}
-                          key={`${p.id}__${m.id}`}
+                          key={`${p.id}__${m.id}__hoverable-avglinear`}
                           r={9}
                           cx={xScale(m.date)!}
                           cy={yScale(m.averageSum / m.averageQuantity)}
@@ -239,7 +240,7 @@ const VisxPlayersAvgLinearChart = ({
                                 : "none",
                           }}
                         />
-                      </>
+                      </Fragment>
                     )
                   );
                 })}
