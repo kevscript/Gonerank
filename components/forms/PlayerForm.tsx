@@ -110,7 +110,7 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
   return (
     <div>
       <form onSubmit={handleSubmit(submitHandler)} className="max-w-4xl">
-        <div className="flex gap-12 p-12 border rounded border-neutral-300 dark:border-neutral-600">
+        <div className="flex flex-col gap-12 p-4 border rounded lg:flex-row lg:p-12 border-neutral-300 dark:border-neutral-600">
           <div className="relative flex items-center justify-center flex-shrink-0 border rounded w-36 h-36 border-neutral-300 dark:border-neutral-600 bg-neutral-100 dark:bg-neutral-800">
             {imgPreview && (
               <Image
@@ -122,7 +122,7 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
               />
             )}
           </div>
-          <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1 gap-4">
             <div className="flex gap-4">
               <label
                 className={`border px-3 py-1.5 rounded-sm text-sm cursor-pointer ${
@@ -176,7 +176,7 @@ const PlayerForm = ({ onSubmit, defaultValues }: PlayerFormProps) => {
                     disabled={loading}
                     className="sr-only"
                   />
-                  <span className="text-sm group-hover:text-neutral-600 text-neutral-500 dark:text-neutral-300 dark:group-hover:text-neutral-400">
+                  <span className="flex items-center justify-center h-16 text-sm group-hover:text-neutral-600 text-neutral-500 dark:text-neutral-300 dark:group-hover:text-neutral-400">
                     {uploadedFile
                       ? uploadedFile.name
                       : "Click to upload an image"}
