@@ -10,6 +10,7 @@ import VisxMatchesTooltip, {
   VisxMatchesTooltipData,
 } from "./tooltips/VisxMatchesTooltip";
 import { chartDefaults, ChartDimensions } from "@/utils/charts/chartDefaults";
+import { Fragment } from "react";
 
 type VisxMatchesTdcLinearChartProps = {
   matches: FormattedMatchesChartData[];
@@ -180,14 +181,14 @@ const VisxMatchesTdcLinearChart = ({
             {matches.map((m, i) => {
               return (
                 m.averageQuantity && (
-                  <>
+                  <Fragment key={`${m.id}-fragment`}>
                     <circle
                       className={`cursor-pointer hover:stroke-2 fill-transparent ${
                         theme === "dark"
                           ? "hover:stroke-white"
                           : "hover:stroke-black"
                       }`}
-                      key={`${m.id}`}
+                      key={`${m.id}__hoverable-tdclinear`}
                       r={9}
                       cx={xScale(m.date)!}
                       cy={yScale(m.averageSum - 5 * m.averageQuantity)}
@@ -207,7 +208,7 @@ const VisxMatchesTdcLinearChart = ({
                       cx={xScale(m.date)!}
                       cy={yScale(m.averageSum - 5 * m.averageQuantity)}
                     />
-                  </>
+                  </Fragment>
                 )
               );
             })}

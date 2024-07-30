@@ -10,6 +10,7 @@ import { chartDefaults, ChartDimensions } from "@/utils/charts/chartDefaults";
 import VisxPlayerTooltip, {
   VisxPlayerTooltipData,
 } from "./tooltips/VisxPlayerTooltip";
+import { Fragment } from "react";
 
 type VisxPlayerAvgProgressChartProps = {
   matches: FormattedPlayerChartData[];
@@ -164,14 +165,14 @@ const VisxPlayerAvgProgressChart = ({
             {matches.map((m, i) => {
               return (
                 m.averageQuantity && (
-                  <>
+                  <Fragment key={`${m.id}-fragment`}>
                     <circle
                       className={`cursor-pointer hover:stroke-2 fill-transparent ${
                         theme === "dark"
                           ? "hover:stroke-white"
                           : "hover:stroke-black"
                       }`}
-                      key={`${m.id}__hoverable`}
+                      key={`${m.id}__hoverable-avgprogress`}
                       r={9}
                       cx={xScale(m.date)!}
                       cy={yScale(m.avgProgress)}
@@ -191,7 +192,7 @@ const VisxPlayerAvgProgressChart = ({
                       cx={xScale(m.date)!}
                       cy={yScale(m.avgProgress)}
                     />
-                  </>
+                  </Fragment>
                 )
               );
             })}
