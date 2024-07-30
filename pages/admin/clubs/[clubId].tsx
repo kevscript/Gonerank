@@ -37,13 +37,13 @@ const AdminClubEditPage: NextCustomPage = () => {
   }, [data, clubId]);
 
   return (
-    <div className="px-8 py-16 lg:px-16">
+    <div className="px-4 py-16 lg:px-16">
       <h3 className="text-xl">Edit club : {club?.name}</h3>
       <div className="mt-12">
         {loading && <div>Loading...</div>}
         {error && <div>{error.message}</div>}
         {club && (
-          <div className="p-4">
+          <div>
             <ClubForm
               onSubmit={handleUpdateClub}
               defaultValues={{
