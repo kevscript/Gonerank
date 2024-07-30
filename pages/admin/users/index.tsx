@@ -25,15 +25,21 @@ const AdminUsersPage: NextCustomPage = () => {
         return (
           <TableCell opaque>
             <div className="flex items-center">
-              <div className="flex items-center justify-center w-6 h-6 overflow-hidden bg-red-600 rounded-full">
+              <div className="relative flex items-center justify-center w-6 h-6 overflow-hidden bg-red-600 rounded-full">
                 {image ? (
-                  <Image src={image} alt="user" width={24} height={24} />
+                  <Image
+                    src={image}
+                    alt="user"
+                    // width={24}
+                    // height={24}
+                    layout="fill"
+                  />
                 ) : (
                   <UserIcon className="w-3 h-3 " />
                 )}
               </div>
 
-              <span className="ml-2">{name || "user"}</span>
+              <span className="ml-2 whitespace-nowrap">{name || "user"}</span>
             </div>
           </TableCell>
         );
