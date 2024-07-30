@@ -115,7 +115,7 @@ const ClubForm = ({ onSubmit, defaultValues }: ClubFormProps) => {
       onSubmit={handleSubmit(submitHandler)}
       onKeyDown={(e) => checkKeyDown(e)}
     >
-      <div className="flex gap-12 p-12 border rounded border-neutral-300 dark:border-neutral-600">
+      <div className="flex flex-col gap-12 p-4 border rounded lg:p-12 lg:flex-row border-neutral-300 dark:border-neutral-600">
         <div className="flex items-center justify-center flex-shrink-0 border rounded w-36 h-36 border-neutral-300 dark:border-neutral-600 bg-neutral-100 dark:bg-neutral-800">
           <div className="relative flex items-center justify-center flex-shrink-0 w-32 h-32">
             {imgPreview && (
@@ -129,7 +129,7 @@ const ClubForm = ({ onSubmit, defaultValues }: ClubFormProps) => {
             )}
           </div>
         </div>
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1 gap-4">
           <div className="flex gap-4">
             <label
               className={`border px-3 py-1.5 rounded-sm text-sm cursor-pointer ${
@@ -182,7 +182,7 @@ const ClubForm = ({ onSubmit, defaultValues }: ClubFormProps) => {
                   disabled={loading}
                   className="sr-only"
                 />
-                <span className="text-sm group-hover:text-neutral-600 text-neutral-500 dark:text-neutral-300 dark:group-hover:text-neutral-400">
+                <span className="flex items-center justify-center h-16 text-sm group-hover:text-neutral-600 text-neutral-500 dark:text-neutral-300 dark:group-hover:text-neutral-400">
                   {uploadedFile
                     ? uploadedFile.name
                     : "Click to upload an image"}
@@ -221,7 +221,7 @@ const ClubForm = ({ onSubmit, defaultValues }: ClubFormProps) => {
           )}
         </div>
       </div>
-      <div className="flex mt-8 gap-x-4">
+      <div className="flex flex-col gap-4 mt-8">
         <Input
           name="name"
           label="Name"
@@ -244,11 +244,10 @@ const ClubForm = ({ onSubmit, defaultValues }: ClubFormProps) => {
             maxLength: { value: 8, message: "[2-5] chars." },
           }}
           value={getValues("abbreviation")}
-          containerStyle="w-32"
         />
       </div>
 
-      <div className="flex gap-x-4">
+      <div className="flex flex-col gap-4">
         <ColorInput
           name="primary"
           label="Primary"
