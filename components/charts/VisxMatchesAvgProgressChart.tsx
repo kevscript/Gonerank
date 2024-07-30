@@ -10,6 +10,7 @@ import VisxMatchesTooltip, {
   VisxMatchesTooltipData,
 } from "./tooltips/VisxMatchesTooltip";
 import { chartDefaults, ChartDimensions } from "@/utils/charts/chartDefaults";
+import { Fragment } from "react";
 
 type VisxMatchesAvgProgressChartProps = {
   matches: FormattedMatchesChartData[];
@@ -152,14 +153,14 @@ const VisxMatchesAvgProgressChart = ({
             {matches.map((m) => {
               return (
                 m.averageQuantity && (
-                  <>
+                  <Fragment key={`${m.id}-fragment`}>
                     <circle
                       className={`cursor-pointer hover:stroke-2 fill-transparent ${
                         theme === "dark"
                           ? "hover:stroke-white"
                           : "hover:stroke-black"
                       }`}
-                      key={`${m.id}__hoverable`}
+                      key={`${m.id}__hoverable-avgprogress`}
                       r={9}
                       cx={xScale(m.date)!}
                       cy={yScale(m.avgProgress)}
@@ -180,7 +181,7 @@ const VisxMatchesAvgProgressChart = ({
                       cx={xScale(m.date)!}
                       cy={yScale(m.avgProgress)}
                     />
-                  </>
+                  </Fragment>
                 )
               );
             })}
