@@ -17,7 +17,7 @@ const AdminPlayerCreatePage: NextCustomPage = () => {
   });
 
   return (
-    <div className="px-8 py-16 lg:px-16">
+    <div className="px-4 py-16 lg:px-16">
       <h3 className="text-xl">Create player</h3>
       <div className="mt-12">
         <PlayerForm onSubmit={handlePlayerCreate} />

@@ -29,7 +29,7 @@ const AdminPlayerEditPage: NextCustomPage = () => {
   }, [data, playerId]);
 
   return (
-    <div className="px-8 py-16 lg:px-16">
+    <div className="px-4 py-16 lg:px-16">
       <h3 className="text-xl">
         {player?.firstName} {player?.lastName}
       </h3>
